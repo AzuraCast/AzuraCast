@@ -19,12 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import {toRef} from "vue";
-import {NestedFormOptionInput, objectToNestedFormOptions} from "~/functions/objectToFormOptions.ts";
+import { toRef } from "vue";
+import {
+    NestedFormOptionInput,
+    objectToNestedFormOptions,
+} from "~/functions/objectToFormOptions.ts";
 
 const props = defineProps<{
-    options: NestedFormOptionInput
+    options: NestedFormOptionInput;
 }>();
 
-const parsedOptions = objectToNestedFormOptions(toRef(props, 'options'));
+const parsedOptions = objectToNestedFormOptions(toRef(props, "options"));
 </script>

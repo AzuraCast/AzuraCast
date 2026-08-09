@@ -50,31 +50,38 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { toRefs, useIntervalFn } from "@vueuse/core";
+import { ref } from "vue";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
-import {toRefs, useIntervalFn} from "@vueuse/core";
-import {useStationsMenu} from "~/components/Stations/menu";
+import { useStationsMenu } from "~/components/Stations/menu";
+import { StationPermissions } from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useLuxon} from "~/vendor/luxon.ts";
-import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
+import { useLuxon } from "~/vendor/luxon.ts";
 
 const menuItems = useStationsMenu();
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
 const stationData = useStationData();
-const {name, hasStarted, needsRestart, timezone} = toRefs(stationData);
+const { name, hasStarted, needsRestart, timezone } = toRefs(stationData);
 
-const {DateTime} = useLuxon();
-const {now, formatDateTimeAsTime} = useStationDateTimeFormatter(timezone);
+const { DateTime } = useLuxon();
+const { now, formatDateTimeAsTime } = useStationDateTimeFormatter(timezone);
 
-const clock = ref('');
+const clock = ref("");
 
-useIntervalFn(() => {
-    clock.value = formatDateTimeAsTime(now(), DateTime.TIME_WITH_SHORT_OFFSET);
-}, 1000, {
-    immediate: true,
-    immediateCallback: true
-});
+useIntervalFn(
+    () => {
+        clock.value = formatDateTimeAsTime(
+            now(),
+            DateTime.TIME_WITH_SHORT_OFFSET,
+        );
+    },
+    1000,
+    {
+        immediate: true,
+        immediateCallback: true,
+    },
+);
 </script>

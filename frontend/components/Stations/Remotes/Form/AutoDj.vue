@@ -93,47 +93,47 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { toRefs } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {StreamFormats} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import Tab from "~/components/Common/Tab.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationsRemotesForm } from "~/components/Stations/Remotes/Form/form.ts";
+import { StreamFormats } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
-const {r$, form} = storeToRefs(useStationsRemotesForm());
+const { r$, form } = storeToRefs(useStationsRemotesForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
 const stationData = useStationData();
-const {maxBitrate} = toRefs(stationData);
+const { maxBitrate } = toRefs(stationData);
 
 const formatOptions = [
     {
         value: StreamFormats.Mp3,
-        text: 'MP3'
+        text: "MP3",
     },
     {
         value: StreamFormats.Ogg,
-        text: 'OGG Vorbis'
+        text: "OGG Vorbis",
     },
     {
         value: StreamFormats.Opus,
-        text: 'OGG Opus'
+        text: "OGG Opus",
     },
     {
         value: StreamFormats.Aac,
-        text: 'AAC+ (MPEG4 HE-AAC v2)'
+        text: "AAC+ (MPEG4 HE-AAC v2)",
     },
     {
         value: StreamFormats.Flac,
-        text: 'FLAC (OGG FLAC)'
-    }
+        text: "FLAC (OGG FLAC)",
+    },
 ];
 
 const formatSupportsBitrateOptions = computed(() => {

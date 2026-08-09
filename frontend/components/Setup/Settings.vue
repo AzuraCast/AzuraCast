@@ -26,23 +26,23 @@
 </template>
 
 <script setup lang="ts">
+import { delay } from "es-toolkit";
+import { ref } from "vue";
 import AdminSettings from "~/components/Admin/Settings.vue";
-import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {delay} from "es-toolkit";
-import {ref} from "vue";
+import SetupStep from "~/components/Setup/SetupStep.vue";
 
 const props = defineProps<{
-    continueUrl: string
+    continueUrl: string;
 }>();
 
 const loading = ref(false);
 
 const onSaved = async () => {
     loading.value = true;
-    
+
     await delay(2000);
 
     window.location.href = props.continueUrl;
-}
+};
 </script>

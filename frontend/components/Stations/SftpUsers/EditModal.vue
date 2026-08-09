@@ -66,44 +66,46 @@
 </template>
 
 <script setup lang="ts">
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref, toRef, useTemplateRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { required, requiredIf } from "@regle/rules";
+import { computed, ref, toRef, useTemplateRef, watch } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {required, requiredIf} from "@regle/rules";
-import {SftpUser} from "~/entities/ApiInterfaces.ts";
+import { SftpUser } from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
-type SftpUsersRecord = Required<
-    Omit<SftpUser, 'id'>
->
+type SftpUsersRecord = Required<Omit<SftpUser, "id">>;
 
 const form = ref<SftpUsersRecord>({
-    username: '',
-    password: '',
-    publicKeys: null
+    username: "",
+    password: "",
+    publicKeys: null,
 });
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        username: {required},
+        username: { required },
         password: {
-            required: requiredIf(() => !editMode.value)
+            required: requiredIf(() => !editMode.value),
         },
     },
-    {}
+    {},
 );
 
 const {
@@ -114,42 +116,42 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal<SftpUsersRecord>(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     () => {
         r$.$reset({
-            toOriginalState: true
+            toOriginalState: true,
         });
     },
     (data) => {
         r$.$reset({
-            toState: mergeExisting(r$.$value, data)
-        })
+            toState: mergeExisting(r$.$value, data),
+        });
     },
     async () => {
-        const {valid} = await r$.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await r$.$validate();
+        return { valid, data: form.value };
+    },
 );
 
 watch(isEditMode, (newValue) => {
     editMode.value = newValue;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit SFTP User')
-        : $gettext('Add SFTP User');
+        ? $gettext("Edit SFTP User")
+        : $gettext("Add SFTP User");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

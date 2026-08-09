@@ -67,36 +67,41 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
+import { useSlots } from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import FormLabel, {
+    FormLabelParentProps,
+} from "~/components/Form/FormLabel.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import useSlotsExcept from "~/functions/useSlotsExcept";
-import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
-import {useSlots} from "vue";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {
+    FormFieldEmits,
+    FormFieldProps,
+    ModelFormField,
+    useFormField,
+} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
+import useSlotsExcept from "~/functions/useSlotsExcept";
 
-type FormGroupMultiCheckProps = FormFieldProps<T> & FormLabelParentProps & {
-    id: string,
-    name?: string,
-    label?: string,
-    description?: string,
-    options: SimpleFormOptionInput,
-    radio?: boolean,
-    stacked?: boolean
-}
+type FormGroupMultiCheckProps = FormFieldProps<T> &
+    FormLabelParentProps & {
+        id: string;
+        name?: string;
+        label?: string;
+        description?: string;
+        options: SimpleFormOptionInput;
+        radio?: boolean;
+        stacked?: boolean;
+    };
 
-const props = withDefaults(
-    defineProps<FormGroupMultiCheckProps>(),
-    {
-        radio: false,
-        stacked: false
-    }
-);
+const props = withDefaults(defineProps<FormGroupMultiCheckProps>(), {
+    radio: false,
+    stacked: false,
+});
 
 const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isRequired} = useFormField<T>(props, emit);
+const { model, isRequired } = useFormField<T>(props, emit);
 </script>

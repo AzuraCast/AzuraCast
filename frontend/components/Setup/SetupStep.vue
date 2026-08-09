@@ -35,18 +35,26 @@ import IconIcArrowRight from "~icons/ic/baseline-arrow-right";
 
 const props = withDefaults(
     defineProps<{
-        step: number
+        step: number;
     }>(),
     {
-        step: 1
-    }
+        step: 1,
+    },
 );
 
 const getStepperClass = (currentStep: number) => {
     if (props.step === currentStep) {
-        return ['text-primary-emphasis', 'bg-primary-subtle', 'border-primary-subtle'];
+        return [
+            "text-primary-emphasis",
+            "bg-primary-subtle",
+            "border-primary-subtle",
+        ];
     } else {
-        return ['text-secondary-emphasis', 'bg-secondary-subtle', 'border-secondary-subtle'];
+        return [
+            "text-secondary-emphasis",
+            "bg-secondary-subtle",
+            "border-secondary-subtle",
+        ];
     }
-}
+};
 </script>

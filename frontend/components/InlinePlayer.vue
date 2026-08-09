@@ -63,23 +63,23 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
-import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {storeToRefs} from "pinia";
+import { StreamChannel, usePlayerStore } from "~/functions/usePlayerStore.ts";
 import IconIcStop from "~icons/ic/baseline-stop";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 const props = withDefaults(
     defineProps<{
-        channel?: StreamChannel
+        channel?: StreamChannel;
     }>(),
     {
-        channel: StreamChannel.Global
-    }
+        channel: StreamChannel.Global,
+    },
 );
 
 const playerStore = usePlayerStore();
@@ -92,23 +92,23 @@ const {
     volume,
     showVolume,
     isMuted,
-    progress
+    progress,
 } = storeToRefs(playerStore);
-const {stop, seek, toggleMute} = playerStore;
+const { stop, seek, toggleMute } = playerStore;
 
 const isCurrentChannel = computed(
-    () => props.channel === current.value.channel
+    () => props.channel === current.value.channel,
 );
 
 const seekPosition = computed({
     get: () => progress.value.position,
     set: (prog) => {
         seek(prog);
-    }
+    },
 });
 
 defineExpose({
-    stop
+    stop,
 });
 </script>
 

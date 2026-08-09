@@ -61,58 +61,60 @@
 </template>
 
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+import AddButton from "~/components/Common/AddButton.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 import DataTable from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/HlsStreams/EditModal.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import useHasEditModal from "~/functions/useHasEditModal";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
-import AddButton from "~/components/Common/AddButton.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/hls_streams');
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/hls_streams");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields = [
-    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
-    {key: 'format', label: $gettext('Format'), sortable: true},
-    {key: 'bitrate', label: $gettext('Bitrate'), sortable: true},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    { key: "name", isRowHeader: true, label: $gettext("Name"), sortable: true },
+    { key: "format", label: $gettext("Format"), sortable: true },
+    { key: "bitrate", label: $gettext("Bitrate"), sortable: true },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([QueryKeys.StationHlsStreams])
+    queryKeyWithStation([QueryKeys.StationHlsStreams]),
 );
 
 const relist = () => {
     void listItemProvider.refresh();
-}
+};
 
 const upper = (data: string) => {
     const upper: string[] = [];
-    data.split(' ').forEach((word) => {
+    data.split(" ").forEach((word) => {
         upper.push(word.toUpperCase());
     });
-    return upper.join(' ');
+    return upper.join(" ");
 };
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const {mayNeedRestart} = useMayNeedRestart();
+const { mayNeedRestart } = useMayNeedRestart();
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete HLS Stream?'),
-    () => {
-        mayNeedRestart();
-        relist();
-    }
-);
+const { doDelete } = useConfirmAndDelete($gettext("Delete HLS Stream?"), () => {
+    mayNeedRestart();
+    relist();
+});
 </script>

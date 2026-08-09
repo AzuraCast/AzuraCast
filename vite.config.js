@@ -2,10 +2,12 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {glob} from "glob";
 import {resolve} from "path";
-import eslintPlugin from "@nabla/vite-plugin-eslint";
+import biomePlugin from 'vite-plugin-biome';
 import Icons from 'unplugin-icons/vite';
 
 const inputs = {};
+
+const __dirname = import.meta.dirname;
 
 glob.sync('./frontend/js/pages/**/*.js').forEach((path) => {
     // vue/pages/Admin/Index becomes AdminIndex
@@ -135,6 +137,9 @@ export default defineConfig({
                 props['aria-hidden'] = 'true';
             },
         }),
-        eslintPlugin(),
+        biomePlugin({
+            mode: 'lint',
+            files: '.',
+        }),
     ],
 })

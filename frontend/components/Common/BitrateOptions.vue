@@ -18,16 +18,16 @@
 </template>
 
 <script setup lang="ts" generic="T = string | number | null">
-import {map} from "es-toolkit/compat";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import { map } from "es-toolkit/compat";
+import { useSlots } from "vue";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
-import {useSlots} from "vue";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
 
 interface BitrateOptionsProps {
-    id: string,
-    name?: string,
-    inputAttrs?: object,
-    maxBitrate: number
+    id: string;
+    name?: string;
+    inputAttrs?: object;
+    maxBitrate: number;
 }
 
 const props = defineProps<BitrateOptionsProps>();
@@ -40,9 +40,7 @@ const toPositiveNumberOrNull = (value: any): number | null => {
     }
 
     value = Number(value);
-    return (Number.isNaN(value) || value <= 0)
-        ? null
-        : value;
+    return Number.isNaN(value) || value <= 0 ? null : value;
 };
 
 const model = defineModel<T, string, number | null, string | number | null>({
@@ -51,20 +49,20 @@ const model = defineModel<T, string, number | null, string | number | null>({
     },
     set(value) {
         return toPositiveNumberOrNull(value);
-    }
+    },
 });
 
-const radioBitrates = [
-    32, 48, 64, 96, 128, 192, 256, 320
-].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
+const radioBitrates = [32, 48, 64, 96, 128, 192, 256, 320].filter(
+    (bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate,
+);
 
 const bitrateOptions: SimpleFormOptionInput = map(
     radioBitrates,
     (val: number) => {
         return {
             value: val,
-            text: String(val)
+            text: String(val),
         };
-    }
+    },
 );
 </script>

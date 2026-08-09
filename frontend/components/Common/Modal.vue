@@ -54,39 +54,46 @@
 </template>
 
 <script setup lang="ts">
-import {Modal} from "bootstrap";
-import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from "vue";
+import { Modal } from "bootstrap";
+import {
+    onMounted,
+    onUnmounted,
+    ref,
+    useSlots,
+    useTemplateRef,
+    watch,
+} from "vue";
 import Loading from "~/components/Common/Loading.vue";
 
 const slots = useSlots();
 
 const props = withDefaults(
     defineProps<{
-        active?: boolean,
-        busy?: boolean,
-        size?: string,
-        title?: string,
+        active?: boolean;
+        busy?: boolean;
+        size?: string;
+        title?: string;
     }>(),
     {
         active: false,
         busy: false,
-        size: 'md'
-    }
+        size: "md",
+    },
 );
 
 const emit = defineEmits<{
-    (e: 'shown'): void,
-    (e: 'hidden'): void,
-    (e: 'update:active', active: boolean): void
+    (e: "shown"): void;
+    (e: "hidden"): void;
+    (e: "update:active", active: boolean): void;
 }>();
 
 const isActive = ref<boolean>(props.active);
 watch(isActive, (newActive) => {
-    emit('update:active', newActive);
+    emit("update:active", newActive);
 });
 
 let bsModal: Modal | null = null;
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 onMounted(() => {
     if ($modal.value) {
@@ -99,17 +106,17 @@ onUnmounted(() => {
 });
 
 const eventListeners = {
-    ['hide.bs.modal']: () => {
+    "hide.bs.modal": () => {
         isActive.value = false;
     },
-    ['hidden.bs.modal']: () => {
-        emit('hidden');
+    "hidden.bs.modal": () => {
+        emit("hidden");
     },
-    ['show.bs.modal']: () => {
+    "show.bs.modal": () => {
         isActive.value = true;
     },
-    ['shown.bs.modal']: () => {
-        emit('shown');
+    "shown.bs.modal": () => {
+        emit("shown");
     },
 };
 
@@ -123,6 +130,6 @@ const hide = () => {
 
 defineExpose({
     show,
-    hide
+    hide,
 });
 </script>

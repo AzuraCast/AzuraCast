@@ -63,32 +63,31 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, toRef, watch} from "vue";
+import { clamp } from "es-toolkit/compat";
+import { computed, ref, toRef, watch } from "vue";
 import PaginationItem from "~/components/Common/PaginationItem.vue";
-import {clamp} from "es-toolkit/compat";
 
 const props = withDefaults(
     defineProps<{
-        total: number,
-        perPage: number,
-        currentPage?: number,
-        pageSpace?: number,
+        total: number;
+        perPage: number;
+        currentPage?: number;
+        pageSpace?: number;
     }>(),
     {
         currentPage: 1,
-        pageSpace: 1
-    }
+        pageSpace: 1,
+    },
 );
 
 const emit = defineEmits<{
-    (e: 'update:currentPage', value: number): void,
-    (e: 'change', value: number): void
+    (e: "update:currentPage", value: number): void;
+    (e: "change", value: number): void;
 }>();
 
-const pageCount = computed(() => Math.max(
-    1,
-    Math.ceil(props.total / props.perPage),
-));
+const pageCount = computed(() =>
+    Math.max(1, Math.ceil(props.total / props.perPage)),
+);
 
 const inputPage = ref(1);
 
@@ -99,7 +98,7 @@ const setPage = (newPage: number) => {
     inputPage.value = newPage;
 };
 
-watch(toRef(props, 'currentPage'), (newPage: number) => {
+watch(toRef(props, "currentPage"), (newPage: number) => {
     setPage(newPage);
 });
 
@@ -108,40 +107,36 @@ const page = computed({
         return props.currentPage;
     },
     set(newValue) {
-        emit('update:currentPage', newValue);
-        emit('change', newValue);
-    }
+        emit("update:currentPage", newValue);
+        emit("change", newValue);
+    },
 });
 
-const hasFirst = computed(
-    () => page.value >= (props.pageSpace + 2)
-);
-const hasFirstEllipsis = computed(
-    () => page.value >= (props.pageSpace + 4)
-);
+const hasFirst = computed(() => page.value >= props.pageSpace + 2);
+const hasFirstEllipsis = computed(() => page.value >= props.pageSpace + 4);
 
 const hasLast = computed(
-    () => page.value <= (pageCount.value - (props.pageSpace + 1))
+    () => page.value <= pageCount.value - (props.pageSpace + 1),
 );
 const hasLastEllipsis = computed(
-    () => page.value < (pageCount.value - (props.pageSpace + 2))
+    () => page.value < pageCount.value - (props.pageSpace + 2),
 );
 
 const pagesInRange = computed(() => {
-    let left = Math.max(1, page.value - props.pageSpace)
+    let left = Math.max(1, page.value - props.pageSpace);
     if (left - 1 === 2) {
-        left-- // Do not show the ellipsis if there is only one to hide
+        left--; // Do not show the ellipsis if there is only one to hide
     }
-    let right = Math.min(page.value + props.pageSpace, pageCount.value)
+    let right = Math.min(page.value + props.pageSpace, pageCount.value);
     if (pageCount.value - right === 2) {
-        right++ // Do not show the ellipsis if there is only one to hide
+        right++; // Do not show the ellipsis if there is only one to hide
     }
 
-    const pages = []
+    const pages = [];
     for (let i = left; i <= right; i++) {
-        pages.push(i)
+        pages.push(i);
     }
-    return pages
+    return pages;
 });
 
 const showInput = computed(() => {

@@ -36,22 +36,22 @@
 </template>
 
 <script setup lang="ts">
-import {ref, toRef, watch} from "vue";
-import {useAxios} from "~/vendor/axios";
-import FormGroup from "~/components/Form/FormGroup.vue";
+import { ref, toRef, watch } from "vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    albumArtUrl: string
+    albumArtUrl: string;
 }>();
 
 const albumArtSrc = ref(props.albumArtUrl);
 const reloadArt = () => {
-    albumArtSrc.value = props.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
-}
-watch(toRef(props, 'albumArtUrl'), reloadArt);
+    albumArtSrc.value = `${props.albumArtUrl}?${Math.floor(Date.now() / 1000)}`;
+};
+watch(toRef(props, "albumArtUrl"), reloadArt);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const uploaded = (file: File | null) => {
     if (null === file) {
@@ -59,7 +59,7 @@ const uploaded = (file: File | null) => {
     }
 
     const formData = new FormData();
-    formData.append('art', file);
+    formData.append("art", file);
 
     void axios.post(props.albumArtUrl, formData).finally(() => {
         reloadArt();

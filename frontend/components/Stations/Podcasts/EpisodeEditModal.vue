@@ -29,22 +29,29 @@
 </template>
 
 <script setup lang="ts">
-import EpisodeFormBasicInfo from "~/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue";
-import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
-import EpisodeFormMedia from "~/components/Stations/Podcasts/EpisodeForm/Media.vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, toRef, useTemplateRef} from "vue";
-import mergeExisting from "~/functions/mergeExisting";
-import {useTranslate} from "~/vendor/gettext";
+import { storeToRefs } from "pinia";
+import { computed, toRef, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
-import {PodcastEpisodeRecord, PodcastEpisodeResponseBody} from "~/entities/Podcasts.ts";
+import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
+import EpisodeFormBasicInfo from "~/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue";
+import { useStationsPodcastEpisodesForm } from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
+import EpisodeFormMedia from "~/components/Stations/Podcasts/EpisodeForm/Media.vue";
+import { ApiPodcast } from "~/entities/ApiInterfaces.ts";
+import {
+    PodcastEpisodeRecord,
+    PodcastEpisodeResponseBody,
+} from "~/entities/Podcasts.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
 
 interface EpisodeEditModalProps extends BaseEditModalProps {
-    podcast: Required<ApiPodcast>
+    podcast: Required<ApiPodcast>;
 }
 
 const props = defineProps<EpisodeEditModalProps>();
@@ -54,14 +61,14 @@ const emit = defineEmits<BaseEditModalEmits>();
 const newArtUrl = computed(() => props.podcast.links.episode_new_art);
 const newMediaUrl = computed(() => props.podcast.links.episode_new_media);
 const podcastIsManual = computed(() => {
-    return props.podcast.source == 'manual';
+    return props.podcast.source === "manual";
 });
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 const formStore = useStationsPodcastEpisodesForm();
-const {form, record, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, record, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
 const {
     loading,
@@ -71,12 +78,9 @@ const {
     create,
     edit,
     doSubmit,
-    close
-} = useBaseEditModal<
-    PodcastEpisodeRecord,
-    PodcastEpisodeResponseBody
->(
-    toRef(props, 'createUrl'),
+    close,
+} = useBaseEditModal<PodcastEpisodeRecord, PodcastEpisodeResponseBody>(
+    toRef(props, "createUrl"),
     emit,
     $modal,
     resetForm,
@@ -84,26 +88,26 @@ const {
         record.value = mergeExisting(record.value, data);
 
         r$.value.$reset({
-            toState: mergeExisting(r$.value.$value, data)
-        })
+            toState: mergeExisting(r$.value.$value, data),
+        });
     },
     async () => {
-        const {valid} = await r$.value.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await r$.value.$validate();
+        return { valid, data: form.value };
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Episode')
-        : $gettext('Add Episode');
+        ? $gettext("Edit Episode")
+        : $gettext("Add Episode");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

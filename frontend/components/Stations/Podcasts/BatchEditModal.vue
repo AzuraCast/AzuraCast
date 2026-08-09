@@ -62,76 +62,82 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import Modal from "~/components/Common/Modal.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { map } from "es-toolkit/compat";
+import { computed, ref, useTemplateRef } from "vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
 import Loading from "~/components/Common/Loading.vue";
-import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {map} from "es-toolkit/compat";
-import {useTranslate} from "~/vendor/gettext.ts";
-import mergeExisting from "~/functions/mergeExisting.ts";
+import Modal from "~/components/Common/Modal.vue";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiPodcastBatchResult, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useAppCollectScope} from "~/vendor/regle.ts";
-
-export type BatchPodcastEpisode = Required<Pick<
+import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
+import {
+    ApiPodcastBatchResult,
     ApiPodcastEpisode,
-    | 'id'
-    | 'title'
-    | 'publish_at'
-    | 'explicit'
-    | 'season_number'
-    | 'episode_number'
->>;
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext.ts";
+import { useAppCollectScope } from "~/vendor/regle.ts";
+
+export type BatchPodcastEpisode = Required<
+    Pick<
+        ApiPodcastEpisode,
+        | "id"
+        | "title"
+        | "publish_at"
+        | "explicit"
+        | "season_number"
+        | "episode_number"
+    >
+>;
 
 const props = defineProps<{
-    id: string,
-    batchUrl: string,
-    selectedItems: Array<any>,
+    id: string;
+    batchUrl: string;
+    selectedItems: Array<any>;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
 
-const {r$} = useAppCollectScope('podcasts-batch-edit');
+const { r$ } = useAppCollectScope("podcasts-batch-edit");
 
-const $modal = useTemplateRef('$modal');
-const {show: showModal, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: showModal, hide } = useHasModal($modal);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const blankRow: BatchPodcastEpisode = {
-    id: '',
-    title: '',
+    id: "",
+    title: "",
     publish_at: 0,
     explicit: false,
     season_number: null,
-    episode_number: null
+    episode_number: null,
 };
 
 const isModalOpen = ref(false);
 
-const {data: rows, isLoading} = useQuery<BatchPodcastEpisode[]>({
+const { data: rows, isLoading } = useQuery<BatchPodcastEpisode[]>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationPodcasts,
         computed(() => props.id),
-        'batch',
+        "batch",
         computed(() => props.selectedItems),
     ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.put<ApiPodcastBatchResult>(props.batchUrl, {
-            'do': 'list',
-            'episodes': map(props.selectedItems, 'id'),
-        }, {signal});
-
-        return map(
-            data.records ?? [],
-            (row) => mergeExisting(blankRow, row)
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.put<ApiPodcastBatchResult>(
+            props.batchUrl,
+            {
+                do: "list",
+                episodes: map(props.selectedItems, "id"),
+            },
+            { signal },
         );
+
+        return map(data.records ?? [], (row) => mergeExisting(blankRow, row));
     },
     enabled: isModalOpen,
 });
@@ -146,37 +152,37 @@ const onHidden = () => {
     isModalOpen.value = false;
 
     r$.$reset({
-        toInitialState: true
+        toInitialState: true,
     });
-}
+};
 
-const {$gettext} = useTranslate();
-const {handleBatchResponse} = useHandlePodcastBatchResponse();
+const { $gettext } = useTranslate();
+const { handleBatchResponse } = useHandlePodcastBatchResponse();
 
 const doBatchEdit = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
     if (!valid) {
         return;
     }
 
-    const {data} = await axios.put(props.batchUrl, {
-        'do': 'edit',
-        'episodes': props.selectedItems.map((row) => row.id),
-        'records': rows.value
+    const { data } = await axios.put(props.batchUrl, {
+        do: "edit",
+        episodes: props.selectedItems.map((row) => row.id),
+        records: rows.value,
     });
 
     handleBatchResponse(
         data,
-        $gettext('Episodes updated:'),
-        $gettext('Error updating episodes:')
+        $gettext("Episodes updated:"),
+        $gettext("Error updating episodes:"),
     );
 
     hide();
-    emit('relist');
+    emit("relist");
 };
 
 defineExpose({
     show,
-    hide
+    hide,
 });
 </script>

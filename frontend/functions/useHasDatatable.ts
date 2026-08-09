@@ -1,24 +1,23 @@
+import { ComputedRef, ShallowRef } from "vue";
+import { ComponentExposed } from "vue-component-type-helpers";
 import DataTable from "~/components/Common/DataTable.vue";
-import {ComputedRef, ShallowRef} from "vue";
-import {ComponentExposed} from "vue-component-type-helpers";
 
-export type DataTableRow = Record<string, any>
+export type DataTableRow = Record<string, any>;
 
-export type DataTableTemplateRef<Row extends DataTableRow = DataTableRow> = ComponentExposed<
-    typeof DataTable<Row>
->;
+export type DataTableTemplateRef<Row extends DataTableRow = DataTableRow> =
+    ComponentExposed<typeof DataTable<Row>>;
 
 export type DataTableFilterContext = {
-    searchPhrase: string,
-    currentPage: number,
-    sortField: string | null,
-    sortOrder: string | null,
-    paginated: boolean,
-    perPage: number,
+    searchPhrase: string;
+    currentPage: number;
+    sortField: string | null;
+    sortOrder: string | null;
+    paginated: boolean;
+    perPage: number;
 };
 
 export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
-    searchPhrase: '',
+    searchPhrase: "",
     currentPage: 1,
     sortField: null,
     sortOrder: null,
@@ -27,16 +26,16 @@ export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
 };
 
 export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
-    rows: ComputedRef<Row[]>,
-    total: ComputedRef<number>,
-    loading: ComputedRef<boolean>,
-    setContext: (ctx: DataTableFilterContext) => void,
-    refresh: (flushCache?: boolean) => Promise<void>,
+    rows: ComputedRef<Row[]>;
+    total: ComputedRef<number>;
+    loading: ComputedRef<boolean>;
+    setContext: (ctx: DataTableFilterContext) => void;
+    refresh: (flushCache?: boolean) => Promise<void>;
 };
 
-export default function useHasDatatable<Row extends DataTableRow = DataTableRow>(
-    $datatableRef: Readonly<ShallowRef<DataTableTemplateRef<Row> | null>>
-) {
+export default function useHasDatatable<
+    Row extends DataTableRow = DataTableRow,
+>($datatableRef: Readonly<ShallowRef<DataTableTemplateRef<Row> | null>>) {
     /**
      * Reset selected rows, active row, and trigger data reload.
      */
@@ -50,7 +49,7 @@ export default function useHasDatatable<Row extends DataTableRow = DataTableRow>
      */
     const relist = () => {
         return $datatableRef.value?.relist();
-    }
+    };
 
     /**
      * Clear search phrase and current page, then call refresh().
@@ -58,7 +57,7 @@ export default function useHasDatatable<Row extends DataTableRow = DataTableRow>
      */
     const navigate = () => {
         return $datatableRef.value?.navigate();
-    }
+    };
 
     /**
      * Set the current search filer string.
@@ -66,12 +65,12 @@ export default function useHasDatatable<Row extends DataTableRow = DataTableRow>
      */
     const setFilter = (newTerm: string) => {
         return $datatableRef.value?.setFilter(newTerm);
-    }
+    };
 
     return {
         refresh,
         relist,
         navigate,
-        setFilter
+        setFilter,
     };
 }

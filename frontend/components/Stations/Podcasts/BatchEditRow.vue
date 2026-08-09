@@ -48,28 +48,28 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@regle/rules";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { required } from "@regle/rules";
+import { Ref } from "vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {BatchPodcastEpisode} from "./BatchEditModal.vue";
-import {Ref} from "vue";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
+import { BatchPodcastEpisode } from "./BatchEditModal.vue";
 
 defineProps<{
-    index: number,
+    index: number;
 }>();
 
-const row = defineModel<BatchPodcastEpisode>('row');
+const row = defineModel<BatchPodcastEpisode>("row");
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     row as Ref<BatchPodcastEpisode>,
     {
-        id: {required},
-        title: {required},
+        id: { required },
+        title: { required },
     },
     {
-        namespace: 'podcasts-batch-edit'
-    }
+        namespace: "podcasts-batch-edit",
+    },
 );
 </script>

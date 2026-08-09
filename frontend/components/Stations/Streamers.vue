@@ -113,94 +113,110 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import EditModal from "~/components/Stations/Streamers/EditModal.vue";
+import { EventImpl } from "@fullcalendar/core/internal";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
+import AddButton from "~/components/Common/AddButton.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import Loading from "~/components/Common/Loading.vue";
+import Tab from "~/components/Common/Tab.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
+import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import BroadcastsModal from "~/components/Stations/Streamers/BroadcastsModal.vue";
 import ConnectionInfo from "~/components/Stations/Streamers/ConnectionInfo.vue";
-import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
+import EditModal from "~/components/Stations/Streamers/EditModal.vue";
+import {
+    ApiStationsVueStreamersProps,
+    StorageLocationTypes,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
-import Tabs from "~/components/Common/Tabs.vue";
-import Tab from "~/components/Common/Tab.vue";
-import AddButton from "~/components/Common/AddButton.vue";
-import TimeZone from "~/components/Stations/Common/TimeZone.vue";
-import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
-import {EventImpl} from "@fullcalendar/core/internal";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import {ApiStationsVueStreamersProps, StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import Loading from "~/components/Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getStationApiUrl} = useApiRouter();
+const { getStationApiUrl } = useApiRouter();
 
-const propsUrl = getStationApiUrl('/vue/streamers');
-const listUrl = getStationApiUrl('/streamers');
-const newArtUrl = getStationApiUrl('/streamers/art');
-const scheduleUrl = getStationApiUrl('/streamers/schedule');
+const propsUrl = getStationApiUrl("/vue/streamers");
+const listUrl = getStationApiUrl("/streamers");
+const newArtUrl = getStationApiUrl("/streamers/art");
+const scheduleUrl = getStationApiUrl("/streamers/schedule");
 
-const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationRecordings}`);
+const quotaUrl = getStationApiUrl(
+    `/quota/${StorageLocationTypes.StationRecordings}`,
+);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueStreamersProps>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationSftpUsers,
-            'props'
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiStationsVueStreamersProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiStationsVueStreamersProps>({
+        queryKey: queryKeyWithStation([QueryKeys.StationSftpUsers, "props"]),
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiStationsVueStreamersProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
-    {key: 'display_name', label: $gettext('Display Name'), sortable: true},
-    {key: 'streamer_username', isRowHeader: true, label: $gettext('Username'), sortable: true},
-    {key: 'comments', label: $gettext('Notes'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "art",
+        label: $gettext("Art"),
+        sortable: false,
+        class: "shrink pe-0",
+    },
+    { key: "display_name", label: $gettext("Display Name"), sortable: true },
+    {
+        key: "streamer_username",
+        isRowHeader: true,
+        label: $gettext("Username"),
+        sortable: true,
+    },
+    { key: "comments", label: $gettext("Notes"), sortable: false },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([
-        QueryKeys.StationStreamers
-    ])
+    queryKeyWithStation([QueryKeys.StationStreamers]),
 );
 
-const $scheduleTab = useTemplateRef('$scheduleTab');
+const $scheduleTab = useTemplateRef("$scheduleTab");
 
 const relist = () => {
     void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
-}
+};
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $broadcastsModal = useTemplateRef('$broadcastsModal');
+const $broadcastsModal = useTemplateRef("$broadcastsModal");
 
 const doShowBroadcasts = (id: number, listUrl: string, batchUrl: string) => {
     $broadcastsModal.value?.open(id, listUrl, batchUrl);
 };
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Streamer?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete Streamer?"), () =>
+    relist(),
 );
 </script>

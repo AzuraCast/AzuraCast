@@ -43,41 +43,38 @@
 </template>
 
 <script setup lang="ts">
-import {Modal} from "bootstrap";
-import {onMounted, useTemplateRef} from "vue";
-import {DialogOptions, useDialog} from "./useDialog.ts";
+import { Modal } from "bootstrap";
+import { onMounted, useTemplateRef } from "vue";
+import { DialogOptions, useDialog } from "./useDialog.ts";
 
 type DialogComponentProps = DialogOptions & {
-    id: string
-}
+    id: string;
+};
 
 const props = withDefaults(defineProps<DialogComponentProps>(), {
-    confirmButtonClass: 'btn-primary',
-    cancelButtonClass: 'btn-secondary',
-    focusCancel: false
+    confirmButtonClass: "btn-primary",
+    cancelButtonClass: "btn-secondary",
+    focusCancel: false,
 });
 
-const {resolveDialog, removeDialog} = useDialog();
+const { resolveDialog, removeDialog } = useDialog();
 
 let bsModal: Modal | null = null;
-const $modal = useTemplateRef('$modal');
-const $cancelButton = useTemplateRef('$cancelButton');
-const $confirmButton = useTemplateRef('$confirmButton');
+const $modal = useTemplateRef("$modal");
+const $cancelButton = useTemplateRef("$cancelButton");
+const $confirmButton = useTemplateRef("$confirmButton");
 
 const eventListeners = {
-    ['hide.bs.modal']: () => {
-        resolveDialog(
-            props.id,
-            {
-                value: false
-            }
-        );
+    "hide.bs.modal": () => {
+        resolveDialog(props.id, {
+            value: false,
+        });
     },
-    ['hidden.bs.modal']: () => {
+    "hidden.bs.modal": () => {
         bsModal?.dispose();
         removeDialog(props.id);
     },
-    ['shown.bs.modal']: () => {
+    "shown.bs.modal": () => {
         if (props.focusCancel) {
             $cancelButton.value?.focus();
         } else {
@@ -87,12 +84,9 @@ const eventListeners = {
 };
 
 const onButtonClick = (value: boolean) => {
-    resolveDialog(
-        props.id,
-        {
-            value
-        }
-    );
+    resolveDialog(props.id, {
+        value,
+    });
 
     bsModal?.hide();
 };

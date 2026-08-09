@@ -8,10 +8,15 @@
 </template>
 
 <script setup lang="ts">
-const checkboxValue = defineModel<boolean | null, string, boolean, boolean | null>({
+const checkboxValue = defineModel<
+    boolean | null,
+    string,
+    boolean,
+    boolean | null
+>({
     default: false,
     get(value) {
-        return (value ?? false);
-    }
+        return value ?? false;
+    },
 });
 </script>

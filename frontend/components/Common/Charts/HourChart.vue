@@ -10,39 +10,35 @@
 </template>
 
 <script setup lang="ts">
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import { useTemplateRef } from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {ChartProps} from "~/functions/useChart";
+import useChart, { ChartProps } from "~/functions/useChart";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<ChartProps>();
 
-const $canvas = useTemplateRef('$canvas');
+const $canvas = useTemplateRef("$canvas");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-useChart<'bar'>(
-    props,
-    $canvas,
-    {
-        type: 'bar',
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: $gettext('Hour')
-                    }
+useChart<"bar">(props, $canvas, {
+    type: "bar",
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: $gettext("Hour"),
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: $gettext('Listeners')
-                    },
-                    min: 0
-                }
-            }
-        }
-    }
-);
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: $gettext("Listeners"),
+                },
+                min: 0,
+            },
+        },
+    },
+});
 </script>

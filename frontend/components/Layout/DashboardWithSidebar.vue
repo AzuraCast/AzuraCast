@@ -20,14 +20,14 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from "vue";
 import PanelFooter from "~/components/Common/PanelFooter.vue";
-import {onMounted, onUnmounted} from "vue";
 
 onMounted(() => {
-    document.body.classList.add('has-sidebar');
+    document.body.classList.add("has-sidebar");
 });
 
 onUnmounted(() => {
-    document.body.classList.remove('has-sidebar');
+    document.body.classList.remove("has-sidebar");
 });
 </script>

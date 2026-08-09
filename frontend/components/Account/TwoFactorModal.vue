@@ -66,22 +66,22 @@
 </template>
 
 <script setup lang="ts">
-import ModalForm from "~/components/Common/ModalForm.vue";
+import { minLength, required } from "@regle/rules";
+import { ref, useTemplateRef } from "vue";
+import QrCode from "~/components/Account/QrCode.vue";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {minLength, required} from "@regle/rules";
-import {ref, useTemplateRef} from "vue";
-import {useResettableRef} from "~/functions/useResettableRef";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import QrCode from "~/components/Account/QrCode.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useResettableRef } from "~/functions/useResettableRef";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    twoFactorUrl: string,
+    twoFactorUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
@@ -89,40 +89,40 @@ const emit = defineEmits<HasRelistEmit>();
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     {
-        otp: ''
+        otp: "",
     },
     {
         otp: {
             required,
-            minLength: minLength(6)
-        }
+            minLength: minLength(6),
+        },
     },
-    {}
+    {},
 );
 
-const {record: totp, reset: resetTotp} = useResettableRef({
+const { record: totp, reset: resetTotp } = useResettableRef({
     secret: null,
     totp_uri: null,
-    qr_code: null
+    qr_code: null,
 });
 
 const clearContents = () => {
     resetTotp();
     r$.$reset({
-        toOriginalState: true
+        toOriginalState: true,
     });
 
     loading.value = false;
     error.value = null;
 };
 
-const $modal = useTemplateRef('$modal');
-const {hide, show} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { hide, show } = useHasModal($modal);
 
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const doOpen = async () => {
     clearContents();
@@ -132,7 +132,7 @@ const doOpen = async () => {
     show();
 
     try {
-        const {data} = await axios.put(props.twoFactorUrl);
+        const { data } = await axios.put(props.twoFactorUrl);
         totp.value = data;
         loading.value = false;
     } catch {
@@ -145,7 +145,7 @@ const open = () => {
 };
 
 const doSubmit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -154,16 +154,16 @@ const doSubmit = async () => {
 
     try {
         await axios({
-            method: 'PUT',
+            method: "PUT",
             url: props.twoFactorUrl,
             data: {
                 secret: totp.value.secret,
-                otp: postData.otp
-            }
+                otp: postData.otp,
+            },
         });
 
         notifySuccess();
-        emit('relist');
+        emit("relist");
         hide();
     } catch (e) {
         error.value = getErrorAsString(e);
@@ -171,6 +171,6 @@ const doSubmit = async () => {
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

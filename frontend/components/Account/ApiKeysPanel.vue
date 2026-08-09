@@ -57,59 +57,56 @@
 </template>
 
 <script setup lang="ts">
-import IconIcAdd from "~icons/ic/baseline-add";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import CardPage from "~/components/Common/CardPage.vue";
+import { useTemplateRef } from "vue";
 import AccountApiKeyModal from "~/components/Account/ApiKeyModal.vue";
-import {useTemplateRef} from "vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { ApiKey, HasLinks } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
+import IconIcAdd from "~icons/ic/baseline-add";
 
-const {getApiUrl} = useApiRouter();
-const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
+const { getApiUrl } = useApiRouter();
+const apiKeysApiUrl = getApiUrl("/frontend/account/api-keys");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-type Row = Required<ApiKey & HasLinks>
+type Row = Required<ApiKey & HasLinks>;
 
 const apiKeyFields: DataTableField<Row>[] = [
     {
-        key: 'comment',
+        key: "comment",
         isRowHeader: true,
-        label: $gettext('API Key Description/Comments'),
-        sortable: false
+        label: $gettext("API Key Description/Comments"),
+        sortable: false,
     },
     {
-        key: 'actions',
-        label: $gettext('Actions'),
+        key: "actions",
+        label: $gettext("Actions"),
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
-const apiKeyItemProvider = useApiItemProvider<Row>(
-    apiKeysApiUrl,
-    [
-        QueryKeys.AdminApiKeys
-    ]
-);
+const apiKeyItemProvider = useApiItemProvider<Row>(apiKeysApiUrl, [
+    QueryKeys.AdminApiKeys,
+]);
 
 const refreshApiKeys = () => {
     void apiKeyItemProvider.refresh();
 };
 
-const $apiKeyModal = useTemplateRef('$apiKeyModal');
+const $apiKeyModal = useTemplateRef("$apiKeyModal");
 
 const createApiKey = () => {
     $apiKeyModal.value?.create();
 };
 
-const {doDelete: deleteApiKey} = useConfirmAndDelete(
-    $gettext('Delete API Key?'),
-    () => refreshApiKeys()
+const { doDelete: deleteApiKey } = useConfirmAndDelete(
+    $gettext("Delete API Key?"),
+    () => refreshApiKeys(),
 );
 </script>

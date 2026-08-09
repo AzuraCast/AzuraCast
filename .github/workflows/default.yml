@@ -76,18 +76,18 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/jod"
           cache: "npm"
 
       - run: npm ci --include=dev
 
+      - name: Lint and check styling
+        run: npm run ci
+
       - name: Check TypeScript types
         run: npm run tsc
-
-      - name: Generate linting report
-        run: npm run lint
 
   prepare:
     name: Prepare Codebase
@@ -116,7 +116,7 @@ jobs:
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/jod"
           cache: "npm"
@@ -137,7 +137,7 @@ jobs:
           backend/bin/console locale:generate
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@v2.16.3
+        uses: crowdin/github-action@v2.17.0
         with:
           upload_sources: true
           download_translations: true

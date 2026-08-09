@@ -41,30 +41,30 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
+import { onMounted, ref } from "vue";
 import Loading from "~/components/Common/Loading.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
-import {useLightbox} from "~/vendor/lightbox";
-import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { ApiUploadedRecordStatus } from "~/entities/ApiInterfaces.ts";
+import { useAxios } from "~/vendor/axios";
+import { useLightbox } from "~/vendor/lightbox";
 
 const props = defineProps<{
-    id: string,
-    apiUrl: string,
-    caption: string,
+    id: string;
+    apiUrl: string;
+    caption: string;
 }>();
 
 const isLoading = ref<boolean>(true);
 const isUploaded = ref<boolean>(false);
 const url = ref<string | null>(null);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<ApiUploadedRecordStatus>(props.apiUrl);
+    const { data } = await axios.get<ApiUploadedRecordStatus>(props.apiUrl);
 
     isUploaded.value = data.hasRecord;
     url.value = data.url;
@@ -80,7 +80,7 @@ const uploaded = async (newFile: File | null) => {
     }
 
     const formData = new FormData();
-    formData.append('file', newFile);
+    formData.append("file", newFile);
 
     try {
         await axios.post(props.apiUrl, formData);
@@ -97,5 +97,5 @@ const clear = async () => {
     }
 };
 
-const {vLightbox} = useLightbox();
+const { vLightbox } = useLightbox();
 </script>

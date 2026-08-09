@@ -7,7 +7,9 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Admin\StationsController;
 use App\Entity\Api\Status;
 use App\Entity\Interfaces\EntityGroupsInterface;
+use App\Entity\StationBackendConfiguration;
 use App\Enums\GlobalPermissions;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -72,7 +74,16 @@ final class ProfileEditController extends StationsController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $this->editRecord((array)$request->getParsedBody(), $station, $this->getContext($request));
+        // Explicitly filter out Liquidsoap configuration sections if the user cannot modify them.
+        $requestBody = (array)$request->getParsedBody();
+
+        if (!$request->getAcl()->isAllowed(StationPermissions::Broadcasting, $station)) {
+            foreach (StationBackendConfiguration::getCustomConfigurationSections() as $key) {
+                unset($requestBody['backend_config'][$key]);
+            }
+        }
+
+        $this->editRecord($requestBody, $station, $this->getContext($request));
 
         return $response->withJson(Status::updated());
     }

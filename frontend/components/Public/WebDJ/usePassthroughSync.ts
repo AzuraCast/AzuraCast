@@ -1,20 +1,19 @@
-import {Ref, ref, watch} from "vue";
+import { Ref, ref, watch } from "vue";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-const [useProvidePassthroughSync, useInjectPassthroughSync] = createRequiredInjectionState(
-    (initialValue: string) => {
+const [useProvidePassthroughSync, useInjectPassthroughSync] =
+    createRequiredInjectionState((initialValue: string) => {
         const passThroughSync = ref<string>(initialValue);
-        return {passThroughSync};
-    }
-);
+        return { passThroughSync };
+    });
 
-export {useProvidePassthroughSync};
+export { useProvidePassthroughSync };
 
 export function usePassthroughSync(
     thisPassThrough: Ref<boolean>,
-    stringVal: string
+    stringVal: string,
 ) {
-    const {passThroughSync} = useInjectPassthroughSync();
+    const { passThroughSync } = useInjectPassthroughSync();
 
     watch(passThroughSync, (newVal) => {
         if (newVal !== stringVal) {

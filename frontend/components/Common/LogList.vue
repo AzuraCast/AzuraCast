@@ -14,17 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import {ApiLogType} from "~/entities/ApiInterfaces.ts";
+import { ApiLogType } from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    logs: Required<ApiLogType>[]
+    logs: Required<ApiLogType>[];
 }>();
 
-const emit = defineEmits<{
-    (e: 'view', url: string, isStreaming: boolean): void
-}>();
+const emit =
+    defineEmits<(e: "view", url: string, isStreaming: boolean) => void>();
 
 const viewLog = (url: string, isStreaming: boolean) => {
-    emit('view', url, isStreaming);
+    emit("view", url, isStreaming);
 };
 </script>

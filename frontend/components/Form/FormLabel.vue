@@ -27,20 +27,17 @@
 
 <script setup lang="ts">
 export type FormLabelParentProps = {
-    advanced?: boolean,
-    highCpu?: boolean
-}
+    advanced?: boolean;
+    highCpu?: boolean;
+};
 
 type FormLabelProps = FormLabelParentProps & {
-    isRequired?: boolean
-}
+    isRequired?: boolean;
+};
 
-withDefaults(
-    defineProps<FormLabelProps>(),
-    {
-        advanced: false,
-        highCpu: false,
-        isRequired: false
-    }
-);
+withDefaults(defineProps<FormLabelProps>(), {
+    advanced: false,
+    highCpu: false,
+    isRequired: false,
+});
 </script>

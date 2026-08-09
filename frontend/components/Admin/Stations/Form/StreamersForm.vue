@@ -132,20 +132,20 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
-import {computed} from "vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {BackendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import Tab from "~/components/Common/Tab.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { BackendAdapters, StreamFormats } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const { r$, form } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.streamersTab));
 
@@ -158,27 +158,27 @@ const tabClassWithBackend = computed(() => {
         return tabClass.value;
     }
 
-    return (isBackendEnabled.value) ? '' : 'text-muted';
+    return isBackendEnabled.value ? "" : "text-muted";
 });
 
 const recordStreamsOptions = computed(() => {
     return [
         {
-            text: 'MP3',
-            value: StreamFormats.Mp3
+            text: "MP3",
+            value: StreamFormats.Mp3,
         },
         {
-            text: 'OGG Vorbis',
-            value: StreamFormats.Ogg
+            text: "OGG Vorbis",
+            value: StreamFormats.Ogg,
         },
         {
-            text: 'OGG Opus',
-            value: StreamFormats.Opus
+            text: "OGG Opus",
+            value: StreamFormats.Opus,
         },
         {
-            text: 'AAC+ (MPEG4 HE-AAC v2)',
-            value: StreamFormats.Aac
-        }
+            text: "AAC+ (MPEG4 HE-AAC v2)",
+            value: StreamFormats.Aac,
+        },
     ];
 });
 </script>

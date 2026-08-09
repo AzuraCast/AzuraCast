@@ -24,44 +24,55 @@
 </template>
 
 <script setup lang="ts">
-import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, toRef, useTemplateRef} from "vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {useTranslate} from "~/vendor/gettext";
+import { computed, toRef, useTemplateRef } from "vue";
 import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
 import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {ApiAdminRoleStationPermission, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppCollectScope} from "~/vendor/regle.ts";
+import {
+    ApiAdminRoleStationPermission,
+    GlobalPermissions,
+    StationPermissions,
+} from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppCollectScope } from "~/vendor/regle.ts";
 
-const props = defineProps<BaseEditModalProps & {
-    stations: Record<number, string>,
-    globalPermissions: Record<GlobalPermissions, string>,
-    stationPermissions: Record<StationPermissions, string>,
-}>();
+const props = defineProps<
+    BaseEditModalProps & {
+        stations: Record<number, string>;
+        globalPermissions: Record<GlobalPermissions, string>;
+        stationPermissions: Record<StationPermissions, string>;
+    }
+>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 export type PermissionsRecord = {
     name: string;
     permissions: {
-        global: GlobalPermissions[],
-        station: ApiAdminRoleStationPermission[]
-    }
-}
+        global: GlobalPermissions[];
+        station: ApiAdminRoleStationPermission[];
+    };
+};
 
-const {record: form, reset: resetFormRef} = useResettableRef<PermissionsRecord>({
-    name: '',
-    permissions: {
-        global: [],
-        station: [],
-    }
-});
+const { record: form, reset: resetFormRef } =
+    useResettableRef<PermissionsRecord>({
+        name: "",
+        permissions: {
+            global: [],
+            station: [],
+        },
+    });
 
-const {r$} = useAppCollectScope('admin-permissions');
+const { r$ } = useAppCollectScope("admin-permissions");
 
 const {
     loading,
@@ -71,9 +82,9 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal<PermissionsRecord>(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     () => {
@@ -85,22 +96,20 @@ const {
         r$.$reset();
     },
     async () => {
-        const {valid} = await r$.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await r$.$validate();
+        return { valid, data: form.value };
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
-    return isEditMode.value
-        ? $gettext('Edit Role')
-        : $gettext('Add Role');
+    return isEditMode.value ? $gettext("Edit Role") : $gettext("Add Role");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

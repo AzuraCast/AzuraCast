@@ -27,31 +27,32 @@
 </template>
 
 <script setup lang="ts">
+import { filter } from "es-toolkit/compat";
+import { computed } from "vue";
 import InnerMap from "~/components/Stations/Reports/Listeners/InnerMap.vue";
 import MapPoint from "~/components/Stations/Reports/Listeners/MapPoint.vue";
-import {computed} from "vue";
-import {filter} from "es-toolkit/compat";
-import {ListenerRequired} from "~/entities/StationReports.ts";
+import { ListenerRequired } from "~/entities/StationReports.ts";
 
 const props = withDefaults(
     defineProps<{
-        listeners: ListenerRequired[]
+        listeners: ListenerRequired[];
     }>(),
     {
-        listeners: () => []
-    }
+        listeners: () => [],
+    },
 );
 
-type VisibleRow = Omit<ListenerRequired, 'location'> & {
-    location: Omit<ListenerRequired["location"], 'lat' | 'lon'> & {
-        lat: number,
-        lon: number,
-    }
+type VisibleRow = Omit<ListenerRequired, "location"> & {
+    location: Omit<ListenerRequired["location"], "lat" | "lon"> & {
+        lat: number;
+        lon: number;
+    };
 };
 
 const visibleListeners = computed<VisibleRow[]>(() => {
-    return filter(props.listeners, function (l) {
-        return null !== l.location.lat && null !== l.location.lon;
-    }) as VisibleRow[];
+    return filter(
+        props.listeners,
+        (l) => null !== l.location.lat && null !== l.location.lon,
+    ) as VisibleRow[];
 });
 </script>

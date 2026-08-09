@@ -57,27 +57,27 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload, {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
-import {computed, toRef} from "vue";
-import {useAxios} from "~/vendor/axios";
+import { computed, toRef } from "vue";
+import FlowUpload, {
+    UploadResponseBody,
+} from "~/components/Common/FlowUpload.vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    recordHasIntro: boolean,
-    editIntroUrl?: string,
-    newIntroUrl: string,
+    recordHasIntro: boolean;
+    editIntroUrl?: string;
+    newIntroUrl: string;
 }>();
 
 const model = defineModel<UploadResponseBody | null>();
 
-const hasIntro = toRef(props, 'recordHasIntro');
+const hasIntro = toRef(props, "recordHasIntro");
 
 const targetUrl = computed(() => {
-    return (props.editIntroUrl)
-        ? props.editIntroUrl
-        : props.newIntroUrl;
+    return props.editIntroUrl ? props.editIntroUrl : props.newIntroUrl;
 });
 
 const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
@@ -88,7 +88,7 @@ const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     }
 };
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const deleteIntro = async () => {
     if (props.editIntroUrl) {

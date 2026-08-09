@@ -70,31 +70,31 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {computed} from "vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStorageLocationsForm } from "~/components/Admin/StorageLocations/Form/form.ts";
 import Tab from "~/components/Common/Tab.vue";
-import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
 const formStore = useAdminStorageLocationsForm();
-const {r$, form} = storeToRefs(formStore);
+const { r$, form } = storeToRefs(formStore);
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.dropboxTab));
 
-const baseAuthUrl = 'https://www.dropbox.com/oauth2/authorize';
+const baseAuthUrl = "https://www.dropbox.com/oauth2/authorize";
 
 const authUrl = computed(() => {
     const params = new URLSearchParams();
 
     const clientId = form.value?.dropboxAppKey;
     if (clientId) {
-        params.append('client_id', clientId);
+        params.append("client_id", clientId);
     }
 
-    params.append('response_type', 'code');
-    params.append('token_access_type', 'offline');
+    params.append("response_type", "code");
+    params.append("token_access_type", "offline");
 
-    return baseAuthUrl + '?' + params.toString();
+    return `${baseAuthUrl}?${params.toString()}`;
 });
 </script>

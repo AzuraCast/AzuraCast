@@ -134,23 +134,22 @@
     <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
 </template>
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
+import { upperFirst } from "es-toolkit";
+import { useTemplateRef } from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
-import {upperFirst} from "es-toolkit";
-import {ApiAdminServerStatsCpuStats} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminServerStatsCpuStats } from "~/entities/ApiInterfaces.ts";
 import IconIcInfo from "~icons/ic/baseline-info";
 
 defineProps<{
-    cpuStats: ApiAdminServerStatsCpuStats
+    cpuStats: ApiAdminServerStatsCpuStats;
 }>();
 
-const $cpuStatsHelpModal = useTemplateRef('$cpuStatsHelpModal');
+const $cpuStatsHelpModal = useTemplateRef("$cpuStatsHelpModal");
 const showCpuStatsHelpModal = () => {
     $cpuStatsHelpModal.value?.create();
 };
 
 const formatCpuName = (cpuName: string) => upperFirst(cpuName);
 
-const formatPercentageString = (value: string | number) => value + '%';
-
+const formatPercentageString = (value: string | number) => `${value}%`;
 </script>

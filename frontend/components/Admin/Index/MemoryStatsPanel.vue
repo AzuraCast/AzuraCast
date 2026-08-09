@@ -62,22 +62,23 @@
 </template>
 
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
+import { useTemplateRef } from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
-import {ApiAdminServerStatsMemoryStats} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminServerStatsMemoryStats } from "~/entities/ApiInterfaces.ts";
 import IconIcInfo from "~icons/ic/baseline-info";
 
 defineProps<{
-    memoryStats: ApiAdminServerStatsMemoryStats
+    memoryStats: ApiAdminServerStatsMemoryStats;
 }>();
 
-const $memoryStatsHelpModal = useTemplateRef('$memoryStatsHelpModal');
+const $memoryStatsHelpModal = useTemplateRef("$memoryStatsHelpModal");
 
 const showMemoryStatsHelpModal = () => {
     $memoryStatsHelpModal.value?.create();
 };
 
 const getPercent = (amount: string | number, total: string | number) => {
-    return ((Number(amount) / Number(total)) * 100) + '%';
-}
+    const percent = (Number(amount) / Number(total)) * 100;
+    return `${percent}%`;
+};
 </script>

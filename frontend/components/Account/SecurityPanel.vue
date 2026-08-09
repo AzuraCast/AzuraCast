@@ -128,40 +128,43 @@
 </template>
 
 <script setup lang="ts">
-import CardPage from "~/components/Common/CardPage.vue";
-import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import Loading from "~/components/Common/Loading.vue";
-import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";
-import {useAxios} from "~/vendor/axios.ts";
-import {useTemplateRef} from "vue";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
-import {useTranslate} from "~/vendor/gettext.ts";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import PasskeyModal from "~/components/Account/PasskeyModal.vue";
-import {ApiAccountTwoFactorStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useQuery} from "@tanstack/vue-query";
+import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import Loading from "~/components/Common/Loading.vue";
+import { ApiAccountTwoFactorStatus } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 import IconIcAdd from "~icons/ic/baseline-add";
 import IconIcLock from "~icons/ic/baseline-lock";
 import IconIcLockOpen from "~icons/ic/baseline-lock-open";
 import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {getApiUrl} = useApiRouter();
-const twoFactorUrl = getApiUrl('/frontend/account/two-factor');
+const { getApiUrl } = useApiRouter();
+const twoFactorUrl = getApiUrl("/frontend/account/two-factor");
 
 const {
     data: security,
     isLoading: securityLoading,
-    refetch
+    refetch,
 } = useQuery<ApiAccountTwoFactorStatus>({
-    queryKey: [QueryKeys.AccountIndex, 'two-factor'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value, {signal});
+    queryKey: [QueryKeys.AccountIndex, "two-factor"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<ApiAccountTwoFactorStatus>(
+            twoFactorUrl.value,
+            { signal },
+        );
         return data;
     },
     placeholderData: () => ({
@@ -171,65 +174,63 @@ const {
 
 const reloadSecurity = () => {
     void refetch();
-}
+};
 
-const $changePasswordModal = useTemplateRef('$changePasswordModal');
+const $changePasswordModal = useTemplateRef("$changePasswordModal");
 
 const doChangePassword = () => {
     $changePasswordModal.value?.open();
 };
 
-const $twoFactorModal = useTemplateRef('$twoFactorModal');
+const $twoFactorModal = useTemplateRef("$twoFactorModal");
 
 const enableTwoFactor = () => {
     $twoFactorModal.value?.open();
 };
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const {doDelete: doDisableTwoFactor} = useConfirmAndDelete(
-    $gettext('Disable two-factor authentication?'),
+const { doDelete: doDisableTwoFactor } = useConfirmAndDelete(
+    $gettext("Disable two-factor authentication?"),
     () => {
         void reloadSecurity();
-    }
+    },
 );
 const disableTwoFactor = () => doDisableTwoFactor(twoFactorUrl.value);
 
-const passkeysApiUrl = getApiUrl('/frontend/account/passkeys');
+const passkeysApiUrl = getApiUrl("/frontend/account/passkeys");
 
 const passkeyFields: DataTableField[] = [
     {
-        key: 'name',
+        key: "name",
         isRowHeader: true,
-        label: $gettext('Passkey Nickname'),
-        sortable: false
+        label: $gettext("Passkey Nickname"),
+        sortable: false,
     },
     {
-        key: 'actions',
-        label: $gettext('Actions'),
+        key: "actions",
+        label: $gettext("Actions"),
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
-const passkeysItemProvider = useApiItemProvider(
-    passkeysApiUrl,
-    [QueryKeys.AccountPasskeys]
-);
+const passkeysItemProvider = useApiItemProvider(passkeysApiUrl, [
+    QueryKeys.AccountPasskeys,
+]);
 
 const reloadPasskeys = () => {
     void passkeysItemProvider.refresh();
 };
 
-const {doDelete: deletePasskey} = useConfirmAndDelete(
-    $gettext('Delete Passkey?'),
-    () => reloadPasskeys()
+const { doDelete: deletePasskey } = useConfirmAndDelete(
+    $gettext("Delete Passkey?"),
+    () => reloadPasskeys(),
 );
 
-const $passkeyModal = useTemplateRef('$passkeyModal');
+const $passkeyModal = useTemplateRef("$passkeyModal");
 
 const doAddPasskey = () => {
     $passkeyModal.value?.create();
 };
-
 </script>

@@ -1,12 +1,14 @@
-import {ShallowRef} from "vue";
+import { ShallowRef } from "vue";
 
 interface ModalCompatible {
-    show(): void,
+    show(): void;
 
-    hide(): void,
+    hide(): void;
 }
 
-export function useHasModal(modalRef: Readonly<ShallowRef<ModalCompatible | null>>) {
+export function useHasModal(
+    modalRef: Readonly<ShallowRef<ModalCompatible | null>>,
+) {
     const hide = () => {
         modalRef.value?.hide();
     };
@@ -17,6 +19,6 @@ export function useHasModal(modalRef: Readonly<ShallowRef<ModalCompatible | null
 
     return {
         hide,
-        show
-    }
+        show,
+    };
 }

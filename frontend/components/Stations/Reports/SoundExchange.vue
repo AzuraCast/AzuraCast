@@ -108,33 +108,33 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@regle/rules";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { required } from "@regle/rules";
+import CardPage from "~/components/Common/CardPage.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import CardPage from "~/components/Common/CardPage.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/reports/soundexchange');
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/reports/soundexchange");
 
-const {now} = useStationDateTimeFormatter();
+const { now } = useStationDateTimeFormatter();
 
-const lastMonth = now().minus({months: 1});
+const lastMonth = now().minus({ months: 1 });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     {
-        start_date: lastMonth.startOf('month').toISODate(),
-        end_date: lastMonth.endOf('month').toISODate(),
-        fetch_isrc: false
+        start_date: lastMonth.startOf("month").toISODate(),
+        end_date: lastMonth.endOf("month").toISODate(),
+        fetch_isrc: false,
     },
     {
-        start_date: {required},
-        end_date: {required},
-        fetch_isrc: {}
+        start_date: { required },
+        end_date: { required },
+        fetch_isrc: {},
     },
-    {}
+    {},
 );
 </script>

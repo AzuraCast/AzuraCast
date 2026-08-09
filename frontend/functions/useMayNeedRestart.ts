@@ -1,6 +1,6 @@
-import {useQueryClient} from "@tanstack/vue-query";
-import {queryKeyWithStation} from "~/entities/Queries.ts";
-import {useStationId} from "~/functions/useStationQuery.ts";
+import { useQueryClient } from "@tanstack/vue-query";
+import { queryKeyWithStation } from "~/entities/Queries.ts";
+import { useStationId } from "~/functions/useStationQuery.ts";
 
 export function useMayNeedRestart() {
     const queryClient = useQueryClient();
@@ -8,13 +8,11 @@ export function useMayNeedRestart() {
 
     const mayNeedRestart = () => {
         void queryClient.invalidateQueries({
-            queryKey: queryKeyWithStation([], stationId)
+            queryKey: queryKeyWithStation([], stationId),
         });
-    }
+    };
 
     return {
-        mayNeedRestart
-    }
+        mayNeedRestart,
+    };
 }
-
-

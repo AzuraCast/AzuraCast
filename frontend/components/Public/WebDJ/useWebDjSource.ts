@@ -1,32 +1,32 @@
-import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
-import {WebcasterMetadata} from "~/components/Public/WebDJ/useWebcaster.ts";
+import { WebcasterMetadata } from "~/components/Public/WebDJ/useWebcaster.ts";
+import { useInjectWebDjNode } from "~/components/Public/WebDJ/useWebDjNode";
 
 interface StreamAudioSourceWithStop extends MediaStreamAudioSourceNode {
-    stop?(): void
+    stop?(): void;
 }
 
 interface TagLibAudio {
-    length: string
+    length: string;
 }
 
 export interface TagLibProcessResult {
-    audio: TagLibAudio
-    metadata: WebcasterMetadata | null
+    audio: TagLibAudio;
+    metadata: WebcasterMetadata | null;
 }
 
 export interface WebDjFilePointer {
-    file: File,
-    audio: TagLibAudio
-    metadata: WebcasterMetadata
+    file: File;
+    audio: TagLibAudio;
+    metadata: WebcasterMetadata;
 }
 
 export function useWebDjSource() {
-    const {context} = useInjectWebDjNode();
+    const { context } = useInjectWebDjNode();
 
     const createAudioSource = (
         pointer: WebDjFilePointer,
         cb: (source: MediaElementAudioSourceNode) => void,
-        onEnd?: () => void
+        onEnd?: () => void,
     ) => {
         const el = new Audio(URL.createObjectURL(pointer.file));
         el.controls = false;
@@ -48,7 +48,7 @@ export function useWebDjSource() {
 
             source = context.value.createMediaElementSource(el);
 
-            source.play = () => el.play()
+            source.play = () => el.play();
             source.position = () => el.currentTime;
             source.duration = () => el.duration;
             source.paused = () => el.paused;
@@ -69,23 +69,22 @@ export function useWebDjSource() {
 
     const createMicrophoneSource = (
         audioDeviceId: ConstrainDOMString,
-        cb: (source: StreamAudioSourceWithStop) => void
+        cb: (source: StreamAudioSourceWithStop) => void,
     ): void => {
         void (async () => {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: false,
                 audio: {
-                    deviceId: audioDeviceId
-                }
+                    deviceId: audioDeviceId,
+                },
             });
 
-            const source: StreamAudioSourceWithStop = context.value.createMediaStreamSource(stream);
+            const source: StreamAudioSourceWithStop =
+                context.value.createMediaStreamSource(stream);
             source.stop = () => {
                 const ref = stream.getAudioTracks();
-                return (ref !== null)
-                    ? ref[0].stop()
-                    : 0;
-            }
+                return ref !== null ? ref[0].stop() : 0;
+            };
 
             cb(source);
         })();
@@ -93,6 +92,6 @@ export function useWebDjSource() {
 
     return {
         createAudioSource,
-        createMicrophoneSource
-    }
+        createMicrophoneSource,
+    };
 }

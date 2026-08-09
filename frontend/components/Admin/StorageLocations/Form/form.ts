@@ -1,26 +1,29 @@
-import {useAppRegle} from "~/vendor/regle.ts";
-import {StorageLocation, StorageLocationAdapters} from "~/entities/ApiInterfaces.ts";
-import {defineStore} from "pinia";
-import {literal, required} from "@regle/rules";
-import {createVariant} from "@regle/core";
-import {ref} from "vue";
+import { createVariant } from "@regle/core";
+import { literal, required } from "@regle/rules";
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import {
+    StorageLocation,
+    StorageLocationAdapters,
+} from "~/entities/ApiInterfaces.ts";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-export type StorageLocationRecord = Omit<StorageLocation, 'id'>;
+export type StorageLocationRecord = Omit<StorageLocation, "id">;
 
 export const useAdminStorageLocationsForm = defineStore(
-    'form-admin-storage-locations',
+    "form-admin-storage-locations",
     () => {
         const form = ref<StorageLocationRecord>({
             adapter: StorageLocationAdapters.Local,
-            path: '',
-            storageQuota: '',
+            path: "",
+            storageQuota: "",
             dropboxAppKey: null,
             dropboxAppSecret: null,
             dropboxAuthToken: null,
             s3CredentialKey: null,
             s3CredentialSecret: null,
             s3Region: null,
-            s3Version: 'latest',
+            s3Version: "latest",
             s3Bucket: null,
             s3Endpoint: null,
             s3UsePathStyle: false,
@@ -32,40 +35,40 @@ export const useAdminStorageLocationsForm = defineStore(
             sftpPrivateKeyPassPhrase: null,
         });
 
-        const {r$} = useAppRegle(
+        const { r$ } = useAppRegle(
             form,
             () => {
-                const variant = createVariant(form, 'adapter', [
+                const variant = createVariant(form, "adapter", [
                     {
                         adapter: {
                             literal: literal(StorageLocationAdapters.Dropbox),
-                            required
+                            required,
                         },
-                        dropboxAuthToken: {required},
+                        dropboxAuthToken: { required },
                     },
                     {
                         adapter: {
                             literal: literal(StorageLocationAdapters.S3),
-                            required
+                            required,
                         },
-                        s3CredentialKey: {required},
-                        s3CredentialSecret: {required},
-                        s3Version: {required},
-                        s3Bucket: {required},
-                        s3Endpoint: {required},
+                        s3CredentialKey: { required },
+                        s3CredentialSecret: { required },
+                        s3Version: { required },
+                        s3Bucket: { required },
+                        s3Endpoint: { required },
                     },
                     {
                         adapter: {
                             literal: literal(StorageLocationAdapters.Sftp),
-                            required
+                            required,
                         },
-                        sftpHost: {required},
-                        sftpPort: {required},
-                        sftpUsername: {required},
+                        sftpHost: { required },
+                        sftpPort: { required },
+                        sftpUsername: { required },
                     },
                     {
-                        adapter: {required}
-                    }
+                        adapter: { required },
+                    },
                 ]);
 
                 return variant.value;
@@ -75,7 +78,7 @@ export const useAdminStorageLocationsForm = defineStore(
                     generalTab: [
                         fields.adapter,
                         fields.path,
-                        fields.storageQuota
+                        fields.storageQuota,
                     ],
                     dropboxTab: [
                         fields.dropboxAppKey,
@@ -98,19 +101,19 @@ export const useAdminStorageLocationsForm = defineStore(
                         fields.sftpPassword,
                         fields.sftpPrivateKey,
                         fields.sftpPrivateKeyPassPhrase,
-                    ]
-                })
-            }
+                    ],
+                }),
+            },
         );
 
         const $reset = () => {
-            r$.$reset({toOriginalState: true});
-        }
+            r$.$reset({ toOriginalState: true });
+        };
 
         return {
             form,
             r$,
-            $reset
-        }
-    }
+            $reset,
+        };
+    },
 );

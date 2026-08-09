@@ -79,19 +79,21 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {storeToRefs} from "pinia";
-import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import Tab from "~/components/Common/Tab.vue";
+import { useStationsMediaForm } from "~/components/Stations/Media/Form/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
 defineProps<{
-    songLength: string,
+    songLength: string;
 }>();
 
-const {r$} = storeToRefs(useStationsMediaForm());
+const { r$ } = storeToRefs(useStationsMediaForm());
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.advancedSettingsTab));
+const tabClass = useFormTabClass(
+    computed(() => r$.value.$groups.advancedSettingsTab),
+);
 </script>

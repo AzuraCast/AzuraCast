@@ -10,6 +10,7 @@ use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Paginator;
+use Doctrine\Common\Collections\Order;
 use Psr\Cache\CacheItemPoolInterface;
 
 abstract class AbstractSearchableListAction implements SingleActionInterface
@@ -36,7 +37,7 @@ abstract class AbstractSearchableListAction implements SingleActionInterface
         $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
 
         $sortField = (string)($queryParams['sort'] ?? '');
-        $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
+        $sortDirection = Order::tryFrom(strtoupper($queryParams['sortOrder'] ?? 'ASC')) ?? Order::Ascending;
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('sm, spm, sp')
@@ -50,10 +51,10 @@ abstract class AbstractSearchableListAction implements SingleActionInterface
 
         if (!empty($sortField)) {
             match ($sortField) {
-                'name', 'title' => $qb->addOrderBy('sm.title', $sortDirection),
-                'artist' => $qb->addOrderBy('sm.artist', $sortDirection),
-                'album' => $qb->addOrderBy('sm.album', $sortDirection),
-                'genre' => $qb->addOrderBy('sm.genre', $sortDirection),
+                'name', 'title' => $qb->addOrderBy('sm.title', $sortDirection->value),
+                'artist' => $qb->addOrderBy('sm.artist', $sortDirection->value),
+                'album' => $qb->addOrderBy('sm.album', $sortDirection->value),
+                'genre' => $qb->addOrderBy('sm.genre', $sortDirection->value),
                 default => null,
             };
         } else {

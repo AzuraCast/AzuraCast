@@ -82,12 +82,12 @@
 </template>
 
 <script setup lang="ts">
+import { useDevicesList } from "@vueuse/core";
+import { ref, watch } from "vue";
+import { usePassthroughSync } from "~/components/Public/WebDJ/usePassthroughSync";
+import { useWebDjSource } from "~/components/Public/WebDJ/useWebDjSource";
+import { useWebDjTrack } from "~/components/Public/WebDJ/useWebDjTrack";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
-import {useDevicesList} from "@vueuse/core";
-import {ref, watch} from "vue";
-import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
-import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
 import IconIcMic from "~icons/ic/baseline-mic";
 
 const {
@@ -97,18 +97,16 @@ const {
     trackPassThrough,
     volume,
     prepare,
-    stop
+    stop,
 } = useWebDjTrack();
 
-const {
-    createMicrophoneSource
-} = useWebDjSource();
+const { createMicrophoneSource } = useWebDjSource();
 
-usePassthroughSync(trackPassThrough, 'microphone');
+usePassthroughSync(trackPassThrough, "microphone");
 
-const {audioInputs} = useDevicesList({
+const { audioInputs } = useDevicesList({
     requestPermissions: true,
-    constraints: {audio: true, video: false}
+    constraints: { audio: true, video: false },
 });
 
 const device = ref<string | null>(null);
@@ -149,7 +147,7 @@ watch(device, () => {
 const play = () => {
     destination = prepare();
     createSource();
-}
+};
 
 const togglePlaying = () => {
     if (isPlaying.value) {
@@ -157,5 +155,5 @@ const togglePlaying = () => {
     } else {
         play();
     }
-}
+};
 </script>

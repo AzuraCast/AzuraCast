@@ -23,12 +23,12 @@
 <script setup lang="ts">
 withDefaults(
     defineProps<{
-        loading?: boolean,
-        lazy?: boolean
+        loading?: boolean;
+        lazy?: boolean;
     }>(),
     {
         loading: false,
-        lazy: false
-    }
+        lazy: false,
+    },
 );
 </script>

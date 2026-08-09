@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 defineProps<{
-    id: string
+    id: string;
 }>();
 
 const slots = defineSlots();

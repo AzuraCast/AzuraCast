@@ -83,62 +83,69 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {some} from "es-toolkit/compat";
-import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory} from "~/functions/filterMenu.ts";
+import { some } from "es-toolkit/compat";
+import { useRoute } from "vue-router";
+import {
+    MenuCategory,
+    MenuRouteBasedUrl,
+    MenuRouteUrl,
+    MenuSubCategory,
+} from "~/functions/filterMenu.ts";
 import IconIcOpenInNew from "~icons/ic/baseline-open-in-new";
 
 defineProps<{
-    menu: MenuCategory[]
+    menu: MenuCategory[];
 }>();
 
 const currentRoute = useRoute();
 
 const isRouteLink = (url?: MenuRouteUrl): url is MenuRouteBasedUrl => {
-    return (url !== undefined)
-        && (typeof (url) !== 'string');
+    return url !== undefined && typeof url !== "string";
 };
 
-const isCategory = (item: MenuCategory | MenuSubCategory): item is MenuCategory => {
-    return 'items' in item;
-}
+const isCategory = (
+    item: MenuCategory | MenuSubCategory,
+): item is MenuCategory => {
+    return "items" in item;
+};
 
 const isActiveItem = (item: MenuCategory | MenuSubCategory) => {
     if (isCategory(item) && some(item.items ?? [], isActiveItem)) {
         return true;
     }
 
-    return isRouteLink(item.url) && !('params' in item.url) && item.url.name === currentRoute.name;
+    return (
+        isRouteLink(item.url) &&
+        !("params" in item.url) &&
+        item.url.name === currentRoute.name
+    );
 };
 
 const getLinkClass = (item: MenuSubCategory) => {
-    return [
-        item.class ?? null,
-        isActiveItem(item) ? 'active' : ''
-    ];
-}
+    return [item.class ?? null, isActiveItem(item) ? "active" : ""];
+};
 
 const getCategoryLink = (item: MenuSubCategory) => {
     const linkAttrs: {
-        [key: string]: any
+        [key: string]: any;
     } = {};
 
-    if ('items' in item) {
-        linkAttrs['data-bs-toggle'] = 'collapse';
-        linkAttrs.href = '#sidebar-submenu-' + item.key;
+    if ("items" in item) {
+        linkAttrs["data-bs-toggle"] = "collapse";
+        linkAttrs.href = `#sidebar-submenu-${item.key}`;
     } else {
         linkAttrs.href = item.url;
     }
 
     if (item.external) {
-        linkAttrs.target = '_blank';
+        linkAttrs.target = "_blank";
     }
     if (item.title) {
         linkAttrs.title = item.title;
     }
 
     return linkAttrs;
-}
+};
 </script>
 
 <style lang="scss">

@@ -8,28 +8,26 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, shallowRef, useTemplateRef, watch} from "vue";
-import {Control, Icon, Map, map, tileLayer} from "leaflet";
-import {useTheme} from "~/functions/theme.ts";
+import { Control, Icon, Map as LeafLetMap, map, tileLayer } from "leaflet";
+import { onMounted, shallowRef, useTemplateRef, watch } from "vue";
+import { useTheme } from "~/functions/theme.ts";
 import "leaflet-fullscreen";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {storeToRefs} from "pinia";
 import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { storeToRefs } from "pinia";
+import { useTranslate } from "~/vendor/gettext.ts";
 
 defineSlots<{
-    default: (props: {
-        map: Map
-    }) => any,
+    default: (props: { map: LeafLetMap }) => any;
 }>();
 
-const $container = useTemplateRef('$container');
+const $container = useTemplateRef("$container");
 
-const $map = shallowRef<Map | null>(null);
+const $map = shallowRef<LeafLetMap | null>(null);
 
-const {currentTheme} = storeToRefs(useTheme());
-const {$gettext} = useTranslate();
+const { currentTheme } = storeToRefs(useTheme());
+const { $gettext } = useTranslate();
 
 onMounted(() => {
     Icon.Default.prototype.options.iconUrl = markerIconUrl;
@@ -38,17 +36,17 @@ onMounted(() => {
     Icon.Default.imagePath = "";
 
     // Init map
-    const mapObj = map(
-        $container.value!
-    );
+    const mapObj = map($container.value!);
     mapObj.setView([40, 0], 1);
 
-    mapObj.addControl(new Control.Fullscreen({
-        title: {
-            'false': $gettext('View Fullscreen'),
-            'true': $gettext('Exit Fullscreen')
-        }
-    }));
+    mapObj.addControl(
+        new Control.Fullscreen({
+            title: {
+                false: $gettext("View Fullscreen"),
+                true: $gettext("Exit Fullscreen"),
+            },
+        }),
+    );
 
     $map.value = mapObj;
 
@@ -59,10 +57,11 @@ onMounted(() => {
         }
 
         const tileUrl = `https://cartodb-basemaps-{s}.global.ssl.fastly.net/${currentTheme.value}_all/{z}/{x}/{y}.png`;
-        const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
+        const tileAttribution =
+            "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.";
 
         tileLayer(tileUrl, {
-            id: 'main',
+            id: "main",
             attribution: tileAttribution,
         }).addTo(mapObj);
     };

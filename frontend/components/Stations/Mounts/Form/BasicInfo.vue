@@ -104,20 +104,20 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useStationsMountsForm } from "~/components/Stations/Mounts/Form/form.ts";
+import { FrontendAdapters } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
 const props = defineProps<{
-    stationFrontendType: FrontendAdapters
+    stationFrontendType: FrontendAdapters;
 }>();
 
-const {r$} = storeToRefs(useStationsMountsForm());
+const { r$ } = storeToRefs(useStationsMountsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 

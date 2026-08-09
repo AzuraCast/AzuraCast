@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import { useAzuraCastDashboardGlobals } from "~/vendor/azuracast.ts";
 
-const {version, platform} = useAzuraCastDashboardGlobals();
+const { version, platform } = useAzuraCastDashboardGlobals();
 </script>

@@ -1,12 +1,21 @@
-import {createInjectionState, CreateInjectionStateOptions} from "@vueuse/shared";
+import {
+    CreateInjectionStateOptions,
+    createInjectionState,
+} from "@vueuse/shared";
 
-export default function createRequiredInjectionState<Arguments extends Array<any>, Return>(
+export default function createRequiredInjectionState<
+    Arguments extends Array<any>,
+    Return,
+>(
     composable: (...args: Arguments) => Return,
-    options?: CreateInjectionStateOptions<Return>
-): readonly [useProvidingState: (...args: Arguments) => Return, useInjectedState: () => Return] {
+    options?: CreateInjectionStateOptions<Return>,
+): readonly [
+    useProvidingState: (...args: Arguments) => Return,
+    useInjectedState: () => Return,
+] {
     const [useProvidingState, useInjectedStateOriginal] = createInjectionState(
         composable,
-        options
+        options,
     );
 
     const useInjectedState = () => {
@@ -15,8 +24,7 @@ export default function createRequiredInjectionState<Arguments extends Array<any
             throw new Error("Missing injection state!");
         }
         return state;
-    }
+    };
 
     return [useProvidingState, useInjectedState];
 }
-

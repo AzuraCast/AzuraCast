@@ -58,14 +58,14 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useStationsMediaForm } from "~/components/Stations/Media/Form/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useStationsMediaForm());
+const { r$ } = storeToRefs(useStationsMediaForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 </script>

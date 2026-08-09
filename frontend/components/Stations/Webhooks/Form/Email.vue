@@ -36,34 +36,37 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
+import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
+import { Ref } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {storeToRefs} from "pinia";
-import {Ref} from "vue";
-import {WebhookRecordCommon, WebhookRecordEmail} from "~/entities/Webhooks.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { WebhookComponentProps } from "~/components/Stations/Webhooks/EditModal.vue";
+import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import {
+    WebhookRecordCommon,
+    WebhookRecordEmail,
+} from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 defineProps<WebhookComponentProps>();
 
-const {form} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form as Ref<WebhookRecordCommon & WebhookRecordEmail>,
     {
         config: {
-            to: {required},
-            subject: {required},
-            message: {required}
-        }
+            to: { required },
+            subject: { required },
+            message: { required },
+        },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);

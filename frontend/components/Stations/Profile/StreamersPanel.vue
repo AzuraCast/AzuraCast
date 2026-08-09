@@ -73,13 +73,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {computed} from "vue";
-import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
+import { StationPermissions } from "~/entities/ApiInterfaces.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
 import IconIcCheck from "~icons/ic/baseline-check";
 import IconIcClose from "~icons/ic/baseline-close";
 import IconIcMic from "~icons/ic/baseline-mic";
@@ -87,10 +87,10 @@ import IconIcSettings from "~icons/ic/baseline-settings";
 
 const stationData = useStationData();
 
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
 const toggleStreamers = useToggleFeature(
-    'enable_streamers',
-    computed(() => stationData.value.enableStreamers)
+    "enable_streamers",
+    computed(() => stationData.value.enableStreamers),
 );
 </script>

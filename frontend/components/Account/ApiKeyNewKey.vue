@@ -33,6 +33,6 @@
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 
 defineProps<{
-    newKey: string,
+    newKey: string;
 }>();
 </script>

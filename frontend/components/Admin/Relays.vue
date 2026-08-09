@@ -45,42 +45,59 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useLuxon} from "~/vendor/luxon";
-import {Relay} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { Relay } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAzuraCast } from "~/vendor/azuracast";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon";
 
-const {getApiUrl} = useApiRouter();
-const listUrl = getApiUrl('/admin/relays/list');
+const { getApiUrl } = useApiRouter();
+const listUrl = getApiUrl("/admin/relays/list");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const {timeConfig} = useAzuraCast();
+const { timeConfig } = useAzuraCast();
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
 const dateTimeFormatter = (value: number) => {
-    return DateTime.fromSeconds(value).toLocaleString(
-        {
-            ...DateTime.DATETIME_SHORT, ...timeConfig
-        }
-    );
-}
+    return DateTime.fromSeconds(value).toLocaleString({
+        ...DateTime.DATETIME_SHORT,
+        ...timeConfig,
+    });
+};
 
 const fields: DataTableField<Relay>[] = [
-    {key: 'name', isRowHeader: true, label: $gettext('Relay'), sortable: true},
-    {key: 'is_visible_on_public_pages', label: $gettext('Is Public'), sortable: true},
-    {key: 'created_at', label: $gettext('First Connected'), formatter: dateTimeFormatter, sortable: true},
-    {key: 'updated_at', label: $gettext('Latest Update'), formatter: dateTimeFormatter, sortable: true}
+    {
+        key: "name",
+        isRowHeader: true,
+        label: $gettext("Relay"),
+        sortable: true,
+    },
+    {
+        key: "is_visible_on_public_pages",
+        label: $gettext("Is Public"),
+        sortable: true,
+    },
+    {
+        key: "created_at",
+        label: $gettext("First Connected"),
+        formatter: dateTimeFormatter,
+        sortable: true,
+    },
+    {
+        key: "updated_at",
+        label: $gettext("Latest Update"),
+        formatter: dateTimeFormatter,
+        sortable: true,
+    },
 ];
 
-const listItemProvider = useApiItemProvider<Relay>(
-    listUrl,
-    [QueryKeys.AdminRelays]
-);
+const listItemProvider = useApiItemProvider<Relay>(listUrl, [
+    QueryKeys.AdminRelays,
+]);
 </script>

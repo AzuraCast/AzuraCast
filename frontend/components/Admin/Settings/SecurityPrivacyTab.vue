@@ -86,62 +86,92 @@
                         }}
                     </template>
                 </form-group-checkbox>
+
+                <form-group-checkbox
+                    id="edit_form_filter_local_user_urls"
+                    class="col-md-12"
+                    :field="r$.filter_local_user_urls"
+                    :label="$gettext('Filter Local User-provided URLs')"
+                >
+                    <template #description>
+                        {{
+                            $gettext('Prevent users from supplying URLs that point to local IPs in sensitive scenarios, like web hooks or remote relays. In some scenarios, these tools can be used to exfiltrate data from your local hosting environment. If you need to connect to local services (i.e. you are running a single-station Docker installation), disable this setting to allow more permissive URLs.')
+                        }}
+                    </template>
+                </form-group-checkbox>
+
+                <form-group-checkbox
+                    id="edit_form_enable_all_webhooks"
+                    class="col-md-12"
+                    :field="r$.enable_all_webhooks"
+                    :label="$gettext('Allow Stations to Dispatch Web Hooks')"
+                >
+                    <template #description>
+                        {{
+                            $gettext('Web hooks allow AzuraCast to make outgoing HTTP requests with information about station playback. This is often safe, but could represent a security risk in some scenarios.')
+                        }}
+                    </template>
+                </form-group-checkbox>
             </div>
         </form-fieldset>
     </tab>
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
+import Tab from "~/components/Common/Tab.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {computed} from "vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {r$} = storeToRefs(useAdminSettingsForm());
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.securityPrivacyTab));
+const { r$ } = storeToRefs(useAdminSettingsForm());
+const tabClass = useFormTabClass(
+    computed(() => r$.value.$groups.securityPrivacyTab),
+);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const analyticsOptions = computed(() => {
     return [
         {
-            value: 'all',
-            text: $gettext('Full'),
-            description: $gettext('Collect aggregate listener statistics and IP-based listener statistics')
+            value: "all",
+            text: $gettext("Full"),
+            description: $gettext(
+                "Collect aggregate listener statistics and IP-based listener statistics",
+            ),
         },
         {
-            value: 'no_ip',
-            text: $gettext('Limited'),
-            description: $gettext('Only collect aggregate listener statistics')
+            value: "no_ip",
+            text: $gettext("Limited"),
+            description: $gettext("Only collect aggregate listener statistics"),
         },
         {
-            value: 'none',
-            text: $gettext('None'),
-            description: $gettext('Do not collect any listener analytics')
-        }
-    ]
+            value: "none",
+            text: $gettext("None"),
+            description: $gettext("Do not collect any listener analytics"),
+        },
+    ];
 });
 
 const ipSourceOptions = computed(() => {
     return [
         {
-            value: 'local',
-            text: $gettext('Local IP (Default)')
+            value: "local",
+            text: $gettext("Local IP (Default)"),
         },
         {
-            value: 'cloudflare',
-            text: $gettext('CloudFlare (CF-Connecting-IP)')
+            value: "cloudflare",
+            text: $gettext("CloudFlare (CF-Connecting-IP)"),
         },
         {
-            value: 'xff',
-            text: $gettext('Reverse Proxy (X-Forwarded-For)')
-        }
-    ]
+            value: "xff",
+            text: $gettext("Reverse Proxy (X-Forwarded-For)"),
+        },
+    ];
 });
 </script>

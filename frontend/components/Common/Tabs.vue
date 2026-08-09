@@ -36,21 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import {TabParentProps, useTabParent} from "~/functions/tabs.ts";
+import { onMounted, ref } from "vue";
+import { TabParentProps, useTabParent } from "~/functions/tabs.ts";
 
-const props = withDefaults(
-    defineProps<TabParentProps>(),
-    {
-        navTabsClass: 'nav-tabs',
-        contentClass: 'mt-3',
-        destroyOnHide: false,
-    }
-);
+const props = withDefaults(defineProps<TabParentProps>(), {
+    navTabsClass: "nav-tabs",
+    contentClass: "mt-3",
+    destroyOnHide: false,
+});
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: string): void
-}>();
+const emit = defineEmits<(e: "update:modelValue", value: string) => void>();
 
 const activeId = ref(props.modelValue);
 
@@ -59,8 +54,8 @@ const state = useTabParent(props);
 const selectTab = (computedId: string): void => {
     state.active = computedId;
     activeId.value = computedId;
-    emit('update:modelValue', computedId);
-}
+    emit("update:modelValue", computedId);
+};
 
 onMounted(() => {
     if (!state.tabs.length) {

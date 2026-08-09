@@ -656,8 +656,9 @@ final class ConfigWriter implements EventSubscriberInterface
                         newPath = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
 
                         log("Recording stopped: Switching from #{tempPath} to #{newPath}")
-
-                        process.run("mv #{tempPath} #{newPath}")
+                        
+                        file.move(force=true, tempPath, newPath)
+                        
                         ()
                     end
                 )

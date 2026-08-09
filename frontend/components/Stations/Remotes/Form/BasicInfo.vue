@@ -68,32 +68,32 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {RemoteAdapters} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationsRemotesForm } from "~/components/Stations/Remotes/Form/form.ts";
+import { RemoteAdapters } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useStationsRemotesForm());
+const { r$ } = storeToRefs(useStationsRemotesForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const typeOptions = [
     {
         value: RemoteAdapters.Icecast,
-        text: 'Icecast v2.4+',
+        text: "Icecast v2.4+",
     },
     {
         value: RemoteAdapters.Shoutcast1,
-        text: 'Shoutcast v1',
+        text: "Shoutcast v1",
     },
     {
         value: RemoteAdapters.Shoutcast2,
-        text: 'Shoutcast v2',
-    }
+        text: "Shoutcast v2",
+    },
 ];
 </script>

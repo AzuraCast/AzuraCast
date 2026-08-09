@@ -35,67 +35,68 @@
 </template>
 
 <script setup lang="ts">
-import {email, required} from "@regle/rules";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
+import { email, required } from "@regle/rules";
+import { useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-const {getApiUrl} = useApiRouter();
-const testMessageUrl = getApiUrl('/admin/send-test-message');
+const { getApiUrl } = useApiRouter();
+const testMessageUrl = getApiUrl("/admin/send-test-message");
 
 type TestMessageRecord = {
-    emailAddress: string
-}
+    emailAddress: string;
+};
 
-const {record: form, reset: resetFormRef} = useResettableRef<TestMessageRecord>({
-    emailAddress: ''
-});
+const { record: form, reset: resetFormRef } =
+    useResettableRef<TestMessageRecord>({
+        emailAddress: "",
+    });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        emailAddress: {required, email}
+        emailAddress: { required, email },
     },
-    {}
+    {},
 );
 
 const resetForm = () => {
     resetFormRef();
     r$.$reset();
-}
+};
 
-const $modal = useTemplateRef('$modal');
-const {show: open, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: open, hide } = useHasModal($modal);
 
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
-const {$gettext} = useTranslate();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
+const { $gettext } = useTranslate();
 
 const doSendTest = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
     if (!valid) {
         return;
     }
 
     try {
         await axios.post(testMessageUrl.value, {
-            'email': form.value.emailAddress
+            email: form.value.emailAddress,
         });
 
-        notifySuccess($gettext('Test message sent.'));
+        notifySuccess($gettext("Test message sent."));
     } finally {
         hide();
     }
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

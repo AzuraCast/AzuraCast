@@ -113,81 +113,91 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import EditModal from "~/components/Stations/Podcasts/PodcastEditModal.vue";
-import AlbumArt from "~/components/Common/AlbumArt.vue";
-import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import Loading from "~/components/Common/Loading.vue";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import EditModal from "~/components/Stations/Podcasts/PodcastEditModal.vue";
+import {
+    ApiStationsVuePodcastsProps,
+    StorageLocationTypes,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {ApiStationsVuePodcastsProps, StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import Loading from "~/components/Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getStationApiUrl} = useApiRouter();
-const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationPodcasts}`);
-const listUrl = getStationApiUrl('/podcasts');
-const newArtUrl = getStationApiUrl('/podcasts/art');
-const propsUrl = getStationApiUrl('/vue/podcasts');
+const { getStationApiUrl } = useApiRouter();
+const quotaUrl = getStationApiUrl(
+    `/quota/${StorageLocationTypes.StationPodcasts}`,
+);
+const listUrl = getStationApiUrl("/podcasts");
+const newArtUrl = getStationApiUrl("/podcasts/art");
+const propsUrl = getStationApiUrl("/vue/podcasts");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVuePodcastsProps>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationPodcasts,
-            'props'
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiStationsVuePodcastsProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiStationsVuePodcastsProps>({
+        queryKey: queryKeyWithStation([QueryKeys.StationPodcasts, "props"]),
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiStationsVuePodcastsProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
-    {key: 'title', label: $gettext('Podcast'), sortable: false},
     {
-        key: 'episodes',
-        label: $gettext('# Episodes'),
+        key: "art",
+        label: $gettext("Art"),
+        sortable: false,
+        class: "shrink pe-0",
+    },
+    { key: "title", label: $gettext("Podcast"), sortable: false },
+    {
+        key: "episodes",
+        label: $gettext("# Episodes"),
         sortable: false,
     },
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([
-        QueryKeys.StationPodcasts,
-        'data'
-    ])
+    queryKeyWithStation([QueryKeys.StationPodcasts, "data"]),
 );
 
-const {refresh} = listItemProvider;
+const { refresh } = listItemProvider;
 
-const $quota = useTemplateRef('$quota');
+const $quota = useTemplateRef("$quota");
 
 const relist = () => {
     $quota.value?.update();
     void refresh();
 };
 
-const $editPodcastModal = useTemplateRef('$editPodcastModal');
+const $editPodcastModal = useTemplateRef("$editPodcastModal");
 
-const {doCreate, doEdit} = useHasEditModal($editPodcastModal);
+const { doCreate, doEdit } = useHasEditModal($editPodcastModal);
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Podcast?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete Podcast?"), () =>
+    relist(),
 );
 </script>

@@ -71,53 +71,56 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {computed, Ref} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
+import { computed, Ref } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {WebhookRecordCommon, WebhookRecordTelegram} from "~/entities/Webhooks.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { WebhookComponentProps } from "~/components/Stations/Webhooks/EditModal.vue";
+import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import {
+    WebhookRecordCommon,
+    WebhookRecordTelegram,
+} from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 defineProps<WebhookComponentProps>();
 
-const {form} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form as Ref<WebhookRecordCommon & WebhookRecordTelegram>,
     {
         config: {
-            bot_token: {required},
-            chat_id: {required},
-            text: {required},
-            parse_mode: {required}
-        }
+            bot_token: { required },
+            chat_id: { required },
+            text: { required },
+            parse_mode: { required },
+        },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const parseModeOptions = computed(() => {
     return [
         {
-            text: $gettext('Markdown'),
-            value: 'Markdown',
+            text: $gettext("Markdown"),
+            value: "Markdown",
         },
         {
-            text: $gettext('HTML'),
-            value: 'HTML',
-        }
+            text: $gettext("HTML"),
+            value: "HTML",
+        },
     ];
 });
 </script>

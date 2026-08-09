@@ -93,104 +93,105 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {computed, ref} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import { computed, ref } from "vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcRemove from "~icons/ic/baseline-remove";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 type RequestType = "pending" | "history";
 
 interface TypeTabs {
-    type: RequestType,
-    title: string
+    type: RequestType;
+    title: string;
 }
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/reports/requests');
-const clearUrl = getStationApiUrl('/reports/requests/clear');
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/reports/requests");
+const clearUrl = getStationApiUrl("/reports/requests/clear");
 
-const activeType = ref<RequestType>('pending');
+const activeType = ref<RequestType>("pending");
 
 const listUrlForType = computed(() => {
-    return listUrl.value + '?type=' + activeType.value;
+    return `${listUrl.value}?type=${activeType.value}`;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'timestamp', label: $gettext('Date Requested'), sortable: false},
-    {key: 'played_at', label: $gettext('Date Played'), sortable: false},
-    {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
-    {key: 'ip', label: $gettext('Requester IP'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false}
+    { key: "timestamp", label: $gettext("Date Requested"), sortable: false },
+    { key: "played_at", label: $gettext("Date Played"), sortable: false },
+    {
+        key: "song_title",
+        isRowHeader: true,
+        label: $gettext("Song Title"),
+        sortable: false,
+    },
+    { key: "ip", label: $gettext("Requester IP"), sortable: false },
+    { key: "actions", label: $gettext("Actions"), sortable: false },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrlForType,
-    queryKeyWithStation([
-        QueryKeys.StationReports,
-        'requests',
-        activeType
-    ])
+    queryKeyWithStation([QueryKeys.StationReports, "requests", activeType]),
 );
 
 const refresh = () => {
     void listItemProvider.refresh();
-}
+};
 
 const tabs: TypeTabs[] = [
     {
-        type: 'pending',
-        title: $gettext('Pending Requests')
+        type: "pending",
+        title: $gettext("Pending Requests"),
     },
     {
-        type: 'history',
-        title: $gettext('Request History')
-    }
+        type: "history",
+        title: $gettext("Request History"),
+    },
 ];
 
 const setType = (type: RequestType) => {
     activeType.value = type;
 };
 
-const {formatIsoAsDateTime} = useStationDateTimeFormatter();
+const { formatIsoAsDateTime } = useStationDateTimeFormatter();
 
-const {confirmDelete} = useDialog();
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { confirmDelete } = useDialog();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const doDelete = async (url: string) => {
-    const {value} = await confirmDelete({
-        title: $gettext('Delete Request?'),
+    const { value } = await confirmDelete({
+        title: $gettext("Delete Request?"),
     });
 
     if (!value) {
         return;
     }
 
-    const {data} = await axios.delete(url);
+    const { data } = await axios.delete(url);
     notifySuccess(data.message);
     refresh();
 };
 
 const doClear = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Clear All Pending Requests?'),
-        confirmButtonText: $gettext('Clear'),
+    const { value } = await confirmDelete({
+        title: $gettext("Clear All Pending Requests?"),
+        confirmButtonText: $gettext("Clear"),
     });
 
     if (!value) {
         return;
     }
 
-    const {data} = await axios.post(clearUrl.value);
+    const { data } = await axios.post(clearUrl.value);
 
     notifySuccess(data.message);
     refresh();

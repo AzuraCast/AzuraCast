@@ -9,7 +9,6 @@ use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\StationWebhook;
 use App\Utilities\Arrays;
 use App\Utilities\Types;
-use App\Utilities\Urls;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -99,25 +98,6 @@ abstract class AbstractConnector implements ConnectorInterface
                 $varValue
             );
         }, $rawVars);
-    }
-
-    /**
-     * Determine if a passed URL is valid and return it if so, or return null otherwise.
-     */
-    protected function getValidUrl(mixed $urlString = null): ?string
-    {
-        $urlString = Types::stringOrNull($urlString, true);
-
-        $uri = Urls::tryParseUserUrl(
-            $urlString,
-            'Webhook'
-        );
-
-        if (null === $uri) {
-            return null;
-        }
-
-        return (string)$uri;
     }
 
     protected function incompleteConfigException(StationWebhook $webhook): InvalidArgumentException

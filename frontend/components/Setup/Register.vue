@@ -98,34 +98,34 @@
 </template>
 
 <script setup lang="ts">
+import { email, required } from "@regle/rules";
+import { reactive } from "vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {reactive} from "vue";
-import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
-import {email, required} from "@regle/rules";
+import { isValidPassword, useAppRegle } from "~/vendor/regle.ts";
 import IconIcEmail from "~icons/ic/baseline-email";
 import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 withDefaults(
     defineProps<{
-        csrf: string,
-        error?: string | null
+        csrf: string;
+        error?: string | null;
     }>(),
     {
-        error: null
-    }
+        error: null,
+    },
 );
 
 const form = reactive({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
 });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        username: {required, email},
-        password: {required, isValidPassword}
+        username: { required, email },
+        password: { required, isValidPassword },
     },
-    {}
+    {},
 );
 </script>

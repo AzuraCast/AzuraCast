@@ -43,12 +43,12 @@ import InfoCard from "~/components/Common/InfoCard.vue";
 
 withDefaults(
     defineProps<{
-        title?: string,
-        headerId?: string,
+        title?: string;
+        headerId?: string;
     }>(),
     {
-        headerId: 'card_hdr'
-    }
+        headerId: "card_hdr",
+    },
 );
 
 const slots = defineSlots();

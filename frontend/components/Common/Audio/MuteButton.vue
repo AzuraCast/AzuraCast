@@ -10,39 +10,35 @@
 </template>
 
 <script setup lang="ts">
-import {computed, toRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { computed, toRef, watch } from "vue";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcVolumeDown from "~icons/ic/baseline-volume-down";
 import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
 import IconIcVolumeUp from "~icons/ic/baseline-volume-up";
 
 const props = defineProps<{
-    volume: number,
-    isMuted: boolean,
+    volume: number;
+    isMuted: boolean;
 }>();
 
-const emit = defineEmits<{
-    (e: 'toggleMute'): void
-}>();
+const emit = defineEmits<(e: "toggleMute") => void>();
 
-watch(toRef(props, 'volume'), (newVol) => {
-    const newMuted = (newVol === 0);
+watch(toRef(props, "volume"), (newVol) => {
+    const newMuted = newVol === 0;
 
     if (props.isMuted !== newMuted) {
-        emit('toggleMute');
+        emit("toggleMute");
     }
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const toggleMute = () => {
-    emit('toggleMute');
+    emit("toggleMute");
 };
 
 const muteLang = computed(() => {
-    return (props.isMuted)
-        ? $gettext('Unmute')
-        : $gettext('Mute')
+    return props.isMuted ? $gettext("Unmute") : $gettext("Mute");
 });
 
 const muteIcon = computed(() => {

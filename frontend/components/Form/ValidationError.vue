@@ -9,9 +9,12 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import {ModelFormField, ValidatedField} from "~/components/Form/useFormField.ts";
+import {
+    ModelFormField,
+    ValidatedField,
+} from "~/components/Form/useFormField.ts";
 
 defineProps<{
-    field: ValidatedField<T>,
+    field: ValidatedField<T>;
 }>();
 </script>

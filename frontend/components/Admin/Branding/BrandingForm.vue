@@ -129,107 +129,106 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed, onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {Settings} from "~/entities/ApiInterfaces.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { Settings } from "~/entities/ApiInterfaces.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    apiUrl: string,
+    apiUrl: string;
 }>();
 
 const isLoading = ref(true);
 const error = ref(null);
 
-type BrandingSettings = Required<Pick<Settings,
-    | 'public_theme'
-    | 'hide_album_art'
-    | 'homepage_redirect_url'
-    | 'default_album_art_url'
-    | 'hide_product_name'
-    | 'public_custom_css'
-    | 'public_custom_js'
-    | 'internal_custom_css'
->>
+type BrandingSettings = Required<
+    Pick<
+        Settings,
+        | "public_theme"
+        | "hide_album_art"
+        | "homepage_redirect_url"
+        | "default_album_art_url"
+        | "hide_product_name"
+        | "public_custom_css"
+        | "public_custom_js"
+        | "internal_custom_css"
+    >
+>;
 
 const blankForm: BrandingSettings = {
     public_theme: null,
     hide_album_art: false,
-    homepage_redirect_url: '',
-    default_album_art_url: '',
+    homepage_redirect_url: "",
+    default_album_art_url: "",
     hide_product_name: false,
-    public_custom_css: '',
-    public_custom_js: '',
-    internal_custom_css: ''
-}
+    public_custom_css: "",
+    public_custom_js: "",
+    internal_custom_css: "",
+};
 
-const {r$} = useAppRegle(
-    blankForm,
-    {},
-    {}
-);
+const { r$ } = useAppRegle(blankForm, {}, {});
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const publicThemeOptions = computed(() => {
     return [
         {
-            text: $gettext('Prefer System Default'),
-            value: 'browser',
+            text: $gettext("Prefer System Default"),
+            value: "browser",
         },
         {
-            text: $gettext('Light'),
-            value: 'light',
+            text: $gettext("Light"),
+            value: "light",
         },
         {
-            text: $gettext('Dark'),
-            value: 'dark',
-        }
+            text: $gettext("Dark"),
+            value: "dark",
+        },
     ];
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
     r$.$reset({
-        toOriginalState: true
+        toOriginalState: true,
     });
 
     isLoading.value = true;
 
-    const {data} = await axios.get(props.apiUrl);
+    const { data } = await axios.get(props.apiUrl);
     r$.$reset({
-        toState: mergeExisting(r$.$value, data)
+        toState: mergeExisting(r$.$value, data),
     });
 
     isLoading.value = false;
-}
+};
 
 onMounted(relist);
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const submit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
 
     await axios({
-        method: 'PUT',
+        method: "PUT",
         url: props.apiUrl,
-        data: postData
+        data: postData,
     });
 
-    notifySuccess($gettext('Changes saved.'));
+    notifySuccess($gettext("Changes saved."));
     await relist();
-}
+};
 </script>

@@ -1,41 +1,45 @@
-import {VueAppGlobals, VueDashboardGlobals, VueUserGlobals} from "~/entities/ApiInterfaces.ts";
-import {defineStore} from "pinia";
-import {InjectionKey} from "vue";
+import { defineStore } from "pinia";
+import { InjectionKey } from "vue";
+import {
+    VueAppGlobals,
+    VueDashboardGlobals,
+    VueUserGlobals,
+} from "~/entities/ApiInterfaces.ts";
 import injectRequired from "~/functions/injectRequired.ts";
 
 export const globalConstantsKey = Symbol() as InjectionKey<VueAppGlobals>;
 
 export const useAzuraCastStore = defineStore(
-    'global-props',
+    "global-props",
     (): {
-        props: VueAppGlobals
+        props: VueAppGlobals;
     } => {
         return {
-            props: injectRequired(globalConstantsKey)
+            props: injectRequired(globalConstantsKey),
         };
-    }
+    },
 );
 
 export const useAzuraCast = (): VueAppGlobals => {
-    const {props} = useAzuraCastStore();
+    const { props } = useAzuraCastStore();
     return props;
 };
 
 export const useAzuraCastDashboardGlobals = (): VueDashboardGlobals => {
-    const {dashboardProps} = useAzuraCast();
+    const { dashboardProps } = useAzuraCast();
     if (!dashboardProps) {
         throw new Error("Dashboard properties are undefined in this request.");
     }
 
     return dashboardProps;
-}
+};
 
 export const useAzuraCastUser = (): VueUserGlobals => {
-    const {user} = useAzuraCast();
+    const { user } = useAzuraCast();
 
     if (!user) {
         throw Error("User is not logged in.");
     }
 
     return user;
-}
+};

@@ -12,10 +12,8 @@
 import IconIcAdd from "~icons/ic/baseline-add";
 
 defineProps<{
-    text: string
+    text: string;
 }>();
 
-const emit = defineEmits<{
-    (e: 'click'): void
-}>();
+const emit = defineEmits<(e: "click") => void>();
 </script>

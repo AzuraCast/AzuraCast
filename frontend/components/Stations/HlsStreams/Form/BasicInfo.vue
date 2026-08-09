@@ -41,46 +41,49 @@
 </template>
 
 <script setup lang="ts">
+import { toRefs } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
-import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import { useStationsHlsStreamsForm } from "~/components/Stations/HlsStreams/Form/form.ts";
+import { HlsStreamProfiles } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
-const {r$} = storeToRefs(useStationsHlsStreamsForm());
+const { r$ } = storeToRefs(useStationsHlsStreamsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const formatOptions = [
     {
         value: HlsStreamProfiles.AacLowComplexity,
-        text: 'AAC Low Complexity (Default)',
+        text: "AAC Low Complexity (Default)",
     },
     {
         value: HlsStreamProfiles.AacHighEfficiencyV1,
-        text: 'AAC High Efficiency V1 (HE-AAC)'
+        text: "AAC High Efficiency V1 (HE-AAC)",
     },
     {
         value: HlsStreamProfiles.AacHighEfficiencyV2,
-        text: 'AAC High Efficiency V2 (HE-AACv2)'
-    }
+        text: "AAC High Efficiency V2 (HE-AACv2)",
+    },
 ];
 
 const stationData = useStationData();
-const {maxBitrate} = toRefs(stationData);
+const { maxBitrate } = toRefs(stationData);
 
 const defaultBitrateOptions = [32, 48, 64, 96, 128, 192, 256, 320];
 
 const bitrateOptions = computed(() =>
-    defaultBitrateOptions.filter((bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value)
+    defaultBitrateOptions
+        .filter(
+            (bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value,
+        )
         .map((val) => ({
             value: val,
-            text: String(val)
-        }))
+            text: String(val),
+        })),
 );
 </script>

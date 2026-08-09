@@ -88,44 +88,46 @@
 </template>
 
 <script setup lang="ts">
+import { toRefs } from "@vueuse/core";
+import { ref } from "vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import ListenersByTimePeriodTab from "~/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue";
+import Tab from "~/components/Common/Tab.vue";
+import Tabs from "~/components/Common/Tabs.vue";
 import BestAndWorstTab from "~/components/Stations/Reports/Overview/BestAndWorstTab.vue";
 import BrowsersTab from "~/components/Stations/Reports/Overview/BrowsersTab.vue";
-import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab.vue";
-import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
 import ClientsTab from "~/components/Stations/Reports/Overview/ClientsTab.vue";
+import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab.vue";
+import ListenersByTimePeriodTab from "~/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
-import {ref} from "vue";
-import Tabs from "~/components/Common/Tabs.vue";
-import Tab from "~/components/Common/Tab.vue";
+import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
+import { AnalyticsLevel } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
-import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
-import {AnalyticsLevel} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useAzuraCastDashboardGlobals } from "~/vendor/azuracast.ts";
 
-const {analyticsLevel} = useAzuraCastDashboardGlobals();
+const { analyticsLevel } = useAzuraCastDashboardGlobals();
 const showFullAnalytics = analyticsLevel === AnalyticsLevel.All;
 
-const {getStationApiUrl} = useApiRouter();
-const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
-const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');
-const byStreamUrl = getStationApiUrl('/reports/overview/by-stream');
-const byBrowserUrl = getStationApiUrl('/reports/overview/by-browser');
-const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
-const byClientUrl = getStationApiUrl('/reports/overview/by-client');
-const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
+const { getStationApiUrl } = useApiRouter();
+const listenersByTimePeriodUrl = getStationApiUrl("/reports/overview/charts");
+const bestAndWorstUrl = getStationApiUrl("/reports/overview/best-and-worst");
+const byStreamUrl = getStationApiUrl("/reports/overview/by-stream");
+const byBrowserUrl = getStationApiUrl("/reports/overview/by-browser");
+const byCountryUrl = getStationApiUrl("/reports/overview/by-country");
+const byClientUrl = getStationApiUrl("/reports/overview/by-client");
+const listeningTimeUrl = getStationApiUrl(
+    "/reports/overview/by-listening-time",
+);
 
 const stationData = useStationData();
-const {timezone} = toRefs(stationData);
+const { timezone } = toRefs(stationData);
 
-const {now} = useStationDateTimeFormatter();
+const { now } = useStationDateTimeFormatter();
 
 const nowTz = now();
 const dateRange = ref({
-    startDate: nowTz.minus({days: 13}).toJSDate(),
+    startDate: nowTz.minus({ days: 13 }).toJSDate(),
     endDate: nowTz.toJSDate(),
 });
 </script>

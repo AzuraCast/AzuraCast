@@ -1,12 +1,16 @@
-import {DataTableFilterContext, DataTableItemProvider, DataTableRow} from "~/functions/useHasDatatable.ts";
-import {computed} from "vue";
-import {DefaultError, UseQueryReturnType} from "@tanstack/vue-query";
-import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
+import { DefaultError, UseQueryReturnType } from "@tanstack/vue-query";
+import { computed } from "vue";
+import { useClientItemProvider } from "~/functions/dataTable/useClientItemProvider.ts";
+import {
+    DataTableFilterContext,
+    DataTableItemProvider,
+    DataTableRow,
+} from "~/functions/useHasDatatable.ts";
 
 export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
     query: UseQueryReturnType<Row[], DefaultError>,
     setContextFn?: (ctx: DataTableFilterContext) => void,
-    refreshFn?: (flushCache: boolean) => Promise<void>
+    refreshFn?: (flushCache: boolean) => Promise<void>,
 ): DataTableItemProvider<Row> {
     const rows = computed(() => {
         return query.data?.value ?? [];
@@ -17,23 +21,18 @@ export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
     });
 
     const setContext = (ctx: DataTableFilterContext): void => {
-        if (typeof setContextFn === 'function') {
+        if (typeof setContextFn === "function") {
             setContextFn(ctx);
         }
-    }
+    };
 
     const refresh = async (flushCache: boolean = false): Promise<void> => {
-        if (typeof refreshFn === 'function') {
+        if (typeof refreshFn === "function") {
             await refreshFn(flushCache);
         } else {
             await query.refetch();
         }
-    }
+    };
 
-    return useClientItemProvider(
-        rows,
-        loading,
-        setContext,
-        refresh
-    );
+    return useClientItemProvider(rows, loading, setContext, refresh);
 }

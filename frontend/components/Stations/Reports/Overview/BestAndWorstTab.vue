@@ -127,57 +127,57 @@
 </template>
 
 <script setup lang="ts">
-import {toRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { toRef } from "vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useLuxon} from "~/vendor/luxon";
-import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import { DateRange } from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useAxios } from "~/vendor/axios";
+import { useLuxon } from "~/vendor/luxon";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
 
 const props = defineProps<{
-    dateRange: DateRange,
-    apiUrl: string,
+    dateRange: DateRange;
+    apiUrl: string;
 }>();
 
-const dateRange = toRef(props, 'dateRange');
-const {axios} = useAxios();
+const dateRange = toRef(props, "dateRange");
+const { axios } = useAxios();
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
 type StatsData = {
     bestAndWorst: {
-        best: any[],
-        worst: any[]
-    },
-    mostPlayed: any[]
-}
+        best: any[];
+        worst: any[];
+    };
+    mostPlayed: any[];
+};
 
-const {data: state, isLoading} = useQuery<StatsData>({
+const { data: state, isLoading } = useQuery<StatsData>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
-        'best_and_worst',
-        dateRange
+        "best_and_worst",
+        dateRange,
     ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get(props.apiUrl, {
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get(props.apiUrl, {
             signal,
             params: {
                 start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-            }
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO(),
+            },
         });
         return data;
     },
     placeholderData: () => ({
         bestAndWorst: {
             best: [],
-            worst: []
+            worst: [],
         },
-        mostPlayed: []
+        mostPlayed: [],
     }),
 });
 </script>

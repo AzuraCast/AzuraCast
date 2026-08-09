@@ -14,22 +14,22 @@
 </template>
 
 <script setup lang="ts">
-import SongRequest, {RequestsProps} from "~/components/Public/Requests.vue";
-import {useTemplateRef} from "vue";
+import { useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import SongRequest, { RequestsProps } from "~/components/Public/Requests.vue";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 const props = defineProps<RequestsProps>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
-const {show: open, hide} = useHasModal($modal);
+const { show: open, hide } = useHasModal($modal);
 
 defineExpose({
-    open
+    open,
 });
 </script>

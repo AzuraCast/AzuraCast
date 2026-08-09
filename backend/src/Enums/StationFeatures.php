@@ -36,7 +36,7 @@ enum StationFeatures
             self::MountPoints => $station->frontend_type->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->enable_hls,
             self::Requests => $backendEnabled && $station->enable_requests,
-            self::OnDemand => $station->enable_on_demand,
+            self::OnDemand => $settings->enable_all_webhooks && $station->enable_on_demand,
             self::Webhooks, self::Podcasts, self::RemoteRelays => true,
         };
     }

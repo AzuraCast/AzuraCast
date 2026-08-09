@@ -3,15 +3,15 @@ import strtoupper from "~/functions/strtoupper";
 
 export default function showFormatAndBitrate(
     format: string | StreamFormats | null,
-    bitrate: number | null = null
+    bitrate: number | null = null,
 ): string {
     if (format === null) {
-        return '';
+        return "";
     }
 
-    if (format === 'flac' || bitrate === null) {
+    if (format === "flac" || bitrate === null) {
         return strtoupper(format);
     }
 
-    return bitrate + 'kbps ' + strtoupper(format);
+    return `${bitrate}kbps ${strtoupper(format)}`;
 }

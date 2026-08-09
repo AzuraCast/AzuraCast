@@ -5,31 +5,28 @@
 </template>
 
 <script setup lang="ts">
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
+import { useQuery } from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
 import Media from "~/components/Stations/Media.vue";
-import {StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { StationsVueFilesPropsRequired } from "~/entities/StationMedia.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const propsUrl = getStationApiUrl('/vue/files');
+const { getStationApiUrl } = useApiRouter();
+const propsUrl = getStationApiUrl("/vue/files");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-type FilesProps = StationsVueFilesPropsRequired
+type FilesProps = StationsVueFilesPropsRequired;
 
-const {data: props, isLoading: propsLoading} = useQuery<FilesProps>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationMedia,
-            'props'
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<FilesProps>(propsUrl.value, {signal});
+const { data: props, isLoading: propsLoading } = useQuery<FilesProps>({
+    queryKey: queryKeyWithStation([QueryKeys.StationMedia, "props"]),
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<FilesProps>(propsUrl.value, {
+            signal,
+        });
         return data;
-    }
+    },
 });
 </script>

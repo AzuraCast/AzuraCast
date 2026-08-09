@@ -34,62 +34,63 @@
 </template>
 
 <script setup lang="ts">
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import {computed, toRef} from "vue";
+import { computed, toRef } from "vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import { ApiPodcastEpisode } from "~/entities/ApiInterfaces.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcDelete from "~icons/ic/baseline-delete";
 import IconIcEdit from "~icons/ic/baseline-edit";
 
 const props = withDefaults(
     defineProps<{
-        batchUrl: string,
-        selectedItems: ApiPodcastEpisode[],
-        podcastIsManual: boolean,
+        batchUrl: string;
+        selectedItems: ApiPodcastEpisode[];
+        podcastIsManual: boolean;
     }>(),
     {
         podcastIsManual: true,
-    }
+    },
 );
 
 const emit = defineEmits<{
-    (e: 'relist'): void,
-    (e: 'batch-edit'): void
+    (e: "relist"): void;
+    (e: "batch-edit"): void;
 }>();
 
-const {$gettext} = useTranslate();
-const {axios} = useAxios();
+const { $gettext } = useTranslate();
+const { axios } = useAxios();
 
-const selectedItems = toRef(props, 'selectedItems');
+const selectedItems = toRef(props, "selectedItems");
 
 const hasSelectedItems = computed(() => {
     return selectedItems.value.length > 0;
 });
 
-const {handleBatchResponse} = useHandlePodcastBatchResponse();
+const { handleBatchResponse } = useHandlePodcastBatchResponse();
 
-const doBatch = async (action: string, successMessage: string, errorMessage: string) => {
-    const {data} = await axios.put(props.batchUrl, {
-        'do': action,
-        'episodes': props.selectedItems.map((row) => row.id)
+const doBatch = async (
+    action: string,
+    successMessage: string,
+    errorMessage: string,
+) => {
+    const { data } = await axios.put(props.batchUrl, {
+        do: action,
+        episodes: props.selectedItems.map((row) => row.id),
     });
 
     handleBatchResponse(data, successMessage, errorMessage);
-    emit('relist');
+    emit("relist");
 };
 
-const {confirmDelete} = useDialog();
+const { confirmDelete } = useDialog();
 
 const doDelete = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext(
-            'Delete %{num} episodes?',
-            {
-                num: String(props.selectedItems.length)
-            }
-        ),
+    const { value } = await confirmDelete({
+        title: $gettext("Delete %{num} episodes?", {
+            num: String(props.selectedItems.length),
+        }),
     });
 
     if (!value) {
@@ -97,13 +98,13 @@ const doDelete = async () => {
     }
 
     await doBatch(
-        'delete',
-        $gettext('Episodes removed:'),
-        $gettext('Error removing episodes:')
+        "delete",
+        $gettext("Episodes removed:"),
+        $gettext("Error removing episodes:"),
     );
 };
 
 const doEdit = () => {
-    emit('batch-edit');
-}
+    emit("batch-edit");
+};
 </script>

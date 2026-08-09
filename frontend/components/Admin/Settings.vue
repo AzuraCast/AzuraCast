@@ -57,77 +57,81 @@
 </template>
 
 <script setup lang="ts">
-import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
-import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
-import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { omitBy } from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
 import SettingsDebuggingTab from "~/components/Admin/Settings/DebuggingTab.vue";
-import {onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
+import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
+import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
+import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {storeToRefs} from "pinia";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {ApiAdminVueSettingsProps} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
-import {omitBy} from "es-toolkit/compat";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiAdminVueSettingsProps } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 withDefaults(
     defineProps<{
-        loading?: boolean
+        loading?: boolean;
     }>(),
     {
-        loading: false
-    }
+        loading: false,
+    },
 );
 
-const emit = defineEmits<{
-    (e: 'saved'): void
-}>();
+const emit = defineEmits<(e: "saved") => void>();
 
-const {getApiUrl} = useApiRouter();
-const apiUrl = getApiUrl('/admin/settings/general');
-const propsUrl = getApiUrl('/admin/vue/settings');
+const { getApiUrl } = useApiRouter();
+const apiUrl = getApiUrl("/admin/settings/general");
+const propsUrl = getApiUrl("/admin/vue/settings");
 
 const formStore = useAdminSettingsForm();
-const {form, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
 const formLoading = ref(true);
 const error = ref(null);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data, isLoading: dataLoading} = useQuery<ApiAdminVueSettingsProps>({
-    queryKey: [QueryKeys.AdminSettings, 'props'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminVueSettingsProps>(propsUrl.value, {signal});
+const { data, isLoading: dataLoading } = useQuery<ApiAdminVueSettingsProps>({
+    queryKey: [QueryKeys.AdminSettings, "props"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<ApiAdminVueSettingsProps>(
+            propsUrl.value,
+            { signal },
+        );
         return data;
     },
     placeholderData: () => ({
-        releaseChannel: 'rolling'
-    })
+        releaseChannel: "rolling",
+    }),
 });
 
 const populateForm = (data: typeof form.value) => {
     resetForm();
 
-    form.value = mergeExisting(form.value, omitBy(data, val => val === null));
+    form.value = mergeExisting(
+        form.value,
+        omitBy(data, (val) => val === null),
+    );
 };
 
 const relist = async () => {
     resetForm();
     formLoading.value = true;
 
-    const {data} = await axios.get(apiUrl.value);
+    const { data } = await axios.get(apiUrl.value);
 
     populateForm(data);
     formLoading.value = false;
@@ -135,22 +139,22 @@ const relist = async () => {
 
 onMounted(relist);
 
-const {notifySuccess} = useNotify();
-const {$gettext} = useTranslate();
+const { notifySuccess } = useNotify();
+const { $gettext } = useTranslate();
 
 const submit = async () => {
-    const {valid} = await r$.value.$validate();
+    const { valid } = await r$.value.$validate();
     if (!valid) {
         return;
     }
 
     await axios({
-        method: 'PUT',
+        method: "PUT",
         url: apiUrl.value,
-        data: form.value
+        data: form.value,
     });
 
-    notifySuccess($gettext('Changes saved.'));
-    emit('saved');
-}
+    notifySuccess($gettext("Changes saved."));
+    emit("saved");
+};
 </script>

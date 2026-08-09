@@ -27,60 +27,60 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from "@tanstack/vue-query";
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
-import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
-import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useLuxon} from "~/vendor/luxon.ts";
+import Tabs from "~/components/Common/Tabs.vue";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useAxios } from "~/vendor/axios";
+import { useLuxon } from "~/vendor/luxon.ts";
 
 const props = defineProps<{
-    chartsUrl: string,
+    chartsUrl: string;
 }>();
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
 const dashboardChartOptions = {
     options: {
         scales: {
             x: {
-                min: Number(DateTime.utc().minus({days: 30}).toMillis()),
-            }
-        }
-    }
+                min: Number(DateTime.utc().minus({ days: 30 }).toMillis()),
+            },
+        },
+    },
 };
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 type ChartData = {
     average: {
-        metrics: any[],
-        alt: any[]
-    },
+        metrics: any[];
+        alt: any[];
+    };
     unique: {
-        metrics: any[],
-        alt: any[]
-    }
-}
+        metrics: any[];
+        alt: any[];
+    };
+};
 
-const {data: chartsData, isLoading: chartsLoading} = useQuery<ChartData>({
-    queryKey: [QueryKeys.Dashboard, 'charts'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get(props.chartsUrl, {signal});
+const { data: chartsData, isLoading: chartsLoading } = useQuery<ChartData>({
+    queryKey: [QueryKeys.Dashboard, "charts"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get(props.chartsUrl, { signal });
         return data;
     },
     placeholderData: () => ({
         average: {
             metrics: [],
-            alt: []
+            alt: [],
         },
         unique: {
             metrics: [],
-            alt: []
-        }
+            alt: [],
+        },
     }),
-    staleTime: 60 * 60 * 1000
+    staleTime: 60 * 60 * 1000,
 });
 </script>

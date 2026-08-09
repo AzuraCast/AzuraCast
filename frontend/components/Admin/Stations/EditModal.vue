@@ -45,21 +45,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, useTemplateRef } from "vue";
 import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {computed, ref, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminVueStationsFormProps } from "~/entities/ApiInterfaces.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 interface StationEditModalProps extends ApiAdminVueStationsFormProps {
-    createUrl: string
+    createUrl: string;
 }
 
 const props = defineProps<StationEditModalProps>();
@@ -73,16 +73,16 @@ const isEditMode = computed(() => {
     return editUrl.value !== null;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Station')
-        : $gettext('Add Station');
+        ? $gettext("Edit Station")
+        : $gettext("Add Station");
 });
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
 const onValidUpdate = (newValue: boolean) => {
     disableSaveButton.value = !newValue;
@@ -98,14 +98,14 @@ const edit = (recordUrl: string) => {
     show();
 };
 
-const $form = useTemplateRef('$form');
+const $form = useTemplateRef("$form");
 
 const resetForm = () => {
     $form.value?.reset();
 };
 
 const onSubmit = () => {
-    emit('relist');
+    emit("relist");
     hide();
 };
 
@@ -119,6 +119,6 @@ const clearContents = () => {
 
 defineExpose({
     create,
-    edit
+    edit,
 });
 </script>

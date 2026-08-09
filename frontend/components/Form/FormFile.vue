@@ -8,9 +8,7 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{
-    (e: 'uploaded', value: File): void
-}>();
+const emit = defineEmits<(e: "uploaded", value: File) => void>();
 
 const fileModel = defineModel<File>();
 
@@ -20,7 +18,7 @@ const uploaded = (event: Event) => {
         const file = target.files[0];
 
         fileModel.value = file;
-        emit('uploaded', file);
+        emit("uploaded", file);
     }
 };
 </script>

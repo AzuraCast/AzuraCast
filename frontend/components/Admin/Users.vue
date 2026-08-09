@@ -92,70 +92,83 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
 import EditModal from "~/components/Admin/Users/EditModal.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
-import AddButton from "~/components/Common/AddButton.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {ApiAdminUserWithDetails, ApiAdminVueUsersProps} from "~/entities/ApiInterfaces.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import Loading from "~/components/Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 import LoginLinkModal from "~/components/Admin/Users/LoginLinkModal.vue";
+import AddButton from "~/components/Common/AddButton.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import Loading from "~/components/Common/Loading.vue";
+import {
+    ApiAdminUserWithDetails,
+    ApiAdminVueUsersProps,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getApiUrl} = useApiRouter();
-const propsUrl = getApiUrl('/admin/vue/users');
-const listUrl = getApiUrl('/admin/users');
-const loginTokenUrl = getApiUrl('/admin/login_tokens');
+const { getApiUrl } = useApiRouter();
+const propsUrl = getApiUrl("/admin/vue/users");
+const listUrl = getApiUrl("/admin/users");
+const loginTokenUrl = getApiUrl("/admin/login_tokens");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueUsersProps>({
-    queryKey: [QueryKeys.AdminUsers, 'props'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminVueUsersProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiAdminVueUsersProps>({
+        queryKey: [QueryKeys.AdminUsers, "props"],
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiAdminVueUsersProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 type Row = Required<ApiAdminUserWithDetails>;
 
 const fields: DataTableField<Row>[] = [
-    {key: 'name', isRowHeader: true, label: $gettext('User Name'), sortable: true},
-    {key: 'roles', label: $gettext('Roles'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "name",
+        isRowHeader: true,
+        label: $gettext("User Name"),
+        sortable: true,
+    },
+    { key: "roles", label: $gettext("Roles"), sortable: false },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
-const listItemProvider = useApiItemProvider<Row>(
-    listUrl,
-    [
-        QueryKeys.AdminUsers,
-        'data'
-    ]
-);
+const listItemProvider = useApiItemProvider<Row>(listUrl, [
+    QueryKeys.AdminUsers,
+    "data",
+]);
 
 const relist = () => {
     void listItemProvider.refresh();
-}
+};
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const $loginLinkModal = useTemplateRef('$loginLinkModal');
+const $loginLinkModal = useTemplateRef("$loginLinkModal");
 const doOpenLoginLink = (user: Row) => {
     $loginLinkModal.value?.create(user.id);
 };
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete User?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete User?"), () =>
+    relist(),
 );
 </script>

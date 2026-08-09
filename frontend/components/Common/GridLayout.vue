@@ -60,19 +60,23 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
+import { computed, ref, watch } from "vue";
 import Pagination from "~/components/Common/Pagination.vue";
-import {computed, ref, watch} from "vue";
+import {
+    DataTableFilterContext,
+    DataTableItemProvider,
+    DataTableRow,
+} from "~/functions/useHasDatatable.ts";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
-import {DataTableFilterContext, DataTableItemProvider, DataTableRow} from "~/functions/useHasDatatable.ts";
 
 export interface GridLayoutProps<Row extends DataTableRow = DataTableRow> {
-    id?: string,
-    provider: DataTableItemProvider<Row>, // The data provider for this table.
-    paginated?: boolean, // Enable pagination.
-    hideOnLoading?: boolean, // Replace the contents with a loading animation when data is being retrieved.
-    showToolbar?: boolean, // Show the header "Toolbar" with search, refresh, per-page, etc.
-    pageOptions?: number[],
-    defaultPerPage?: number,
+    id?: string;
+    provider: DataTableItemProvider<Row>; // The data provider for this table.
+    paginated?: boolean; // Enable pagination.
+    hideOnLoading?: boolean; // Replace the contents with a loading animation when data is being retrieved.
+    showToolbar?: boolean; // Show the header "Toolbar" with search, refresh, per-page, etc.
+    pageOptions?: number[];
+    defaultPerPage?: number;
 }
 
 const props = withDefaults(defineProps<GridLayoutProps<Row>>(), {
@@ -99,13 +103,13 @@ const isLoading = computed<boolean>(() => {
 const currentPage = ref<number>(1);
 
 const settings = useOptionalStorage(
-    'grid_' + props.id + '_settings',
+    `grid_${props.id}_settings`,
     {
         perPage: props.defaultPerPage,
     },
     {
-        mergeDefaults: true
-    }
+        mergeDefaults: true,
+    },
 );
 
 const perPage = computed<number>(() => {
@@ -118,7 +122,7 @@ const perPage = computed<number>(() => {
 
 const context = computed<DataTableFilterContext>(() => {
     return {
-        searchPhrase: '',
+        searchPhrase: "",
         currentPage: currentPage.value,
         sortField: null,
         sortOrder: null,
@@ -133,8 +137,8 @@ watch(
         props.provider.setContext(newContext);
     },
     {
-        immediate: true
-    }
+        immediate: true,
+    },
 );
 
 const showPagination = computed<boolean>(() => {
@@ -143,7 +147,7 @@ const showPagination = computed<boolean>(() => {
 
 const doRefresh = async (flushCache: boolean = false): Promise<void> => {
     await props.provider.refresh(flushCache);
-}
+};
 
 const refresh = () => {
     void doRefresh(false);
@@ -151,7 +155,7 @@ const refresh = () => {
 
 const onPageChange = (p: number) => {
     currentPage.value = p;
-}
+};
 
 const relist = () => {
     void doRefresh(true);

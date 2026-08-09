@@ -67,51 +67,53 @@
 </template>
 
 <script setup lang="ts">
-import SongHistoryModal from "~/components/Public/FullPlayer/SongHistoryModal.vue";
-import RequestModal from "~/components/Public/FullPlayer/RequestModal.vue";
-import RadioPlayer, {PlayerProps} from "~/components/Public/Player.vue";
-import {computed, shallowRef, useTemplateRef} from "vue";
+import { computed, shallowRef, useTemplateRef } from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
-import {RequestsProps} from "~/components/Public/Requests.vue";
-import {ApiNowPlaying, ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
+import RequestModal from "~/components/Public/FullPlayer/RequestModal.vue";
+import SongHistoryModal from "~/components/Public/FullPlayer/SongHistoryModal.vue";
+import RadioPlayer, { PlayerProps } from "~/components/Public/Player.vue";
+import { RequestsProps } from "~/components/Public/Requests.vue";
+import {
+    ApiNowPlaying,
+    ApiNowPlayingSongHistory,
+} from "~/entities/ApiInterfaces.ts";
+import { defaultWidgetSettings } from "~/entities/PublicPlayer.ts";
+import { useProvideLightbox } from "~/vendor/lightbox";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 import IconIcHelp from "~icons/ic/baseline-help";
 import IconIcHistory from "~icons/ic/baseline-history";
-import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
 
 const props = defineProps<{
-    stationName: string,
-    enableRequests?: boolean,
-    downloadPlaylistUri: string,
-    player: PlayerProps,
-    requests: RequestsProps
+    stationName: string;
+    enableRequests?: boolean;
+    downloadPlaylistUri: string;
+    player: PlayerProps;
+    requests: RequestsProps;
 }>();
 
 const widgetCustomization = computed(
-    () => props.player.widgetCustomization ?? defaultWidgetSettings
+    () => props.player.widgetCustomization ?? defaultWidgetSettings,
 );
-
 
 const history = shallowRef<ApiNowPlayingSongHistory[]>([]);
 
 const onNowPlayingUpdate = (newNowPlaying: ApiNowPlaying) => {
     history.value = newNowPlaying?.song_history;
-}
+};
 
-const $songHistoryModal = useTemplateRef('$songHistoryModal');
+const $songHistoryModal = useTemplateRef("$songHistoryModal");
 
 const openSongHistoryModal = () => {
     $songHistoryModal.value?.open();
-}
+};
 
-const $requestModal = useTemplateRef('$requestModal');
+const $requestModal = useTemplateRef("$requestModal");
 
 const openRequestModal = () => {
     $requestModal.value?.open();
-}
+};
 
-const $lightbox = useTemplateRef('$lightbox');
+const $lightbox = useTemplateRef("$lightbox");
 
 useProvideLightbox($lightbox);
 </script>

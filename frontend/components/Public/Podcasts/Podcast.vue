@@ -169,55 +169,63 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import { computed } from "vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useTranslate} from "~/vendor/gettext.ts";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
-import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
-import {computed} from "vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
+import { usePodcastGlobals } from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import { ApiPodcastRow } from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import { ApiPodcastEpisode } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 import IconBiRssFill from "~icons/bi/rss-fill";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
-    podcast: ApiPodcastRow
+    podcast: ApiPodcastRow;
 }>();
 
-const {groupLayout, stationId, stationTz} = usePodcastGlobals();
+const { groupLayout, stationId, stationTz } = usePodcastGlobals();
 
 type Row = Required<ApiPodcastEpisode>;
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 const fields: DataTableField<Row>[] = [
-    {key: 'play_button', label: '', sortable: false, class: 'shrink pe-0'},
-    {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
-    {key: 'title', label: $gettext('Episode'), sortable: true},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    { key: "play_button", label: "", sortable: false, class: "shrink pe-0" },
+    { key: "art", label: "", sortable: false, class: "shrink pe-0" },
+    { key: "title", label: $gettext("Episode"), sortable: true },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
-const {getStationApiUrl} = useApiRouter();
-const episodesUrl = getStationApiUrl(computed(() => {
-    return `/public/podcast/${props.podcast.id}/episodes`;
-}), stationId);
+const { getStationApiUrl } = useApiRouter();
+const episodesUrl = getStationApiUrl(
+    computed(() => {
+        return `/public/podcast/${props.podcast.id}/episodes`;
+    }),
+    stationId,
+);
 
 const episodesItemProvider = useApiItemProvider<Row>(
     episodesUrl,
     [
         QueryKeys.PublicPodcasts,
-        {station: stationId},
+        { station: stationId },
         computed(() => props.podcast.id),
-        'episodes'
+        "episodes",
     ],
     {
-        staleTime: 5 * 60 * 1000
-    }
+        staleTime: 5 * 60 * 1000,
+    },
 );
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
+const { formatTimestampAsDateTime } = useStationDateTimeFormatter(stationTz);
 </script>

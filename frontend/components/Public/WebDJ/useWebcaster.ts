@@ -1,19 +1,19 @@
-import {ref, shallowRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
+import { ref, shallowRef } from "vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 export interface WebcasterProps {
-    baseUri: string
+    baseUri: string;
 }
 
 export interface WebcasterMetadata {
-    title: string,
-    artist: string
+    title: string;
+    artist: string;
 }
 
-export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjectionState(
-    (props: WebcasterProps) => {
+export const [useProvideWebcaster, useInjectWebcaster] =
+    createRequiredInjectionState((props: WebcasterProps) => {
         const { baseUri } = props;
 
         const { notifySuccess, notifyError } = useNotify();
@@ -28,22 +28,24 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
             metadata.value = data;
 
             if (isConnected.value && socket) {
-                socket.send(JSON.stringify({
-                    type: "metadata",
-                    data,
-                }));
+                socket.send(
+                    JSON.stringify({
+                        type: "metadata",
+                        data,
+                    }),
+                );
             }
-        }
+        };
 
         const connect = (
             mediaRecorder: MediaRecorder,
             username: string | null = null,
-            password: string | null = null
+            password: string | null = null,
         ) => {
             socket = new WebSocket(baseUri, "webcast");
 
             const hello: {
-                [key: string]: any
+                [key: string]: any;
             } = {
                 mime: mediaRecorder.mimeType,
             };
@@ -56,10 +58,12 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
             }
 
             socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    type: "hello",
-                    data: hello
-                }));
+                socket.send(
+                    JSON.stringify({
+                        type: "hello",
+                        data: hello,
+                    }),
+                );
 
                 isConnected.value = true;
 
@@ -67,21 +71,25 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
                 // way we know if we're still connected is to set a timer.
                 setTimeout(() => {
                     if (isConnected.value) {
-                        notifySuccess($gettext('Web DJ connected!'));
+                        notifySuccess($gettext("Web DJ connected!"));
 
                         if (metadata.value !== null) {
-                            socket.send(JSON.stringify({
-                                type: "metadata",
-                                data: metadata.value
-                            }));
+                            socket.send(
+                                JSON.stringify({
+                                    type: "metadata",
+                                    data: metadata.value,
+                                }),
+                            );
                         }
                     }
                 }, 1000);
             };
 
             socket.onerror = () => {
-                notifyError($gettext('An error occurred with the Web DJ socket.'));
-            }
+                notifyError(
+                    $gettext("An error occurred with the Web DJ socket."),
+                );
+            };
 
             socket.onclose = () => {
                 isConnected.value = false;
@@ -105,7 +113,6 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
             isConnected,
             connect,
             metadata,
-            sendMetadata
-        }
-    }
-);
+            sendMetadata,
+        };
+    });

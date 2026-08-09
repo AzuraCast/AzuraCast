@@ -184,15 +184,19 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
+import { useInjectMixer } from "~/components/Public/WebDJ/useMixerValue";
+import { usePassthroughSync } from "~/components/Public/WebDJ/usePassthroughSync";
+import { useInjectWebcaster } from "~/components/Public/WebDJ/useWebcaster";
+import {
+    TagLibProcessResult,
+    useWebDjSource,
+    WebDjFilePointer,
+} from "~/components/Public/WebDJ/useWebDjSource";
+import { useWebDjTrack } from "~/components/Public/WebDJ/useWebDjTrack";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import formatTime from "~/functions/formatTime";
-import {computed, ref, watch} from "vue";
-import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
-import {useTranslate} from "~/vendor/gettext";
-import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
-import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";
-import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcFastForward from "~icons/ic/baseline-fast-forward";
 import IconIcFastRewind from "~icons/ic/baseline-fast-rewind";
 import IconIcPauseCircle from "~icons/ic/baseline-pause-circle";
@@ -200,11 +204,11 @@ import IconIcPlayCircle from "~icons/ic/baseline-play-circle";
 import IconIcStop from "~icons/ic/baseline-stop";
 
 const props = defineProps<{
-    id: string
+    id: string;
 }>();
 
 const isLeftPlaylist = computed(() => {
-    return props.id === 'playlist_1';
+    return props.id === "playlist_1";
 });
 
 const {
@@ -217,16 +221,12 @@ const {
     volume,
     prepare,
     togglePause,
-    stop
+    stop,
 } = useWebDjTrack();
 
-const {
-    createAudioSource
-} = useWebDjSource();
+const { createAudioSource } = useWebDjSource();
 
-const {
-    sendMetadata
-} = useInjectWebcaster();
+const { sendMetadata } = useInjectWebcaster();
 
 usePassthroughSync(trackPassThrough, props.id);
 
@@ -240,8 +240,8 @@ const isSeeking = ref(false);
 
 const seekingPosition = computed({
     get: () => {
-        return (position.value !== null)
-            ? (100.0 * (position.value / Number(duration.value)))
+        return position.value !== null
+            ? 100.0 * (position.value / Number(duration.value))
             : 0;
     },
     set: (val) => {
@@ -250,37 +250,37 @@ const seekingPosition = computed({
         }
 
         source.value.seek(val / 100);
-    }
+    },
 });
 
 // Factor in mixer and local gain to calculate total gain.
 const localGain = ref(55);
-const {mixer} = useInjectMixer();
+const { mixer } = useInjectMixer();
 
 const computedGain = computed(() => {
-    let multiplier;
+    let multiplier: number;
     if (isLeftPlaylist.value) {
-        multiplier = (mixer.value > 1)
-            ? 2.0 - (mixer.value)
-            : 1.0;
+        multiplier = mixer.value > 1 ? 2.0 - mixer.value : 1.0;
     } else {
-        multiplier = (mixer.value < 1)
-            ? mixer.value
-            : 1.0;
+        multiplier = mixer.value < 1 ? mixer.value : 1.0;
     }
 
     return localGain.value * multiplier;
 });
-watch(computedGain, (newGain) => {
-    trackGain.value = newGain;
-}, {immediate: true});
+watch(
+    computedGain,
+    (newGain) => {
+        trackGain.value = newGain;
+    },
+    { immediate: true },
+);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langHeader = computed(() => {
     return isLeftPlaylist.value
-        ? $gettext('Playlist 1')
-        : $gettext('Playlist 2');
+        ? $gettext("Playlist 1")
+        : $gettext("Playlist 2");
 });
 
 const onFileSelected = (e: Event) => {
@@ -292,16 +292,16 @@ const onFileSelected = (e: Event) => {
             files.value.push({
                 file: file,
                 audio: data.audio,
-                metadata: data.metadata || {title: '', artist: ''}
+                metadata: data.metadata || { title: "", artist: "" },
             });
         });
     }
-}
+};
 
 interface PlayOptions {
-    isAutoPlay?: boolean,
-    backward?: boolean,
-    fileIndex?: number
+    isAutoPlay?: boolean;
+    backward?: boolean;
+    fileIndex?: number;
 }
 
 const selectFile = (options: PlayOptions = {}): WebDjFilePointer | null => {
@@ -355,31 +355,35 @@ const play = (initialOptions: PlayOptions = {}) => {
 
     const destination = prepare();
 
-    createAudioSource(file, (newSource: any) => {
-        source.value = newSource;
-        newSource.connect(destination);
+    createAudioSource(
+        file,
+        (newSource: any) => {
+            source.value = newSource;
+            newSource.connect(destination);
 
-        if (newSource.duration !== null) {
-            duration.value = newSource.duration();
-        } else if (file.audio !== null) {
-            duration.value = parseFloat(file.audio.length);
-        }
+            if (newSource.duration !== null) {
+                duration.value = newSource.duration();
+            } else if (file.audio !== null) {
+                duration.value = parseFloat(file.audio.length);
+            }
 
-        newSource.play(file);
+            newSource.play(file);
 
-        sendMetadata({
-            title: file.metadata.title,
-            artist: file.metadata.artist
-        });
-    }, () => {
-        stop();
-
-        if (playThrough.value) {
-            play({
-                isAutoPlay: true
+            sendMetadata({
+                title: file.metadata.title,
+                artist: file.metadata.artist,
             });
-        }
-    });
+        },
+        () => {
+            stop();
+
+            if (playThrough.value) {
+                play({
+                    isAutoPlay: true,
+                });
+            }
+        },
+    );
 };
 
 const previous = () => {
@@ -387,7 +391,7 @@ const previous = () => {
         return;
     }
 
-    play({backward: true});
+    play({ backward: true });
 };
 
 const next = () => {

@@ -82,47 +82,49 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed, onMounted, reactive, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
+import { storeToRefs } from "pinia";
+import { computed, onMounted, reactive, ref } from "vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import Loading from "~/components/Common/Loading.vue";
-import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { ApiFormSimpleOptions } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext.ts";
 
 const props = defineProps<{
-    isEditMode: boolean,
+    isEditMode: boolean;
 }>();
 
-const {getApiUrl} = useApiRouter();
-const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
+const { getApiUrl } = useApiRouter();
+const storageLocationApiUrl = getApiUrl("/admin/stations/storage-locations");
 
-const {r$} = storeToRefs(useAdminStationsForm());
+const { r$ } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.adminTab));
 
 interface StorageLocationOptions {
-    media_storage_location: ApiFormSimpleOptions,
-    recordings_storage_location: ApiFormSimpleOptions,
-    podcasts_storage_location: ApiFormSimpleOptions
+    media_storage_location: ApiFormSimpleOptions;
+    recordings_storage_location: ApiFormSimpleOptions;
+    podcasts_storage_location: ApiFormSimpleOptions;
 }
 
 const storageLocationsLoading = ref<boolean>(true);
 const storageLocationOptions = reactive<StorageLocationOptions>({
     media_storage_location: [],
     recordings_storage_location: [],
-    podcasts_storage_location: []
+    podcasts_storage_location: [],
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const langNewStorageLocation = $gettext("Create a new storage location based on the base directory.");
+const langNewStorageLocation = $gettext(
+    "Create a new storage location based on the base directory.",
+);
 
 const filterLocations = (group: ApiFormSimpleOptions): ApiFormSimpleOptions => {
     if (props.isEditMode) {
@@ -132,25 +134,27 @@ const filterLocations = (group: ApiFormSimpleOptions): ApiFormSimpleOptions => {
     const newGroup = group.slice();
     newGroup.push({
         value: "",
-        text: langNewStorageLocation
+        text: langNewStorageLocation,
     });
     return newGroup;
-}
+};
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const loadLocations = async () => {
     try {
-        const {data} = await axios.get<StorageLocationOptions>(storageLocationApiUrl.value);
+        const { data } = await axios.get<StorageLocationOptions>(
+            storageLocationApiUrl.value,
+        );
 
         storageLocationOptions.media_storage_location = filterLocations(
-            data.media_storage_location
+            data.media_storage_location,
         );
         storageLocationOptions.recordings_storage_location = filterLocations(
-            data.recordings_storage_location
+            data.recordings_storage_location,
         );
         storageLocationOptions.podcasts_storage_location = filterLocations(
-            data.podcasts_storage_location
+            data.podcasts_storage_location,
         );
     } finally {
         storageLocationsLoading.value = false;

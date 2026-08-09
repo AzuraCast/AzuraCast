@@ -68,30 +68,30 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import {useWidgetStore, WidgetTemplate} from "~/components/Stations/Profile/Widgets/useWidgetStore.ts";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {useLocalStorage} from "@vueuse/core";
+import { useLocalStorage } from "@vueuse/core";
+import { ref } from "vue";
+import {
+    useWidgetStore,
+    WidgetTemplate,
+} from "~/components/Stations/Profile/Widgets/useWidgetStore.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 
 const $store = useWidgetStore();
-const {
-    getTemplate,
-    setFromTemplate
-} = $store;
+const { getTemplate, setFromTemplate } = $store;
 
-const templateName = ref('');
-const selectedTemplate = ref('');
+const templateName = ref("");
+const selectedTemplate = ref("");
 
 type SavedTemplate = {
-    name: string,
-    config: WidgetTemplate
+    name: string;
+    config: WidgetTemplate;
 };
 const savedTemplates = useLocalStorage<SavedTemplate[]>(
-    'azuracast_embed_templates',
-    []
+    "azuracast_embed_templates",
+    [],
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 // Save current configuration as template
 const saveTemplate = () => {
@@ -99,24 +99,28 @@ const saveTemplate = () => {
 
     const template: SavedTemplate = {
         name: templateName.value.trim(),
-        config: getTemplate()
+        config: getTemplate(),
     };
 
-    const existingIndex = savedTemplates.value.findIndex(t => t.name === template.name);
+    const existingIndex = savedTemplates.value.findIndex(
+        (t) => t.name === template.name,
+    );
     if (existingIndex >= 0) {
         savedTemplates.value[existingIndex] = template;
     } else {
         savedTemplates.value.push(template);
     }
 
-    templateName.value = '';
+    templateName.value = "";
 };
 
 // Load template configuration
 const loadTemplate = () => {
     if (!selectedTemplate.value) return;
 
-    const template = savedTemplates.value.find(t => t.name === selectedTemplate.value);
+    const template = savedTemplates.value.find(
+        (t) => t.name === selectedTemplate.value,
+    );
     if (template) {
         setFromTemplate(template.config);
     }
@@ -126,10 +130,12 @@ const loadTemplate = () => {
 const deleteTemplate = () => {
     if (!selectedTemplate.value) return;
 
-    const index = savedTemplates.value.findIndex(t => t.name === selectedTemplate.value);
+    const index = savedTemplates.value.findIndex(
+        (t) => t.name === selectedTemplate.value,
+    );
     if (index >= 0) {
         savedTemplates.value.splice(index, 1);
-        selectedTemplate.value = '';
+        selectedTemplate.value = "";
     }
 };
 
@@ -137,15 +143,15 @@ const deleteTemplate = () => {
 const exportTemplate = () => {
     const exportData = {
         templates: savedTemplates.value,
-        version: '1.0'
+        version: "1.0",
     };
 
     const dataStr = JSON.stringify(exportData, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = `azuracast-widget-templates-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `azuracast-widget-templates-${new Date().toISOString().split("T")[0]}.json`;
     link.click();
     URL.revokeObjectURL(url);
 };
@@ -162,7 +168,9 @@ const importTemplate = (event: Event) => {
             if (data.templates && Array.isArray(data.templates)) {
                 // Merge with existing templates
                 data.templates.forEach((template: any) => {
-                    const existingIndex = savedTemplates.value.findIndex(t => t.name === template.name);
+                    const existingIndex = savedTemplates.value.findIndex(
+                        (t) => t.name === template.name,
+                    );
                     if (existingIndex >= 0) {
                         savedTemplates.value[existingIndex] = template;
                     } else {
@@ -171,8 +179,12 @@ const importTemplate = (event: Event) => {
                 });
             }
         } catch (error) {
-            console.error('Failed to import templates:', error);
-            alert($gettext('Failed to import template file. Please check the file format.'));
+            console.error("Failed to import templates:", error);
+            alert(
+                $gettext(
+                    "Failed to import template file. Please check the file format.",
+                ),
+            );
         }
     };
     reader.readAsText(file);

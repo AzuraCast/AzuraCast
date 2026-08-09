@@ -9,33 +9,33 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import FlowUpload from "~/components/Common/FlowUpload.vue";
-import {computed} from "vue";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
 
 const props = withDefaults(
     defineProps<{
-        uploadUrl: string,
-        currentDirectory: string,
-        searchPhrase: string,
-        validMimeTypes?: string[]
+        uploadUrl: string;
+        currentDirectory: string;
+        searchPhrase: string;
+        validMimeTypes?: string[];
     }>(),
     {
-        validMimeTypes: () => ['audio/*']
-    }
+        validMimeTypes: () => ["audio/*"],
+    },
 );
 
 const emit = defineEmits<HasRelistEmit>();
 
 const targetUrl = computed(() => {
     const url = new URL(props.uploadUrl, document.location.href);
-    url.searchParams.set('currentDirectory', props.currentDirectory);
-    url.searchParams.set('searchPhrase', props.searchPhrase);
+    url.searchParams.set("currentDirectory", props.currentDirectory);
+    url.searchParams.set("searchPhrase", props.searchPhrase);
 
     return url.toString();
 });
 
 const onFlowUpload = () => {
-    emit('relist');
-}
+    emit("relist");
+};
 </script>

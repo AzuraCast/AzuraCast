@@ -240,70 +240,76 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import MediaToolbar from "~/components/Stations/Media/MediaToolbar.vue";
-import Breadcrumb from "~/components/Stations/Media/Breadcrumb.vue";
-import FileUpload from "~/components/Stations/Media/FileUpload.vue";
-import NewDirectoryModal from "~/components/Stations/Media/NewDirectoryModal.vue";
-import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
-import RenameModal from "~/components/Stations/Media/RenameModal.vue";
-import EditModal from "~/components/Stations/Media/EditModal.vue";
-import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import { useQueryClient } from "@tanstack/vue-query";
+import { forEach, map, partition } from "es-toolkit/compat";
+import { computed, ref, useTemplateRef, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {computed, ref, useTemplateRef, watch} from "vue";
-import {forEach, map, partition} from "es-toolkit/compat";
-import formatFileSize from "~/functions/formatFileSize";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {useRoute, useRouter} from "vue-router";
-import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import Breadcrumb from "~/components/Stations/Media/Breadcrumb.vue";
+import EditModal from "~/components/Stations/Media/EditModal.vue";
+import FileUpload from "~/components/Stations/Media/FileUpload.vue";
+import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
+import MediaToolbar from "~/components/Stations/Media/MediaToolbar.vue";
+import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
+import NewDirectoryModal from "~/components/Stations/Media/NewDirectoryModal.vue";
+import RenameModal from "~/components/Stations/Media/RenameModal.vue";
 import {
     ApiStationMediaPlaylist,
     ApiStationsVueFilesProps,
     CustomField,
     FileTypes,
-    StorageLocationTypes
+    StorageLocationTypes,
 } from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useQueryClient} from "@tanstack/vue-query";
-import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
-import IconIcInsertDriveFile from "~icons/ic/baseline-insert-drive-file";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import {
+    FileListRequired,
+    StationsVueFilesPropsRequired,
+} from "~/entities/StationMedia.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import formatFileSize from "~/functions/formatFileSize";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcFolder from "~icons/ic/baseline-folder";
 import IconIcImage from "~icons/ic/baseline-image";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import IconIcInsertDriveFile from "~icons/ic/baseline-insert-drive-file";
 
 const props = defineProps<StationsVueFilesPropsRequired>();
 
-export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
+export type MediaInitialPlaylist =
+    ApiStationsVueFilesProps["initialPlaylists"][number];
 
 export type MediaRow = FileListRequired;
 
 export type MediaSelectedItems = {
-    all: MediaRow[],
-    files: string[],
-    directories: string[]
-}
+    all: MediaRow[];
+    files: string[];
+    directories: string[];
+};
 
 const stationData = useStationData();
 const showSftp = computed(() => stationData.value.features.sftp ?? false);
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/files/list');
-const batchUrl = getStationApiUrl('/files/batch');
-const uploadUrl = getStationApiUrl('/files/upload');
-const listDirectoriesUrl = getStationApiUrl('/files/directories');
-const mkdirUrl = getStationApiUrl('/files/mkdir');
-const renameUrl = getStationApiUrl('/files/rename');
-const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationMedia}`);
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/files/list");
+const batchUrl = getStationApiUrl("/files/batch");
+const uploadUrl = getStationApiUrl("/files/upload");
+const listDirectoriesUrl = getStationApiUrl("/files/directories");
+const mkdirUrl = getStationApiUrl("/files/mkdir");
+const renameUrl = getStationApiUrl("/files/rename");
+const quotaUrl = getStationApiUrl(
+    `/quota/${StorageLocationTypes.StationMedia}`,
+);
 
-const currentDirectory = ref('');
+const currentDirectory = ref("");
 
 const isFilterString = (str: string) =>
-    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
+    str.substring(0, 9) === "playlist:" || str.substring(0, 8) === "special:";
 
 const router = useRouter();
 const route = useRoute();
@@ -311,14 +317,14 @@ const route = useRoute();
 watch(
     () => route.params,
     async (newParams) => {
-        let path = newParams.path ?? '';
+        let path = newParams.path ?? "";
         if (Array.isArray(path)) {
-            path = path.join('');
+            path = path.join("");
         }
 
         if (isFilterString(path)) {
             await router.push({
-                name: 'stations:files:index',
+                name: "stations:files:index",
             });
             filter(path);
         } else {
@@ -326,89 +332,133 @@ watch(
         }
     },
     {
-        immediate: true
-    }
+        immediate: true,
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const { formatTimestampAsDateTime } = useStationDateTimeFormatter();
 
 const listItemProvider = useApiItemProvider<MediaRow>(
     listUrl,
-    queryKeyWithStation(
-        [QueryKeys.StationMedia, 'files', currentDirectory]
-    ),
+    queryKeyWithStation([QueryKeys.StationMedia, "files", currentDirectory]),
     {
-        staleTime: 2 * 60 * 1000
+        staleTime: 2 * 60 * 1000,
     },
     (config) => {
         config.params.currentDirectory = currentDirectory.value;
         return config;
-    }
+    },
 );
 
 const fields = computed<DataTableField<MediaRow>[]>(() => {
     const fields: DataTableField<MediaRow>[] = [
-        {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
-        {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
-            key: 'media.artist',
-            label: $gettext('Artist'),
+            key: "path",
+            isRowHeader: true,
+            label: $gettext("Name"),
+            sortable: true,
+        },
+        {
+            key: "media.title",
+            label: $gettext("Title"),
             sortable: true,
             selectable: true,
-            visible: false
+            visible: false,
         },
-        {key: 'media.album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
-        {key: 'media.genre', label: $gettext('Genre'), sortable: true, selectable: true, visible: false},
-        {key: 'media.isrc', label: $gettext('ISRC'), sortable: true, selectable: true, visible: false},
-        {key: 'media.length', label: $gettext('Length'), sortable: true, selectable: true, visible: true}
+        {
+            key: "media.artist",
+            label: $gettext("Artist"),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: "media.album",
+            label: $gettext("Album"),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: "media.genre",
+            label: $gettext("Genre"),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: "media.isrc",
+            label: $gettext("ISRC"),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: "media.length",
+            label: $gettext("Length"),
+            sortable: true,
+            selectable: true,
+            visible: true,
+        },
     ];
 
-    forEach({...props.customFields}, (field: CustomField) => {
+    forEach({ ...props.customFields }, (field: CustomField) => {
         fields.push({
-            key: 'media.custom_fields[' + field.short_name + ']',
+            key: `media.custom_fields[${field.short_name}]`,
             label: field.name,
             sortable: true,
             selectable: true,
-            visible: false
+            visible: false,
         });
     });
 
     fields.push(
-        {key: 'size', label: $gettext('Size'), sortable: true, selectable: true, visible: true},
         {
-            key: 'timestamp',
-            label: $gettext('Modified'),
+            key: "size",
+            label: $gettext("Size"),
+            sortable: true,
+            selectable: true,
+            visible: true,
+        },
+        {
+            key: "timestamp",
+            label: $gettext("Modified"),
             sortable: true,
             formatter: (value) => formatTimestampAsDateTime(value),
             selectable: true,
-            visible: true
+            visible: true,
         },
         {
-            key: 'media.uploaded_at',
-            label: $gettext('Uploaded Time'),
+            key: "media.uploaded_at",
+            label: $gettext("Uploaded Time"),
             sortable: true,
             formatter: (value) => formatTimestampAsDateTime(value),
             selectable: true,
-            visible: false
+            visible: false,
         },
         {
-            key: 'media.mtime',
-            label: $gettext('Last Processed Time'),
+            key: "media.mtime",
+            label: $gettext("Last Processed Time"),
             sortable: true,
             formatter: (value) => formatTimestampAsDateTime(value),
             selectable: true,
-            visible: false
+            visible: false,
         },
         {
-            key: 'playlists',
-            label: $gettext('Playlists'),
+            key: "playlists",
+            label: $gettext("Playlists"),
             sortable: false,
             selectable: true,
-            visible: true
+            visible: true,
         },
-        {key: 'commands', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+        {
+            key: "commands",
+            label: $gettext("Actions"),
+            sortable: false,
+            class: "shrink",
+        },
     );
 
     return fields;
@@ -419,22 +469,25 @@ const playlists = computed(() => props.initialPlaylists);
 const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],
-    directories: []
+    directories: [],
 });
 
-const searchPhrase = ref('');
+const searchPhrase = ref("");
 
 const onRowSelected = (items: MediaRow[]) => {
-    const splitItems = partition(items, (row) => row.type === FileTypes.Directory);
+    const splitItems = partition(
+        items,
+        (row) => row.type === FileTypes.Directory,
+    );
 
     selectedItems.value = {
         all: items,
-        files: map(splitItems[1], 'path'),
-        directories: map(splitItems[0], 'path')
+        files: map(splitItems[1], "path"),
+        directories: map(splitItems[0], "path"),
     };
 };
 
-const $dataTable = useTemplateRef('$dataTable');
+const $dataTable = useTemplateRef("$dataTable");
 
 const onTriggerNavigate = () => {
     $dataTable.value?.navigate();
@@ -444,7 +497,7 @@ const filter = (newFilter: string) => {
     $dataTable.value?.setFilter(newFilter);
 };
 
-const $quota = useTemplateRef('$quota');
+const $quota = useTemplateRef("$quota");
 
 const onTriggerRelist = () => {
     void listItemProvider.refresh(false);
@@ -453,46 +506,46 @@ const onTriggerRelist = () => {
 };
 
 const queryClient = useQueryClient();
-const propsQueryKey = queryKeyWithStation([QueryKeys.StationMedia, 'props']);
+const propsQueryKey = queryKeyWithStation([QueryKeys.StationMedia, "props"]);
 
 const onAddPlaylist = () => {
-    void queryClient.invalidateQueries({queryKey: propsQueryKey});
+    void queryClient.invalidateQueries({ queryKey: propsQueryKey });
 };
 
 const onFiltered = (newFilter: string) => {
     searchPhrase.value = newFilter;
 };
 
-const $renameModal = useTemplateRef('$renameModal');
+const $renameModal = useTemplateRef("$renameModal");
 
 const rename = (path: string) => {
     $renameModal.value?.open(path);
 };
 
-const $editModal = useTemplateRef('$editModal');
+const $editModal = useTemplateRef("$editModal");
 
 const edit = (recordUrl: string) => {
     $editModal.value?.open(recordUrl);
 };
 
-const $newDirectoryModal = useTemplateRef('$newDirectoryModal');
+const $newDirectoryModal = useTemplateRef("$newDirectoryModal");
 
 const createDirectory = () => {
     $newDirectoryModal.value?.open();
-}
+};
 
-const $moveFilesModal = useTemplateRef('$moveFilesModal');
+const $moveFilesModal = useTemplateRef("$moveFilesModal");
 
 const moveFiles = () => {
     $moveFilesModal.value?.open();
-}
+};
 
 const changeDirectory = (newDir: string) => {
     void router.push({
-        name: 'stations:files:index',
+        name: "stations:files:index",
         params: {
-            path: newDir
-        }
+            path: newDir,
+        },
     });
 
     onTriggerNavigate();

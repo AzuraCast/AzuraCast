@@ -149,38 +149,38 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import Tab from "~/components/Common/Tab.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 defineProps<{
-    timezones: Record<string, string>,
+    timezones: Record<string, string>;
 }>();
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const { r$, form } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.profileTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const historyItemsOptions = computed(() => {
     return [
         {
-            text: $gettext('Disabled'),
+            text: $gettext("Disabled"),
             value: 0,
         },
-        {text: '1', value: 1},
-        {text: '5', value: 5},
-        {text: '10', value: 10},
-        {text: '15', value: 15}
+        { text: "1", value: 1 },
+        { text: "5", value: 5 },
+        { text: "10", value: 10 },
+        { text: "15", value: 15 },
     ];
 });
 </script>

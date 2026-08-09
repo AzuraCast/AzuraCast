@@ -10,23 +10,23 @@
     </modal>
 </template>
 <script setup lang="ts">
-import Modal from "~/components/Common/Modal.vue";
-import {ref, useTemplateRef} from "vue";
+import { ref, useTemplateRef } from "vue";
 import TaskOutput from "~/components/Admin/Debug/TaskOutput.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
+import Modal from "~/components/Common/Modal.vue";
+import { ApiAdminDebugLogEntry } from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
-const $modal = useTemplateRef('$modal');
-const {show} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show } = useHasModal($modal);
 
 const logOutput = ref<ApiAdminDebugLogEntry[]>([]);
 
 const open = (newLogOutput: ApiAdminDebugLogEntry[]) => {
     logOutput.value = newLogOutput;
     show();
-}
+};
 
 defineExpose({
-    open
+    open,
 });
 </script>

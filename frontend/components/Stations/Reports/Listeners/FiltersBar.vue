@@ -64,14 +64,17 @@
 </template>
 
 <script setup lang="ts">
-import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
+import {
+    ListenerFilters,
+    ListenerTypeFilters,
+} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import IconIcClearAll from "~icons/ic/baseline-clear-all";
 
-const filters = defineModel<ListenerFilters>('filters', {required: true});
+const filters = defineModel<ListenerFilters>("filters", { required: true });
 
 const clearFilters = () => {
     filters.value.minLength = null;
     filters.value.maxLength = null;
     filters.value.type = ListenerTypeFilters.All;
-}
+};
 </script>

@@ -21,16 +21,16 @@
     </full-height-card>
 </template>
 <script setup lang="ts">
-import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
-import {PodcastLayoutProps, useProvidePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import FullHeightCard from "~/components/Public/FullHeightCard.vue";
+import {
+    PodcastLayoutProps,
+    useProvidePodcastGlobals,
+} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
-const props = withDefaults(
-    defineProps<PodcastLayoutProps>(),
-    {
-        groupLayout: 'table'
-    }
-);
+const props = withDefaults(defineProps<PodcastLayoutProps>(), {
+    groupLayout: "table",
+});
 
 useProvidePodcastGlobals(props);
 </script>

@@ -84,22 +84,22 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { useStationsPodcastsForm } from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import { NestedFormOptionInput } from "~/functions/objectToFormOptions.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
 defineProps<{
-    languageOptions: NestedFormOptionInput,
-    categoriesOptions: NestedFormOptionInput,
+    languageOptions: NestedFormOptionInput;
+    categoriesOptions: NestedFormOptionInput;
 }>();
 
-const {r$} = storeToRefs(useStationsPodcastsForm());
+const { r$ } = storeToRefs(useStationsPodcastsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 </script>

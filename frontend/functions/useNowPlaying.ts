@@ -1,22 +1,36 @@
+import {
+    useDocumentVisibility,
+    useEventSource,
+    useIntervalFn,
+} from "@vueuse/core";
+import { isUndefined, omitBy } from "es-toolkit/compat";
+import {
+    computed,
+    EffectScope,
+    effectScope,
+    isRef,
+    MaybeRef,
+    ref,
+    shallowRef,
+    watch,
+} from "vue";
+import {
+    ApiNowPlaying,
+    ApiNowPlayingVueProps,
+} from "~/entities/ApiInterfaces.ts";
 import NowPlaying from "~/entities/NowPlaying";
-import {computed, EffectScope, effectScope, isRef, MaybeRef, ref, shallowRef, watch} from "vue";
-import {useDocumentVisibility, useEventSource, useIntervalFn} from "@vueuse/core";
-import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
-import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
-import {isUndefined, omitBy} from "es-toolkit/compat";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
 interface SsePayload {
     data: {
-        current_time?: number,
-        np: ApiNowPlaying
-    }
+        current_time?: number;
+        np: ApiNowPlaying;
+    };
 }
 
-export default function useNowPlaying(
-    props: MaybeRef<ApiNowPlayingVueProps>
-) {
+export default function useNowPlaying(props: MaybeRef<ApiNowPlayingVueProps>) {
     const np = shallowRef<ApiNowPlaying>(NowPlaying);
     const npTimestamp = ref<number>(0);
 
@@ -24,7 +38,7 @@ export default function useNowPlaying(
     const currentTrackDuration = ref<number>(0);
     const currentTrackElapsed = ref<number>(0);
 
-    const {getApiUrl} = useApiRouter();
+    const { getApiUrl } = useApiRouter();
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
         if (!np_new.now_playing) {
@@ -37,16 +51,24 @@ export default function useNowPlaying(
         currentTrackDuration.value = np_new.now_playing.duration ?? 0;
 
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata(omitBy({
-                title: np_new.now_playing.song?.title ?? undefined,
-                artist: np_new.now_playing.song?.artist ?? undefined,
-                artwork: [
-                    {src: np_new.now_playing.song?.art ?? undefined}
-                ]
-            }, isUndefined));
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata(
+                omitBy(
+                    {
+                        title: np_new.now_playing.song?.title ?? undefined,
+                        artist: np_new.now_playing.song?.artist ?? undefined,
+                        artwork: [
+                            { src: np_new.now_playing.song?.art ?? undefined },
+                        ],
+                    },
+                    isUndefined,
+                ),
+            );
 
-            const setPositionState = (duration: number, position: number): void => {
+            const setPositionState = (
+                duration: number,
+                position: number,
+            ): void => {
                 if (position <= duration) {
                     navigator.mediaSession.setPositionState({
                         duration,
@@ -55,21 +77,29 @@ export default function useNowPlaying(
                 }
             };
 
-            setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
+            setPositionState(
+                np_new.now_playing.duration ?? 0,
+                np_new.now_playing.elapsed ?? 0,
+            );
 
             navigator.mediaSession.setActionHandler("seekto", () => {
                 if (!np_new.now_playing) {
                     return;
                 }
 
-                setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
+                setPositionState(
+                    np_new.now_playing.duration ?? 0,
+                    np_new.now_playing.elapsed ?? 0,
+                );
             });
         }
 
-        document.dispatchEvent(new CustomEvent("now-playing", {
-            detail: np_new
-        }));
-    }
+        document.dispatchEvent(
+            new CustomEvent("now-playing", {
+                detail: np_new,
+            }),
+        );
+    };
 
     let scope: EffectScope | null = null;
 
@@ -80,22 +110,25 @@ export default function useNowPlaying(
 
         scope = effectScope();
         scope.run(() => {
-            const {stationShortName, useSse, useStatic} = settings;
+            const { stationShortName, useSse, useStatic } = settings;
 
             if (useSse) {
-                const sseBaseUri = getApiUrl('/live/nowplaying/sse');
+                const sseBaseUri = getApiUrl("/live/nowplaying/sse");
                 const sseUriParams = new URLSearchParams({
-                    "cf_connect": JSON.stringify({
-                        "subs": {
+                    cf_connect: JSON.stringify({
+                        subs: {
                             [`station:${stationShortName}`]: {
-                                "recover": true
+                                recover: true,
                             },
-                        }
+                        },
                     }),
                 });
-                const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
+                const sseUri = `${sseBaseUri.value}?${sseUriParams.toString()}`;
 
-                const handleSseData = (ssePayload: SsePayload, useTime: boolean = true) => {
+                const handleSseData = (
+                    ssePayload: SsePayload,
+                    useTime: boolean = true,
+                ) => {
                     const jsonData = ssePayload.data;
 
                     if (useTime && jsonData.current_time) {
@@ -112,9 +145,9 @@ export default function useNowPlaying(
                             setNowPlaying(jsonData.np);
                         }, 3000);
                     }
-                }
+                };
 
-                const {data} = useEventSource(sseUri);
+                const { data } = useEventSource(sseUri);
                 watch(data, (dataRaw: string | null) => {
                     if (!dataRaw) {
                         return;
@@ -122,22 +155,31 @@ export default function useNowPlaying(
 
                     const jsonData = JSON.parse(dataRaw);
 
-                    if ('connect' in jsonData) {
+                    if ("connect" in jsonData) {
                         const connectData = jsonData.connect;
 
                         // New Centrifugo time format
-                        if ('time' in connectData) {
-                            currentTime.value = Math.floor(connectData.time / 1000);
+                        if ("time" in connectData) {
+                            currentTime.value = Math.floor(
+                                connectData.time / 1000,
+                            );
                         }
 
                         // New Centrifugo cached NowPlaying initial push.
                         for (const subName in connectData.subs) {
                             const sub = connectData.subs[subName];
-                            if ('publications' in sub && sub.publications.length > 0) {
-                                sub.publications.forEach((initialRow: SsePayload) => handleSseData(initialRow, false));
+                            if (
+                                "publications" in sub &&
+                                sub.publications.length > 0
+                            ) {
+                                sub.publications.forEach(
+                                    (initialRow: SsePayload) => {
+                                        handleSseData(initialRow, false);
+                                    },
+                                );
                             }
                         }
-                    } else if ('pub' in jsonData) {
+                    } else if ("pub" in jsonData) {
                         handleSseData(jsonData.pub);
                     }
                 });
@@ -146,53 +188,67 @@ export default function useNowPlaying(
                     ? getApiUrl(`/nowplaying_static/${stationShortName}.json`)
                     : getApiUrl(`/nowplaying/${stationShortName}`);
 
-                const timeUri = getApiUrl('/time');
-                const {axiosSilent} = useAxios();
+                const timeUri = getApiUrl("/time");
+                const { axiosSilent } = useAxios();
 
                 const axiosNoCacheConfig = {
                     headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                    }
+                        "Cache-Control": "no-cache",
+                        Pragma: "no-cache",
+                        Expires: "0",
+                    },
                 };
 
                 const visibility = useDocumentVisibility();
 
                 useIntervalFn(
-                    () => void (async () => {
-                        const {data} = await axiosSilent.get<ApiNowPlaying>(nowPlayingUri.value, axiosNoCacheConfig);
-                        setNowPlaying(data);
-                    })(),
+                    () =>
+                        void (async () => {
+                            const { data } =
+                                await axiosSilent.get<ApiNowPlaying>(
+                                    nowPlayingUri.value,
+                                    axiosNoCacheConfig,
+                                );
+                            setNowPlaying(data);
+                        })(),
                     computed(() => {
                         if (useStatic) {
-                            return visibility.value === 'visible' ? 10000 : 30000;
+                            return visibility.value === "visible"
+                                ? 10000
+                                : 30000;
                         } else {
-                            return visibility.value === 'visible' ? 20000 : 60000;
+                            return visibility.value === "visible"
+                                ? 20000
+                                : 60000;
                         }
                     }),
                     {
-                        immediateCallback: true
-                    }
+                        immediateCallback: true,
+                    },
                 );
 
                 useIntervalFn(
-                    () => void (async () => {
-                        const {data} = await axiosSilent.get(timeUri.value, axiosNoCacheConfig);
-                        currentTime.value = data.timestamp;
-                    })(),
+                    () =>
+                        void (async () => {
+                            const { data } = await axiosSilent.get(
+                                timeUri.value,
+                                axiosNoCacheConfig,
+                            );
+                            currentTime.value = data.timestamp;
+                        })(),
                     computed(() =>
-                        visibility.value === 'visible' ? 600000 : 1200000
+                        visibility.value === "visible" ? 600000 : 1200000,
                     ),
                     {
-                        immediateCallback: true
-                    }
+                        immediateCallback: true,
+                    },
                 );
             }
 
             useIntervalFn(
                 () => {
-                    const currentTrackPlayedAt = np.value?.now_playing?.played_at ?? 0;
+                    const currentTrackPlayedAt =
+                        np.value?.now_playing?.played_at ?? 0;
                     let elapsed = currentTime.value - currentTrackPlayedAt;
 
                     if (elapsed < 0) {
@@ -206,18 +262,22 @@ export default function useNowPlaying(
                 },
                 1000,
                 {
-                    immediateCallback: true
-                }
+                    immediateCallback: true,
+                },
             );
         });
-    }
+    };
 
     if (isRef(props)) {
-        watch(props, (newProps) => {
-            initNowPlaying(newProps);
-        }, {
-            immediate: true
-        });
+        watch(
+            props,
+            (newProps) => {
+                initNowPlaying(newProps);
+            },
+            {
+                immediate: true,
+            },
+        );
     } else {
         initNowPlaying(props);
     }
@@ -234,7 +294,9 @@ export default function useNowPlaying(
     });
 
     const currentTrackDurationDisplay = computed(() => {
-        return (currentTrackDuration.value) ? formatTime(currentTrackDuration.value) : null;
+        return currentTrackDuration.value
+            ? formatTime(currentTrackDuration.value)
+            : null;
     });
 
     const currentTrackElapsedDisplay = computed(() => {
@@ -242,7 +304,7 @@ export default function useNowPlaying(
             return null;
         }
 
-        return (currentTrackElapsed.value <= currentTrackDuration.value)
+        return currentTrackElapsed.value <= currentTrackDuration.value
             ? formatTime(currentTrackElapsed.value)
             : currentTrackDurationDisplay.value;
     });
@@ -254,6 +316,6 @@ export default function useNowPlaying(
         currentTrackElapsed,
         currentTrackPercent,
         currentTrackDurationDisplay,
-        currentTrackElapsedDisplay
+        currentTrackElapsedDisplay,
     };
 }

@@ -76,68 +76,71 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import SftpUsersEditModal from "~/components/Stations/SftpUsers/EditModal.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {ApiStationsVueSftpUsersProps} from "~/entities/ApiInterfaces.ts";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import SftpUsersEditModal from "~/components/Stations/SftpUsers/EditModal.vue";
+import { ApiStationsVueSftpUsersProps } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getStationApiUrl} = useApiRouter();
-const propsUrl = getStationApiUrl('/vue/sftp_users');
+const { getStationApiUrl } = useApiRouter();
+const propsUrl = getStationApiUrl("/vue/sftp_users");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueSftpUsersProps>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationSftpUsers,
-            'props'
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiStationsVueSftpUsersProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiStationsVueSftpUsersProps>({
+        queryKey: queryKeyWithStation([QueryKeys.StationSftpUsers, "props"]),
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiStationsVueSftpUsersProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
-const listUrl = getStationApiUrl('/sftp-users');
+const listUrl = getStationApiUrl("/sftp-users");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'username', isRowHeader: true, label: $gettext('Username'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "username",
+        isRowHeader: true,
+        label: $gettext("Username"),
+        sortable: false,
+    },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation(
-        [
-            QueryKeys.StationSftpUsers,
-            'data'
-        ]
-    )
+    queryKeyWithStation([QueryKeys.StationSftpUsers, "data"]),
 );
 
 const relist = () => {
     void listItemProvider.refresh();
 };
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete SFTP User?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete SFTP User?"), () =>
+    relist(),
 );
 </script>

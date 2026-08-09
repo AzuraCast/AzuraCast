@@ -79,15 +79,15 @@
 </template>
 
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
+import { useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
-const $modal = useTemplateRef('$modal');
-const {show: create, hide: close} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: create, hide: close } = useHasModal($modal);
 
 defineExpose({
     create,
-    close
+    close,
 });
 </script>

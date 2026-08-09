@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import {TabChildProps, useTabChild} from "~/functions/tabs.ts";
+import { TabChildProps, useTabChild } from "~/functions/tabs.ts";
 
 const props = defineProps<TabChildProps>();
 
-const {computedId, isActive, isLazy} = useTabChild(props);
+const { computedId, isActive, isLazy } = useTabChild(props);
 </script>

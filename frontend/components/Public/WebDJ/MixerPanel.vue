@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
+import { useInjectMixer } from "~/components/Public/WebDJ/useMixerValue";
 
-const {mixer} = useInjectMixer();
+const { mixer } = useInjectMixer();
 </script>

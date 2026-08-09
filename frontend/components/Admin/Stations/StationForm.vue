@@ -56,71 +56,71 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsProfileForm from "~/components/Admin/Stations/Form/ProfileForm.vue";
-import AdminStationsFrontendForm from "~/components/Admin/Stations/Form/FrontendForm.vue";
-import AdminStationsBackendForm from "~/components/Admin/Stations/Form/BackendForm.vue";
+import { storeToRefs } from "pinia";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import AdminStationsAdminForm from "~/components/Admin/Stations/Form/AdminForm.vue";
+import AdminStationsBackendForm from "~/components/Admin/Stations/Form/BackendForm.vue";
+import AdminStationsFrontendForm from "~/components/Admin/Stations/Form/FrontendForm.vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
+import AdminStationsProfileForm from "~/components/Admin/Stations/Form/ProfileForm.vue";
 import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
-import {computed, nextTick, onMounted, ref, watch} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
-import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {ApiAdminVueStationsFormProps, GlobalPermissions} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useUserAllowed} from "~/functions/useUserAllowed.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import {
+    ApiAdminVueStationsFormProps,
+    GlobalPermissions,
+} from "~/entities/ApiInterfaces.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import { useUserAllowed } from "~/functions/useUserAllowed.ts";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 interface StationFormProps extends ApiAdminVueStationsFormProps {
-    createUrl?: string,
-    editUrl?: string | null,
-    isEditMode: boolean,
-    isModal?: boolean
+    createUrl?: string;
+    editUrl?: string | null;
+    isEditMode: boolean;
+    isModal?: boolean;
 }
 
-const props = withDefaults(
-    defineProps<StationFormProps>(),
-    {
-        isRsasInstalled: false,
-        isShoutcastInstalled: false,
-        isStereoToolInstalled: false,
-        editUrl: null,
-        isModal: false
-    }
-);
+const props = withDefaults(defineProps<StationFormProps>(), {
+    isRsasInstalled: false,
+    isShoutcastInstalled: false,
+    isStereoToolInstalled: false,
+    editUrl: null,
+    isModal: false,
+});
 
 const emit = defineEmits<{
-    (e: 'submitted'): void,
-    (e: 'loadingUpdate', loading: boolean): void,
-    (e: 'validUpdate', valid: boolean): void
+    (e: "submitted"): void;
+    (e: "loadingUpdate", loading: boolean): void;
+    (e: "validUpdate", valid: boolean): void;
 }>();
 
-const {userAllowed} = useUserAllowed();
+const { userAllowed } = useUserAllowed();
 const showAdminTab = userAllowed(GlobalPermissions.Stations);
 
 const formStore = useAdminStationsForm();
-const {form, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
 const isValid = computed(() => {
     return !r$.value?.$invalid;
 });
 
 watch(isValid, (newValue) => {
-    emit('validUpdate', newValue);
+    emit("validUpdate", newValue);
 });
 
 const isLoading = ref(true);
 
 watch(isLoading, (newValue) => {
-    emit('loadingUpdate', newValue);
+    emit("loadingUpdate", newValue);
 });
 
 const error = ref<string | null>(null);
@@ -132,8 +132,8 @@ const clear = () => {
     error.value = null;
 };
 
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const doLoad = async () => {
     if (!props.editUrl) {
@@ -143,7 +143,7 @@ const doLoad = async () => {
     isLoading.value = true;
 
     try {
-        const {data} = await axios.get(props.editUrl);
+        const { data } = await axios.get(props.editUrl);
         form.value = mergeExisting(form.value, data);
     } finally {
         isLoading.value = false;
@@ -166,9 +166,9 @@ onMounted(() => {
 });
 
 const submit = async () => {
-    const apiUrl = (props.isEditMode) ? props.editUrl : props.createUrl;
+    const apiUrl = props.isEditMode ? props.editUrl : props.createUrl;
 
-    const {valid} = await r$.value.$validate();
+    const { valid } = await r$.value.$validate();
     if (!valid || !apiUrl) {
         return;
     }
@@ -177,15 +177,13 @@ const submit = async () => {
 
     try {
         await axios({
-            method: (props.isEditMode)
-                ? 'PUT'
-                : 'POST',
+            method: props.isEditMode ? "PUT" : "POST",
             url: apiUrl,
-            data: form.value
+            data: form.value,
         });
 
         notifySuccess();
-        emit('submitted');
+        emit("submitted");
     } catch (e) {
         error.value = getErrorAsString(e);
     }
@@ -193,6 +191,6 @@ const submit = async () => {
 
 defineExpose({
     reset,
-    submit
+    submit,
 });
 </script>

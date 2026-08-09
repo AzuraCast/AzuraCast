@@ -72,68 +72,76 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import { isEmpty } from "es-toolkit/compat";
+import { useTemplateRef } from "vue";
 import EditModal from "~/components/Admin/Permissions/EditModal.vue";
-import {isEmpty} from "es-toolkit/compat";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {ApiAdminVuePermissionsProps, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {AdminRoleRequired} from "~/entities/AdminPermissions.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { AdminRoleRequired } from "~/entities/AdminPermissions.ts";
+import {
+    ApiAdminVuePermissionsProps,
+    GlobalPermissions,
+    StationPermissions,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<ApiAdminVuePermissionsProps>();
 
-const {getApiUrl} = useApiRouter();
-const listUrl = getApiUrl('/admin/roles');
+const { getApiUrl } = useApiRouter();
+const listUrl = getApiUrl("/admin/roles");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField<AdminRoleRequired>[] = [
-    {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
-    {key: 'permissions', label: $gettext('Permissions'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "name",
+        isRowHeader: true,
+        label: $gettext("Role Name"),
+        sortable: true,
+    },
+    { key: "permissions", label: $gettext("Permissions"), sortable: false },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
-const listItemProvider = useApiItemProvider<AdminRoleRequired>(
-    listUrl,
-    [QueryKeys.AdminPermissions]
-);
+const listItemProvider = useApiItemProvider<AdminRoleRequired>(listUrl, [
+    QueryKeys.AdminPermissions,
+]);
 
 const relist = () => {
     void listItemProvider.refresh();
-}
+};
 
 const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
-    return permissions.map(
-        (permission) => props.globalPermissions[permission] ?? null
-    ).filter(
-        (row) => !isEmpty(row)
-    );
+    return permissions
+        .map((permission) => props.globalPermissions[permission] ?? null)
+        .filter((row) => !isEmpty(row));
 };
 
 const getStationPermissionNames = (permissions: StationPermissions[]) => {
-    return permissions.map(
-        (permission) => props.stationPermissions[permission] ?? null
-    ).filter(
-        (row) => !isEmpty(row)
-    );
+    return permissions
+        .map((permission) => props.stationPermissions[permission] ?? null)
+        .filter((row) => !isEmpty(row));
 };
 
 const getStationName = (stationId: number) => {
     return props.stations[stationId] ?? null;
 };
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Role?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete Role?"), () =>
+    relist(),
 );
 </script>

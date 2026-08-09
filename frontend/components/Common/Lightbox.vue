@@ -7,16 +7,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import VueEasyLightbox from "vue-easy-lightbox";
-import {ref} from "vue";
 
 interface Img {
-    src?: string
-    title?: string
-    alt?: string
+    src?: string;
+    title?: string;
+    alt?: string;
 }
 
-type PropsImgs = Img | string | (Img | string)[]
+type PropsImgs = Img | string | (Img | string)[];
 
 const visible = ref(false);
 const imgs = ref<PropsImgs>([]);
@@ -24,14 +24,14 @@ const imgs = ref<PropsImgs>([]);
 const show = (imageOrImages: PropsImgs) => {
     imgs.value = imageOrImages;
     visible.value = true;
-}
+};
 
 const hide = () => {
     visible.value = false;
-}
+};
 
 defineExpose({
     show,
-    hide
+    hide,
 });
 </script>

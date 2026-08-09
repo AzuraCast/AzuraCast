@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import { ref } from "vue";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export const [useProvideMixer, useInjectMixer] = createRequiredInjectionState(
@@ -6,5 +6,5 @@ export const [useProvideMixer, useInjectMixer] = createRequiredInjectionState(
         const mixer = ref<number>(initialValue);
 
         return { mixer };
-    }
+    },
 );

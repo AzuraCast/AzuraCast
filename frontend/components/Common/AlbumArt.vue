@@ -19,25 +19,25 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useLightbox} from "~/vendor/lightbox";
+import { computed } from "vue";
+import { useLightbox } from "~/vendor/lightbox";
 
 const props = withDefaults(
     defineProps<{
-        src: string,
-        width?: number
+        src: string;
+        width?: number;
     }>(),
     {
-        width: 40
-    }
+        width: 40,
+    },
 );
 
 const widthPx = computed(() => {
-    return props.width + 'px';
+    return `${props.width}px`;
 });
 
 // Use lightbox if available; if not, just ignore.
-const {vLightbox} = useLightbox();
+const { vLightbox } = useLightbox();
 </script>
 
 <style scoped>

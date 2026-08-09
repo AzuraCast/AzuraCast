@@ -64,70 +64,74 @@
 </template>
 
 <script setup lang="ts">
-import formatFileSize from "~/functions/formatFileSize";
-import {defaultsDeep, forEach, toInteger} from "es-toolkit/compat";
-import {onMounted, onUnmounted, reactive, useTemplateRef} from "vue";
 import Flow from "@flowjs/flow.js";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {useTranslate} from "~/vendor/gettext";
+import { defaultsDeep, forEach, toInteger } from "es-toolkit/compat";
+import { onMounted, onUnmounted, reactive, useTemplateRef } from "vue";
+import formatFileSize from "~/functions/formatFileSize";
+import { useAzuraCast } from "~/vendor/azuracast";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcCloudUpload from "~icons/ic/baseline-cloud-upload";
 
 export interface UploadResponseBody {
-    originalFilename: string,
-    uploadedPath: string
+    originalFilename: string;
+    uploadedPath: string;
 }
 
 interface FlowFile {
-    uniqueIdentifier: string,
-    isVisible: boolean,
-    name: string,
-    isCompleted: boolean,
-    progressPercent: number,
-    error?: string,
-    size: string,
-    targetUrl: string
+    uniqueIdentifier: string;
+    isVisible: boolean;
+    name: string;
+    isCompleted: boolean;
+    progressPercent: number;
+    error?: string;
+    size: string;
+    targetUrl: string;
 }
 
 interface OriginalFlowFile {
-    uniqueIdentifier: string,
-    name: string,
-    size: number,
+    uniqueIdentifier: string;
+    name: string;
+    size: number;
 
-    progress(): number
+    progress(): number;
 }
 
 const props = withDefaults(
     defineProps<{
-        targetUrl: string,
-        allowMultiple?: boolean,
-        directoryMode?: boolean,
-        validMimeTypes?: string[],
-        flowConfiguration?: object,
+        targetUrl: string;
+        allowMultiple?: boolean;
+        directoryMode?: boolean;
+        validMimeTypes?: string[];
+        flowConfiguration?: object;
     }>(),
     {
         allowMultiple: false,
         directoryMode: false,
-        validMimeTypes: () => ['*'],
+        validMimeTypes: () => ["*"],
         flowConfiguration: () => ({}),
-    }
+    },
 );
 
 const emit = defineEmits<{
-    (e: 'complete'): void,
-    (e: 'success', file: OriginalFlowFile, message: UploadResponseBody | null): void,
-    (e: 'error', file: OriginalFlowFile, message: string | null): void,
+    (e: "complete"): void;
+    (
+        e: "success",
+        file: OriginalFlowFile,
+        message: UploadResponseBody | null,
+    ): void;
+    (e: "error", file: OriginalFlowFile, message: string | null): void;
 }>();
 
 let flow: Flow | null = null;
 
 const files = reactive<{
     value: {
-        [key: string]: FlowFile
-    },
-    push(file: OriginalFlowFile): void,
-    get(file: OriginalFlowFile): FlowFile,
-    hideAll(): void,
-    reset(): void
+        [key: string]: FlowFile;
+    };
+    push(file: OriginalFlowFile): void;
+    get(file: OriginalFlowFile): FlowFile;
+    hideAll(): void;
+    reset(): void;
 }>({
     value: {},
     push(file: OriginalFlowFile): void {
@@ -138,7 +142,7 @@ const files = reactive<{
             isVisible: true,
             isCompleted: false,
             progressPercent: 0,
-            targetUrl: props.targetUrl
+            targetUrl: props.targetUrl,
         };
     },
     get(file: OriginalFlowFile): FlowFile {
@@ -151,77 +155,83 @@ const files = reactive<{
     },
     reset() {
         this.value = {};
-    }
+    },
 });
 
-const $fileBrowseTarget = useTemplateRef('$fileBrowseTarget');
+const $fileBrowseTarget = useTemplateRef("$fileBrowseTarget");
 
-const $fileDropTarget = useTemplateRef('$fileDropTarget');
+const $fileDropTarget = useTemplateRef("$fileDropTarget");
 
-const {apiCsrf} = useAzuraCast();
+const { apiCsrf } = useAzuraCast();
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const onDragEnter = (e: DragEvent) => {
     const targetElement = e.target as HTMLDivElement;
 
-    if (targetElement.classList.contains('file-drop-target')) {
-        targetElement.classList.add('drag_over');
+    if (targetElement.classList.contains("file-drop-target")) {
+        targetElement.classList.add("drag_over");
     }
 };
 
 const onDragLeave = (e: DragEvent) => {
     const targetElement = e.target as HTMLDivElement;
 
-    if (targetElement.classList.contains('file-drop-target')) {
-        targetElement.classList.remove('drag_over');
+    if (targetElement.classList.contains("file-drop-target")) {
+        targetElement.classList.remove("drag_over");
     }
 };
 
 onMounted(() => {
     const defaultConfig = {
-        target: (file: OriginalFlowFile) => files.get(file).targetUrl ?? props.targetUrl,
+        target: (file: OriginalFlowFile) =>
+            files.get(file).targetUrl ?? props.targetUrl,
         singleFile: !props.allowMultiple,
         headers: {
-            'Accept': 'application/json',
-            'X-API-CSRF': apiCsrf
+            Accept: "application/json",
+            "X-API-CSRF": apiCsrf,
         },
         withCredentials: true,
         allowDuplicateUploads: true,
-        fileParameterName: 'file_data',
-        uploadMethod: 'POST',
-        testMethod: 'GET',
-        method: 'multipart',
+        fileParameterName: "file_data",
+        uploadMethod: "POST",
+        testMethod: "GET",
+        method: "multipart",
         maxChunkRetries: 3,
-        testChunks: false
+        testChunks: false,
     };
     const config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
 
     flow = new Flow(config);
 
-    // @ts-expect-error FlowJS accepts non-array value but typing doesn't.
-    flow.assignBrowse($fileBrowseTarget.value, props.directoryMode, !props.allowMultiple, {
-        accept: props.validMimeTypes.join(',')
-    });
+    flow.assignBrowse(
+        // @ts-expect-error FlowJS accepts non-array value but typing doesn't.
+        $fileBrowseTarget.value,
+        props.directoryMode,
+        !props.allowMultiple,
+        {
+            accept: props.validMimeTypes.join(","),
+        },
+    );
 
     if ($fileDropTarget.value) {
         flow.assignDrop($fileDropTarget.value);
     }
-    
-    flow.on('fileAdded', (file: OriginalFlowFile) => {
+
+    flow.on("fileAdded", (file: OriginalFlowFile) => {
         files.push(file);
         return true;
     });
 
-    flow.on('filesSubmitted', () => {
+    flow.on("filesSubmitted", () => {
         flow?.upload();
     });
 
-    flow.on('fileProgress', (file: OriginalFlowFile) => {
+    flow.on("fileProgress", (file: OriginalFlowFile) => {
         files.get(file).progressPercent = toInteger(file.progress() * 100);
     });
 
-    flow.on('fileSuccess', (file: OriginalFlowFile, message: string) => {
+    flow.on("fileSuccess", (file: OriginalFlowFile, message: string) => {
         files.get(file).isCompleted = true;
 
         let messageJson: UploadResponseBody | null;
@@ -231,20 +241,20 @@ onMounted(() => {
             messageJson = null;
         }
 
-        emit('success', file, messageJson);
+        emit("success", file, messageJson);
     });
 
-    flow.on('error', (message, file: OriginalFlowFile, chunk) => {
+    flow.on("error", (message, file: OriginalFlowFile, chunk) => {
         console.error(message, file, chunk);
 
-        let messageText = $gettext('Could not upload file.');
+        let messageText = $gettext("Could not upload file.");
         try {
-            if (typeof message !== 'undefined') {
+            if (typeof message !== "undefined") {
                 const messageJson = JSON.parse(message);
-                if (typeof messageJson.message !== 'undefined') {
+                if (typeof messageJson.message !== "undefined") {
                     messageText = messageJson.message;
-                    if (messageText.indexOf(': ') > -1) {
-                        messageText = messageText.split(': ')[1];
+                    if (messageText.indexOf(": ") > -1) {
+                        messageText = messageText.split(": ")[1];
                     }
                 }
             }
@@ -253,15 +263,15 @@ onMounted(() => {
         }
 
         files.get(file).error = messageText;
-        emit('error', file, messageText);
+        emit("error", file, messageText);
     });
 
-    flow.on('complete', () => {
+    flow.on("complete", () => {
         setTimeout(() => {
             files.hideAll();
         }, 2000);
 
-        emit('complete');
+        emit("complete");
     });
 });
 

@@ -47,36 +47,36 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from "@tanstack/vue-query";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
-import {useAxios} from "~/vendor/axios.ts";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {ApiAdminServiceData} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiAdminServiceData } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
-const {getApiUrl} = useApiRouter();
-const servicesUrl = getApiUrl('/admin/services');
+const { getApiUrl } = useApiRouter();
+const servicesUrl = getApiUrl("/admin/services");
 
-const {axios, axiosSilent} = useAxios();
+const { axios, axiosSilent } = useAxios();
 
 type ServiceDataRow = Required<ApiAdminServiceData>;
 
-const {data: services, isLoading} = useQuery<ServiceDataRow[]>({
-    queryKey: [QueryKeys.AdminIndex, 'services'],
-    queryFn: async ({signal}) => {
-        const {data} = await axiosSilent.get(servicesUrl.value, {signal});
+const { data: services, isLoading } = useQuery<ServiceDataRow[]>({
+    queryKey: [QueryKeys.AdminIndex, "services"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axiosSilent.get(servicesUrl.value, { signal });
         return data;
     },
-    placeholderData: () => ([]),
-    refetchInterval: 5 * 1000
+    placeholderData: () => [],
+    refetchInterval: 5 * 1000,
 });
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const doRestart = async (serviceUrl: string) => {
-    const {data} = await axios.post(serviceUrl);
+    const { data } = await axios.post(serviceUrl);
     notifySuccess(data.message);
 };
 </script>

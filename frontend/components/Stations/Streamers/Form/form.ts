@@ -1,27 +1,27 @@
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {defineStore} from "pinia";
-import {required, requiredIf} from "@regle/rules";
-import {ref} from "vue";
-import {HasLinks, StationStreamer} from "~/entities/ApiInterfaces.ts";
-import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import { required, requiredIf } from "@regle/rules";
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { UploadResponseBody } from "~/components/Common/FlowUpload.vue";
+import { HasLinks, StationStreamer } from "~/entities/ApiInterfaces.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 export type StationStreamersRecord = Omit<
     Required<StationStreamer>,
-    | 'id'
-    | 'reactivate_at'
+    "id" | "reactivate_at"
 > & {
-    artwork_file: UploadResponseBody | null
-}
-
-export type StationStreamersExtraData = Required<HasLinks> & {
-    has_custom_art: boolean
+    artwork_file: UploadResponseBody | null;
 };
 
-export type StationStreamersResponseBody = StationStreamersRecord & StationStreamersExtraData;
+export type StationStreamersExtraData = Required<HasLinks> & {
+    has_custom_art: boolean;
+};
+
+export type StationStreamersResponseBody = StationStreamersRecord &
+    StationStreamersExtraData;
 
 export const useStationsStreamersForm = defineStore(
-    'form-stations-streamers',
+    "form-stations-streamers",
     () => {
         const isEditMode = ref(false);
 
@@ -29,34 +29,35 @@ export const useStationsStreamersForm = defineStore(
             isEditMode.value = newValue;
         };
 
-        const {record, reset: resetRecord} = useResettableRef<StationStreamersExtraData>({
-            has_custom_art: false,
-            links: {
-                art: '',
-            }
-        });
+        const { record, reset: resetRecord } =
+            useResettableRef<StationStreamersExtraData>({
+                has_custom_art: false,
+                links: {
+                    art: "",
+                },
+            });
 
         const form = ref<StationStreamersRecord>({
-            streamer_username: '',
-            streamer_password: '',
-            display_name: '',
+            streamer_username: "",
+            streamer_password: "",
+            display_name: "",
             comments: null,
             is_active: true,
             enforce_schedule: false,
             artwork_file: null,
-            schedule_items: []
+            schedule_items: [],
         });
 
-        const {r$} = useAppScopedRegle(
+        const { r$ } = useAppScopedRegle(
             form,
             {
-                streamer_username: {required},
+                streamer_username: { required },
                 streamer_password: {
-                    required: requiredIf(() => !isEditMode.value)
+                    required: requiredIf(() => !isEditMode.value),
                 },
             },
             {
-                namespace: 'stations-streamers',
+                namespace: "stations-streamers",
                 validationGroups: (fields) => ({
                     basicInfoTab: [
                         fields.streamer_username,
@@ -66,16 +67,16 @@ export const useStationsStreamersForm = defineStore(
                         fields.is_active,
                         fields.enforce_schedule,
                     ],
-                })
-            }
+                }),
+            },
         );
 
         const $reset = () => {
             resetRecord();
             r$.$reset({
-                toOriginalState: true
+                toOriginalState: true,
             });
-        }
+        };
 
         return {
             isEditMode,
@@ -83,7 +84,7 @@ export const useStationsStreamersForm = defineStore(
             form,
             record,
             r$,
-            $reset
-        }
-    }
+            $reset,
+        };
+    },
 );

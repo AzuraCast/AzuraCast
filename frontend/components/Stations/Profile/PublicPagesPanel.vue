@@ -118,31 +118,31 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useTemplateRef } from "vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {computed, useTemplateRef} from "vue";
-import WidgetModal from "~/components/Stations/Profile/WidgetModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import IconIcDesignServices from "~icons/ic/baseline-design-services";
+import WidgetModal from "~/components/Stations/Profile/WidgetModal.vue";
+import { StationPermissions } from "~/entities/ApiInterfaces.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
 import IconIcCheck from "~icons/ic/baseline-check";
 import IconIcClose from "~icons/ic/baseline-close";
 import IconIcCode from "~icons/ic/baseline-code";
+import IconIcDesignServices from "~icons/ic/baseline-design-services";
 
 const stationData = useStationData();
 
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
-const $widgetModal = useTemplateRef('$widgetModal');
+const $widgetModal = useTemplateRef("$widgetModal");
 
 const doOpenEmbed = () => {
     $widgetModal.value?.open();
 };
 
 const togglePublicPages = useToggleFeature(
-    'enable_public_page',
+    "enable_public_page",
     computed(() => stationData.value.enablePublicPages),
 );
 </script>

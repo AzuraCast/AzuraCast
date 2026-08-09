@@ -255,72 +255,72 @@
 </template>
 
 <script setup lang="ts">
-import FormMarkup from "~/components/Form/FormMarkup.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { storeToRefs } from "pinia";
+import { computed, useTemplateRef } from "vue";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
-import {computed, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import { ApiTaskWithLog } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcBadge from "~icons/ic/baseline-badge";
 import IconIcSend from "~icons/ic/baseline-send";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
-    releaseChannel: string
+    releaseChannel: string;
 }>();
 
-const {getApiUrl} = useApiRouter();
-const acmeUrl = getApiUrl('/admin/acme');
+const { getApiUrl } = useApiRouter();
+const acmeUrl = getApiUrl("/admin/acme");
 
-const {form, r$} = storeToRefs(useAdminSettingsForm());
+const { form, r$ } = storeToRefs(useAdminSettingsForm());
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.servicesTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langReleaseChannel = computed(() => {
-    return (props.releaseChannel === 'stable')
-        ? $gettext('Stable')
-        : $gettext('Rolling Release');
+    return props.releaseChannel === "stable"
+        ? $gettext("Stable")
+        : $gettext("Rolling Release");
 });
 
 const avatarServiceOptions = computed(() => {
     return [
         {
-            value: 'libravatar',
-            text: 'Libravatar'
+            value: "libravatar",
+            text: "Libravatar",
         },
         {
-            value: 'gravatar',
-            text: 'Gravatar'
+            value: "gravatar",
+            text: "Gravatar",
         },
         {
-            value: 'disabled',
-            text: $gettext('Disabled')
-        }
-    ]
+            value: "disabled",
+            text: $gettext("Disabled"),
+        },
+    ];
 });
 
-const $acmeModal = useTemplateRef('$acmeModal');
+const $acmeModal = useTemplateRef("$acmeModal");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const generateAcmeCert = async () => {
-    const {data} = await axios.put<ApiTaskWithLog>(acmeUrl.value);
+    const { data } = await axios.put<ApiTaskWithLog>(acmeUrl.value);
     $acmeModal.value?.show(data.logUrl);
-}
+};
 
-const $testMessageModal = useTemplateRef('$testMessageModal');
+const $testMessageModal = useTemplateRef("$testMessageModal");
 
 const openTestMessage = () => {
     $testMessageModal.value?.open();
-}
+};
 </script>

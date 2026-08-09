@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {useStationData} from "~/functions/useStationQuery.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
 const stationData = useStationData();
 </script>

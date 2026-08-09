@@ -78,36 +78,36 @@
 </template>
 
 <script setup lang="ts">
-import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
-import LogList from "~/components/Common/LogList.vue";
-import {useTemplateRef} from "vue";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {ApiLogType} from "~/entities/ApiInterfaces.ts";
-import {useAxios} from "~/vendor/axios.ts";
+import { useQuery } from "@tanstack/vue-query";
+import { useTemplateRef } from "vue";
 import Loading from "~/components/Common/Loading.vue";
+import LogList from "~/components/Common/LogList.vue";
+import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
+import { ApiLogType } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 import IconIcSupport from "~icons/ic/baseline-support";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const logsUrl = getStationApiUrl('/logs');
+const { getStationApiUrl } = useApiRouter();
+const logsUrl = getStationApiUrl("/logs");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-type ApiLogRow = Required<ApiLogType>
+type ApiLogRow = Required<ApiLogType>;
 
-const {data, isLoading} = useQuery<ApiLogRow[]>({
-    queryKey: queryKeyWithStation([
-        QueryKeys.StationLogs
-    ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiLogRow[]>(logsUrl.value, {signal});
+const { data, isLoading } = useQuery<ApiLogRow[]>({
+    queryKey: queryKeyWithStation([QueryKeys.StationLogs]),
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<ApiLogRow[]>(logsUrl.value, {
+            signal,
+        });
         return data;
     },
-    placeholderData: () => []
+    placeholderData: () => [],
 });
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 const viewLog = (url: string, isStreaming: boolean) => {
     $modal.value?.show(url, isStreaming);

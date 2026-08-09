@@ -77,33 +77,35 @@
 </template>
 
 <script setup lang="ts">
+import { reactiveComputed } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { shallowRef, useTemplateRef, watch } from "vue";
+import { RegionParams } from "wavesurfer.js/dist/plugins/regions.js";
 import WaveformComponent from "~/components/Common/Audio/Waveform.vue";
-import {shallowRef, useTemplateRef, watch} from "vue";
-import {reactiveComputed} from "@vueuse/core";
-import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
-import {storeToRefs} from "pinia";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {StationMediaMetadata, StationMediaRecord} from "~/entities/StationMedia.ts";
+import {
+    StationMediaMetadata,
+    StationMediaRecord,
+} from "~/entities/StationMedia.ts";
+import { usePlayerStore } from "~/functions/usePlayerStore.ts";
 import IconIcPlayCircle from "~icons/ic/baseline-play-circle";
 import IconIcStop from "~icons/ic/baseline-stop";
 
 const props = defineProps<{
-    duration: number,
-    audioUrl: string,
-    waveformUrl: string,
-    waveformCacheUrl?: string,
+    duration: number;
+    audioUrl: string;
+    waveformUrl: string;
+    waveformCacheUrl?: string;
 }>();
 
-const form = defineModel<StationMediaRecord>('form', {
-    required: true
+const form = defineModel<StationMediaRecord>("form", {
+    required: true,
 });
 
-const $waveform = useTemplateRef('$waveform');
+const $waveform = useTemplateRef("$waveform");
 
-const {
-    duration: durationRef,
-    currentTime: currentTimeRef
-} = storeToRefs(usePlayerStore());
+const { duration: durationRef, currentTime: currentTimeRef } = storeToRefs(
+    usePlayerStore(),
+);
 
 const regions = shallowRef<RegionParams[]>([]);
 
@@ -114,7 +116,7 @@ const cueValues = reactiveComputed(() => {
         cue_out: null,
         cross_start_next: null,
         fade_in: null,
-        fade_out: null
+        fade_out: null,
     };
     const duration = durationRef.value ?? props.duration ?? 0;
 
@@ -136,14 +138,14 @@ const stopAudio = () => {
 };
 
 const updateRegions = () => {
-    const {cue_in, cue_out, cross_start_next, fade_in, fade_out} = cueValues;
+    const { cue_in, cue_out, cross_start_next, fade_in, fade_out } = cueValues;
     const newRegions: RegionParams[] = [];
 
     // Create cue region
     newRegions.push({
         start: cue_in,
         end: cue_out,
-        color: 'hsla(207,90%,54%,0.4)'
+        color: "hsla(207,90%,54%,0.4)",
     });
 
     // Create fade start next region
@@ -151,7 +153,7 @@ const updateRegions = () => {
         newRegions.push({
             start: cross_start_next,
             end: cue_out,
-            color: 'hsla(29,100%,48%,0.4)'
+            color: "hsla(29,100%,48%,0.4)",
         });
     }
 
@@ -160,7 +162,7 @@ const updateRegions = () => {
         newRegions.push({
             start: cue_in,
             end: fade_in + cue_in,
-            color: 'hsla(351,100%,48%,0.4)'
+            color: "hsla(351,100%,48%,0.4)",
         });
     }
 
@@ -168,20 +170,24 @@ const updateRegions = () => {
         newRegions.push({
             start: cue_out - fade_out,
             end: cue_out,
-            color: 'hsla(351,100%,48%,0.4)'
+            color: "hsla(351,100%,48%,0.4)",
         });
     }
 
     regions.value = newRegions;
 };
 
-watch(cueValues, () => {
-    updateRegions()
-}, {
-    immediate: true
-});
+watch(
+    cueValues,
+    () => {
+        updateRegions();
+    },
+    {
+        immediate: true,
+    },
+);
 
-const waveformToFloat = (value: number) => Math.round((value) * 10) / 10;
+const waveformToFloat = (value: number) => Math.round(value * 10) / 10;
 
 const setCueIn = () => {
     form.value.extra_metadata.cue_in = waveformToFloat(currentTimeRef.value);
@@ -192,7 +198,9 @@ const setCueOut = () => {
 };
 
 const setFadeStartNext = () => {
-    form.value.extra_metadata.cross_start_next = waveformToFloat(currentTimeRef.value);
+    form.value.extra_metadata.cross_start_next = waveformToFloat(
+        currentTimeRef.value,
+    );
 };
 
 const setFadeIn = () => {
@@ -200,7 +208,7 @@ const setFadeIn = () => {
     const cue_in = form.value.extra_metadata.cue_in ?? 0;
 
     form.value.extra_metadata.fade_in = waveformToFloat(currentTime - cue_in);
-}
+};
 
 const setFadeOut = () => {
     const currentTime = currentTimeRef.value ?? 0;

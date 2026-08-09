@@ -80,32 +80,35 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { computed, ref, useTemplateRef } from "vue";
+import { BackupSettings } from "~/components/Admin/BackupsWrapper.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import mergeExisting from "~/functions/mergeExisting";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
-import {computed, ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
+import mergeExisting from "~/functions/mergeExisting";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    settingsUrl: string,
-    storageLocations: Record<number, string>,
+    settingsUrl: string;
+    storageLocations: Record<number, string>;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 
-type BackupSettingsRow = Omit<BackupSettings, 'backup_last_run' | 'backup_last_output'>;
+type BackupSettingsRow = Omit<
+    BackupSettings,
+    "backup_last_run" | "backup_last_output"
+>;
 
 const form = ref<BackupSettingsRow>({
     backup_enabled: false,
@@ -113,43 +116,40 @@ const form = ref<BackupSettingsRow>({
     backup_exclude_media: false,
     backup_keep_copies: 2,
     backup_storage_location: null,
-    backup_format: null
+    backup_format: null,
 });
 
-const {r$} = useAppRegle(
-    form,
-    {},
-    {}
-);
+const { r$ } = useAppRegle(form, {}, {});
 
-const resetForm = () => r$.$reset({
-    toOriginalState: true
-});
+const resetForm = () =>
+    r$.$reset({
+        toOriginalState: true,
+    });
 
 const formatOptions = computed(() => {
     return [
         {
-            value: 'zip',
-            text: 'Zip',
+            value: "zip",
+            text: "Zip",
         },
         {
-            value: 'tgz',
-            text: 'TarGz'
+            value: "tgz",
+            text: "TarGz",
         },
         {
-            value: 'tzst',
-            text: 'ZStd'
-        }
+            value: "tzst",
+            text: "ZStd",
+        },
     ];
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const $modal = useTemplateRef('$modal');
-const {hide, show} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { hide, show } = useHasModal($modal);
 
 const close = () => {
-    emit('relist');
+    emit("relist");
     hide();
 };
 
@@ -161,10 +161,10 @@ const doOpen = async () => {
     show();
 
     try {
-        const {data} = await axios.get(props.settingsUrl);
+        const { data } = await axios.get(props.settingsUrl);
 
         r$.$reset({
-            toState: mergeExisting(r$.$value, data)
+            toState: mergeExisting(r$.$value, data),
         });
         loading.value = false;
     } catch {
@@ -176,25 +176,25 @@ const open = () => {
     void doOpen();
 };
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const submit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
 
     await axios({
-        method: 'PUT',
+        method: "PUT",
         url: props.settingsUrl,
-        data: postData
+        data: postData,
     });
 
     notifySuccess();
     close();
-}
+};
 
 defineExpose({
-    open
+    open,
 });
 </script>

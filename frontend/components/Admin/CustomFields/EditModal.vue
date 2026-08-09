@@ -43,38 +43,44 @@
 </template>
 
 <script setup lang="ts">
+import { required } from "@regle/rules";
+import { computed, ref, toRef, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, ref, toRef, useTemplateRef} from "vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {useTranslate} from "~/vendor/gettext";
-import {CustomField} from "~/entities/ApiInterfaces.ts";
-import {required} from "@regle/rules";
-import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useAppRegle} from "~/vendor/regle.ts";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { CustomField } from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-const props = defineProps<BaseEditModalProps & {
-    autoAssignTypes: Record<string, string>
-}>();
+const props = defineProps<
+    BaseEditModalProps & {
+        autoAssignTypes: Record<string, string>;
+    }
+>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal')
+const $modal = useTemplateRef("$modal");
 
-type Form = Required<Omit<CustomField, 'id'>>;
+type Form = Required<Omit<CustomField, "id">>;
 
 const form = ref<Form>({
-    name: '',
-    short_name: '',
-    auto_assign: ''
+    name: "",
+    short_name: "",
+    auto_assign: "",
 });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        name: {required},
+        name: { required },
     },
-    {}
+    {},
 );
 
 const {
@@ -85,41 +91,41 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal<Form>(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     () => {
         r$.$reset({
-            toOriginalState: true
+            toOriginalState: true,
         });
     },
     (data) => {
         r$.$reset({
-            toState: mergeExisting(r$.$value, data)
-        })
+            toState: mergeExisting(r$.$value, data),
+        });
     },
     async () => {
-        const {valid} = await r$.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await r$.$validate();
+        return { valid, data: form.value };
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const autoAssignOptions = computed(() => {
     const autoAssignOptions = [
         {
-            text: $gettext('Disable'),
-            value: '',
-        }
+            text: $gettext("Disable"),
+            value: "",
+        },
     ];
 
     for (const typeKey in props.autoAssignTypes) {
         autoAssignOptions.push({
             text: props.autoAssignTypes[typeKey],
-            value: typeKey
+            value: typeKey,
         });
     }
 
@@ -128,13 +134,13 @@ const autoAssignOptions = computed(() => {
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Custom Field')
-        : $gettext('Add Custom Field');
+        ? $gettext("Edit Custom Field")
+        : $gettext("Add Custom Field");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

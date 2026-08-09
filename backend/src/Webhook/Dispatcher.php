@@ -58,6 +58,9 @@ final class Dispatcher
         $np = $message->np;
         $triggers = $message->triggers;
 
+        // Recalculate elapsed/remaining in case this message spent a long time in queue.
+        $np->update();
+
         // Always dispatch the special "local" updater task.
         try {
             $this->localHandler->dispatch($station, $np, $triggers);

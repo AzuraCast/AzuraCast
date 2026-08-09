@@ -7,6 +7,17 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.8 (Aug 9, 2026)
+
+This release is primarily a quality-of-life release, addressing several security issues that were identified by
+community researchers and expanding the tools available to installation owners to help lock down their installations.
+
+## New Features/Changes
+
 - Added a new system-wide toggle to heavily filter user-supplied URLs in certain sensitive scenarios. In some places
   (notably, Webhooks and Remote Relays), station administrators can input a URL that will then invoke outbound HTTP
   requests from your installation. Multi-tenant installations or resellers should enable this setting, in order to
@@ -18,11 +29,16 @@ release channel, you can take advantage of these new features and fixes.
   outgoing HTTP POST request from your AzuraCast installation, this may be considered a security risk in your
   infrastructure, so you can disable them entirely as a safety measure.
 
-- Added an extra check to on-demand media downloads to ensure only media in on-demand playlists is downloadable.
-
 ## Bug Fixes
 
 - Fixed a bug preventing users from changing their password on the accounts page.
+
+- Fixed an issue where some players would not play proxied radio streams (i.e. `/listen/station`) because chunked
+  encoding was in use.
+
+- Apply optional user URL filtering to Webhooks (Generic, Matomo and Discord), Remote Relays and Remote URL playlists.
+
+- Added an extra check to on-demand media downloads to ensure only media in on-demand playlists is downloadable.
 
 ---
 

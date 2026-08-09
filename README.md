@@ -10,9 +10,11 @@
 [![BlueSky Follow](https://img.shields.io/bluesky/followers/azuracast.com)](https://bsky.app/profile/azuracast.com)
 [![Built with Depot](https://img.shields.io/badge/built_with-Depot-%2346A75A?labelColor=%23191719)](https://depot.dev/?utm_source=AzuraCast)
 
-AzuraCast is built and maintained by passionate human beings, and 100% of our code is reviewed and approved by humans. See [our policy on generative AI](https://github.com/AzuraCast/.github/blob/main/CONTRIBUTING.md#our-policy-on-generative-ai) for more details.
-
 ![](https://www.azuracast.com/img/ScreenshotTour.gif)
+
+AzuraCast is an Internet radio station "in a box"; it is a full-featured, self-contained and self-hostable software
+suite, distributed using Docker, that contains a full free and open-source web radio software stack and a powerful but
+intuitive and accessible web interface (and well-documented API) to manage your stations.
 
 You can learn more about AzuraCast via our [Documentation](https://www.azuracast.com/docs):
 

@@ -7,6 +7,8 @@ import Icons from 'unplugin-icons/vite';
 
 const inputs = {};
 
+const __dirname = import.meta.dirname;
+
 glob.sync('./frontend/js/pages/**/*.js').forEach((path) => {
     // vue/pages/Admin/Index becomes AdminIndex
     const entry = path.replace(/\.js$/g, '')

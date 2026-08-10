@@ -48,12 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { required, withMessage } from "@regle/rules";
+import { required, sameAs } from "@regle/rules";
 import { ref, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
 import { useAxios } from "~/vendor/axios";
 import { useTranslate } from "~/vendor/gettext";
 import { isValidPassword, useAppRegle } from "~/vendor/regle.ts";
@@ -65,20 +66,23 @@ const changePasswordUrl = getApiUrl("/frontend/account/password");
 
 const { $gettext } = useTranslate();
 
+const { record: form, reset: resetFormRef } = useResettableRef({
+    current_password: "",
+    new_password: "",
+    new_password2: "",
+});
+
 const { r$ } = useAppRegle(
-    {
-        current_password: "",
-        new_password: "",
-        new_password2: "",
-    },
+    form,
     {
         current_password: { required },
         new_password: { required, isValidPassword },
         new_password2: {
             required,
-            passwordsMatch: withMessage((value, siblings) => {
-                return siblings.new_password === value;
-            }, $gettext("Must match new password.")),
+            sameAs: sameAs(
+                () => form.value.new_password,
+                $gettext("New Password"),
+            ),
         },
     },
     {},
@@ -87,9 +91,8 @@ const { r$ } = useAppRegle(
 const error = ref(null);
 
 const clearContents = () => {
-    r$.$reset({
-        toOriginalState: true,
-    });
+    resetFormRef();
+    r$.$reset();
 
     error.value = null;
 };

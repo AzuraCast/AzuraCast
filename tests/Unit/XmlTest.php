@@ -11,8 +11,6 @@ use UnitTester;
 
 class XmlTest extends Unit
 {
-    protected UnitTester $tester;
-
     public function testXml(): void
     {
         $arrayValue = [

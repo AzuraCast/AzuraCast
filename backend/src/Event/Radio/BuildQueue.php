@@ -80,6 +80,10 @@ final class BuildQueue extends Event
 
             $this->nextSongs = [$nextSongs];
         } else {
+            if (empty($nextSongs)) {
+                return false;
+            }
+
             $this->nextSongs = $nextSongs;
         }
 

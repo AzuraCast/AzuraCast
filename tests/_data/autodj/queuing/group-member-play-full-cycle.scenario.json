@@ -1,0 +1,87 @@
+{
+  "description": "A sequential group whose first member (A) has play_full_cycle=true and 3 tracks. The group holds A for its entire sequential pass (a1, a2, a3) before advancing to member B (b1), then reshuffles the group queue and repeats. Asserted over two full group cycles. Without play_full_cycle the group would round-robin as a1, b1, a2, b1, a3, b1.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-plays-full-sequence-then-advances",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a2",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a3",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a2",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "a3",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        }
+      ]
+    }
+  ]
+}

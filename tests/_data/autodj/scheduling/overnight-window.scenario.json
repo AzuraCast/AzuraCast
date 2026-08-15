@@ -1,0 +1,37 @@
+{
+  "description": "Overnight playlist scheduled 22:00-04:00 on Mon/Tue/Wed.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "monday-2230-plays",
+      "now": "2018-01-15T22:30:00+00:00",
+      "expect_should_play": {
+        "overnight": true
+      }
+    },
+    {
+      "name": "thursday-0300-plays",
+      "now": "2018-01-18T03:00:00+00:00",
+      "expect_should_play": {
+        "overnight": true
+      }
+    },
+    {
+      "name": "monday-0300-does-not-play",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_should_play": {
+        "overnight": false
+      }
+    },
+    {
+      "name": "thursday-2230-does-not-play",
+      "now": "2018-01-18T22:30:00+00:00",
+      "expect_should_play": {
+        "overnight": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mADV",
+      "path": "memtype/adv.mp3",
+      "unique_id": "gmembaaaaaaaaaaaaaaaaa01",
+      "length": 120.0,
+      "artist": "ADV",
+      "title": "ADV",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mOPM",
+      "path": "memtype/opm.mp3",
+      "unique_id": "gmembaaaaaaaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "OPM",
+      "title": "OPM",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mOPH",
+      "path": "memtype/oph.mp3",
+      "unique_id": "gmembaaaaaaaaaaaaaaaaa03",
+      "length": 120.0,
+      "artist": "OPH",
+      "title": "OPH",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mSTD",
+      "path": "memtype/std.mp3",
+      "unique_id": "gmembaaaaaaaaaaaaaaaaa04",
+      "length": 120.0,
+      "artist": "STD",
+      "title": "STD",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "grp",
+      "name": "Mixed Member Types Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "adv",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "opm",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "oph",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "std",
+          "weight": 4,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "adv",
+      "name": "Advanced Member",
+      "config": {
+        "type": "custom",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mADV",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "opm",
+      "name": "Once Per X Minutes Member",
+      "config": {
+        "type": "once_per_x_minutes",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 30,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOPM",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "oph",
+      "name": "Once Per Hour Member",
+      "config": {
+        "type": "once_per_hour",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOPH",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "std",
+      "name": "Standard Member",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mSTD",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

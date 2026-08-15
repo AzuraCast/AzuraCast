@@ -1,0 +1,35 @@
+{
+  "description": "Fixture for the 'scheduled member outside its group's window' conflict warning. A scheduled group (grp, 12:00-13:00) with a member scheduled outside that window (outside, 03:00-04:00) and one inside it (inside, 12:15-12:45); a standalone scheduled playlist; a member of an unscheduled group (open_grp/open_member); and a nested chain (top_grp 12:00-13:00 -> mid_grp unscheduled -> deep_member 03:00-04:00). These expect_should_play cases validate each playlist's own schedule window; the group-schedule-conflict flag is asserted separately.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "morning-0330-only-outside-windows-active",
+      "now": "2018-01-15T03:30:00+00:00",
+      "expect_should_play": {
+        "grp": false,
+        "top_grp": false,
+        "outside": true,
+        "inside": false,
+        "standalone": true,
+        "open_member": true,
+        "deep_member": true
+      }
+    },
+    {
+      "name": "midday-1230-only-group-windows-active",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_should_play": {
+        "grp": true,
+        "top_grp": true,
+        "outside": false,
+        "inside": true,
+        "standalone": false,
+        "open_member": false,
+        "deep_member": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "description": "When a scheduled, active root playlist group has a member with allowed_requests=none, the global request queue is blocked for that build: the request is ignored and the group plays its own member track.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-none-blocks-request",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

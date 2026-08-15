@@ -607,6 +607,16 @@ return static function (RouteCollectorProxy $group) {
                                 Controller\Api\Stations\PlaylistsController::class . ':scheduleAction'
                             )->setName('api:stations:playlists:schedule');
 
+                            $group->get(
+                                '/playlists/export-config',
+                                Controller\Api\Stations\Playlists\ExportConfigAction::class
+                            )->setName('api:stations:playlists:export_config');
+
+                            $group->post(
+                                '/playlists/import-config',
+                                Controller\Api\Stations\Playlists\ImportConfigAction::class
+                            )->setName('api:stations:playlists:import_config');
+
                             $group->group(
                                 '/playlist/{id}',
                                 function (RouteCollectorProxy $group) {
@@ -671,6 +681,11 @@ return static function (RouteCollectorProxy $group) {
                                     )->setName('api:stations:playlist:export');
 
                                     $group->get(
+                                        '/export-config',
+                                        Controller\Api\Stations\Playlists\ExportConfigAction::class
+                                    )->setName('api:stations:playlist:export_config');
+
+                                    $group->get(
                                         '/apply-to',
                                         Controller\Api\Stations\Playlists\GetApplyToAction::class
                                     )->setName('api:stations:playlist:applyto');
@@ -684,6 +699,11 @@ return static function (RouteCollectorProxy $group) {
                                         '/empty',
                                         Controller\Api\Stations\Playlists\EmptyAction::class
                                     )->setName('api:stations:playlist:empty');
+
+                                    $group->put(
+                                        '/members',
+                                        Controller\Api\Stations\Playlists\PutMembersAction::class
+                                    )->setName('api:stations:playlist:members');
                                 }
                             );
                         }

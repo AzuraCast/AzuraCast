@@ -1,0 +1,50 @@
+{
+  "description": "With station.requests_only_via_playlists disabled, a due Requests-source playlist still preempts the global request queue: while scheduled the request is queued via the playlist (playlist attached); outside its window the global request queue is the fallback and plays the same request with no playlist attached.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "due-playlist-preempts-global",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "reqpl",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    },
+    {
+      "name": "not-due-falls-back-to-global",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

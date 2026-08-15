@@ -102,10 +102,15 @@
                                             {{ np.now_playing?.song?.text ?? '' }}
                                         </h6>
                                     </div>
-                                    <div v-if="np.now_playing?.playlist">
-                                        <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.now_playing.playlist }}</small>
+                                    <div
+                                        v-if="np.now_playing?.playlist"
+                                        class="mt-2 mb-1"
+                                    >
+                                        <playlist-source-badge
+                                            :chain="np.now_playing.playlist_chain"
+                                            :playlist-name="np.now_playing.playlist"
+                                            :source="np.now_playing.playlist_source"
+                                        />
                                     </div>
                                     <div
                                         v-if="currentTrackElapsedDisplay"
@@ -171,10 +176,15 @@
                                         </h6>
                                     </div>
 
-                                    <div v-if="np.playing_next.playlist">
-                                        <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.playing_next.playlist }}</small>
+                                    <div
+                                        v-if="np.playing_next.playlist"
+                                        class="mt-2"
+                                    >
+                                        <playlist-source-badge
+                                            :chain="np.playing_next.playlist_chain"
+                                            :playlist-name="np.playing_next.playlist"
+                                            :source="np.playing_next.playlist_source"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -256,6 +266,7 @@ import { toRefs } from "@vueuse/core";
 import { computed, useTemplateRef } from "vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import PlaylistSourceBadge from "~/components/Stations/Common/PlaylistSourceBadge.vue";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import { useStationProfileData } from "~/components/Stations/Profile/useProfileQuery.ts";

@@ -1,0 +1,47 @@
+{
+  "description": "A Requests-source playlist plays requests only within its schedule window: while scheduled it queues the pending request (with the playlist attached), and outside its window nothing is queued.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "due-plays-request-via-playlist",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "reqpl",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    },
+    {
+      "name": "not-scheduled-queues-nothing",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

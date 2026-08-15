@@ -10,8 +10,6 @@ use UnitTester;
 
 class UtilitiesTest extends Unit
 {
-    protected UnitTester $tester;
-
     public function testUtilities(): void
     {
         $testResult = Strings::generatePassword(10);

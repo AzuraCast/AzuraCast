@@ -1,0 +1,69 @@
+{
+  "description": "Group order=shuffle: each member plays exactly once per cycle in a random permutation, then the group reshuffles. Asserted over two full cycles (distinct picks within each cycle), which also exercises the queue-reset/reshuffle path. Runs in both modes and is seed-independent.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "shuffle-plays-each-member-once-per-cycle-over-two-cycles",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB",
+            "mC"
+          ],
+          "distinct": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "description": "With station.requests_only_via_playlists enabled, the global request queue is disabled entirely: a pending, otherwise-playable request is ignored and normal rotation plays instead.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "global-request-queue-disabled",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rot",
+          "media_ref": "mRot",
+          "playlist_chain_refs": [],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

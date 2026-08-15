@@ -12,7 +12,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -61,7 +60,7 @@ final class PutPasswordAction implements SingleActionInterface
         }
 
         if (!$user->verifyPassword($changePassword->current_password)) {
-            throw new InvalidArgumentException('Invalid current password.');
+            throw new ValidationException('Invalid current password.');
         }
 
         $user = $this->em->refetch($user);

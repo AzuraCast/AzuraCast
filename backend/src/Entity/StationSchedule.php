@@ -100,6 +100,15 @@ final class StationSchedule implements IdentifiableEntityInterface
     ]
     public bool $loop_once = false;
 
+    #[
+        OA\Property(
+            description: "Used to suppress the global request queue while this schedule window is active.",
+            example: false
+        ),
+        ORM\Column
+    ]
+    public bool $prevent_requests = false;
+
     public function __construct(StationPlaylist|StationStreamer $relation)
     {
         if ($relation instanceof StationPlaylist) {

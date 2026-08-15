@@ -182,7 +182,9 @@
     ],
     "cleanup-and-test": [
       "@phpcbf",
-      "@dev-test"
+      "@dev-test",
+      "codecept build",
+      "codecept run Unit"
     ],
     "cleanup-and-test-full": [
       "@phpcbf",

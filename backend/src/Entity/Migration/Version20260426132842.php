@@ -10,14 +10,13 @@ final class Version20260426132842 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add request prevention settings to station and schedule.';
     }
 
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE station ADD requests_only_via_playlists TINYINT NOT NULL');
         $this->addSql('ALTER TABLE station_schedules ADD prevent_requests TINYINT NOT NULL');
-
 
         $rows = $this->connection->iterateAssociative(
             <<<'SQL'

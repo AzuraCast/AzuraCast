@@ -5,6 +5,20 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Grouped/Nested Playlists/Clockwheels**: This highly-requested feature is now available in AzuraCast. With grouped
+  playlists, you can create a playlist that is made up of other smaller playlists configured to play consecutively
+  following certain rules. This level of fine-grained control was previously only possible with custom Liquidsoap code.
+
+- **Request Queue Playlists**: This feature introduces a new playlist source, the request queue itself, giving stations
+  more fine-tuned control of when user requests are played in their rotation.
+
+- **Block Requests During Schedule Blocks**: You can now indicate that listener song requests should not be submitted or
+  processed in a given schedule block.
+
+- **Playlist JSON Importer/Exporter**: You can export the entire playlist configuration of your station, or an
+  individual playlist, as a JSON data file that can be imported into other instances of AzuraCast (or other stations on
+  the same instance) for easy portability and preservation of complex playlist configurations.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

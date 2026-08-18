@@ -247,12 +247,12 @@ final class PlaylistConfigurationImporter
             return $summary->mediaByRef[$mediaRef];
         }
 
-        $path = $mediaEntry->path;
-
-        $media = $this->mediaRepo->findByPath($path, $storageLocation);
-        if ($media !== null && !empty($mediaEntry->uniqueId)) {
+        $media = null;
+        if (!empty($mediaEntry->uniqueId)) {
             $media = $this->mediaRepo->findByUniqueId($mediaEntry->uniqueId, $storageLocation);
         }
+
+        $media ??= $this->mediaRepo->findByPath($mediaEntry->path, $storageLocation);
 
         if ($media !== null) {
             $summary->mediaRelinked++;

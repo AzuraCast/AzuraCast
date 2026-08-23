@@ -4,6 +4,7 @@
         ref="$modal"
         :title="$gettext('Import Playlist Configuration')"
         size="lg"
+        :busy="loading"
         @hidden="onHidden"
     >
         <div v-if="results">
@@ -79,13 +80,14 @@
             <button
                 type="button"
                 class="btn btn-secondary"
+                :disabled="loading"
                 @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
             <button
                 v-if="!results"
-                :disabled="playlistsConfigFile === null"
+                :disabled="playlistsConfigFile === null || loading"
                 class="btn btn-primary"
                 type="submit"
                 @click="doSubmit"
@@ -124,6 +126,7 @@ const emit = defineEmits<HasRelistEmit>();
 
 const playlistsConfigFile = ref<File | null>(null);
 const namePrefix = ref<string>("");
+const loading = ref<boolean>(false);
 
 const results = ref<ConfigImportResult | null>(null);
 
@@ -137,6 +140,7 @@ const { show, hide } = useHasModal($modal);
 const open = () => {
     playlistsConfigFile.value = null;
     namePrefix.value = "";
+    loading.value = false;
     results.value = null;
 
     show();
@@ -156,18 +160,24 @@ const doSubmit = async () => {
         formData.append("name_prefix", namePrefix.value);
     }
 
-    const { data } = await axios.post<ConfigImportResult>(
-        props.importUrl,
-        formData,
-    );
+    loading.value = true;
 
-    if (data.success) {
-        results.value = data;
+    try {
+        const { data } = await axios.post<ConfigImportResult>(
+            props.importUrl,
+            formData,
+        );
 
-        notifySuccess(data.message);
-    } else {
-        notifyError(data.message);
-        hide();
+        if (data.success) {
+            results.value = data;
+
+            notifySuccess(data.message);
+        } else {
+            notifyError(data.message);
+            hide();
+        }
+    } finally {
+        loading.value = false;
     }
 };
 

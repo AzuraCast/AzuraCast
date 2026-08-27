@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { required } from "@regle/rules";
-import { ref, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
@@ -45,6 +45,7 @@ const emit = defineEmits<{
 }>();
 
 const cloneUrl = ref<string | null>(null);
+const isGroup = ref<boolean>(false);
 
 const { record: form, reset: resetForm } = useResettableRef({
     name: "",
@@ -62,29 +63,40 @@ const { r$ } = useAppRegle(
 
 const clearContents = () => {
     cloneUrl.value = null;
+    isGroup.value = false;
     resetForm();
     r$.$reset();
 };
 
 const { $gettext } = useTranslate();
 
-const copyOptions = [
-    {
-        value: "media",
-        text: $gettext("Copy associated media and folders."),
-    },
+const copyOptions = computed(() => [
+    ...(isGroup.value
+        ? [
+              {
+                  value: "members",
+                  text: $gettext("Copy associated playlists."),
+              },
+          ]
+        : [
+              {
+                  value: "media",
+                  text: $gettext("Copy associated media and folders."),
+              },
+          ]),
     {
         value: "schedule",
         text: $gettext("Copy scheduled playback times."),
     },
-];
+]);
 
 const $modal = useTemplateRef("$modal");
 
-const open = (name: string, newCloneUrl: string) => {
+const open = (name: string, newCloneUrl: string, newIsGroup: boolean) => {
     clearContents();
 
     cloneUrl.value = newCloneUrl;
+    isGroup.value = newIsGroup;
     form.value.name = $gettext("%{name} - Copy", { name: name });
 
     $modal.value?.show();

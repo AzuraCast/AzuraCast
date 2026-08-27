@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylist;
 
@@ -21,7 +22,8 @@ abstract class AbstractClonableAction
         StationPlaylist $record,
         ?string $newName = null,
         bool $cloneSchedules = true,
-        bool $cloneMedia = false
+        bool $cloneMedia = false,
+        bool $cloneMembers = false
     ): StationPlaylist {
         $this->em->detach($record);
 
@@ -56,6 +58,17 @@ abstract class AbstractClonableAction
                 $newMediaItem = clone $oldMediaItem;
                 $newMediaItem->playlist = $newRecord;
                 $this->em->persist($newMediaItem);
+            }
+        }
+
+        if ($cloneMembers && $record->source === PlaylistSources::Playlists) {
+            foreach ($record->playlists as $oldMember) {
+                $this->em->detach($oldMember);
+
+                $newMember = clone $oldMember;
+                $newMember->playlist_group = $newRecord;
+
+                $this->em->persist($newMember);
             }
         }
 

@@ -308,7 +308,7 @@
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-secondary"
-                                        @click="doClone(item.name, item.links.clone)"
+                                        @click="doClone(item.name, item.links.clone, item.source === 'playlists')"
                                     >
                                         {{ $gettext('Duplicate') }}
                                     </button>
@@ -566,8 +566,8 @@ const doImportPlaylistConfig = () => {
 
 const $cloneModal = useTemplateRef("$cloneModal");
 
-const doClone = (name: string, url: string) => {
-    $cloneModal.value?.open(name, url);
+const doClone = (name: string, url: string, isGroup: boolean) => {
+    $cloneModal.value?.open(name, url, isGroup);
 };
 
 const $applyToModal = useTemplateRef("$applyToModal");

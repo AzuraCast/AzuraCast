@@ -3483,7 +3483,7 @@ paths:
                 clone:
                   description: 'Which parts of the original playlist to clone.'
                   type: array
-                  items: { type: string, enum: [schedule, media] }
+                  items: { type: string, enum: [schedule, media, members] }
               type: object
       responses:
         '200':

@@ -324,6 +324,11 @@ final class StationPlaylistMediaRepository extends Repository
             );
         }
 
+        $this->resyncManagedEntities(
+            StationPlaylistMedia::class,
+            static fn(StationPlaylistMedia $spm): bool => $spm->playlist === $playlist
+        );
+
         $now ??= Time::nowUtc();
 
         $playlist->queue_reset_at = $now;

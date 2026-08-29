@@ -191,11 +191,20 @@ final class InMemoryAutoDjHarnessFactory
     {
         $repo = Mockery::mock(StationRequestRepository::class);
 
+        $repo->allows('getPlayableRequests')->andReturnUsing(
+            static fn(
+                Station $station,
+                ?DateTimeImmutable $now = null,
+                array $additionalSongHistory = []
+            ): array => $dataProxy->getPlayableRequests($station, $now, $additionalSongHistory)
+        );
+
         $repo->allows('getNextPlayableRequest')->andReturnUsing(
             static fn(
                 Station $station,
-                ?DateTimeImmutable $now = null
-            ): ?StationRequest => $dataProxy->getNextPlayableRequest($station, $now)
+                ?DateTimeImmutable $now = null,
+                array $additionalSongHistory = []
+            ): ?StationRequest => $dataProxy->getNextPlayableRequest($station, $now, $additionalSongHistory)
         );
 
         return $repo;

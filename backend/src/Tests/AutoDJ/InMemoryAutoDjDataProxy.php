@@ -409,8 +409,16 @@ final class InMemoryAutoDjDataProxy
 
     // StationRequestRepository
 
-    public function getNextPlayableRequest(Station $station, ?DateTimeImmutable $now = null): ?StationRequest
-    {
+    /**
+     * @param mixed[] $additionalSongHistory
+     *
+     * @return list<StationRequest>
+     */
+    public function getPlayableRequests(
+        Station $station,
+        ?DateTimeImmutable $now = null,
+        array $additionalSongHistory = []
+    ): array {
         $now ??= Time::nowUtc();
 
         $unplayed = array_filter(
@@ -424,13 +432,23 @@ final class InMemoryAutoDjDataProxy
                 => [$b->skip_delay, $a->id] <=> [$a->skip_delay, $b->id]
         );
 
-        return array_find(
+        return array_values(array_filter(
             $unplayed,
-            fn(StationRequest $request): bool => (
-                $request->shouldPlayNow($now)
+            fn(StationRequest $request): bool => $request->shouldPlayNow($now)
                 && !$this->hasRequestTrackPlayedRecently($request->track, $now)
-            )
-        );
+                && !$this->isDuplicateOfPlayedTrack($request->track, $additionalSongHistory)
+        ));
+    }
+
+    /**
+     * @param mixed[] $additionalSongHistory
+     */
+    public function getNextPlayableRequest(
+        Station $station,
+        ?DateTimeImmutable $now = null,
+        array $additionalSongHistory = []
+    ): ?StationRequest {
+        return $this->getPlayableRequests($station, $now, $additionalSongHistory)[0] ?? null;
     }
 
     // Internal helpers
@@ -517,12 +535,24 @@ final class InMemoryAutoDjDataProxy
             ];
         }
 
+        return $this->isDuplicateOfPlayedTrack($media, $recentTracks);
+    }
+
+    /**
+     * @param mixed[] $playedTracks
+     */
+    private function isDuplicateOfPlayedTrack(StationMedia $media, array $playedTracks): bool
+    {
+        if ($playedTracks === []) {
+            return false;
+        }
+
         $eligibleTrack = new StationPlaylistQueue();
         $eligibleTrack->media_id = $media->id;
         $eligibleTrack->song_id = $media->song_id;
         $eligibleTrack->title = $media->title ?? '';
         $eligibleTrack->artist = $media->artist ?? '';
 
-        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks) === null;
+        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $playedTracks) === null;
     }
 }

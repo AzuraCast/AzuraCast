@@ -487,7 +487,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $data['include_in_on_demand'] = false;
             $data['include_in_requests'] = false;
             $data['is_jingle'] = false;
-            $data['backend_options'] = [];
+
+            $backendOptions = (array) ($data['backend_options'] ?? []);
+            $data['backend_options'] = (
+                $source === PlaylistSources::Playlists
+                && in_array(StationPlaylist::OPTION_MERGE, $backendOptions, true)
+            )
+                ? [StationPlaylist::OPTION_MERGE]
+                : [];
 
             $type = PlaylistTypes::tryFrom($data['type'] ?? '');
             $data['type'] = ($type === PlaylistTypes::Advanced)

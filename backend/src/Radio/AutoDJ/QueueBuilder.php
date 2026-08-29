@@ -237,7 +237,7 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Given a specified playlist group, choose a song from the assigned playlists to play
+     * Given a specified playlist group, choose song(s) from the assigned playlists to play
      *
      * @param StationPlaylist $playlistGroup A playlist that is holding other playlists inside
      * @param mixed[] $recentSongHistory
@@ -245,7 +245,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
-     * @return bool Returns true if a track has been selected and registered
+     * @return list<StationQueue> Selected queue entries, empty if no member returned a playable track
      */
     private function playSongFromPlaylistGroup(
         BuildQueue $event,
@@ -254,74 +254,38 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false,
         array $playlistChain = []
-    ): bool {
-        $expectedPlayTime = $event->getExpectedPlayTime();
-
+    ): array {
         $memberAvoidsDuplicates = $ancestorAvoidsDuplicates || $playlistGroup->avoid_duplicates;
 
-        foreach ($this->getPlaylistGroupQueueForOrder($playlistGroup) as $selectedStationPlaylistGroup) {
-            $selectedPlaylist = $selectedStationPlaylistGroup->playlist;
-
-            if (!$this->scheduler->shouldPlaylistPlayNow($selectedPlaylist, $expectedPlayTime)) {
-                $selectedStationPlaylistGroup->played(
-                    $expectedPlayTime->getTimestamp(),
-                    forceAdvance: true
-                );
-
-                $this->em->persist($selectedStationPlaylistGroup);
-
-                continue;
-            }
-
-            $isFullCycleMember = $selectedStationPlaylistGroup->play_full_cycle
-                && PlaylistSources::Songs === $selectedPlaylist->source
-                && in_array(
-                    $selectedPlaylist->order,
-                    [PlaylistOrders::Sequential, PlaylistOrders::Shuffle],
-                    true
-                );
-
-            $queuedBeforePlay = $isFullCycleMember
-                ? count($this->spmRepo->getQueue($selectedPlaylist))
-                : 0;
-
-            $hasRegisteredTrack = $this->playSongFromPlaylist(
+        if ($playlistGroup->backendMerge()) {
+            $blockEntries = $this->playBlockFromPlaylistGroup(
                 $event,
-                $selectedPlaylist,
+                $playlistGroup,
                 $recentSongHistory,
                 $allowDuplicates,
                 $memberAvoidsDuplicates,
                 $playlistChain
             );
 
-            if ($hasRegisteredTrack) {
-                $playlistGroup->played_at = $expectedPlayTime;
-                $this->em->persist($playlistGroup);
-
-                $keepQueued = false;
-                if ($isFullCycleMember) {
-                    if ($queuedBeforePlay === 0) {
-                        $queuedBeforePlay = $selectedPlaylist->media_items->count();
-                    }
-
-                    $keepQueued = $queuedBeforePlay > 1;
-                }
-
-                $selectedStationPlaylistGroup->played(
-                    $expectedPlayTime->getTimestamp(),
-                    keepQueued: $keepQueued
-                );
-                $this->em->persist($selectedStationPlaylistGroup);
-
-                return true;
+            if ($blockEntries !== []) {
+                return $blockEntries;
             }
+        } else {
+            foreach ($this->getPlaylistGroupQueueForOrder($playlistGroup) as $selectedStationPlaylistGroup) {
+                $memberEntries = $this->playGroupMember(
+                    $event,
+                    $playlistGroup,
+                    $selectedStationPlaylistGroup,
+                    $recentSongHistory,
+                    $allowDuplicates,
+                    $memberAvoidsDuplicates,
+                    $playlistChain
+                );
 
-            $selectedStationPlaylistGroup->played(
-                $expectedPlayTime->getTimestamp(),
-                forceAdvance: true
-            );
-
-            $this->em->persist($selectedStationPlaylistGroup);
+                if ($memberEntries !== []) {
+                    return $memberEntries;
+                }
+            }
         }
 
         $this->logger->warning(
@@ -333,7 +297,235 @@ final class QueueBuilder implements EventSubscriberInterface
             ]
         );
 
-        return false;
+        return [];
+    }
+
+    /**
+     * Try to play the given group member and update its rotation state.
+     *
+     * @param mixed[] $recentSongHistory
+     * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
+     *
+     * @return list<StationQueue> Empty if the member was skipped or did not return a track
+     */
+    private function playGroupMember(
+        BuildQueue $event,
+        StationPlaylist $playlistGroup,
+        StationPlaylistGroup $selectedStationPlaylistGroup,
+        array $recentSongHistory,
+        bool $allowDuplicates,
+        bool $memberAvoidsDuplicates,
+        array $playlistChain
+    ): array {
+        $expectedPlayTime = $event->getExpectedPlayTime();
+        $selectedPlaylist = $selectedStationPlaylistGroup->playlist;
+
+        if (!$this->scheduler->shouldPlaylistPlayNow($selectedPlaylist, $expectedPlayTime)) {
+            $selectedStationPlaylistGroup->played(
+                $expectedPlayTime->getTimestamp(),
+                forceAdvance: true
+            );
+
+            $this->em->persist($selectedStationPlaylistGroup);
+
+            return [];
+        }
+
+        $isFullCycleMember = $selectedStationPlaylistGroup->play_full_cycle
+            && $selectedStationPlaylistGroup->supportsPlayFullCycle();
+
+        $isRequestsMember = $selectedPlaylist->source === PlaylistSources::Requests;
+
+        $queuedBeforePlay = 0;
+        if ($isFullCycleMember) {
+            $queuedBeforePlay = $isRequestsMember
+                ? count($this->requestRepo->getPlayableRequests(
+                    $selectedPlaylist->station,
+                    $expectedPlayTime,
+                    $recentSongHistory
+                ))
+                : count($this->spmRepo->getQueue($selectedPlaylist));
+        }
+
+        $selectedTracks = $this->selectTracksFromPlaylist(
+            $event,
+            $selectedPlaylist,
+            $recentSongHistory,
+            $allowDuplicates,
+            $memberAvoidsDuplicates,
+            $playlistChain
+        );
+
+        if ($selectedTracks instanceof StationQueue) {
+            // Apply safety last-played check that setNextSongs uses
+            $selectedTracks = ($event->getLastPlayedSongId() === $selectedTracks->song_id)
+                ? null
+                : [$selectedTracks];
+        }
+
+        if (!empty($selectedTracks)) {
+            $playlistGroup->played_at = $expectedPlayTime;
+            $this->em->persist($playlistGroup);
+
+            $keepQueued = false;
+            if ($isFullCycleMember) {
+                if (!$isRequestsMember && $queuedBeforePlay === 0) {
+                    $queuedBeforePlay = $selectedPlaylist->media_items->count();
+                }
+
+                $keepQueued = $queuedBeforePlay > 1;
+            }
+
+            $selectedStationPlaylistGroup->played(
+                $expectedPlayTime->getTimestamp(),
+                keepQueued: $keepQueued
+            );
+            $this->em->persist($selectedStationPlaylistGroup);
+
+            return $selectedTracks;
+        }
+
+        $this->logger->warning(
+            sprintf('Playlist "%s" did not return a playable track.', $selectedPlaylist->name),
+            [
+                'playlist_id' => $selectedPlaylist->id,
+                'playlist_order' => $selectedPlaylist->order->value,
+                'allow_duplicates' => $allowDuplicates,
+            ]
+        );
+
+        $selectedStationPlaylistGroup->played(
+            $expectedPlayTime->getTimestamp(),
+            forceAdvance: true
+        );
+
+        $this->em->persist($selectedStationPlaylistGroup);
+
+        return [];
+    }
+
+    /**
+     * Plays one full rotation pass of a "merge" playlist group as a single block.
+     *
+     * Sequential & shuffle pick with regular per-slot logic until internal queue is empty.
+     * Internal queue intentionally not refilled mid-block, since it would restart pass.
+     * Random groups have no rotation state, single random pass with one pick per member used instead.
+     *
+     * @param mixed[] $recentSongHistory
+     * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
+     *
+     * @return list<StationQueue>
+     */
+    private function playBlockFromPlaylistGroup(
+        BuildQueue $event,
+        StationPlaylist $playlistGroup,
+        array $recentSongHistory,
+        bool $allowDuplicates,
+        bool $memberAvoidsDuplicates,
+        array $playlistChain
+    ): array {
+        $blockEntries = [];
+        $blockHistory = $recentSongHistory;
+
+        $remainingIterations = $this->getBlockIterationCap(
+            $playlistGroup,
+            $event->getExpectedPlayTime()
+        );
+
+        $slotQueue = $this->getPlaylistGroupQueueForOrder($playlistGroup);
+
+        while ($slotQueue !== []) {
+            $selectedStationPlaylistGroup = $slotQueue[0];
+
+            $memberEntries = $this->playGroupMember(
+                $event,
+                $playlistGroup,
+                $selectedStationPlaylistGroup,
+                $blockHistory,
+                $allowDuplicates,
+                $memberAvoidsDuplicates,
+                $playlistChain
+            );
+
+            if ($memberEntries !== []) {
+                $blockEntries = [
+                    ...$blockEntries,
+                    ...$memberEntries,
+                ];
+
+                foreach ($memberEntries as $memberEntry) {
+                    $blockHistory[] = [
+                        'song_id' => $memberEntry->song_id,
+                        'text' => $memberEntry->text,
+                        'artist' => $memberEntry->artist,
+                        'title' => $memberEntry->title,
+                        'timestamp_played' => $event->getExpectedPlayTime()->getTimestamp(),
+                    ];
+                }
+            }
+
+            if (--$remainingIterations <= 0) {
+                $this->logger->warning(
+                    sprintf(
+                        'Merged Playlist Group "%s" block reached its iteration cap; stopping the pass early.',
+                        $playlistGroup->name
+                    ),
+                    [
+                        'playlist_group_id' => $playlistGroup->id,
+                        'block_entries' => count($blockEntries),
+                    ]
+                );
+
+                break;
+            }
+
+            $this->em->flush();
+
+            ($playlistGroup->order === PlaylistOrders::Random)
+                ? array_shift($slotQueue)
+                : $slotQueue = $this->spRepo->getPlaylistGroupQueue($playlistGroup);
+        }
+
+        return $blockEntries;
+    }
+
+    /**
+     * Get max iterations a merged group block may use.
+     *
+     * Per slot expected pick count plus one potential skip,
+     * each iteration "consumes" one pick even if nothing actually picked.
+     *
+     * Prevents the block loop ending up with rotation state that never advances.
+     */
+    private function getBlockIterationCap(
+        StationPlaylist $playlistGroup,
+        DateTimeImmutable $expectedPlayTime
+    ): int {
+        $iterationCap = 0;
+        $playableRequestCount = null;
+
+        foreach ($playlistGroup->playlists as $member) {
+            $iterationCap++;
+
+            if (!$member->play_full_cycle) {
+                $iterationCap += max(1, $member->consecutive_plays);
+                continue;
+            }
+
+            if ($member->playlist->source === PlaylistSources::Requests) {
+                $playableRequestCount ??= count($this->requestRepo->getPlayableRequests(
+                    $playlistGroup->station,
+                    $expectedPlayTime
+                ));
+
+                $iterationCap += max(1, $playableRequestCount);
+                continue;
+            }
+
+            $iterationCap += max(1, $member->playlist->media_items->count());
+        }
+
+        return $iterationCap;
     }
 
     /**
@@ -428,7 +620,7 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Given a specified playlist, choose a song from the playlist to play
+     * Given a specified playlist, choose a song from the playlist to play and register it
      *
      * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
@@ -445,6 +637,54 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $ancestorAvoidsDuplicates = false,
         array $ancestorChain = []
     ): bool {
+        $selectedTracksResult = $this->selectTracksFromPlaylist(
+            $event,
+            $playlist,
+            $recentSongHistory,
+            $allowDuplicates,
+            $ancestorAvoidsDuplicates,
+            $ancestorChain
+        );
+
+        if (PlaylistSources::Requests === $playlist->source && null !== $selectedTracksResult) {
+            $event->setNextSongs($selectedTracksResult);
+            return true;
+        }
+
+        if ($event->setNextSongs($selectedTracksResult)) {
+            return true;
+        }
+
+        $this->logger->warning(
+            sprintf('Playlist "%s" did not return a playable track.', $playlist->name),
+            [
+                'playlist_id' => $playlist->id,
+                'playlist_order' => $playlist->order->value,
+                'allow_duplicates' => $allowDuplicates,
+            ]
+        );
+
+        return false;
+    }
+
+    /**
+     * Determine the track(s) the given playlist wants to register
+     *
+     * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     * @param list<StationPlaylist> $ancestorChain Group chain this playlist was reached through
+     *
+     * @return StationQueue|list<StationQueue>|null
+     */
+    private function selectTracksFromPlaylist(
+        BuildQueue $event,
+        StationPlaylist $playlist,
+        array $recentSongHistory,
+        bool $allowDuplicates = false,
+        bool $ancestorAvoidsDuplicates = false,
+        array $ancestorChain = []
+    ): StationQueue|array|null {
         $playlistChain = [...$ancestorChain, $playlist];
         $playlistChainSnapshot = $this->snapshotPlaylistChain($playlistChain);
 
@@ -476,25 +716,12 @@ final class QueueBuilder implements EventSubscriberInterface
             PlaylistSources::Requests => $this->playSongFromRequestsPlaylist(
                 $event,
                 $playlist,
+                $recentSongHistory,
                 $playlistChainSnapshot
             ),
         };
 
-        $selectedTracksResult = $selectedTracksResult ?: null;
-        if (true === $selectedTracksResult || $event->setNextSongs($selectedTracksResult)) {
-            return true;
-        }
-
-        $this->logger->warning(
-            sprintf('Playlist "%s" did not return a playable track.', $playlist->name),
-            [
-                'playlist_id' => $playlist->id,
-                'playlist_order' => $playlist->order->value,
-                'allow_duplicates' => $allowDuplicates,
-            ]
-        );
-
-        return false;
+        return $selectedTracksResult ?: null;
     }
 
     /**
@@ -521,6 +748,8 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
+     *
+     * @return StationQueue|list<StationQueue>|null
      */
     private function playSongFromSongsPlaylist(
         BuildQueue $event,
@@ -533,17 +762,19 @@ final class QueueBuilder implements EventSubscriberInterface
         if ($playlist->backendMerge()) {
             $this->spmRepo->resetQueue($playlist);
 
-            $queueEntries = array_filter(
-                array_map(
-                    function (StationPlaylistQueue $validTrack) use ($playlist, $event, $playlistChainSnapshot) {
-                        return $this->makeQueueFromApi(
-                            $validTrack,
-                            $playlist,
-                            $event->getExpectedPlayTime(),
-                            $playlistChainSnapshot
-                        );
-                    },
-                    $this->spmRepo->getQueue($playlist)
+            $queueEntries = array_values(
+                array_filter(
+                    array_map(
+                        function (StationPlaylistQueue $validTrack) use ($playlist, $event, $playlistChainSnapshot) {
+                            return $this->makeQueueFromApi(
+                                $validTrack,
+                                $playlist,
+                                $event->getExpectedPlayTime(),
+                                $playlistChainSnapshot
+                            );
+                        },
+                        $this->spmRepo->getQueue($playlist)
+                    )
                 )
             );
 
@@ -594,24 +825,27 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
+     * @param mixed[] $recentSongHistory
      * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
      */
     private function playSongFromRequestsPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
+        array $recentSongHistory,
         ?array $playlistChainSnapshot = null
-    ): bool {
+    ): ?StationQueue {
         if ($this->areRequestsBlockedByAncestors($playlist, $event->getExpectedPlayTime())) {
-            return false;
+            return null;
         }
 
         $request = $this->requestRepo->getNextPlayableRequest(
             $playlist->station,
-            $event->getExpectedPlayTime()
+            $event->getExpectedPlayTime(),
+            $recentSongHistory
         );
 
         if (null === $request) {
-            return false;
+            return null;
         }
 
         $this->logger->debug(sprintf(
@@ -631,8 +865,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $playlist->played_at = $event->getExpectedPlayTime();
         $this->em->persist($playlist);
 
-        $event->setNextSongs($stationQueueEntry);
-        return true;
+        return $stationQueueEntry;
     }
 
     /**

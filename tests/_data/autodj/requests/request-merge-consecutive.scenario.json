@@ -1,0 +1,73 @@
+{
+  "description": "A Requests-source member with consecutive_plays=2 inside a merged group serves up to two pending requests back to back within one block. The remaining request is served by the next block once the group fires again.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "two-consecutive-requests-per-block",
+      "now": "2026-06-01T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mR1",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR2",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR3",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ",
+              "playlist_chain_refs": [
+                "grp",
+                "jingle"
+              ],
+              "from_request": false
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR1",
+              "playlist_chain_refs": [
+                "grp",
+                "reqpl"
+              ],
+              "from_request": true
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR2",
+              "from_request": true
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:25:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ"
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR3",
+              "from_request": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

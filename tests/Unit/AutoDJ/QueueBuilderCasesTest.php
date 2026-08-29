@@ -109,7 +109,56 @@ final class QueueBuilderCasesTest extends Unit
 
         self::assertNotEmpty($nextSongs, "[{$label}] Expected a track to be queued.{$logTrace}");
 
-        $first = $nextSongs[0];
+        if ($expect->entries !== null) {
+            self::assertCount(
+                count($expect->entries),
+                $nextSongs,
+                "[{$label}] Number of queued entries{$logTrace}"
+            );
+
+            foreach ($expect->entries as $entryIndex => $entryExpect) {
+                $this->assertQueueEntry(
+                    autoDjHarness: $autoDjHarness,
+                    expect: $entryExpect,
+                    entry: $nextSongs[$entryIndex],
+                    label: "{$label} entry {$entryIndex}",
+                    logTrace: $logTrace
+                );
+            }
+
+            if ($expect->distinct) {
+                $mediaPaths = array_map(
+                    static fn(StationQueue $entry): ?string => $entry->media?->path,
+                    $nextSongs
+                );
+
+                self::assertSame(
+                    array_values(array_unique($mediaPaths)),
+                    $mediaPaths,
+                    "[{$label}] media repeated within the block{$logTrace}"
+                );
+            }
+
+            return;
+        }
+
+        $this->assertQueueEntry(
+            autoDjHarness: $autoDjHarness,
+            expect: $expect,
+            entry: $nextSongs[0],
+            label: $label,
+            logTrace: $logTrace
+        );
+    }
+
+    private function assertQueueEntry(
+        InMemoryAutoDjHarness $autoDjHarness,
+        ExpectQueue $expect,
+        StationQueue $entry,
+        string $label,
+        string $logTrace
+    ): void {
+        $first = $entry;
 
         if ($expect->fromRequest === true) {
             self::assertNotNull(
@@ -179,7 +228,12 @@ final class QueueBuilderCasesTest extends Unit
         array $seenMediaPaths,
         string $label
     ): array {
-        if (!$expect->distinct || $selectedPath === null) {
+        // Multi-entry steps assert distinctness within their own block
+        if (
+            !$expect->distinct
+            || $selectedPath === null
+            || $expect->entries !== null
+        ) {
             return $seenMediaPaths;
         }
 

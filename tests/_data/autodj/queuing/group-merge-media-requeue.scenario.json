@@ -1,0 +1,57 @@
+{
+  "description": "Regression test for the identity-map resync in StationPlaylistMediaRepository::resetQueue: inside a merged block, a consecutive_plays=3 slot over a two-track sequential member re-picks its first track right after a mid-build media queue reset. Without the resync, that pick's played() state silently fails to persist (the bulk reset desynced the already-managed row), so the next block would wrongly start with the first track again instead of the remaining second track. The in-memory harness is immune (its fakes mutate state directly); the integration run is the actual regression.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "post-reset-play-persists-across-blocks",
+      "now": "2026-06-01T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC1"
+            },
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC2"
+            },
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC1"
+            },
+            {
+              "playlist_ref": "ender",
+              "media_ref": "mE"
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:05:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC2"
+            },
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC1"
+            },
+            {
+              "playlist_ref": "songs-c",
+              "media_ref": "mC2"
+            },
+            {
+              "playlist_ref": "ender",
+              "media_ref": "mE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

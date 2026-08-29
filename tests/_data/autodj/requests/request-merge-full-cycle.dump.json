@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": true
+  },
+  "media": [
+    {
+      "ref": "mR1",
+      "path": "rmf/r1.mp3",
+      "unique_id": "reqmrgfull00000000000001",
+      "length": 120.0,
+      "artist": "Request Artist One",
+      "title": "Requested One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mR2",
+      "path": "rmf/r2.mp3",
+      "unique_id": "reqmrgfull00000000000002",
+      "length": 120.0,
+      "artist": "Request Artist Two",
+      "title": "Requested Two",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mR3",
+      "path": "rmf/r3.mp3",
+      "unique_id": "reqmrgfull00000000000003",
+      "length": 120.0,
+      "artist": "Request Artist Three",
+      "title": "Requested Three",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mS1",
+      "path": "rmf/s1.mp3",
+      "unique_id": "reqmrgfull00000000000004",
+      "length": 120.0,
+      "artist": "Outro Artist",
+      "title": "Outro Song",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "grp",
+      "name": "Merged Request Group",
+      "config": {
+        "type": "once_per_x_minutes",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 20,
+        "play_per_hour_minute": 0,
+        "backend_options": [
+          "merge"
+        ],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "reqpl",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "play_full_cycle": true,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "outro",
+          "weight": 2,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "reqpl",
+      "name": "Requests Playlist",
+      "config": {
+        "type": "default",
+        "source": "requests",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "outro",
+      "name": "Outro",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mS1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "lib",
+      "name": "Requestable Library",
+      "config": {
+        "type": "custom",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 1,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mR1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "mR2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "mR3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

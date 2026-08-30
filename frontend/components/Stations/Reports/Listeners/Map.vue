@@ -7,7 +7,7 @@
                 v-for="l in visibleListeners"
                 :key="l.hash"
                 :map="map"
-                :position="[l.location.lat, l.location.lon]"
+                :position="[l.location.lon, l.location.lat]"
             >
                 {{ $gettext('IP') }}
                 : {{ l.ip }}<br>

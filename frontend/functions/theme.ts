@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ComputedRef, computed, onMounted, ref } from "vue";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 
 export const useTheme = defineStore("global-theme", () => {
     const page: HTMLElement = document.documentElement;

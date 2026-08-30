@@ -17,7 +17,7 @@
     "@codemirror/lang-html": "^6.4.9",
     "@codemirror/lang-javascript": "^6.2.5",
     "@flowjs/flow.js": "^2.14.1",
-    "@fullcalendar/bootstrap5": "^6.1.8",
+    "@fullcalendar/bootstrap5": "^7.0.2",
     "@fullcalendar/core": "^6",
     "@fullcalendar/luxon3": "^6",
     "@fullcalendar/timegrid": "^6",

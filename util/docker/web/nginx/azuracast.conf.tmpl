@@ -124,6 +124,12 @@ server {
         try_files $uri =404;
     }
 
+    location /static/maps {
+        alias /var/azuracast/maps;
+        expires 7d;
+        try_files $uri =404;
+    }
+
     {{if eq .Env.APPLICATION_ENV "development"}}
     location /static/vite_dist {
         include proxy_params;

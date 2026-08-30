@@ -1,0 +1,97 @@
+{
+  "description": "A sequential Once-Per-20-Minutes group with the 'merge' backend option cues one full rotation pass as a single block per firing: a consecutive_plays=2 slot contributes two tracks back to back, a play_full_cycle slot contributes its whole remaining media cycle, and the block gates the group for the following X minutes. The next firing starts a fresh pass from where each member's own queue left off.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "block-per-firing-with-consecutive-and-full-cycle-slots",
+      "now": "2026-06-01T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ",
+              "playlist_chain_refs": [
+                "grp",
+                "jingle"
+              ]
+            },
+            {
+              "playlist_ref": "songs-a",
+              "media_ref": "mA1",
+              "playlist_chain_refs": [
+                "grp",
+                "songs-a"
+              ]
+            },
+            {
+              "playlist_ref": "songs-a",
+              "media_ref": "mA2"
+            },
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ"
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB1",
+              "playlist_chain_refs": [
+                "grp",
+                "songs-b"
+              ]
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB2"
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB3"
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:10:00+00:00",
+          "mode": "none"
+        },
+        {
+          "now": "2026-06-01T12:25:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ"
+            },
+            {
+              "playlist_ref": "songs-a",
+              "media_ref": "mA3"
+            },
+            {
+              "playlist_ref": "songs-a",
+              "media_ref": "mA1"
+            },
+            {
+              "playlist_ref": "jingle",
+              "media_ref": "mJ"
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB1"
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB2"
+            },
+            {
+              "playlist_ref": "songs-b",
+              "media_ref": "mB3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

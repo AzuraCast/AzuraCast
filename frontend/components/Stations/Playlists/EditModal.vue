@@ -33,7 +33,7 @@
                 :items="playlistGroups"
                 @navigate="onNavigateToPlaylist"
             />
-            <form-advanced v-if="![PlaylistSources.Playlists, PlaylistSources.Requests].includes(form.source)" />
+            <form-advanced v-if="form.source !== PlaylistSources.Requests" />
         </tabs>
     </modal-form>
 </template>

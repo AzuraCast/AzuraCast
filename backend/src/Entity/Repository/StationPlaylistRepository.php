@@ -193,6 +193,11 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
             );
         }
 
+        $this->resyncManagedEntities(
+            StationPlaylistGroup::class,
+            static fn(StationPlaylistGroup $spg): bool => $spg->playlist_group === $playlist
+        );
+
         $now ??= Time::nowUtc();
 
         $playlist->queue_reset_at = $now;

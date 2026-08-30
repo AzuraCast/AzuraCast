@@ -380,7 +380,9 @@
                                             :model-value="member.play_full_cycle"
                                             @update:model-value="doUpdatePlayFullCycle(index, $event)"
                                             :input-attrs="{disabled: saving}"
-                                            :label="$gettext('Play fully before advancing')"
+                                            :label="member.source === PlaylistSources.Requests
+                                                ? $gettext('Play all available requests before advancing')
+                                                : $gettext('Play fully before advancing')"
                                         />
                                     </div>
 
@@ -888,11 +890,14 @@ const doUpdateConsecutivePlays = (
 const isFullCyclePlayable = (
     member: StationPlaylistGroupMemberEnriched,
 ): boolean => {
+    const source = member.source as PlaylistSources;
+
     return (
-        (member.source as PlaylistSources) === PlaylistSources.Songs &&
-        [PlaylistOrders.Sequential, PlaylistOrders.Shuffle].includes(
-            member.order as PlaylistOrders,
-        )
+        source === PlaylistSources.Requests ||
+        (source === PlaylistSources.Songs &&
+            [PlaylistOrders.Sequential, PlaylistOrders.Shuffle].includes(
+                member.order as PlaylistOrders,
+            ))
     );
 };
 

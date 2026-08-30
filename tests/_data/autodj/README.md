@@ -111,6 +111,12 @@ For a quick reference example of the scenario format see the following .json str
           "playlist_chain_refs": [
             "<rootRef>",
             "<directRef>"
+          ],
+          "entries": [
+            {
+              "playlist_ref": "<playlistRef>",
+              "media_ref": "<mediaRef>"
+            }
           ]
         }
       ]
@@ -147,6 +153,12 @@ For a quick reference example of the scenario format see the following .json str
     - `distinct` (media must not repeat within a shuffle cycle)
     - `from_request` (assert the pick did / did not come from a request)
     - `playlist_chain_refs` (assert the entry's playlist chain, root to direct)
+    - `entries` (assert all entries of a multi-entry build, e.g. a merged block)
+      - a list of per-entry objects supporting `mode`, `playlist_ref`, `media_ref`, `media_any_of`, `from_request` and `playlist_chain_refs`
+      - also asserts the build's entry count
+      - `distinct: true` changes its meaning on a step with `entries`:
+        - it asserts that no media repeats among the entries of this single build
+        - the usual cross-step meaning (no repeats within a shuffle cycle) does not apply to such a step
 - `queue_history`
   - entries take `media_ref` (or a raw `song_id` / `artist` / `title` for a track not in
   the dump)
@@ -216,6 +228,10 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - The `station.requests_only_via_playlists` routes between the two:
       - When `true` the global queue is disabled and only a due `Requests`-source playlist serves requests
       - When `false` a due `Requests`-source playlist still preempts the global queue, with the global queue as the fallback outside that playlist's schedule
+  - A `Requests`-source member inside a merged group serves multiple requests per block:
+    - A `consecutive_plays: N` member serves up to N requests back to back
+    - A `play_full_cycle` member drains all currently playable requests before advancing
+  - Playlist-served request picks skip any request whose track duplicates the recent history (including the in-progress block's picks); the skipped request stays pending and untouched
 - **Requestable rule**
   - A track is only requestable if it sits on at least one enabled playlist with `include_in_requests`
   - The integration importer only generates playlist-referenced media
@@ -225,6 +241,11 @@ Unless noted, every item below behaves identically in-memory and in integration.
 - **Playlist `backend_options`**
   - The `interrupt` restricts a playlist to interrupting builds only (set `interrupting: true` on the step)
   - The `single_track` & schedule `loop_once` drive the scheduled-window special rules
+  - The `merge` on a songs playlist cues the entire playlist in one build
+  - The `merge` on a playlist group cues one full rotation pass as a single block per build
+    - Sequential/shuffle groups keep picking until the rotation queue empties once (a `consecutive_plays` slot contributes that many tracks, a `play_full_cycle` member its whole remaining cycle; for a `Requests`-source member that cycle is the currently playable request queue)
+    - Random groups take one randomized pass with one pick per eligible member (a `play_full_cycle` `Requests`-source member therefore serves only one request per random pass)
+    - Assert blocks with the step-level `entries` list
 - **Remote stream playlists are excluded from queueing**
   - A playlist may set `config.source: "remote_url"` with `config.remote_type`
   - A `stream` (or `other`) remote is filtered out before it reaches the scheduler

@@ -15,6 +15,7 @@ final class ExpectQueue
     /**
      * @param string[] $mediaAnyOf Keyed by media ref
      * @param ?string[] $playlistChainRefs Playlist refs from root to direct
+     * @param ?list<ExpectQueue> $entries Per-entry expectations for a multi-entry build; also asserts the entry count
      */
     public function __construct(
         public readonly ExpectQueueMode $mode,
@@ -25,6 +26,7 @@ final class ExpectQueue
         public readonly bool $distinct,
         public readonly ?bool $fromRequest,
         public readonly ?array $playlistChainRefs = null,
+        public readonly ?array $entries = null,
     ) {
     }
 
@@ -52,6 +54,12 @@ final class ExpectQueue
                 ? array_map(
                     static fn(mixed $ref): string => Types::string($ref),
                     Types::array($data['playlist_chain_refs'])
+                )
+                : null,
+            entries: array_key_exists('entries', $data)
+                ? array_map(
+                    static fn(mixed $entry): self => self::fromArray(Types::array($entry)),
+                    array_values(Types::array($data['entries']))
                 )
                 : null,
         );

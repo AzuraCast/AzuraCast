@@ -221,7 +221,64 @@ final class AutoDjIntegrationCest extends CestAbstract
         }
 
         $I->assertNotEmpty($result, "[{$label}] Expected a track to be queued.");
-        $first = $result[0];
+
+        if ($expect->entries !== null) {
+            $I->assertCount(
+                count($expect->entries),
+                $result,
+                "[{$label}] Number of queued entries"
+            );
+
+            foreach ($expect->entries as $entryIndex => $entryExpect) {
+                $this->assertQueueEntry(
+                    I: $I,
+                    expect: $entryExpect,
+                    entry: $result[$entryIndex],
+                    playlistsByRef: $playlistsByRef,
+                    mediaByRef: $mediaByRef,
+                    label: "{$label} entry {$entryIndex}"
+                );
+            }
+
+            if ($expect->distinct) {
+                $mediaPaths = array_map(
+                    static fn(StationQueue $entry): ?string => $entry->media?->path,
+                    $result
+                );
+
+                $I->assertSame(
+                    array_values(array_unique($mediaPaths)),
+                    $mediaPaths,
+                    "[{$label}] media repeated within the block"
+                );
+            }
+
+            return;
+        }
+
+        $this->assertQueueEntry(
+            I: $I,
+            expect: $expect,
+            entry: $result[0],
+            playlistsByRef: $playlistsByRef,
+            mediaByRef: $mediaByRef,
+            label: $label
+        );
+    }
+
+    /**
+     * @param array<string, StationPlaylist> $playlistsByRef
+     * @param array<string, StationMedia> $mediaByRef
+     */
+    private function assertQueueEntry(
+        FunctionalTester $I,
+        ExpectQueue $expect,
+        StationQueue $entry,
+        array $playlistsByRef,
+        array $mediaByRef,
+        string $label
+    ): void {
+        $first = $entry;
 
         if ($expect->fromRequest === true) {
             $I->assertNotNull(
@@ -292,7 +349,12 @@ final class AutoDjIntegrationCest extends CestAbstract
         array $seenMediaPaths,
         string $label
     ): array {
-        if (!$expect->distinct || $selectedPath === null) {
+        // Multi-entry steps assert distinctness within their own block
+        if (
+            !$expect->distinct
+            || $selectedPath === null
+            || $expect->entries !== null
+        ) {
             return $seenMediaPaths;
         }
 

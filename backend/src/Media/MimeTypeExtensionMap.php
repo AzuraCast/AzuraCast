@@ -11,6 +11,8 @@ final class MimeTypeExtensionMap extends GeneratedExtensionToMimeTypeMap
     public const array ADDED_MIME_TYPES = [
         'mod' => 'audio/x-mod',
         'stm' => 'audio/x-mod',
+        'fc' => 'audio/x-mod',
+        'cus' => 'audio/x-mod',
         // Temporary Bugfix for incorrectly mapped aac mime type in library
         // @see https://github.com/thephpleague/mime-type-detection/pull/40
         'aac' => 'audio/aac',

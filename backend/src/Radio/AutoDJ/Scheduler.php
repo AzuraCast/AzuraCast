@@ -134,32 +134,50 @@ final class Scheduler
     }
 
     /**
-     * Determine whether a playlist that is a member of one or more groups is blocked from playing
-     * during the given window because no ancestor-group chain is scheduled to be active across it.
+     * Determine whether a playlist that is a member of one or more groups is covered by an
+     * ancestor-group chain whose schedule is active at the given instant. While covered, the
+     * playlist plays via its group and is suppressed from the general rotation.
      */
-    public function isPlaylistBlockedByGroupSchedule(
+    public function isPlaylistCoveredByGroupScheduleAt(
         StationPlaylist $playlist,
-        DateRange $window
+        DateTimeImmutable $now
     ): bool {
         if ($playlist->playlist_groups->count() === 0) {
             return false;
         }
 
         foreach ($playlist->playlist_groups as $spg) {
-            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window)) {
-                return false;
+            if ($this->isGroupChainActiveAt($spg->playlist_group, $now)) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
+     * Determine whether an ancestor-group chain covers the entire given window, i.e. the
+     * playlist plays via its group for the whole of this schedule event. Partially
+     * covered windows report false.
+     */
+    public function isPlaylistFullyCoveredByGroupSchedule(
+        StationPlaylist $playlist,
+        DateRange $window
+    ): bool {
+        return $this->isPlaylistCoveredByGroupScheduleAt($playlist, $window->start)
+            && $this->isPlaylistCoveredByGroupScheduleAt($playlist, $window->end->subSecond());
+    }
+
+    /**
+     * Walk up one membership chain and return whether every group in it is schedule-active
+     * at the given instant. Groups without schedule items count as always active, matching
+     * isPlaylistScheduledToPlayNow.
+     *
      * @param int[] $visitedIdsInChain
      */
-    private function isGroupActiveThroughoutWindow(
+    private function isGroupChainActiveAt(
         StationPlaylist $group,
-        DateRange $window,
+        DateTimeImmutable $now,
         array $visitedIdsInChain = []
     ): bool {
         if (in_array($group->id, $visitedIdsInChain, true)) {
@@ -168,9 +186,8 @@ final class Scheduler
 
         $visitedIdsInChain[] = $group->id;
 
-        $coversStart = $this->isPlaylistScheduledToPlayNow($group, $window->start);
-        $coversEnd = $this->isPlaylistScheduledToPlayNow($group, $window->end->subSecond());
-        if (!$coversStart || !$coversEnd) {
+        // Using "excludeSpecialRules" to prevent resetting queues as side effect & suppressing mid-window
+        if (!$this->isPlaylistScheduledToPlayNow($group, $now, excludeSpecialRules: true)) {
             return false;
         }
 
@@ -179,7 +196,7 @@ final class Scheduler
         }
 
         foreach ($group->playlist_groups as $spg) {
-            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window, $visitedIdsInChain)) {
+            if ($this->isGroupChainActiveAt($spg->playlist_group, $now, $visitedIdsInChain)) {
                 return true;
             }
         }

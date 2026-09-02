@@ -301,8 +301,9 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendLines($playlistConfigLines);
 
-            // Playlists that are part of playlist groups are not directly scheduled
-            if ($playlist->playlist_groups->count() > 0) {
+            // Playlists that are members of groups are only switched in Liquidsoap when they
+            // are scheduled since groups cannot be expressed in Liquidsoap
+            if ($playlist->playlist_groups->count() > 0 && $scheduleItems->count() === 0) {
                 continue;
             }
 
@@ -661,9 +662,9 @@ final class ConfigWriter implements EventSubscriberInterface
                         newPath = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
 
                         log("Recording stopped: Switching from #{tempPath} to #{newPath}")
-                        
+
                         file.move(force=true, tempPath, newPath)
-                        
+
                         ()
                     end
                 )

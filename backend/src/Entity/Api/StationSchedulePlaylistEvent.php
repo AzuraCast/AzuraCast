@@ -85,12 +85,13 @@ final class StationSchedulePlaylistEvent
     public bool $avoid_duplicates;
 
     #[OA\Property(
-        description: 'True if this playlist is a group member whose schedule window is not covered by an active '
-            . 'ancestor group schedule, so it will not play during this event.',
+        description: 'True if this playlist is a group member and an ancestor group\'s schedule covers this '
+            . 'entire event, so it plays via that group instead of on its own. Partially covered '
+            . 'events report false.',
         readOnly: true,
         example: false
     )]
-    public bool $has_group_schedule_conflict = false;
+    public bool $plays_via_group_schedule = false;
 
     /**
      * @var StationScheduleGroupMember[]

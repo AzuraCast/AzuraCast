@@ -255,6 +255,8 @@ final class Queue
             return true;
         }
 
+        // Intentionally only checking the playlists own schedule, a standalone queued group member
+        // row is not removed when a group schedule window starts mid-queue.
         return $playlist->is_enabled &&
             $this->scheduler->isPlaylistScheduledToPlayNow(
                 $playlist,

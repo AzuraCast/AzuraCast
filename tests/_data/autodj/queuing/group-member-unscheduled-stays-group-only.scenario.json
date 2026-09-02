@@ -1,0 +1,33 @@
+{
+  "description": "A group member without its own schedule never enters the top-level rotation, even though scheduled members now can. Outside the group window nothing plays; inside it the member plays via the group. Regression guard for the relaxed member exclusion: only members with their own schedule items become standalone-eligible.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "outside-group-window-unscheduled-member-does-not-play",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    },
+    {
+      "name": "inside-group-window-member-plays-via-group",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [
+            "grp",
+            "member"
+          ]
+        }
+      ]
+    }
+  ]
+}

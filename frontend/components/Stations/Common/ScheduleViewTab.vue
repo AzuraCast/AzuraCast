@@ -25,7 +25,7 @@
                             <span class="d-inline-flex flex-shrink-0">
                                 <icon-bi-info-circle-fill
                                     v-if="getEventProps(arg.event).plays_via_group_schedule"
-                                    class="text-info flex-shrink-0 me-2"
+                                    class="flex-shrink-0 me-2"
                                     :class="IconSize.Small"
                                 />
 

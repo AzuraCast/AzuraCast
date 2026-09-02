@@ -23,9 +23,9 @@
                     <div class="fc-event-main-frame schedule-event-content px-1">
                         <div class="d-flex align-items-center justify-content-between gap-1">
                             <span class="d-inline-flex flex-shrink-0">
-                                <icon-bi-exclamation-triangle-fill
-                                    v-if="getEventProps(arg.event).has_group_schedule_conflict"
-                                    class="text-warning flex-shrink-0 me-2"
+                                <icon-bi-info-circle-fill
+                                    v-if="getEventProps(arg.event).plays_via_group_schedule"
+                                    class="text-info flex-shrink-0 me-2"
                                     :class="IconSize.Small"
                                 />
 
@@ -95,7 +95,7 @@ import { PlaylistSources } from "~/entities/ApiInterfaces.ts";
 import type { ScheduleEventDetails } from "~/entities/StationSchedule.ts";
 import { IconSize } from "~/functions/icons.ts";
 import { useStationData } from "~/functions/useStationQuery.ts";
-import IconBiExclamationTriangleFill from "~icons/bi/exclamation-triangle-fill";
+import IconBiInfoCircleFill from "~icons/bi/info-circle-fill";
 import IconBiMicFill from "~icons/bi/mic-fill";
 
 interface ScheduleEventCellProps {
@@ -103,7 +103,7 @@ interface ScheduleEventCellProps {
     source?: PlaylistSources;
     has_custom_art?: boolean;
     art?: string | null;
-    has_group_schedule_conflict?: boolean;
+    plays_via_group_schedule?: boolean;
 }
 
 defineProps<{

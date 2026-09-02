@@ -1525,10 +1525,10 @@ export interface ApiStationSchedulePlaylistEvent {
     /** @example false */
     avoid_duplicates: boolean;
     /**
-     * True if this playlist is a group member whose schedule window is not covered by an active ancestor group schedule, so it will not play during this event.
+     * True if this playlist is a group member and an ancestor group's schedule covers this entire event, so it plays via that group instead of on its own. Partially covered events report false.
      * @example false
      */
-    readonly has_group_schedule_conflict: boolean;
+    readonly plays_via_group_schedule: boolean;
     members: ApiStationScheduleGroupMember[];
     /**
      * The number of songs in the playlist, if it is a song-based playlist.

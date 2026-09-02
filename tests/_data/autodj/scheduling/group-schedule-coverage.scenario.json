@@ -1,5 +1,5 @@
 {
-  "description": "Fixture for the 'scheduled member outside its group's window' conflict warning. A scheduled group (grp, 12:00-13:00) with a member scheduled outside that window (outside, 03:00-04:00) and one inside it (inside, 12:15-12:45); a standalone scheduled playlist; a member of an unscheduled group (open_grp/open_member); and a nested chain (top_grp 12:00-13:00 -> mid_grp unscheduled -> deep_member 03:00-04:00). These expect_should_play cases validate each playlist's own schedule window; the group-schedule-conflict flag is asserted separately.",
+  "description": "Fixture for the 'plays via its group during this window' coverage badge and the standalone-play suppression rule. A scheduled group (grp, 12:00-13:00) with a member scheduled outside that window (outside, 03:00-04:00) and one inside it (inside, 12:15-12:45); a standalone scheduled playlist; a member of an unscheduled group (open_grp/open_member); and a nested chain (top_grp 12:00-13:00 -> mid_grp unscheduled -> deep_member 03:00-04:00). These expect_should_play cases validate each playlist's own schedule window; the group-schedule coverage flag is asserted separately in PlaylistGroupScheduleCoverageTest.",
   "modes": [
     "in_memory",
     "integration"

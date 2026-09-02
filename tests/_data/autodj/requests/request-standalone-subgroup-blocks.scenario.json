@@ -1,0 +1,58 @@
+{
+  "description": "A scheduled subgroup (11:00-13:00, member of a parent group scheduled 12:00-13:00) carries a member with allowed_requests=none. Before the parent window the subgroup is standalone-eligible, so its request rules apply at the top level: the pending request is ignored and the subgroup plays its member. Inside the parent window the subgroup is suppressed, but the parent's hierarchy scan reaches the same blocking member, so the request stays blocked and the full chain plays.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "subgroup-outside-parent-window-blocks-request",
+      "now": "2018-01-15T11:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "blocker",
+          "media_ref": "mBlocker",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "sub",
+            "blocker"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "subgroup-inside-parent-window-still-blocks-via-parent",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "blocker",
+          "media_ref": "mBlocker",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "parent",
+            "sub",
+            "blocker"
+          ]
+        }
+      ]
+    }
+  ]
+}

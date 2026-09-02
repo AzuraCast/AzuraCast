@@ -187,7 +187,7 @@ Each case carries one or more expectation blocks, run by different test classes:
 
 A fixture may contain both scheduler and sequence expectations.
 
-Additionally there is the `PlaylistGroupScheduleConflictTest` which is a small manual test that reuses the in-memory harness to assert group-schedule blocking directly and is not part of the data-driven flow described here but partly relates to it.
+Additionally there is the `PlaylistGroupScheduleCoverageTest` which is a small manual test that reuses the in-memory harness to assert group-schedule coverage (the "plays via its group" badge and standalone-play suppression) directly and is not part of the data-driven flow described here but partly relates to it.
 
 ## What both harnesses honor
 
@@ -211,6 +211,10 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - `Advanced`/`custom` members are never auto-selected
     - windowed types respect their windows
   - ineligible members are skipped so the group advances
+  - Members with their own schedule also play standalone via the top-level rotation:
+    - only while no ancestor-group chain is scheduled (the group takes precedence)
+    - a group without schedule items is as always active
+    - members without their own schedule are only reachable through their groups
 - **History-based gating**
   - Built entries, cued media, and seeded `queue_history` all become unplayed queue rows that feed the OncePerXSongs window and duplicate prevention
   - Cued and freshly built rows rank newer than any seeded history

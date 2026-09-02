@@ -55,13 +55,13 @@
             <template v-else>
                 <div class="card-body p-2 d-flex flex-column gap-2">
                     <div
-                        v-if="hasGroupScheduleConflict"
-                        class="d-flex align-items-start gap-2 text-warning"
+                        v-if="playsViaGroupSchedule"
+                        class="d-flex align-items-start gap-2 text-info"
                     >
-                        <icon-bi-exclamation-triangle-fill class="flex-shrink-0 mt-1 sm" />
+                        <icon-bi-info-circle-fill class="flex-shrink-0 mt-1 sm" />
                         <span class="small">
                             {{
-                                $gettext('This playlist only plays while its group is scheduled. Its current schedule falls outside the group\'s window, so it will not play during this time.')
+                                $gettext('This playlist is part of a group whose schedule covers this window, so it plays as part of that group here.')
                             }}
                         </span>
                     </div>
@@ -216,7 +216,7 @@ import { IconSize } from "~/functions/icons.ts";
 import { useFormatLength } from "~/functions/useFormatLength.ts";
 import { useTranslate } from "~/vendor/gettext";
 import IconBiArrowRepeat from "~icons/bi/arrow-repeat";
-import IconBiExclamationTriangleFill from "~icons/bi/exclamation-triangle-fill";
+import IconBiInfoCircleFill from "~icons/bi/info-circle-fill";
 import IconBiMicFill from "~icons/bi/mic-fill";
 
 const props = defineProps<{
@@ -241,8 +241,8 @@ const members = computed<ScheduleGroupMember[]>(
     () => playlistDetails.value?.members ?? [],
 );
 
-const hasGroupScheduleConflict = computed<boolean>(
-    () => playlistDetails.value?.has_group_schedule_conflict ?? false,
+const playsViaGroupSchedule = computed<boolean>(
+    () => playlistDetails.value?.plays_via_group_schedule ?? false,
 );
 
 const headerCount = computed<number | null>(() => {

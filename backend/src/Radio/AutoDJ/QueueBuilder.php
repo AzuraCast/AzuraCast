@@ -127,7 +127,13 @@ final class QueueBuilder implements EventSubscriberInterface
 
         foreach ($playlists as $playlist) {
             if ($playlist->playlist_groups->count() > 0) {
-                continue;
+                // Members only join the general rotation while no ancestor group's schedule covers it
+                if (
+                    $playlist->schedule_items->count() === 0
+                    || $this->scheduler->isPlaylistCoveredByGroupScheduleAt($playlist, $event->getExpectedPlayTime())
+                ) {
+                    continue;
+                }
             }
 
             if ($playlist->isPlayable($event->isInterrupting())) {
@@ -1224,7 +1230,16 @@ final class QueueBuilder implements EventSubscriberInterface
                 !$playlist->is_enabled
                 || $playlist->source !== PlaylistSources::Playlists
                 || $playlist->schedule_items->count() === 0
-                || $playlist->playlist_groups->count() > 0
+            ) {
+                continue;
+            }
+
+            // Mirrors assembleActivePlaylistsByType(): a scheduled member that is currently
+            // covered by an active ancestor chain cannot fire at the top level, so its
+            // request rules do not apply here.
+            if (
+                $playlist->playlist_groups->count() > 0
+                && $this->scheduler->isPlaylistCoveredByGroupScheduleAt($playlist, $expectedPlayTime)
             ) {
                 continue;
             }

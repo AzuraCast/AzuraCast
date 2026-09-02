@@ -1,0 +1,57 @@
+{
+  "description": "Group precedence for a member with its own schedule. The member (Once per 60 Minutes, own window 11:00-13:00) belongs to a group scheduled 12:00-13:00. While the group window is active the member is suppressed from the top-level rotation and plays only via the group; before the group window it plays standalone (null playlist chain). The member's windowed type places it in a strictly higher-priority bucket than the group, so a suppression regression fails deterministically instead of depending on the weighted shuffle.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "overlap-member-plays-via-group-only",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_should_play": {
+        "grp": true,
+        "member": true
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [
+            "grp",
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "before-group-window-member-plays-standalone",
+      "now": "2018-01-15T11:30:00+00:00",
+      "expect_should_play": {
+        "grp": false,
+        "member": true
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "outside-all-windows-nothing-plays",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_should_play": {
+        "grp": false,
+        "member": false
+      },
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

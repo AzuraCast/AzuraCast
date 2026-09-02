@@ -1,5 +1,5 @@
 {
-  "description": "A scheduled playlist that is also a member of a group. Its own schedule is still honored while it plays via the group: inside the window the scheduled member plays, outside it the group force-advances past it to the unscheduled fallback member. Documents that group membership does not bypass the member's schedule, but the member only plays through its parent group (it is excluded from the top-level rotation).",
+  "description": "A scheduled playlist that is also a member of a group. Its own schedule is still honored while it plays via the group: inside the window the scheduled member plays, outside it the group force-advances past it to the unscheduled fallback member. Documents that group membership does not bypass the member's schedule, and that the member plays only through its parent group here: the group is unscheduled and therefore always schedule-active, which suppresses the member's standalone play at the top level.",
   "modes": [
     "in_memory",
     "integration"

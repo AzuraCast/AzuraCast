@@ -1,0 +1,323 @@
+{
+  "description": "A sequential playlist group with 'reset_queue_at_start' on its schedule entry restarts its rotation from the first member when the scheduled window first becomes active, instead of resuming where a previous window left off. The reset is stamped (queue_reset_at = window start minus one second) so it fires once per window occurrence: not again once the group has played in the window, not again while the stamp is inside the window, but again on the next day's occurrence and at the start of an overnight window. An identical group without the flag resumes mid-rotation. The flag never changes schedule eligibility.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "flag-on-resets-at-block-start",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "on_a",
+          "media_ref": "m_on_a",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flag-off-resumes-mid-rotation",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_off:off_a": {
+            "is_queued": false
+          },
+          "grp_off:off_b": {
+            "is_queued": false
+          },
+          "grp_off:off_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "off_c",
+          "media_ref": "m_off_c",
+          "playlist_chain_refs": [
+            "grp_off",
+            "off_c"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flag-on-already-played-in-block",
+      "now": "2018-01-15T12:10:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        },
+        "playlists": {
+          "grp_on": {
+            "played_at": "2018-01-15T12:05:00+00:00"
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "on_c",
+          "media_ref": "m_on_c",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_c"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flag-on-stamp-blocks-second-reset",
+      "now": "2018-01-15T12:10:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        },
+        "playlists": {
+          "grp_on": {
+            "queue_reset_at": "2018-01-15T11:59:59+00:00"
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "on_c",
+          "media_ref": "m_on_c",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_c"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "next-day-resets-again",
+      "now": "2018-01-16T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        },
+        "playlists": {
+          "grp_on": {
+            "queue_reset_at": "2018-01-15T11:59:59+00:00"
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "on_a",
+          "media_ref": "m_on_a",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "resets-once-then-advances",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "on_a",
+          "media_ref": "m_on_a",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "on_b",
+          "media_ref": "m_on_b",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "on_c",
+          "media_ref": "m_on_c",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_c"
+          ]
+        },
+        {
+          "now": "2018-01-15T12:45:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "on_a",
+          "media_ref": "m_on_a",
+          "playlist_chain_refs": [
+            "grp_on",
+            "on_a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "overnight-resets-at-window-start",
+      "now": "2018-01-15T23:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_night:night_a": {
+            "is_queued": false
+          },
+          "grp_night:night_b": {
+            "is_queued": false
+          },
+          "grp_night:night_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "night_a",
+          "media_ref": "m_night_a",
+          "playlist_chain_refs": [
+            "grp_night",
+            "night_a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "overnight-same-block-after-midnight",
+      "now": "2018-01-16T00:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_night:night_a": {
+            "is_queued": false
+          },
+          "grp_night:night_b": {
+            "is_queued": false
+          },
+          "grp_night:night_c": {
+            "is_queued": true
+          }
+        },
+        "playlists": {
+          "grp_night": {
+            "played_at": "2018-01-15T23:05:00+00:00"
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "night_c",
+          "media_ref": "m_night_c",
+          "playlist_chain_refs": [
+            "grp_night",
+            "night_c"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scheduler-gate-unaffected-inside-window",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_should_play": {
+        "grp_on": true,
+        "grp_off": false,
+        "grp_night": false
+      }
+    },
+    {
+      "name": "scheduler-gate-unaffected-outside-window",
+      "now": "2018-01-15T11:59:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp_on:on_a": {
+            "is_queued": false
+          },
+          "grp_on:on_b": {
+            "is_queued": false
+          },
+          "grp_on:on_c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_should_play": {
+        "grp_on": false
+      }
+    }
+  ]
+}

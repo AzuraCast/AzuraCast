@@ -10525,6 +10525,14 @@ components:
               description: 'Used to suppress the global request queue while this schedule window is active.'
               type: boolean
               example: false
+            reset_queue_at_start:
+              description: "Reset the playlist's internal queue when this schedule window becomes active."
+              type: boolean
+              example: false
+            reset_queue_recursive:
+              description: 'Also reset nested playlist groups and member playlists (playlist groups only).'
+              type: boolean
+              example: false
           type: object
     StationStreamer:
       description: 'Station streamers (DJ accounts) allowed to broadcast to a station.'

@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "m_on_a",
+      "path": "group-reset-queue-at-schedule-start/m_on_a.mp3",
+      "unique_id": "000000000000000000000001",
+      "length": 120.0,
+      "artist": "On Artist A",
+      "title": "On Song A",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_on_b",
+      "path": "group-reset-queue-at-schedule-start/m_on_b.mp3",
+      "unique_id": "000000000000000000000002",
+      "length": 120.0,
+      "artist": "On Artist B",
+      "title": "On Song B",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_on_c",
+      "path": "group-reset-queue-at-schedule-start/m_on_c.mp3",
+      "unique_id": "000000000000000000000003",
+      "length": 120.0,
+      "artist": "On Artist C",
+      "title": "On Song C",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_off_a",
+      "path": "group-reset-queue-at-schedule-start/m_off_a.mp3",
+      "unique_id": "000000000000000000000004",
+      "length": 120.0,
+      "artist": "Off Artist A",
+      "title": "Off Song A",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_off_b",
+      "path": "group-reset-queue-at-schedule-start/m_off_b.mp3",
+      "unique_id": "000000000000000000000005",
+      "length": 120.0,
+      "artist": "Off Artist B",
+      "title": "Off Song B",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_off_c",
+      "path": "group-reset-queue-at-schedule-start/m_off_c.mp3",
+      "unique_id": "000000000000000000000006",
+      "length": 120.0,
+      "artist": "Off Artist C",
+      "title": "Off Song C",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_night_a",
+      "path": "group-reset-queue-at-schedule-start/m_night_a.mp3",
+      "unique_id": "000000000000000000000007",
+      "length": 120.0,
+      "artist": "Night Artist A",
+      "title": "Night Song A",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_night_b",
+      "path": "group-reset-queue-at-schedule-start/m_night_b.mp3",
+      "unique_id": "000000000000000000000008",
+      "length": 120.0,
+      "artist": "Night Artist B",
+      "title": "Night Song B",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_night_c",
+      "path": "group-reset-queue-at-schedule-start/m_night_c.mp3",
+      "unique_id": "000000000000000000000009",
+      "length": 120.0,
+      "artist": "Night Artist C",
+      "title": "Night Song C",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "on_a",
+      "name": "On Member A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_on_a",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "on_b",
+      "name": "On Member B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_on_b",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "on_c",
+      "name": "On Member C",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_on_c",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "grp_on",
+      "name": "On Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1200,
+          "end_time": 1300,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "on_a",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "on_b",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "on_c",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "off_a",
+      "name": "Off Member A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_off_a",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "off_b",
+      "name": "Off Member B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_off_b",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "off_c",
+      "name": "Off Member C",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_off_c",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "grp_off",
+      "name": "Off Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1400,
+          "end_time": 1500,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": false,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "off_a",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "off_b",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "off_c",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "night_a",
+      "name": "Night Member A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_night_a",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "night_b",
+      "name": "Night Member B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_night_b",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "night_c",
+      "name": "Night Member C",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_night_c",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "grp_night",
+      "name": "Night Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 2300,
+          "end_time": 100,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "night_a",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "night_b",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "night_c",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

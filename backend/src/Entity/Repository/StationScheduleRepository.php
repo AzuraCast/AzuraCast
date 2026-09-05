@@ -60,6 +60,8 @@ final class StationScheduleRepository extends Repository
             $record->days = $item['days'] ?? [];
             $record->loop_once = $item['loop_once'] ?? false;
             $record->prevent_requests = $item['prevent_requests'] ?? false;
+            $record->reset_queue_at_start = $item['reset_queue_at_start'] ?? false;
+            $record->reset_queue_recursive = $item['reset_queue_recursive'] ?? false;
 
             $this->em->persist($record);
         }

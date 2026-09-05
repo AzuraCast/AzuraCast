@@ -245,6 +245,8 @@ Unless noted, every item below behaves identically in-memory and in integration.
 - **Playlist `backend_options`**
   - The `interrupt` restricts a playlist to interrupting builds only (set `interrupting: true` on the step)
   - The `single_track` & schedule `loop_once` drive the scheduled-window special rules
+  - The schedule `reset_queue_at_start` resets the playlist's own queue once when its window first becomes active (`queue_reset_at` = window start minus one second)
+    - The `reset_queue_recursive` extends that to nested groups and songs members of a playlist group
   - The `merge` on a songs playlist cues the entire playlist in one build
   - The `merge` on a playlist group cues one full rotation pass as a single block per build
     - Sequential/shuffle groups keep picking until the rotation queue empties once (a `consecutive_plays` slot contributes that many tracks, a `play_full_cycle` member its whole remaining cycle; for a `Requests`-source member that cycle is the currently playable request queue)

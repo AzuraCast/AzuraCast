@@ -290,6 +290,12 @@ final class InMemoryEntityHydrator
                 $schedule->prevent_requests = Types::bool(
                     $scheduleData['prevent_requests'] ?? $schedule->prevent_requests
                 );
+                $schedule->reset_queue_at_start = Types::bool(
+                    $scheduleData['reset_queue_at_start'] ?? $schedule->reset_queue_at_start
+                );
+                $schedule->reset_queue_recursive = Types::bool(
+                    $scheduleData['reset_queue_recursive'] ?? $schedule->reset_queue_recursive
+                );
 
                 self::setId($schedule, $this->scheduleIdSeq++);
 

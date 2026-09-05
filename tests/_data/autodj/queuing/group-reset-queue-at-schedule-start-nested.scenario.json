@@ -1,0 +1,199 @@
+{
+  "description": "Nested tree: a sequential outer group holds a sequential songs 'opener' and a sequential inner group of three leaves. With 'reset_queue_at_start' plus 'reset_queue_recursive' the whole tree restarts at window start (opener at its first track, inner at its first leaf). With only 'reset_queue_at_start' the outer rotation restarts but the opener's track cursor and the inner group's rotation are untouched. Without the flag everything resumes mid-rotation, and 'reset_queue_recursive' alone is a no-op.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "recursive-resets-whole-tree",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_rec:opener_rec": {
+            "is_queued": false
+          },
+          "outer_rec:inner_rec": {
+            "is_queued": true
+          },
+          "inner_rec:x_rec": {
+            "is_queued": false
+          },
+          "inner_rec:y_rec": {
+            "is_queued": false
+          },
+          "inner_rec:z_rec": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_rec:m_o1_rec": {
+            "is_queued": false
+          },
+          "opener_rec:m_o2_rec": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opener_rec",
+          "media_ref": "m_o1_rec",
+          "playlist_chain_refs": [
+            "outer_rec",
+            "opener_rec"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "x_rec",
+          "media_ref": "m_x_rec",
+          "playlist_chain_refs": [
+            "outer_rec",
+            "inner_rec",
+            "x_rec"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "own-only-resets-top-level",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_own:opener_own": {
+            "is_queued": false
+          },
+          "outer_own:inner_own": {
+            "is_queued": true
+          },
+          "inner_own:x_own": {
+            "is_queued": false
+          },
+          "inner_own:y_own": {
+            "is_queued": false
+          },
+          "inner_own:z_own": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_own:m_o1_own": {
+            "is_queued": false
+          },
+          "opener_own:m_o2_own": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opener_own",
+          "media_ref": "m_o2_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "opener_own"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "z_own",
+          "media_ref": "m_z_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "inner_own",
+            "z_own"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "no-flag-resumes",
+      "now": "2018-01-15T16:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_off:opener_off": {
+            "is_queued": false
+          },
+          "outer_off:inner_off": {
+            "is_queued": true
+          },
+          "inner_off:x_off": {
+            "is_queued": false
+          },
+          "inner_off:y_off": {
+            "is_queued": false
+          },
+          "inner_off:z_off": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_off:m_o1_off": {
+            "is_queued": false
+          },
+          "opener_off:m_o2_off": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "z_off",
+          "media_ref": "m_z_off",
+          "playlist_chain_refs": [
+            "outer_off",
+            "inner_off",
+            "z_off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recursive-flag-alone-is-noop",
+      "now": "2018-01-15T18:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_off:opener_off": {
+            "is_queued": false
+          },
+          "outer_off:inner_off": {
+            "is_queued": true
+          },
+          "inner_off:x_off": {
+            "is_queued": false
+          },
+          "inner_off:y_off": {
+            "is_queued": false
+          },
+          "inner_off:z_off": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_off:m_o1_off": {
+            "is_queued": false
+          },
+          "opener_off:m_o2_off": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "z_off",
+          "media_ref": "m_z_off",
+          "playlist_chain_refs": [
+            "outer_off",
+            "inner_off",
+            "z_off"
+          ]
+        }
+      ]
+    }
+  ]
+}

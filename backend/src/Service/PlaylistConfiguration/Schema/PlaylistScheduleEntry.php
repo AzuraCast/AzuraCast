@@ -15,7 +15,9 @@ use JsonSerializable;
  *     start_date: ?string,
  *     end_date: ?string,
  *     loop_once: bool,
- *     prevent_requests: bool
+ *     prevent_requests: bool,
+ *     reset_queue_at_start: bool,
+ *     reset_queue_recursive: bool
  * }
  */
 final class PlaylistScheduleEntry implements JsonSerializable
@@ -31,6 +33,8 @@ final class PlaylistScheduleEntry implements JsonSerializable
         public readonly ?string $endDate,
         public readonly bool $loopOnce,
         public readonly bool $preventRequests,
+        public readonly bool $resetQueueAtStart = false,
+        public readonly bool $resetQueueRecursive = false,
     ) {
     }
 
@@ -47,6 +51,8 @@ final class PlaylistScheduleEntry implements JsonSerializable
             endDate: Types::stringOrNull($data['end_date'] ?? null),
             loopOnce: Types::bool($data['loop_once'] ?? null),
             preventRequests: Types::bool($data['prevent_requests'] ?? null),
+            resetQueueAtStart: Types::bool($data['reset_queue_at_start'] ?? null),
+            resetQueueRecursive: Types::bool($data['reset_queue_recursive'] ?? null),
         );
     }
 
@@ -63,6 +69,8 @@ final class PlaylistScheduleEntry implements JsonSerializable
             'end_date' => $this->endDate,
             'loop_once' => $this->loopOnce,
             'prevent_requests' => $this->preventRequests,
+            'reset_queue_at_start' => $this->resetQueueAtStart,
+            'reset_queue_recursive' => $this->resetQueueRecursive,
         ];
     }
 }

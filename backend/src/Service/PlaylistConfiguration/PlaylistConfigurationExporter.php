@@ -172,6 +172,8 @@ final class PlaylistConfigurationExporter
                 endDate: $schedule->end_date,
                 loopOnce: $schedule->loop_once,
                 preventRequests: $schedule->prevent_requests,
+                resetQueueAtStart: $schedule->reset_queue_at_start,
+                resetQueueRecursive: $schedule->reset_queue_recursive,
             );
         }
 

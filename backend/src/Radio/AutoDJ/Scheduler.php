@@ -421,6 +421,11 @@ final class Scheduler
             }
         }
 
+        // Handle resetting before loop_once since it relies on queue state
+        if ($schedule->reset_queue_at_start) {
+            $this->resetQueueAtBlockStart($playlist, $dateRange, $schedule->reset_queue_recursive);
+        }
+
         // Handle "Loop Once" schedule specification.
         if (
             $schedule->loop_once
@@ -430,6 +435,75 @@ final class Scheduler
         }
 
         return true;
+    }
+
+    private function resetQueueAtBlockStart(
+        StationPlaylist $playlist,
+        DateRange $dateRange,
+        bool $recursive
+    ): void {
+        if (!in_array($playlist->source, [PlaylistSources::Songs, PlaylistSources::Playlists], true)) {
+            return;
+        }
+
+        // If playlist has been played in this window we shoudln't reset it again
+        if ($dateRange->contains($playlist->played_at)) {
+            return;
+        }
+
+        // One second before start so "queue_reset_at outside window" check still works after reset
+        $resetAt = $dateRange->start->subSecond();
+
+        if ($playlist->queue_reset_at !== null && $playlist->queue_reset_at >= $resetAt) {
+            return;
+        }
+
+        $this->logger->debug(
+            'Resetting playlist queue at schedule block start.',
+            ['reset_at' => $resetAt]
+        );
+
+        if ($playlist->source === PlaylistSources::Songs) {
+            $this->spmRepo->resetQueue($playlist, $resetAt);
+        } elseif ($recursive) {
+            $this->resetPlaylistGroupTree($playlist, $resetAt);
+        } else {
+            $this->spRepo->resetPlaylistGroupQueue($playlist, $resetAt);
+        }
+    }
+
+    /**
+     * @param int[] $visitedIds
+     */
+    private function resetPlaylistGroupTree(
+        StationPlaylist $group,
+        CarbonImmutable $resetAt,
+        array $visitedIds = []
+    ): void {
+        if (in_array($group->id, $visitedIds, true)) {
+            return;
+        }
+
+        $visitedIds[] = $group->id;
+
+        $this->spRepo->resetPlaylistGroupQueue($group, $resetAt);
+
+        foreach ($group->playlists as $membership) {
+            $member = $membership->playlist;
+
+            switch ($member->source) {
+                case PlaylistSources::Playlists:
+                    $this->resetPlaylistGroupTree($member, $resetAt, $visitedIds);
+                    break;
+
+                case PlaylistSources::Songs:
+                    if (!in_array($member->id, $visitedIds, true)) {
+                        $visitedIds[] = $member->id;
+                        $this->spmRepo->resetQueue($member, $resetAt);
+                    }
+                    break;
+            }
+        }
     }
 
     private function shouldPlaylistLoopNow(

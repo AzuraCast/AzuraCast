@@ -320,6 +320,8 @@ final class PlaylistConfigurationImporter
             $schedule->end_date = $scheduleEntry->endDate;
             $schedule->loop_once = $scheduleEntry->loopOnce;
             $schedule->prevent_requests = $scheduleEntry->preventRequests;
+            $schedule->reset_queue_at_start = $scheduleEntry->resetQueueAtStart;
+            $schedule->reset_queue_recursive = $scheduleEntry->resetQueueRecursive;
 
             $this->em->persist($schedule);
 

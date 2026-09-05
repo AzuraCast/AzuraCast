@@ -106,6 +106,24 @@
                     :label="$gettext('Block Request Queue While Active')"
                     :description="$gettext('While this scheduled window is active, listener requests will not be played via the automatic request queue.')"
                 />
+
+                <form-group-checkbox
+                    v-if="form.source === PlaylistSources.Songs || form.source === PlaylistSources.Playlists"
+                    :id="'edit_form_reset_queue_at_start_'+index"
+                    class="col-md-6"
+                    :field="r$.reset_queue_at_start"
+                    :label="$gettext('Reset Queue at Schedule Start')"
+                    :description="$gettext('When this scheduled window starts, restart the playlist from the beginning of its rotation instead of resuming where it was interrupted.')"
+                />
+
+                <form-group-checkbox
+                    v-if="form.source === PlaylistSources.Playlists && row.reset_queue_at_start"
+                    :id="'edit_form_reset_queue_recursive_'+index"
+                    class="col-md-6"
+                    :field="r$.reset_queue_recursive"
+                    :label="$gettext('Also Reset Nested Playlists')"
+                    :description="$gettext('Also restart every nested playlist group and member playlist from the beginning.')"
+                />
             </div>
         </div>
     </section>
@@ -137,6 +155,8 @@ interface PlaylistScheduleRow {
     days: number[];
     loop_once: boolean;
     prevent_requests: boolean;
+    reset_queue_at_start: boolean;
+    reset_queue_recursive: boolean;
 }
 
 const props = defineProps<{

@@ -1,0 +1,59 @@
+{
+  "description": "'reset_queue_at_start' also applies to a standard sequential songs playlist: with the flag the window starts at the first track even though the previous window stopped after track two; without it the playlist resumes at track three.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "flag-on-restarts-at-first-track",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "pl_on:m1_on": {
+            "is_queued": false
+          },
+          "pl_on:m2_on": {
+            "is_queued": false
+          },
+          "pl_on:m3_on": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "pl_on",
+          "media_ref": "m1_on",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "flag-off-resumes-at-third-track",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "pl_off:m1_off": {
+            "is_queued": false
+          },
+          "pl_off:m2_off": {
+            "is_queued": false
+          },
+          "pl_off:m3_off": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "pl_off",
+          "media_ref": "m3_off",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

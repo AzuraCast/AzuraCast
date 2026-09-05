@@ -2740,6 +2740,16 @@ export type StationSchedule = HasAutoIncrementId & {
      * @example false
      */
     prevent_requests?: boolean;
+    /**
+     * Reset the playlist's internal queue when this schedule window becomes active.
+     * @example false
+     */
+    reset_queue_at_start?: boolean;
+    /**
+     * Also reset nested playlist groups and member playlists (playlist groups only).
+     * @example false
+     */
+    reset_queue_recursive?: boolean;
 };
 
 /** Station streamers (DJ accounts) allowed to broadcast to a station. */

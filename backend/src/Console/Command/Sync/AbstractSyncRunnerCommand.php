@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
@@ -41,7 +42,26 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             }
 
             if ($process->isRunning()) {
-                continue;
+                // Process::setTimeout()/setIdleTimeout() are only enforced when checkTimeout() is
+                // called; isRunning() alone never does. Without this, a child that hangs (e.g. after
+                // an InnoDB deadlock in the queue builder) runs forever while its lock is refreshed
+                // above, and every later run logs "Could not obtain lock" until someone kills it.
+                try {
+                    $process->checkTimeout();
+                    continue;
+                } catch (ProcessTimedOutException $e) {
+                    $this->logger->error(
+                        sprintf(
+                            'Sync process %s exceeded its timeout (%s); stopping it and releasing its lock.',
+                            $processName,
+                            $e->getMessage()
+                        )
+                    );
+                    $process->stop(5);
+                    $lock->release();
+                    unset($this->processes[$processName]);
+                    continue;
+                }
             }
 
             $this->logger->debug(sprintf(

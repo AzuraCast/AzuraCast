@@ -10,12 +10,9 @@ use App\Media\Metadata;
 use App\Media\Metadata\Writer;
 use Codeception\Test\Unit;
 use JamesHeinrich\GetID3\GetID3;
-use UnitTester;
 
 final class MediaMetadataWriterTest extends Unit
 {
-    protected UnitTester $tester;
-
     private Writer $writer;
 
     private string $path;

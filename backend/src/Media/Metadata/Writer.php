@@ -41,14 +41,6 @@ final class Writer
 
         $writeTags = $metadata->getKnownTags();
 
-        if (!empty($metadata->getExtraTags())) {
-            // GetID3 requires all tags for vorbiscomment & metaflac to have string values
-            // so we explicitly need to convert the extra tags into a multiline string
-            $writeTags['text'] = !empty(array_intersect(['vorbiscomment', 'metaflac'], $tagFormats))
-                ? implode(PHP_EOL, $metadata->getExtraTags())
-                : $metadata->getExtraTags();
-        }
-
         $artContents = $metadata->getArtwork();
         if (null !== $artContents) {
             $writeTags['attached_picture'] = [
@@ -64,6 +56,29 @@ final class Writer
         $tagData = array_map(function ($tagValue) {
             return [$tagValue];
         }, $writeTags);
+
+        // Extra tags come from a fixed set of nullable fields, so every key is always present
+        // Drop the empty ones before deciding whether to write any.
+        $extraTags = array_filter(
+            $metadata->getExtraTags(),
+            static fn($tagValue) => null !== $tagValue && '' !== $tagValue
+        );
+
+        if (!empty($extraTags)) {
+            // Vorbiscomment & metaflac require a single string value, so the extra tags are
+            // collapsed into one multiline string.
+            // ID3v2 instead keeps them as TXXX frames, format ['description' => ..., 'data' => ...] rows;
+            $tagData['text'] = !empty(array_intersect(['vorbiscomment', 'metaflac'], $tagFormats))
+                ? [implode(PHP_EOL, $extraTags)]
+                : array_map(
+                    static fn($tagName, $tagValue) => [
+                        'description' => (string)$tagName,
+                        'data' => (string)$tagValue,
+                    ],
+                    array_keys($extraTags),
+                    $extraTags
+                );
+        }
 
         $tagwriter->tag_data = $tagData;
         $tagwriter->WriteTags();

@@ -386,7 +386,7 @@ msgstr "Utilice siempre HTTPS"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:237
 msgid "Always Write Playlists to Liquidsoap"
-msgstr ""
+msgstr "Escribir siempre las listas de reproducción en Liquidsoap"
 
 #: frontend/components/Stations/Media/Form/AdvancedSettings.vue:16
 msgid "Amplify: Amplification (dB)"
@@ -479,7 +479,7 @@ msgstr "Podcasts de Apple"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:51
 msgid "Apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Processing requires extra CPU resources, so it may slow down your server."
-msgstr ""
+msgstr "Aplica procesadores de audio (como compresores, limitadores o ecualizadores) a tu emisión para crear un sonido más uniforme o mejorar la experiencia de escucha. El procesamiento requiere recursos de CPU adicionales, por lo que puede ralentizar tu servidor."
 
 #: frontend/components/Admin/Settings/ServicesTab.vue:242
 msgid "Apply for an API key at Last.fm"
@@ -550,7 +550,7 @@ msgstr "Método de post-procesamiento de Audio"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:47
 msgid "Audio Processing"
-msgstr ""
+msgstr "Procesamiento de audio"
 
 #: frontend/components/Admin/Index/CpuStatsHelpModal.vue:29
 msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
@@ -572,7 +572,7 @@ msgstr "Auto-Asignar Valor"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:69
 msgid "AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience."
-msgstr ""
+msgstr "AutoCue analiza tu música y calcula automáticamente los puntos de cue, los fundidos y los niveles de volumen para una experiencia de escucha consistente."
 
 #: frontend/components/Admin/Stations.vue:137
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:3
@@ -833,7 +833,7 @@ msgstr "Emisiones"
 
 #: frontend/components/Stations/Streamers/BroadcastsModalToolbar.vue:118
 msgid "Broadcasts removed:"
-msgstr ""
+msgstr "Emisiones eliminadas:"
 
 #: frontend/components/Stations/Reports/Overview/BrowsersTab.vue:6
 msgid "Browser"
@@ -857,7 +857,7 @@ msgstr "Nombre del Bucket"
 
 #: frontend/components/Stations/Podcasts/BatchEditModal.vue:7
 msgid "Bulk Edit Episodes"
-msgstr ""
+msgstr "Edición masiva de episodios"
 
 #: frontend/components/Stations/menu.ts:131
 msgid "Bulk Media Import/Export"
@@ -871,7 +871,7 @@ msgstr "por"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:238
 msgid "By default, all playlists are written to Liquidsoap as a backup in case the normal AutoDJ fails. This can affect CPU load, especially on startup. Disable to only write essential playlists to Liquidsoap."
-msgstr ""
+msgstr "Por defecto, todas las listas de reproducción se escriben en Liquidsoap como respaldo por si el AutoDJ normal falla. Esto puede afectar a la carga de CPU, especialmente al arrancar. Desactívalo para escribir en Liquidsoap solo las listas de reproducción esenciales."
 
 #: frontend/components/Admin/Settings/GeneralTab.vue:43
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
@@ -884,7 +884,7 @@ msgstr "En Caché"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:89
 msgid "Calculate and use normalized volume level metadata for each track."
-msgstr ""
+msgstr "Calcula y usa metadatos de nivel de volumen normalizado para cada pista."
 
 #: frontend/components/Common/DateRangeDropdown.vue:12
 #: frontend/vendor/sweetalert.ts:10
@@ -989,7 +989,7 @@ msgstr "Limpiar Caché"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:177
 msgid "Clear Extra Metadata"
-msgstr ""
+msgstr "Borrar metadatos adicionales"
 
 #: frontend/components/Form/FormGroupField.vue:71
 msgid "Clear Field"
@@ -1360,7 +1360,7 @@ msgstr "Desvanecimiento Personalizado: Tiempo de Desvanecimiento de Salida (segu
 
 #: frontend/components/Stations/Media/Form/AdvancedSettings.vue:27
 msgid "Custom Fading: Start Next (seconds)"
-msgstr ""
+msgstr "Fundido personalizado: inicio de la siguiente (segundos)"
 
 #: frontend/components/Stations/Fallback.vue:12
 #: frontend/components/Stations/menu.ts:264
@@ -1379,7 +1379,7 @@ msgstr "Configuración de interfaz avanzada"
 
 #: frontend/components/Stations/Podcasts/PodcastForm/Branding.vue:11
 msgid "Custom HTML for Public Pages"
-msgstr ""
+msgstr "HTML personalizado para las páginas públicas"
 
 #: frontend/components/Admin/Branding/BrandingForm.vue:90
 #: frontend/components/Stations/Branding/BrandingForm.vue:62
@@ -1525,11 +1525,11 @@ msgstr "Eliminar"
 
 #: frontend/components/Stations/Streamers/BroadcastsModalToolbar.vue:107
 msgid "Delete %{ num } broadcasts?"
-msgstr ""
+msgstr "¿Eliminar %{ num } emisiones?"
 
 #: frontend/components/Stations/Podcasts/EpisodesToolbar.vue:87
 msgid "Delete %{ num } episodes?"
-msgstr ""
+msgstr "¿Eliminar %{ num } episodios?"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:341
 msgid "Delete %{ num } media files?"
@@ -1982,7 +1982,7 @@ msgstr "Habilitar Funciones Avanzadas"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:64
 msgid "Enable AutoCue (Beta)"
-msgstr ""
+msgstr "Activar AutoCue (beta)"
 
 #: frontend/components/Stations/Mounts/Form/AutoDj.vue:11
 msgid "Enable AutoDJ"
@@ -2014,7 +2014,7 @@ msgstr "Habilitar Envío de Correo"
 
 #: frontend/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:71
 msgid "Enable on Public Pages"
-msgstr ""
+msgstr "Activar en las páginas públicas"
 
 #: frontend/components/Admin/Stations/Form/ProfileForm.vue:105
 msgid "Enable On-Demand Streaming"
@@ -2026,7 +2026,7 @@ msgstr "Activar Páginas Públicas"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:84
 msgid "Enable ReplayGain"
-msgstr ""
+msgstr "Activar ReplayGain"
 
 #: frontend/components/Admin/Stations.vue:170
 msgid "Enable station?"
@@ -2050,7 +2050,7 @@ msgstr "Activar para anunciar este repetidor en los directorios de radio públic
 
 #: frontend/components/Stations/Mounts/Form/BasicInfo.vue:28
 msgid "Enable to allow listeners to select and play from this mount point on this station's public pages, including embedded widgets."
-msgstr ""
+msgstr "Actívalo para permitir que los oyentes seleccionen y reproduzcan desde este punto de montaje en las páginas públicas de esta emisora, incluidos los widgets incrustados."
 
 #: frontend/components/Stations/Remotes/Form/BasicInfo.vue:64
 msgid "Enable to allow listeners to select this relay on this station's public pages."
@@ -2151,7 +2151,7 @@ msgstr "Episodio"
 #: frontend/components/Stations/Podcasts/BatchEditModal.vue:27
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:72
 msgid "Episode Number"
-msgstr ""
+msgstr "Número de episodio"
 
 #: frontend/components/Public/Podcasts/PodcastList.vue:53
 #: frontend/components/Stations/PodcastEpisodes.vue:15
@@ -2161,11 +2161,11 @@ msgstr "Episodios"
 
 #: frontend/components/Stations/Podcasts/EpisodesToolbar.vue:98
 msgid "Episodes removed:"
-msgstr ""
+msgstr "Episodios eliminados:"
 
 #: frontend/components/Stations/Podcasts/BatchEditModal.vue:142
 msgid "Episodes updated:"
-msgstr ""
+msgstr "Episodios actualizados:"
 
 #: frontend/components/Admin/Debug/TaskOutput.vue:94
 msgid "Error"
@@ -2182,11 +2182,11 @@ msgstr "Error al poner archivos en cola:"
 
 #: frontend/components/Stations/Streamers/BroadcastsModalToolbar.vue:119
 msgid "Error removing broadcasts:"
-msgstr ""
+msgstr "Error al eliminar emisiones:"
 
 #: frontend/components/Stations/Podcasts/EpisodesToolbar.vue:99
 msgid "Error removing episodes:"
-msgstr ""
+msgstr "Error al eliminar episodios:"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:353
 msgid "Error removing files:"
@@ -2199,7 +2199,7 @@ msgstr "Error al reprocesar archivos:"
 
 #: frontend/components/Stations/Podcasts/BatchEditModal.vue:143
 msgid "Error updating episodes:"
-msgstr ""
+msgstr "Error al actualizar episodios:"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:380
 msgid "Error updating playlists:"
@@ -2251,7 +2251,7 @@ msgstr "Externo"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:332
 msgid "Extra metadata cleared for files:"
-msgstr ""
+msgstr "Metadatos adicionales borrados de los ficheros:"
 
 #: frontend/components/Stations/Mounts/Form/BasicInfo.vue:98
 msgid "Fallback Mount"
@@ -2462,7 +2462,7 @@ msgstr "Ocultar los Metadatos a los Radioescuchas (\"Modo Jingle\")"
 
 #: frontend/components/Form/FormLabel.vue:24
 msgid "High CPU"
-msgstr ""
+msgstr "CPU alta"
 
 #: frontend/components/Admin/Index/CpuStatsHelpModal.vue:49
 msgid "High I/O Wait can indicate a bottleneck with the server's hard disk, a potentially failing hard disk, or heavy load on the hard disk."
@@ -2547,7 +2547,7 @@ msgstr "Si está desactivado, la lista de reproducción no se incluirá en la re
 
 #: frontend/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:72
 msgid "If disabled, the station will not be visible on public-facing pages or APIs."
-msgstr ""
+msgstr "Si está desactivado, la emisora no será visible en las páginas públicas ni en las APIs."
 
 #: frontend/components/Admin/Stations/Form/AdminForm.vue:12
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
@@ -2842,7 +2842,7 @@ msgstr "Mes Pasado"
 
 #: frontend/components/Stations/Media.vue:367
 msgid "Last Processed Time"
-msgstr ""
+msgstr "Última hora de procesado"
 
 #: frontend/components/Admin/Debug.vue:288
 msgid "Last Run"
@@ -2870,7 +2870,7 @@ msgstr "Aprende sobre Listas de Reproducción Avanzadas (En Ingles)"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:75
 msgid "Learn more about AutoCue"
-msgstr ""
+msgstr "Más información sobre AutoCue"
 
 #: frontend/components/Admin/Stations/Form/BackendForm.vue:56
 msgid "Learn More about Post-processing CPU Impact"
@@ -3794,7 +3794,7 @@ msgstr "Opcional: Tiempo de Espera de Solicitud (Segundos)"
 
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:62
 msgid "Optionally list this episode as part of a season in some podcast aggregators."
-msgstr ""
+msgstr "Opcionalmente, lista este episodio como parte de una temporada en algunos agregadores de podcasts."
 
 #: frontend/components/Admin/CustomFields/Form.vue:30
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
@@ -3802,7 +3802,7 @@ msgstr "Seleccione opcionalmente un campo de metadatos ID3v2 que, si está prese
 
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:73
 msgid "Optionally set a specific episode number in some podcast aggregators."
-msgstr ""
+msgstr "Opcionalmente, establece un número de episodio concreto en algunos agregadores de podcasts."
 
 #: frontend/components/Admin/Stations/Form/ProfileForm.vue:57
 msgid "Optionally specify a short URL-friendly name, such as \"my_station_name\", that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -4142,15 +4142,15 @@ msgstr "Subdominio de Broadcast Radio.de"
 
 #: frontend/components/Stations/Webhooks/Form/RadioReg.vue:18
 msgid "RadioRed Organization API Key"
-msgstr ""
+msgstr "Clave de la API de la organización RadioRed"
 
 #: frontend/components/Stations/Webhooks/Form/RadioReg.vue:11
 msgid "RadioReg Webhook URL"
-msgstr ""
+msgstr "URL del webhook de RadioReg"
 
 #: frontend/entities/Webhooks.ts:108
 msgid "RadioReg.net"
-msgstr ""
+msgstr "RadioReg.net"
 
 #: frontend/components/Stations/Playlists/Form/BasicInfo.vue:342
 msgid "Random"
@@ -4315,7 +4315,7 @@ msgstr "Eliminar"
 
 #: frontend/components/Stations/Media/MediaToolbar.vue:174
 msgid "Remove any extra metadata (fade points, cue points, etc.) from the selected media"
-msgstr ""
+msgstr "Elimina los metadatos adicionales (puntos de fundido, puntos de cue, etc.) de los medios seleccionados"
 
 #: frontend/components/Admin/GeoLite.vue:94
 msgid "Remove Key"
@@ -4556,7 +4556,7 @@ msgstr "Búsqueda"
 #: frontend/components/Stations/Podcasts/BatchEditModal.vue:26
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:61
 msgid "Season Number"
-msgstr ""
+msgstr "Número de temporada"
 
 #: frontend/components/Stations/Media/Form/AdvancedSettings.vue:61
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
@@ -4568,7 +4568,7 @@ msgstr "Segundos desde el inicio de la canción que el AutoDJ debería de dejar 
 
 #: frontend/components/Stations/Media/Form/AdvancedSettings.vue:28
 msgid "Seconds from the start of the song that the next song should begin when fading. Leave blank to use the system default."
-msgstr ""
+msgstr "Segundos desde el inicio de la canción en los que debería comenzar la siguiente al hacer el fundido. Déjalo en blanco para usar el valor por defecto del sistema."
 
 #: frontend/components/Admin/StorageLocations/Form/S3.vue:18
 msgid "Secret Key"
@@ -4683,7 +4683,7 @@ msgstr "Seleccionar el Tipo de Web Hook"
 
 #: frontend/components/Stations/Media/MoveFilesModal.vue:26
 msgid "Selected directory:"
-msgstr ""
+msgstr "Directorio seleccionado:"
 
 #: frontend/entities/Webhooks.ts:97
 msgid "Send an e-mail to specified address(es)."
@@ -4775,7 +4775,7 @@ msgstr "Establecer Fade Out"
 
 #: frontend/components/Stations/Media/Form/WaveformEditor.vue:57
 msgid "Set Fade Start Next"
-msgstr ""
+msgstr "Definir el fundido de inicio de la siguiente"
 
 #: frontend/components/Admin/Settings/GeneralTab.vue:54
 msgid "Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space."
@@ -4787,7 +4787,7 @@ msgstr "Establece el tiempo (en segundos) que un oyente permanecerá conectado a
 
 #: frontend/components/Admin/Settings/SecurityPrivacyTab.vue:39
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS)."
-msgstr ""
+msgstr "Establece \"Sí\" para usar siempre URL seguras \"https://\" y redirigir automáticamente a la URL segura cuando se visite una URL insegura (HSTS)."
 
 #: frontend/components/Admin/Settings/SecurityPrivacyTab.vue:65
 msgid "Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
@@ -4967,7 +4967,7 @@ msgstr "Redes Sociales"
 
 #: frontend/components/Stations/Profile/FrontendPanel.vue:67
 msgid "Some clients may require that you enter a port number that is either one above or one below this number."
-msgstr ""
+msgstr "Algunos clientes pueden requerir que introduzcas un número de puerto situado uno por encima o uno por debajo de este número."
 
 #: frontend/components/Admin/Stations/Form/RequestsForm.vue:12
 msgid "Some stream licensing providers may have specific rules regarding song requests. Check your local regulations for more information."
@@ -5453,7 +5453,7 @@ msgstr "Uso actual de la memoria excluyendo la memoria caché."
 
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
 msgid "The date and time when the episode should be published."
-msgstr ""
+msgstr "La fecha y hora en la que se publicará el episodio."
 
 #: frontend/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:28
 msgid "The description of the episode. The typical maximum amount of text allowed for this is 4000 characters."
@@ -5765,7 +5765,7 @@ msgstr "Este servicio puede proporcionar caratulas de álbumes para canciones do
 
 #: frontend/components/Form/FormLabel.vue:22
 msgid "This setting can result in excessive CPU consumption and should be used with caution."
-msgstr ""
+msgstr "Este ajuste puede provocar un consumo excesivo de CPU y debe usarse con precaución."
 
 #: frontend/components/Admin/Stations/Form/FrontendForm.vue:15
 msgid "This software is traditionally used to deliver your broadcast to your listeners. You can still broadcast remotely or via HLS if this service is disabled."
@@ -5809,7 +5809,7 @@ msgstr "Esto se mostrará en las páginas públicas del reproductor si la estaci
 
 #: frontend/components/Admin/Backups/RunBackupModal.vue:41
 msgid "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically."
-msgstr ""
+msgstr "Este será el nombre de fichero de tu copia de seguridad; incluye la extensión del tipo de fichero que quieras usar. Déjalo en blanco para que se genere un nombre automáticamente."
 
 #: frontend/components/Admin/CustomFields/Form.vue:8
 msgid "This will be used as the label when editing individual songs, and will show in API results."
@@ -6152,7 +6152,7 @@ msgstr "Sube el archivo en esta página para extraerlo automáticamente en el di
 
 #: frontend/components/Stations/Media.vue:359
 msgid "Uploaded Time"
-msgstr ""
+msgstr "Hora de subida"
 
 #: frontend/components/Stations/Webhooks/Form/Discord.vue:48
 msgid "URL"
@@ -6471,7 +6471,7 @@ msgstr "Tipo de Widget"
 #: frontend/components/Stations/Podcasts/EpisodesToolbar.vue:4
 #: frontend/components/Stations/Streamers/BroadcastsModalToolbar.vue:4
 msgid "With selected:"
-msgstr ""
+msgstr "Con la selección:"
 
 #: frontend/components/Stations/Reports/Overview/BestAndWorstTab.vue:50
 msgid "Worst Performing Songs"
@@ -6508,7 +6508,7 @@ msgstr "Sólo puede realizar las acciones que su cuenta de usuario puede realiza
 
 #: frontend/components/Stations/Mounts/Form/Advanced.vue:13
 msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it on the web interface and in the Now Playing API return data. Leave empty to use the default value."
-msgstr ""
+msgstr "Puedes establecer una URL personalizada para esta emisión que AzuraCast usará al referirse a ella en la interfaz web y en los datos de la API Now Playing. Déjalo vacío para usar el valor por defecto."
 
 #: frontend/components/Stations/SftpUsers.vue:56
 msgid "You may need to connect directly to your IP address:"
@@ -7255,7 +7255,7 @@ msgstr "Este valor ya está en uso."
 #: /home/runner/work/AzuraCast/AzuraCast/backend/src/Validator/Constraints/StationPortCheckerValidator.php:41
 #, php-format
 msgid "The port %s is in use by another station (%s)."
-msgstr ""
+msgstr "El puerto %s está en uso por otra emisora (%s)."
 
 #: /home/runner/work/AzuraCast/AzuraCast/backend/src/Validator/Constraints/StorageLocationValidator.php:41
 #, php-format

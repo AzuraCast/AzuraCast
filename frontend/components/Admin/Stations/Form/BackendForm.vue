@@ -304,7 +304,7 @@
                         class="col-md-6"
                         :field="r$.backend_config.autodj_queue_length"
                         input-type="number"
-                        :input-attrs="{ min: '2', max: '25' }"
+                        :input-attrs="{ min: '1', max: '25' }"
                         :label="$gettext('AutoDJ Queue Length')"
                         :description="$gettext('This determines how many songs in advance the AutoDJ will automatically fill the queue.')"
                     />

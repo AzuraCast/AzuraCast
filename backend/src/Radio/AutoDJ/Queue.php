@@ -64,7 +64,11 @@ final class Queue
             $expectedPlayTime = $expectedCueTime;
         }
 
-        $maxQueueLength = max($station->backend_config->autodj_queue_length, 2);
+        // A queue length of at least 1 is required so the AutoDJ always has something
+        // queued to play; a lower floor than before lets stations that want requests to
+        // air as close to immediately as possible (see the "AutoDJ Queue Length" setting)
+        // actually reach a queue depth of 1 instead of being silently forced to 2.
+        $maxQueueLength = max($station->backend_config->autodj_queue_length, 1);
 
         $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 

@@ -9991,6 +9991,10 @@ components:
               type: integer
               example: 5
               nullable: true
+            request_delay_ip:
+              type: integer
+              example: 5
+              nullable: true
             request_threshold:
               type: integer
               example: 15

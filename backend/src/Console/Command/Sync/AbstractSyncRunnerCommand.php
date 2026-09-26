@@ -41,18 +41,17 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
                 $lock->refresh();
             }
 
-            try {
-                $process->checkTimeout();
-            } catch (ProcessTimedOutException $exception) {
-                $timeout = $exception->getExceededTimeout();
-
-                $this->logger->error(
-                    "Sync process {$processName} was stopped due to exceeding its {$timeout} second timeout."
-                );
-            }
-
             if ($process->isRunning()) {
-                continue;
+                try {
+                    $process->checkTimeout();
+                    continue;
+                } catch (ProcessTimedOutException $exception) {
+                    $timeout = $exception->getExceededTimeout();
+
+                    $this->logger->error(
+                        "Sync process {$processName} was stopped due to exceeding its {$timeout} second timeout."
+                    );
+                }
             }
 
             $this->logger->debug(sprintf(

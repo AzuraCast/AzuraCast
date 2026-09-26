@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
@@ -38,6 +39,16 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             // 10% chance that refresh will be called
             if (rand(1, 100) <= 10) {
                 $lock->refresh();
+            }
+
+            try {
+                $process->checkTimeout();
+            } catch (ProcessTimedOutException $exception) {
+                $timeout = $exception->getExceededTimeout();
+
+                $this->logger->error(
+                    "Sync process {$processName} was stopped due to exceeding its {$timeout} second timeout."
+                );
             }
 
             if ($process->isRunning()) {

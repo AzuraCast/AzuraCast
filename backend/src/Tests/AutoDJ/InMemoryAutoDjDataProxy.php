@@ -7,7 +7,6 @@ namespace App\Tests\AutoDJ;
 use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
-use App\Entity\Interfaces\SongInterface;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -20,6 +19,7 @@ use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use InvalidArgumentException;
+use WeakMap;
 
 /**
  * Provides in-memory methods to emulate repository interactions that the Scheduler/QueueBuilder rely on
@@ -33,12 +33,14 @@ use InvalidArgumentException;
  *     playlist_ref: ?string,
  *     is_visible: bool
  * }
- * @phpstan-type QueueEntryShape array{
+ * @phpstan-type QueueRowShape array{
  *     song_id: string,
  *     artist: ?string,
  *     title: ?string,
  *     playlist_ref: ?string,
- *     is_visible: bool
+ *     is_visible: bool,
+ *     is_played: bool,
+ *     timestamp_played: ?int
  * }
  */
 final class InMemoryAutoDjDataProxy
@@ -46,8 +48,11 @@ final class InMemoryAutoDjDataProxy
     /** @var ?list<HistoryEntryShape> */
     private ?array $historyCache = null;
 
-    /** @var list<QueueEntryShape> */
-    private array $cuedEntries = [];
+    /** @var list<QueueRowShape> */
+    private array $queueRows = [];
+
+    /** @var WeakMap<StationQueue, int> */
+    private WeakMap $queueRowPositions;
 
     private readonly InMemoryCommittedState $committedState;
 
@@ -60,13 +65,19 @@ final class InMemoryAutoDjDataProxy
         $this->committedState->trackPlaylistMedia($entities->spmById);
         $this->committedState->trackRequests($entities->requests);
 
+        $this->queueRowPositions = new WeakMap();
+
         foreach ($entities->runtime->cuedMedia as $cuedMediaEntry) {
             $media = $entities->mediaByRef[$cuedMediaEntry->mediaRef] ?? null;
-            if ($media === null || !isset($entities->playlistsByRef[$cuedMediaEntry->playlistRef])) {
+            $playlist = $entities->playlistsByRef[$cuedMediaEntry->playlistRef] ?? null;
+            if ($media === null || $playlist === null) {
                 continue;
             }
 
-            $this->recordCuedEntry($media, $cuedMediaEntry->playlistRef, true);
+            $queueRow = StationQueue::fromMedia($entities->station, $media);
+            $queueRow->playlist = $playlist;
+
+            $this->commitQueueRow($queueRow);
         }
     }
 
@@ -84,14 +95,8 @@ final class InMemoryAutoDjDataProxy
 
     public function flush(): void
     {
-        foreach ($this->committedState->flush() as $queueEntry) {
-            $playlist = $queueEntry->playlist;
-
-            $this->recordCuedEntry(
-                $queueEntry,
-                ($playlist !== null) ? $this->entities->refForPlaylist($playlist) : null,
-                $queueEntry->is_visible
-            );
+        foreach ($this->committedState->flush() as $queueRow) {
+            $this->commitQueueRow($queueRow);
         }
     }
 
@@ -374,16 +379,47 @@ final class InMemoryAutoDjDataProxy
             ];
         }
 
-        foreach (array_reverse($this->cuedEntries) as $entry) {
+        foreach (array_reverse($this->queueRows) as $row) {
+            if (
+                $row['is_played']
+                && (
+                    $row['timestamp_played'] === null
+                    || $row['timestamp_played'] < $threshold
+                )
+            ) {
+                continue;
+            }
+
             $result[] = [
-                'song_id' => $entry['song_id'],
-                'timestamp_played' => null,
-                'title' => $entry['title'],
-                'artist' => $entry['artist'],
+                'song_id' => $row['song_id'],
+                'timestamp_played' => $row['timestamp_played'],
+                'title' => $row['title'],
+                'artist' => $row['artist'],
             ];
         }
 
         return $result;
+    }
+
+    /**
+     * Has the same effect as running StationQueueRepository::trackPlayed at the start of every row.
+     * Rows without a play time (seeded cued media) are never marked played.
+     */
+    public function markQueueRowsPlayedUntil(DateTimeImmutable $time): void
+    {
+        $timestamp = $time->getTimestamp();
+
+        foreach ($this->queueRows as $position => $row) {
+            if (
+                $row['is_played']
+                || $row['timestamp_played'] === null
+                || $row['timestamp_played'] > $timestamp
+            ) {
+                continue;
+            }
+
+            $this->queueRows[$position]['is_played'] = true;
+        }
     }
 
     public function isPlaylistRecentlyPlayed(StationPlaylist $playlist, ?int $playPerSongs = null): bool
@@ -399,7 +435,7 @@ final class InMemoryAutoDjDataProxy
         }
 
         $rows = [
-            ...array_reverse($this->cuedEntries),
+            ...array_reverse($this->queueRows),
             ...$this->history(),
         ];
 
@@ -494,15 +530,32 @@ final class InMemoryAutoDjDataProxy
 
     // Internal helpers
 
-    private function recordCuedEntry(SongInterface $song, ?string $playlistRef, bool $isVisible): void
+    /**
+     * Inserts the row or overwrites its committed copy when the same row is flushed again
+     */
+    private function commitQueueRow(StationQueue $queueRow): void
     {
-        $this->cuedEntries[] = [
-            'song_id' => $song->song_id,
-            'artist' => $song->artist,
-            'title' => $song->title,
-            'playlist_ref' => $playlistRef,
-            'is_visible' => $isVisible,
+        $playlist = $queueRow->playlist;
+
+        $row = [
+            'song_id' => $queueRow->song_id,
+            'artist' => $queueRow->artist,
+            'title' => $queueRow->title,
+            'playlist_ref' => ($playlist !== null) ? $this->entities->refForPlaylist($playlist) : null,
+            'is_visible' => $queueRow->is_visible,
+            'is_played' => $queueRow->is_played,
+            'timestamp_played' => $queueRow->timestamp_played?->getTimestamp(),
         ];
+
+        $position = $this->queueRowPositions[$queueRow] ?? null;
+        if ($position === null) {
+            $this->queueRowPositions[$queueRow] = count($this->queueRows);
+            $this->queueRows[] = $row;
+
+            return;
+        }
+
+        $this->queueRows[$position] = $row;
     }
 
     private function isCued(StationPlaylist $playlist): bool
@@ -512,8 +565,8 @@ final class InMemoryAutoDjDataProxy
             return false;
         }
 
-        foreach ($this->cuedEntries as $entry) {
-            if ($entry['playlist_ref'] === $ref) {
+        foreach ($this->queueRows as $row) {
+            if (!$row['is_played'] && $row['playlist_ref'] === $ref) {
                 return true;
             }
         }

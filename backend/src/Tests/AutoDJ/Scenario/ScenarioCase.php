@@ -21,6 +21,7 @@ final class ScenarioCase
         public readonly array $expectShouldPlay,
         public readonly array $expectSchedulePlay,
         public readonly array $expectSequence,
+        public readonly ?ScenarioSimulation $simulation,
     ) {
     }
 
@@ -46,6 +47,9 @@ final class ScenarioCase
                 static fn(mixed $step): ExpectSequenceStep => ExpectSequenceStep::fromArray(Types::array($step)),
                 array_values(Types::array($data['expect_sequence'] ?? []))
             ),
+            simulation: array_key_exists('simulation', $data)
+                ? ScenarioSimulation::fromArray(Types::array($data['simulation']))
+                : null,
         );
     }
 

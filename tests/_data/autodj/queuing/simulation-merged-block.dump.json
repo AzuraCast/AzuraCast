@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 100,
+      "autodj_queue_length": 3,
+      "crossfade": 20
+    }
+  },
+  "media": [
+    {
+      "ref": "a1",
+      "path": "merged/a-1.mp3",
+      "unique_id": "simulatemergeda00001",
+      "length": 1200.0,
+      "artist": "Artist A1",
+      "title": "Track A1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a2",
+      "path": "merged/a-2.mp3",
+      "unique_id": "simulatemergeda00002",
+      "length": 1200.0,
+      "artist": "Artist A2",
+      "title": "Track A2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a3",
+      "path": "merged/a-3.mp3",
+      "unique_id": "simulatemergeda00003",
+      "length": 1200.0,
+      "artist": "Artist A3",
+      "title": "Track A3",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a4",
+      "path": "merged/a-4.mp3",
+      "unique_id": "simulatemergeda00004",
+      "length": 1200.0,
+      "artist": "Artist A4",
+      "title": "Track A4",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a5",
+      "path": "merged/a-5.mp3",
+      "unique_id": "simulatemergeda00005",
+      "length": 1200.0,
+      "artist": "Artist A5",
+      "title": "Track A5",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b1",
+      "path": "merged/b-1.mp3",
+      "unique_id": "simulatemergedb00001",
+      "length": 1200.0,
+      "artist": "Artist B1",
+      "title": "Track B1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b2",
+      "path": "merged/b-2.mp3",
+      "unique_id": "simulatemergedb00002",
+      "length": 1200.0,
+      "artist": "Artist B2",
+      "title": "Track B2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b3",
+      "path": "merged/b-3.mp3",
+      "unique_id": "simulatemergedb00003",
+      "length": 1200.0,
+      "artist": "Artist B3",
+      "title": "Track B3",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b4",
+      "path": "merged/b-4.mp3",
+      "unique_id": "simulatemergedb00004",
+      "length": 1200.0,
+      "artist": "Artist B4",
+      "title": "Track B4",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b5",
+      "path": "merged/b-5.mp3",
+      "unique_id": "simulatemergedb00005",
+      "length": 1200.0,
+      "artist": "Artist B5",
+      "title": "Track B5",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "block",
+      "name": "Merged Block",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [
+          "merge"
+        ],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "songs-a",
+          "weight": 1,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "songs-b",
+          "weight": 2,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "songs-a",
+      "name": "Songs A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "a1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a5",
+          "weight": 5,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "songs-b",
+      "name": "Songs B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "b1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b5",
+          "weight": 5,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

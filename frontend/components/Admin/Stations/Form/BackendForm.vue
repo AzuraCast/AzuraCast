@@ -340,6 +340,16 @@
                         :label="$gettext('Duplicate Prevention Time Range (Minutes)')"
                         :description="$gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.')"
                     />
+
+                    <form-group-field
+                        id="edit_form_backend_duplicate_prevention_artist_time_range"
+                        class="col-md-6"
+                        :field="r$.backend_config.duplicate_prevention_artist_time_range"
+                        input-type="number"
+                        :input-attrs="{ min: '0', max: '1440' }"
+                        :label="$gettext('Duplicate Prevention Time Range for Artists (Minutes)')"
+                        :description="$gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm avoids repeating an artist. Stations with many tracks by the same artists can set a shorter range so those tracks keep rotating. Leave blank to use the Duplicate Prevention Time Range.')"
+                    />
                 </div>
             </form-fieldset>
         </template>

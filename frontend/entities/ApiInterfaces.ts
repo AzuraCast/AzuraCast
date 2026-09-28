@@ -2482,7 +2482,16 @@ export interface StationBackendConfiguration {
      * @format float
      */
     crossfade_smart_margin?: number;
+    /**
+     * The time range (in minutes) of the song history that duplicate prevention checks tracks and titles against, also applies to artists when duplicate_prevention_artist_time_range is not set.
+     * @example 120
+     */
     duplicate_prevention_time_range?: number;
+    /**
+     * The time range (in minutes) of the song history that duplicate prevention checks artists against, uses duplicate_prevention_time_range if set to null.
+     * @example 120
+     */
+    duplicate_prevention_artist_time_range?: number | null;
     performance_mode?: string;
     hls_segment_length?: number;
     hls_segments_in_playlist?: number;

@@ -20,6 +20,7 @@ use App\Service\PlaylistConfiguration\ImportSummary;
 use App\Service\PlaylistConfiguration\PlaylistConfigurationImporter;
 use App\Service\PlaylistConfiguration\Schema\PlaylistConfigurationSchema;
 use App\Tests\AutoDJ\DumpLoader;
+use App\Tests\AutoDJ\ExpectedPlayTime;
 use App\Tests\AutoDJ\Scenario\Enums\ExpectQueueMode;
 use App\Tests\AutoDJ\Scenario\Enums\ScenarioMode;
 use App\Tests\AutoDJ\Scenario\ExpectQueue;
@@ -411,6 +412,10 @@ final class AutoDjIntegrationCest extends CestAbstract
         $station->request_threshold = Types::intOrNull($stationData['request_threshold'] ?? null)
             ?? $station->request_threshold;
 
+        if (isset($stationData['backend_config'])) {
+            $station->backend_config = Types::array($stationData['backend_config']);
+        }
+
         $this->em->persist($station);
     }
 
@@ -704,6 +709,15 @@ final class AutoDjIntegrationCest extends CestAbstract
             $queueBuilder->calculateNextSong($event);
         }
 
-        return $event->getNextSongs();
+        $nextSongs = $event->getNextSongs();
+
+        ExpectedPlayTime::assignToBuiltRows(
+            $station,
+            $nextSongs,
+            $now,
+            $interrupting
+        );
+
+        return $nextSongs;
     }
 }

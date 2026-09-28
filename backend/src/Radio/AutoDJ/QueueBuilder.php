@@ -84,16 +84,13 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
-            $station,
-            $event->getExpectedPlayTime(),
-            $station->backend_config->duplicate_prevention_time_range
-        );
+        $recentSongHistoryForDuplicatePrevention = $this->getRecentSongHistory($event);
 
         $this->logger->debug(
             'AutoDJ recent song playback history',
             [
-                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
+                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention->playedTracks,
+                'history_artist_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention->artistPlayedTracks,
             ]
         );
 
@@ -145,6 +142,23 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         return $activePlaylistsByType;
+    }
+
+    private function getRecentSongHistory(BuildQueue $event): RecentSongHistory
+    {
+        $station = $event->getStation();
+        $expectedPlayTime = $event->getExpectedPlayTime();
+
+        $timeRange = $station->backend_config->duplicate_prevention_time_range;
+        $artistTimeRange = $station->backend_config->getDuplicatePreventionArtistTimeRange();
+
+        $playedTracks = $this->queueRepo->getRecentlyPlayedByTimeRange($station, $expectedPlayTime, $timeRange);
+
+        $artistPlayedTracks = ($artistTimeRange === $timeRange)
+            ? $playedTracks
+            : $this->queueRepo->getRecentlyPlayedByTimeRange($station, $expectedPlayTime, $artistTimeRange);
+
+        return new RecentSongHistory($playedTracks, $artistPlayedTracks);
     }
 
     /**
@@ -246,7 +260,6 @@ final class QueueBuilder implements EventSubscriberInterface
      * Given a specified playlist group, choose song(s) from the assigned playlists to play
      *
      * @param StationPlaylist $playlistGroup A playlist that is holding other playlists inside
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
@@ -256,7 +269,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playSongFromPlaylistGroup(
         BuildQueue $event,
         StationPlaylist $playlistGroup,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false,
         array $playlistChain = []
@@ -329,7 +342,6 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Run one pass over the group's remaining member queue and return the first member's track(s)
      *
-     * @param mixed[] $recentSongHistory
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
      * @return ?list<StationQueue> Null if skipped by its own schedule, empty if no track was found
@@ -337,7 +349,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playPassOfPlaylistGroup(
         BuildQueue $event,
         StationPlaylist $playlistGroup,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates,
         bool $memberAvoidsDuplicates,
         array $playlistChain
@@ -373,7 +385,6 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Try to play the given group member and update its rotation state.
      *
-     * @param mixed[] $recentSongHistory
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
      * @return ?list<StationQueue> Null if skipped by its own schedule, empty if no track was found
@@ -382,7 +393,7 @@ final class QueueBuilder implements EventSubscriberInterface
         BuildQueue $event,
         StationPlaylist $playlistGroup,
         StationPlaylistGroup $selectedStationPlaylistGroup,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates,
         bool $memberAvoidsDuplicates,
         array $playlistChain
@@ -481,7 +492,6 @@ final class QueueBuilder implements EventSubscriberInterface
      * Internal queue intentionally not refilled mid-block, since it would restart pass.
      * Random groups have no rotation state, single random pass with one pick per member used instead.
      *
-     * @param mixed[] $recentSongHistory
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
      * @return list<StationQueue>
@@ -489,7 +499,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playBlockFromPlaylistGroup(
         BuildQueue $event,
         StationPlaylist $playlistGroup,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates,
         bool $memberAvoidsDuplicates,
         array $playlistChain
@@ -524,13 +534,13 @@ final class QueueBuilder implements EventSubscriberInterface
                 ];
 
                 foreach ($memberEntries as $memberEntry) {
-                    $blockHistory[] = [
+                    $blockHistory = $blockHistory->withPlayedTrack([
                         'song_id' => $memberEntry->song_id,
                         'text' => $memberEntry->text,
                         'artist' => $memberEntry->artist,
                         'title' => $memberEntry->title,
                         'timestamp_played' => $event->getExpectedPlayTime()->getTimestamp(),
-                    ];
+                    ]);
                 }
             }
 
@@ -600,14 +610,13 @@ final class QueueBuilder implements EventSubscriberInterface
 
     /**
      * @param PlaylistsBySchedulingType $activePlaylistsByType
-     * @param mixed[] $recentSongHistoryForDuplicatePrevention
      *
      * @return bool Returns true if playable track(s) found and registered
      */
     private function iteratePlaylistTypesToPlayByPriority(
         BuildQueue $event,
         array $activePlaylistsByType,
-        array $recentSongHistoryForDuplicatePrevention
+        RecentSongHistory $recentSongHistoryForDuplicatePrevention
     ): bool {
         $playlistTypesToPlayByPriority = $this->assemblePlaylistTypesToPlayByPriority();
 
@@ -692,7 +701,6 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Given a specified playlist, choose a song from the playlist to play and register it
      *
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param list<StationPlaylist> $ancestorChain Group chain this playlist was reached through
@@ -702,7 +710,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playSongFromPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false,
         array $ancestorChain = []
@@ -740,7 +748,6 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Determine the track(s) the given playlist wants to register
      *
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param list<StationPlaylist> $ancestorChain Group chain this playlist was reached through
@@ -750,7 +757,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function selectTracksFromPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false,
         array $ancestorChain = []
@@ -814,7 +821,6 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
@@ -824,7 +830,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playSongFromSongsPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false,
         ?array $playlistChainSnapshot = null
@@ -895,13 +901,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed[] $recentSongHistory
      * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
      */
     private function playSongFromRequestsPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         ?array $playlistChainSnapshot = null
     ): ?StationQueue {
         if ($this->areRequestsBlockedByAncestors($playlist, $event->getExpectedPlayTime())) {
@@ -1052,13 +1057,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      */
     private function getRandomMediaIdFromPlaylist(
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates,
         bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {
@@ -1072,13 +1076,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      */
     private function getSequentialMediaIdFromPlaylist(
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false,
         bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {
@@ -1105,13 +1108,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      */
     private function getShuffledMediaIdFromPlaylist(
         StationPlaylist $playlist,
-        array $recentSongHistory,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates,
         bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {

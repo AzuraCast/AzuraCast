@@ -9,6 +9,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Utilities\Time;
 use DateTimeImmutable;
 use Exception as PhpException;
@@ -80,14 +81,14 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * All currently playable requests in playout order.
      *
-     * @param mixed[] $additionalSongHistory Additional history rows that requests must not duplicate
+     * @param ?RecentSongHistory $additionalSongHistory Additional history that requests must not duplicate
      *
      * @return list<StationRequest>
      */
     public function getPlayableRequests(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): array {
         $tz = $station->getTimezoneObject();
         $now = Time::nowInTimezone($tz, $now);
@@ -105,22 +106,27 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->execute();
 
         $recentlyPlayed = $this->getRecentlyPlayedTracks($station);
+        $additionalSongHistory ??= new RecentSongHistory();
 
         return array_values(array_filter(
             $requests,
             fn(StationRequest $request): bool => $request->shouldPlayNow($now)
                 && !$this->isDuplicateOfPlayedTrack($request->track, $recentlyPlayed)
-                && !$this->isDuplicateOfPlayedTrack($request->track, $additionalSongHistory)
+                && !$this->isDuplicateOfPlayedTrack(
+                    $request->track,
+                    $additionalSongHistory->playedTracks,
+                    $additionalSongHistory->artistPlayedTracks
+                )
         ));
     }
 
     /**
-     * @param mixed[] $additionalSongHistory Additional history rows that requests must not duplicate
+     * @param ?RecentSongHistory $additionalSongHistory Additional history that requests must not duplicate
      */
     public function getNextPlayableRequest(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): ?StationRequest {
         return $this->getPlayableRequests($station, $now, $additionalSongHistory)[0] ?? null;
     }
@@ -162,10 +168,14 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
     /**
      * @param mixed[] $playedTracks
+     * @param ?mixed[] $artistPlayedTracks
      */
-    private function isDuplicateOfPlayedTrack(StationMedia $media, array $playedTracks): bool
-    {
-        if ($playedTracks === []) {
+    private function isDuplicateOfPlayedTrack(
+        StationMedia $media,
+        array $playedTracks,
+        ?array $artistPlayedTracks = null
+    ): bool {
+        if ($playedTracks === [] && ($artistPlayedTracks ?? []) === []) {
             return false;
         }
 
@@ -175,6 +185,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         $eligibleTrack->title = $media->title ?? '';
         $eligibleTrack->artist = $media->artist ?? '';
 
-        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $playedTracks) === null;
+        return $this->duplicatePrevention->getDistinctTrack(
+            [$eligibleTrack],
+            $playedTracks,
+            $artistPlayedTracks
+        ) === null;
     }
 }

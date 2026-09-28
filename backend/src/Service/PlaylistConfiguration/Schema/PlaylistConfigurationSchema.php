@@ -20,6 +20,7 @@ use JsonSerializable;
  *     requests_only_via_playlists: bool,
  *     backend_config: array{
  *         duplicate_prevention_time_range: int,
+ *         duplicate_prevention_artist_time_range: ?int,
  *         autodj_queue_length: int,
  *         crossfade: float
  *     }
@@ -96,6 +97,7 @@ final class PlaylistConfigurationSchema implements JsonSerializable
                 'requests_only_via_playlists' => $this->station->requests_only_via_playlists,
                 'backend_config' => [
                     'duplicate_prevention_time_range' => $backendConfig->duplicate_prevention_time_range,
+                    'duplicate_prevention_artist_time_range' => $backendConfig->duplicate_prevention_artist_time_range,
                     'autodj_queue_length' => $backendConfig->autodj_queue_length,
                     'crossfade' => $backendConfig->crossfade,
                 ],

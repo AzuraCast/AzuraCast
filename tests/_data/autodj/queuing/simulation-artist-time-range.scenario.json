@@ -1,0 +1,47 @@
+{
+  "description": "Shared artists on a synthetic station: two equally weighted shuffle playlists with 67 tracks of 6 to 7 minutes, 22 by a unique artist and 15 artists with three tracks each, and a 240-minute duplicate prevention window. About 36 tracks play per window against 37 distinct artists, so an artist check over the full window leaves almost one choice per pick and the running order repeats every window. An artist time range of 120 minutes spaces artists without saturating the check, while the track and title check still keeps repeats 240 minutes apart.",
+  "modes": [
+    "in_memory"
+  ],
+  "cases": [
+    {
+      "name": "artist-time-range-empty-follows-window",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 24,
+        "history_hours": 4,
+        "measure_playlists": [
+          "songs-a",
+          "songs-b"
+        ],
+        "expect": {
+          "measured_play_count": 216,
+          "min_repeat_interval_minutes": 240
+        }
+      }
+    },
+    {
+      "name": "artist-time-range-120-rotates-shared-artists",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 24,
+        "history_hours": 4,
+        "measure_playlists": [
+          "songs-a",
+          "songs-b"
+        ],
+        "backend_config": {
+          "duplicate_prevention_artist_time_range": 120
+        },
+        "expect": {
+          "min_repeat_interval_minutes": 240,
+          "max_repeat_share_near_window": 0.5,
+          "max_repeated_pair_share": 0.1,
+          "max_never_played_share": 0.03
+        }
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
@@ -487,16 +488,15 @@ final class InMemoryAutoDjDataProxy
     // StationRequestRepository
 
     /**
-     * @param mixed[] $additionalSongHistory
-     *
      * @return list<StationRequest>
      */
     public function getPlayableRequests(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): array {
         $now ??= Time::nowUtc();
+        $additionalSongHistory ??= new RecentSongHistory();
 
         $unplayed = array_filter(
             $this->entities->requests,
@@ -513,17 +513,18 @@ final class InMemoryAutoDjDataProxy
             $unplayed,
             fn(StationRequest $request): bool => $request->shouldPlayNow($now)
                 && !$this->hasRequestTrackPlayedRecently($request->track, $now)
-                && !$this->isDuplicateOfPlayedTrack($request->track, $additionalSongHistory)
+                && !$this->isDuplicateOfPlayedTrack(
+                    $request->track,
+                    $additionalSongHistory->playedTracks,
+                    $additionalSongHistory->artistPlayedTracks
+                )
         ));
     }
 
-    /**
-     * @param mixed[] $additionalSongHistory
-     */
     public function getNextPlayableRequest(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): ?StationRequest {
         return $this->getPlayableRequests($station, $now, $additionalSongHistory)[0] ?? null;
     }
@@ -679,10 +680,14 @@ final class InMemoryAutoDjDataProxy
 
     /**
      * @param mixed[] $playedTracks
+     * @param ?mixed[] $artistPlayedTracks
      */
-    private function isDuplicateOfPlayedTrack(StationMedia $media, array $playedTracks): bool
-    {
-        if ($playedTracks === []) {
+    private function isDuplicateOfPlayedTrack(
+        StationMedia $media,
+        array $playedTracks,
+        ?array $artistPlayedTracks = null
+    ): bool {
+        if ($playedTracks === [] && ($artistPlayedTracks ?? []) === []) {
             return false;
         }
 
@@ -692,6 +697,10 @@ final class InMemoryAutoDjDataProxy
         $eligibleTrack->title = $media->title ?? '';
         $eligibleTrack->artist = $media->artist ?? '';
 
-        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $playedTracks) === null;
+        return $this->duplicatePrevention->getDistinctTrack(
+            [$eligibleTrack],
+            $playedTracks,
+            $artistPlayedTracks
+        ) === null;
     }
 }

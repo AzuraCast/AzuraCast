@@ -269,9 +269,25 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     protected const int DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
-    #[OA\Property]
+    #[OA\Property(
+        description: 'The time range (in minutes) of the song history that duplicate prevention checks tracks and titles against, also applies to artists when duplicate_prevention_artist_time_range is not set.',
+        example: 120
+    )]
     public int $duplicate_prevention_time_range = self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE {
         set (int|string|null $value) => Types::int($value, self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE);
+    }
+
+    #[OA\Property(
+        description: 'The time range (in minutes) of the song history that duplicate prevention checks artists against, uses duplicate_prevention_time_range if set to null.',
+        example: 120
+    )]
+    public ?int $duplicate_prevention_artist_time_range = null {
+        set (int|string|null $value) => Types::intOrNull($value);
+    }
+
+    public function getDuplicatePreventionArtistTimeRange(): int
+    {
+        return $this->duplicate_prevention_artist_time_range ?? $this->duplicate_prevention_time_range;
     }
 
     #[OA\Property]

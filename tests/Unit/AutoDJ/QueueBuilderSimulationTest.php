@@ -108,6 +108,8 @@ final class QueueBuilderSimulationTest extends Unit
                     'measured hours' => (string) $simulation->measuredHours,
                     'random seed' => (string) ($case->seed ?? '-'),
                     'duplicate prevention window (minutes)' => (string) $backendConfig->duplicate_prevention_time_range,
+                    'artist duplicate prevention window (minutes)' =>
+                        (string) $backendConfig->getDuplicatePreventionArtistTimeRange(),
                     'blocks (window-length parts of the measured span)' => $blockCountSetting,
                     'crossfade overlap (seconds)' => (string) $backendConfig->getCrossfadeDuration(),
                     'measured playlists' => implode(', ', $simulation->measurePlaylistRefs),

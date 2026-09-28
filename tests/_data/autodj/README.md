@@ -217,7 +217,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - `station.timezone` (schedule windows evaluate in station-local time)
   - `station.requests_only_via_playlists`
   - and the request settings `station.request_delay` / `station.request_threshold`
-  - `station.backend_config` (`duplicate_prevention_time_range`, `autodj_queue_length`, `crossfade`), merged into the station defaults
+  - `station.backend_config` (`duplicate_prevention_time_range`, `duplicate_prevention_artist_time_range`, `autodj_queue_length`, `crossfade`), merged into the station defaults
 - **Nested groups**
   - Supported to any depth (a group whose member is itself a playlist group)
   - Every group, top-level or nested, honors its own `order` and consecutive-plays rotation.
@@ -238,6 +238,8 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - Seeded `queue_history` entries are played rows at their timestamps
     - Cued media and built rows stay unplayed unless a [simulation](#simulation) marks them played
   - Duplicate prevention reads every unplayed row and played rows only while they are inside the duplicate prevention window
+    - Tracks and titles are always checked against the rows inside `duplicate_prevention_time_range`
+    - Artists are checked against the rows inside `duplicate_prevention_artist_time_range` when it is set
   - Only unplayed rows count as cued (the loop-once and single-track rules)
   - The OncePerXSongs window reads all rows regardless of played state
   - Cued and freshly built rows rank newer than any seeded history
@@ -337,6 +339,7 @@ A case with a `simulation` block runs the in-memory harness for hours or days in
   - length of the measured span in hours, counted from the end of `history_hours`
   - the span is split into blocks of the duplicate prevention window, counted from the start of measuring
     - a rotation that loops repeats with the window as its period, so one block covers one loop
+    - blocks and `max_repeat_share_near_window` always use `duplicate_prevention_time_range`, also when an artist time range is set
     - the last block is partial when the span is not a multiple of the window
     - `max_repeated_pair_share` needs at least 2 blocks
 - `history_hours`
@@ -346,7 +349,7 @@ A case with a `simulation` block runs the in-memory harness for hours or days in
   - only plays of these playlists are measured, which keeps jingles and other interruptions out of the statistics
 - `backend_config`
   - merged into the station `backend_config` from the dump
-  - allows differential cases (e.g. a smaller window) against the same dump
+  - allows differential cases (e.g. a smaller window or an artist time range) against the same dump
 - `expect` needs at least one of:
   - `measured_play_count`: exact number of measured plays (checks clock advance, crossfade and the start of measuring)
   - `min_repeat_interval_minutes`: no measured track may repeat sooner (fails when nothing repeats at all)
@@ -369,7 +372,7 @@ Limitations:
 
 - The `autodj_queue_length` lookahead is not modelled, so no rows are cued ahead of the one being built
 - No requests, skips or listener feedback
-- The pick kind (strict, least recently played, unfiltered) is read from the log output of the build
+- The pick kind (strict, least recently played because of a repeated title or artist, unfiltered) is read from the log output of the build
 - Runtime grows with the measured hours and the size of the duplicate prevention window, a four-day run over ~500 tracks takes about 10 seconds
 
 ## Adding a new case

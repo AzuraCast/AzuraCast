@@ -10116,7 +10116,14 @@ components:
           type: number
           format: float
         duplicate_prevention_time_range:
+          description: 'The time range (in minutes) of the song history that duplicate prevention checks tracks and titles against, also applies to artists when duplicate_prevention_artist_time_range is not set.'
           type: integer
+          example: 120
+        duplicate_prevention_artist_time_range:
+          description: 'The time range (in minutes) of the song history that duplicate prevention checks artists against, uses duplicate_prevention_time_range if set to null.'
+          type: integer
+          example: 120
+          nullable: true
         performance_mode:
           type: string
         hls_segment_length:

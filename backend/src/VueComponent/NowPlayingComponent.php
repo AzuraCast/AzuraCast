@@ -40,10 +40,14 @@ final readonly class NowPlayingComponent implements VueComponentInterface
         $station = $request->getStation();
         $customization = $request->getCustomization();
 
+        // Stations with a disabled public API have neither a static JSON file nor a websocket channel,
+        // so fall back to the (authenticated) API endpoint for them.
+        $useStatic = $customization->useStaticNowPlaying() && $station->enable_public_api;
+
         return new NowPlayingProps(
             stationShortName: $station->short_name,
-            useStatic: $customization->useStaticNowPlaying(),
-            useSse: $customization->useStaticNowPlaying() && $this->centrifugo->isSupported()
+            useStatic: $useStatic,
+            useSse: $useStatic && $this->centrifugo->isSupported()
         );
     }
 }

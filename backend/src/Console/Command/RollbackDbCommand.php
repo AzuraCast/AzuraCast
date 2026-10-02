@@ -69,7 +69,19 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
         $io->section(__('Reverting database migrations...'));
 
         try {
-            $migrationsToRevert = $this->getMigrationsToRevert($migrationVersion);
+            // The database is still untouched at this point, so a failure here must not trigger a restore.
+            try {
+                $migrationsToRevert = $this->getMigrationsToRevert($migrationVersion);
+            } catch (Throwable $e) {
+                $io->error(
+                    sprintf(
+                        __('Could not determine the migrations to revert: %s'),
+                        $e->getMessage()
+                    )
+                );
+
+                return self::FAILURE;
+            }
 
             if ($migrationsToRevert === []) {
                 $io->success(
@@ -83,32 +95,34 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
 
             $io->listing($migrationsToRevert);
 
-            $exitCode = $this->runCommand(
-                $output,
-                'migrations:execute',
-                [
-                    'versions' => $migrationsToRevert,
-                    '--down' => true,
-                ]
-            );
-
-            if ($exitCode !== self::SUCCESS) {
-                throw new RuntimeException(
-                    sprintf('Reverting the migrations failed with exit code %d.', $exitCode)
+            try {
+                $exitCode = $this->runCommand(
+                    $output,
+                    'migrations:execute',
+                    [
+                        'versions' => $migrationsToRevert,
+                        '--down' => true,
+                    ]
                 );
+
+                if ($exitCode !== self::SUCCESS) {
+                    throw new RuntimeException(
+                        sprintf('Reverting the migrations failed with exit code %d.', $exitCode)
+                    );
+                }
+            } catch (Throwable $e) {
+                // Rollback to the DB dump from earlier.
+                $io->error(
+                    sprintf(
+                        __('Database rollback failed: %s'),
+                        $e->getMessage()
+                    )
+                );
+
+                $this->tryEmergencyRestore($io, $dbDumpPath);
+
+                return self::FAILURE;
             }
-        } catch (Throwable $e) {
-            // Rollback to the DB dump from earlier.
-            $io->error(
-                sprintf(
-                    __('Database rollback failed: %s'),
-                    $e->getMessage()
-                )
-            );
-
-            $this->tryEmergencyRestore($io, $dbDumpPath);
-
-            return self::FAILURE;
         } finally {
             new Filesystem()->remove($dbDumpPath);
         }

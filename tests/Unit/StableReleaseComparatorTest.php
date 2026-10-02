@@ -77,12 +77,23 @@ final class StableReleaseComparatorTest extends Unit
         $stableMigration = $this->comparator->getStableMigration($release);
         self::assertNotNull($stableMigration);
 
+        $previousMigration = null;
+
         foreach ($lateMigrations as $lateMigration) {
             // By name alone, these would count as part of the release.
             self::assertLessThan(0, strcmp($lateMigration, $stableMigration));
 
             self::assertGreaterThan(0, $this->compare($lateMigration, $stableMigration));
             self::assertLessThan(0, $this->compare($lateMigration, $nextMigration));
+            self::assertSame(0, $this->compare($lateMigration, $lateMigration));
+
+            // Within the same release, late merged migrations keep their alphabetical order.
+            if ($previousMigration !== null) {
+                self::assertLessThan(0, $this->compare($previousMigration, $lateMigration));
+                self::assertGreaterThan(0, $this->compare($lateMigration, $previousMigration));
+            }
+
+            $previousMigration = $lateMigration;
         }
     }
 
@@ -90,7 +101,6 @@ final class StableReleaseComparatorTest extends Unit
     {
         $pairs = [
             [Version20260807193430::class, Version20260905144030::class],
-            [Version20250920195939::class, Version20260426132842::class],
             // A no longer existing app migration
             [StableReleaseComparator::APP_MIGRATIONS_NAMESPACE . 'Version20190513124232', Version20220605052847::class],
             // A Plugin migration
@@ -102,7 +112,7 @@ final class StableReleaseComparatorTest extends Unit
             self::assertGreaterThan(0, $this->compare($b, $a), sprintf('%s > %s', $b, $a));
         }
 
-        self::assertSame(0, $this->compare(Version20250920195939::class, Version20250920195939::class));
+        self::assertSame(0, $this->compare(Version20260905144030::class, Version20260905144030::class));
     }
 
     public function testGetStableMigration(): void

@@ -15,6 +15,7 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Radio\AutoDJ\QueueBuilder;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Radio\AutoDJ\Scheduler;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use App\Utilities\UserUrlFilter;
@@ -203,7 +204,7 @@ final class InMemoryAutoDjHarnessFactory
             static fn(
                 Station $station,
                 ?DateTimeImmutable $now = null,
-                array $additionalSongHistory = []
+                ?RecentSongHistory $additionalSongHistory = null
             ): array => $dataProxy->getPlayableRequests($station, $now, $additionalSongHistory)
         );
 
@@ -211,7 +212,7 @@ final class InMemoryAutoDjHarnessFactory
             static fn(
                 Station $station,
                 ?DateTimeImmutable $now = null,
-                array $additionalSongHistory = []
+                ?RecentSongHistory $additionalSongHistory = null
             ): ?StationRequest => $dataProxy->getNextPlayableRequest($station, $now, $additionalSongHistory)
         );
 

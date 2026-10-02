@@ -247,6 +247,14 @@ return [
         );
     },
 
+    App\Doctrine\Migrations\StableReleaseComparator::class => static function (
+        Environment $environment
+    ) {
+        return new App\Doctrine\Migrations\StableReleaseComparator(
+            $environment->getBackendDirectory() . '/src/Entity/Migration'
+        );
+    },
+
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
@@ -255,6 +263,7 @@ return [
         Environment $environment,
         Doctrine\ORM\EntityManagerInterface $em,
         Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+        App\Doctrine\Migrations\StableReleaseComparator $migrateComparator,
         Monolog\Logger $logger,
     ) {
         $console = new App\Console\Application(
@@ -280,6 +289,7 @@ return [
             new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
             $logger
         );
+        $migrateFactory->setService(Doctrine\Migrations\Version\Comparator::class, $migrateComparator);
         Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.

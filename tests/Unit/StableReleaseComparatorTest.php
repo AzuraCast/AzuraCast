@@ -193,6 +193,16 @@ final class StableReleaseComparatorTest extends Unit
                     sprintf('%s follows stable version %s, which has no marker.', $migration, $version)
                 );
                 self::assertGreaterThan(0, $this->compare($migration, $stableMigration));
+
+                self::assertLessThan(
+                    0,
+                    strcmp($migration, $stableMigration),
+                    sprintf(
+                        '%s is not older than the marker of stable version %s and must not be tagged.',
+                        $migration,
+                        $version
+                    )
+                );
             }
         }
     }

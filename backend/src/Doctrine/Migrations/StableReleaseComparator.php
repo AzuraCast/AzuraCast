@@ -67,6 +67,37 @@ final class StableReleaseComparator implements Comparator
         return $this->stableMigrations[$version] ?? null;
     }
 
+    /**
+     * Ignores migrations added by plugins so that they aren't reverted.
+     * Also ignores no longer existing migrations.
+     *
+     * @param list<string> $executedMigrations
+     *
+     * @return list<string> The executed migrations sorted after the given stable migration, newest first
+     */
+    public function getMigrationsToRevert(array $executedMigrations, string $stableMigration): array
+    {
+        $stableVersion = new Version($stableMigration);
+
+        $migrationsToRevert = array_values(
+            array_filter(
+                $executedMigrations,
+                fn(string $migration): bool => (
+                    str_starts_with($migration, self::APP_MIGRATIONS_NAMESPACE)
+                    && class_exists($migration)
+                    && $this->compare(new Version($migration), $stableVersion) > 0
+                )
+            )
+        );
+
+        usort(
+            $migrationsToRevert,
+            fn(string $a, string $b): int => $this->compare(new Version($b), new Version($a))
+        );
+
+        return $migrationsToRevert;
+    }
+
     private function getSortKey(string $version): string
     {
         return $this->sortKeys[$version] ??= $this->buildSortKey($version);

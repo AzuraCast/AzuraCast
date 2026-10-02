@@ -8,7 +8,6 @@ use App\Doctrine\Migrations\StableReleaseComparator;
 use App\Utilities\Types;
 use Doctrine\Migrations\Configuration\Migration\ConfigurationLoader;
 use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
-use Doctrine\Migrations\Version\Version;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -71,7 +70,10 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
         try {
             // The database is still untouched at this point, so a failure here must not trigger a restore.
             try {
-                $migrationsToRevert = $this->getMigrationsToRevert($migrationVersion);
+                $migrationsToRevert = $this->comparator->getMigrationsToRevert(
+                    $this->getExecutedMigrations(),
+                    $migrationVersion
+                );
             } catch (Throwable $e) {
                 $io->error(
                     sprintf(
@@ -160,11 +162,9 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
     }
 
     /**
-     * Ignores migrations added by plugins so that they aren't reverted
-     *
      * @return list<string>
      */
-    private function getMigrationsToRevert(string $stableMigration): array
+    private function getExecutedMigrations(): array
     {
         $metadataStorage = $this->migrationConfig->getConfiguration()->getMetadataStorageConfiguration();
         if (!$metadataStorage instanceof TableMetadataStorageConfiguration) {
@@ -181,24 +181,6 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
             )
         );
 
-        $stableVersion = new Version($stableMigration);
-
-        $migrationsToRevert = array_values(
-            array_filter(
-                array_map(Types::string(...), $executedMigrations),
-                fn(string $migration): bool => (
-                    str_starts_with($migration, StableReleaseComparator::APP_MIGRATIONS_NAMESPACE)
-                    && class_exists($migration)
-                    && $this->comparator->compare(new Version($migration), $stableVersion) > 0
-                )
-            )
-        );
-
-        usort(
-            $migrationsToRevert,
-            fn(string $a, string $b): int => $this->comparator->compare(new Version($b), new Version($a))
-        );
-
-        return $migrationsToRevert;
+        return array_map(Types::string(...), $executedMigrations);
     }
 }

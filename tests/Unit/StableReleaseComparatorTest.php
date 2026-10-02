@@ -112,6 +112,60 @@ final class StableReleaseComparatorTest extends Unit
         self::assertNull($this->comparator->getStableMigration('0.99.0'));
     }
 
+    /**
+     * @return array<string, array{string, list<string>}>
+     */
+    public static function migrationsToRevertProvider(): array
+    {
+        return [
+            '0.23.8' => [
+                '0.23.8',
+                [
+                    Version20260905144030::class,
+                    Version20260720220836::class,
+                    Version20250920195939::class,
+                ],
+            ],
+            // By name, Version20250920195939 would count as part of 0.23.7 and not be reverted.
+            '0.23.7' => [
+                '0.23.7',
+                [
+                    Version20260905144030::class,
+                    Version20260720220836::class,
+                    Version20250920195939::class,
+                    Version20260807193430::class,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[DataProvider('migrationsToRevertProvider')]
+    public function testGetMigrationsToRevert(string $release, array $expected): void
+    {
+        $stableMigration = $this->comparator->getStableMigration($release);
+        self::assertNotNull($stableMigration);
+
+        $executedMigrations = [
+            Version20250920195939::class,
+            'Plugin\\Example\\Migration\\Version20990101000000',
+            Version20220605052847::class,
+            Version20260905144030::class,
+            // A no longer existing app migration which would otherwise sort after every release
+            StableReleaseComparator::APP_MIGRATIONS_NAMESPACE . 'Version20990101000000',
+            Version20260807193430::class,
+            Version20260408060000::class,
+            Version20260720220836::class,
+        ];
+
+        self::assertSame(
+            $expected,
+            $this->comparator->getMigrationsToRevert($executedMigrations, $stableMigration)
+        );
+    }
+
     public function testMarkersAndTagsAreConsistent(): void
     {
         $stableVersions = [];

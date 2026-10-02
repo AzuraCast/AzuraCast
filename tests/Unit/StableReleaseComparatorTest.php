@@ -122,6 +122,15 @@ final class StableReleaseComparatorTest extends Unit
         self::assertNull($this->comparator->getStableMigration('0.99.0'));
     }
 
+    public function testGetLatestStableVersion(): void
+    {
+        $latestVersion = $this->comparator->getLatestStableVersion();
+        self::assertNotNull($latestVersion);
+
+        self::assertTrue(version_compare($latestVersion, '0.23.8', '>='));
+        self::assertNotNull($this->comparator->getStableMigration($latestVersion));
+    }
+
     /**
      * @return array<string, array{string, list<string>}>
      */

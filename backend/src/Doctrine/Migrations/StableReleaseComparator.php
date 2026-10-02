@@ -46,25 +46,22 @@ final class StableReleaseComparator implements Comparator
      */
     public function getStableMigration(string $version): ?string
     {
-        if ($this->stableMigrations === null) {
-            $this->stableMigrations = [];
+        return $this->getStableMigrations()[$version] ?? null;
+    }
 
-            $files = glob($this->migrationsDirectory . '/Version*.php') ?: [];
-            rsort($files, SORT_STRING);
+    /**
+     * @return ?string The highest stable version with a #[StableMigration] marker
+     */
+    public function getLatestStableVersion(): ?string
+    {
+        $versions = array_map(
+            strval(...),
+            array_keys($this->getStableMigrations())
+        );
 
-            foreach ($files as $file) {
-                $className = self::APP_MIGRATIONS_NAMESPACE . basename($file, '.php');
-                if (!class_exists($className)) {
-                    continue;
-                }
+        usort($versions, static fn(string $a, string $b): int => version_compare($b, $a));
 
-                foreach (new ReflectionClass($className)->getAttributes(StableMigration::class) as $attribute) {
-                    $this->stableMigrations[$attribute->newInstance()->version] ??= $className;
-                }
-            }
-        }
-
-        return $this->stableMigrations[$version] ?? null;
+        return $versions[0] ?? null;
     }
 
     /**
@@ -96,6 +93,32 @@ final class StableReleaseComparator implements Comparator
         );
 
         return $migrationsToRevert;
+    }
+
+    /**
+     * @return array<string, class-string>
+     */
+    private function getStableMigrations(): array
+    {
+        if ($this->stableMigrations === null) {
+            $this->stableMigrations = [];
+
+            $files = glob($this->migrationsDirectory . '/Version*.php') ?: [];
+            rsort($files, SORT_STRING);
+
+            foreach ($files as $file) {
+                $className = self::APP_MIGRATIONS_NAMESPACE . basename($file, '.php');
+                if (!class_exists($className)) {
+                    continue;
+                }
+
+                foreach (new ReflectionClass($className)->getAttributes(StableMigration::class) as $attribute) {
+                    $this->stableMigrations[$attribute->newInstance()->version] ??= $className;
+                }
+            }
+        }
+
+        return $this->stableMigrations;
     }
 
     private function getSortKey(string $version): string

@@ -6,8 +6,8 @@ namespace App\Console\Command;
 
 use App\Doctrine\Migrations\StableReleaseComparator;
 use App\Utilities\Types;
-use Doctrine\Migrations\Configuration\Migration\ConfigurationLoader;
-use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\ExecutedMigration;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +26,7 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
 {
     public function __construct(
         private readonly StableReleaseComparator $comparator,
-        private readonly ConfigurationLoader $migrationConfig,
+        private readonly DependencyFactory $migrationFactory,
     ) {
         parent::__construct();
     }
@@ -166,21 +166,11 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
      */
     private function getExecutedMigrations(): array
     {
-        $metadataStorage = $this->migrationConfig->getConfiguration()->getMetadataStorageConfiguration();
-        if (!$metadataStorage instanceof TableMetadataStorageConfiguration) {
-            throw new RuntimeException('Invalid migration metadata storage.');
-        }
-
-        $conn = $this->em->getConnection();
-
-        $executedMigrations = $conn->fetchFirstColumn(
-            sprintf(
-                'SELECT %s FROM %s',
-                $metadataStorage->getVersionColumnName(),
-                $metadataStorage->getTableName()
+        return array_values(
+            array_map(
+                static fn(ExecutedMigration $migration): string => (string) $migration->getVersion(),
+                $this->migrationFactory->getMetadataStorage()->getExecutedMigrations()->getItems()
             )
         );
-
-        return array_map(Types::string(...), $executedMigrations);
     }
 }

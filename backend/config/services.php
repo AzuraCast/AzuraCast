@@ -255,6 +255,22 @@ return [
         );
     },
 
+    Doctrine\Migrations\DependencyFactory::class => static function (
+        Doctrine\ORM\EntityManagerInterface $em,
+        Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+        App\Doctrine\Migrations\StableReleaseComparator $migrateComparator,
+        Monolog\Logger $logger,
+    ) {
+        $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
+            $migrateConfig,
+            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
+            $logger
+        );
+        $migrateFactory->setService(Doctrine\Migrations\Version\Comparator::class, $migrateComparator);
+
+        return $migrateFactory;
+    },
+
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
@@ -262,8 +278,7 @@ return [
         App\Version $version,
         Environment $environment,
         Doctrine\ORM\EntityManagerInterface $em,
-        Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
-        App\Doctrine\Migrations\StableReleaseComparator $migrateComparator,
+        Doctrine\Migrations\DependencyFactory $migrateFactory,
         Monolog\Logger $logger,
     ) {
         $console = new App\Console\Application(
@@ -284,12 +299,6 @@ return [
         );
 
         // Add Doctrine Migrations
-        $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
-            $migrateConfig,
-            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
-            $logger
-        );
-        $migrateFactory->setService(Doctrine\Migrations\Version\Comparator::class, $migrateComparator);
         Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.

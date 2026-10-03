@@ -304,6 +304,13 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public ?int $request_delay = 5;
 
     #[
+        OA\Property(example: 5),
+        ORM\Column(nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    public ?int $request_delay_ip = 5;
+
+    #[
         OA\Property(example: 15),
         ORM\Column(nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])

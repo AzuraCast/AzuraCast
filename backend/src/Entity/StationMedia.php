@@ -8,6 +8,7 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Flysystem\StationFilesystems;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Utilities\Types;
@@ -201,6 +202,7 @@ final class StationMedia implements
         $metadata = new Metadata();
         $metadata->setDuration($this->length);
 
+        /** @var array<value-of<MetadataTags>, mixed> $tags */
         $tags = array_filter(
             [
                 'title' => $this->title,
@@ -212,8 +214,45 @@ final class StationMedia implements
             ]
         );
 
+        /** @var array<string, mixed> $extraTags */
+        $extraTags = [];
+        $seenExtraKeys = [];
+
+        foreach ($this->custom_fields as $customField) {
+            $autoAssign = $customField->field->auto_assign;
+            $value = $customField->value;
+
+            if (
+                $autoAssign === null
+                || $value === null
+                || trim($value) === ''
+            ) {
+                continue;
+            }
+
+            $tagEnum = MetadataTags::getTag($autoAssign);
+            if ($tagEnum !== null) {
+                $tags[$tagEnum->value] ??= $value;
+                continue;
+            }
+
+            $lowerKey = mb_strtolower($autoAssign);
+            if (isset($seenExtraKeys[$lowerKey])) {
+                continue;
+            }
+
+            $seenExtraKeys[$lowerKey] = true;
+            $extraTags[$autoAssign] = $value;
+        }
+
+        // Sorted so reorders of custom fields don't look like metadata changed
+        ksort($tags);
+
+        $extraTags = array_replace($extraTags, $this->extra_metadata->toArray() ?? []);
+        ksort($extraTags);
+
         $metadata->setKnownTags($tags);
-        $metadata->setExtraTags($this->extra_metadata->toArray() ?? []);
+        $metadata->setExtraTags($extraTags);
 
         return $metadata;
     }

@@ -107,10 +107,14 @@ const fields: DataTableField<Row>[] = [
     },
     {
         key: "auto_assign",
-        label: $gettext("Auto-Assign Value"),
+        label: $gettext("Linked Media File Tag"),
         sortable: false,
         formatter: (value) => {
-            return props.value?.autoAssignTypes[value] ?? $gettext("None");
+            if (!value) {
+                return $gettext("None");
+            }
+
+            return props.value?.autoAssignTypes[value] ?? value;
         },
     },
     {

@@ -355,6 +355,8 @@ final class FilesController extends AbstractStationApiCrudController
         $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
+        $metadataBefore = $record->toMetadata();
+
         $record = $this->fromArray($data, $record);
 
         if ($isRenamed) {
@@ -370,7 +372,13 @@ final class FilesController extends AbstractStationApiCrudController
             $this->customFieldsRepo->setCustomFields($record, $customFields);
         }
 
-        $this->mediaRepo->writeToFile($record);
+        $metadataAfter = $record->toMetadata();
+        if (
+            $metadataAfter->getKnownTags() !== $metadataBefore->getKnownTags()
+            || $metadataAfter->getExtraTags() !== $metadataBefore->getExtraTags()
+        ) {
+            $this->mediaRepo->writeToFile($record);
+        }
 
         $this->em->persist($record);
         $this->em->flush();

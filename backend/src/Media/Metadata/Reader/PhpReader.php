@@ -6,8 +6,11 @@ namespace App\Media\Metadata\Reader;
 
 use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
+use App\Media\Metadata\Id3v2Text;
 use App\Utilities\Time;
+use App\Utilities\Types;
 use JamesHeinrich\GetID3\GetID3;
 use RuntimeException;
 use Throwable;
@@ -58,9 +61,40 @@ final class PhpReader extends AbstractReader
                 ];
             }
 
-            $toProcess[] = $this->convertReplayGainBackIntoText($info['replay_gain'] ?? []);
-
             $this->aggregateMetaTags($metadata, $toProcess);
+
+            $knownTags = $metadata->getKnownTags();
+            $extraTags = $metadata->getExtraTags();
+
+            // getID3 skips TXXX frames whose text is "0" when building $info['tags']
+            foreach (Types::array($info['id3v2']['TXXX'] ?? []) as $frame) {
+                $frame = Types::array($frame);
+
+                $description = mb_strtolower(trim(Types::string($frame['description'] ?? null)));
+                $value = Id3v2Text::decode(
+                    Types::string($frame['encoding'] ?? null, 'ISO-8859-1'),
+                    Types::string($frame['data'] ?? null)
+                );
+
+                if ($description === '' || $value === '') {
+                    continue;
+                }
+
+                $tagEnum = MetadataTags::getTag($description);
+                if ($tagEnum !== null) {
+                    $knownTags[$tagEnum->value] ??= $value;
+                } else {
+                    $extraTags[$description] ??= $value;
+                }
+            }
+
+            // getID3 pulls ReplayGain out of Vorbis comments, in ID3v2 and APE tags it is kept
+            foreach ($this->convertReplayGainBackIntoText($info['replay_gain'] ?? []) as $key => $value) {
+                $extraTags[$key] ??= $value;
+            }
+
+            $metadata->setKnownTags($knownTags);
+            $metadata->setExtraTags($extraTags);
 
             $metadata->setMimeType($info['mime_type']);
 
@@ -100,26 +134,26 @@ final class PhpReader extends AbstractReader
         $return = [];
 
         if (isset($row['track']['peak'])) {
-            $return['replaygain_track_peak'] = $row['track']['peak'];
+            $return['replaygain_track_peak'] = (string) $row['track']['peak'];
         }
         if (isset($row['track']['originator'])) {
-            $return['replaygain_track_originator'] = $row['track']['originator'];
+            $return['replaygain_track_originator'] = (string) $row['track']['originator'];
         }
         if (isset($row['track']['adjustment'])) {
             $return['replaygain_track_gain'] = $row['track']['adjustment'] . ' dB';
         }
         if (isset($row['album']['peak'])) {
-            $return['replaygain_album_peak'] = $row['album']['peak'];
+            $return['replaygain_album_peak'] = (string) $row['album']['peak'];
         }
         if (isset($row['album']['originator'])) {
-            $return['replaygain_album_originator'] = $row['album']['originator'];
+            $return['replaygain_album_originator'] = (string) $row['album']['originator'];
         }
         if (isset($row['album']['adjustment'])) {
             $return['replaygain_album_gain'] = $row['album']['adjustment'] . ' dB';
         }
 
         if (isset($row['reference_volume'])) {
-            $return['replaygain_reference_loudness'] = $row['reference_volume'] . ' LUFS';
+            $return['replaygain_reference_loudness'] = $row['reference_volume'] . ' dB';
         }
 
         return $return;

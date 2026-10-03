@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Container\ContainerAwareTrait;
-use App\Container\EnvironmentAwareTrait;
-use App\Entity\Attributes\StableMigration;
+use App\Doctrine\Migrations\StableReleaseComparator;
 use App\Utilities\Types;
-use Exception;
-use FilesystemIterator;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\ExecutedMigration;
 use InvalidArgumentException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use ReflectionClass;
-use SplFileInfo;
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,8 +24,12 @@ use Throwable;
 )]
 final class RollbackDbCommand extends AbstractDatabaseCommand
 {
-    use ContainerAwareTrait;
-    use EnvironmentAwareTrait;
+    public function __construct(
+        private readonly StableReleaseComparator $comparator,
+        private readonly DependencyFactory $migrationFactory,
+    ) {
+        parent::__construct();
+    }
 
     protected function configure(): void
     {
@@ -49,7 +48,7 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
             $migrationVersion = $this->findMigration($version);
         } catch (Throwable $e) {
             $io->error($e->getMessage());
-            return 1;
+            return self::FAILURE;
         }
 
         $this->runCommand(
@@ -57,40 +56,77 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
             'migrations:sync-metadata-storage'
         );
 
-        // Attempt DB migration.
-        $io->section(__('Running database migrations...'));
-
         // Back up current DB state.
         try {
             $dbDumpPath = $this->saveOrRestoreDatabase($io);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $io->error($e->getMessage());
-            return 1;
+            return self::FAILURE;
         }
 
+        // Attempt DB rollback.
+        $io->section(__('Reverting database migrations...'));
+
         try {
-            $io->info($migrationVersion);
+            // The database is still untouched at this point, so a failure here must not trigger a restore.
+            try {
+                $migrationsToRevert = $this->comparator->getMigrationsToRevert(
+                    $this->getExecutedMigrations(),
+                    $migrationVersion
+                );
+            } catch (Throwable $e) {
+                $io->error(
+                    sprintf(
+                        __('Could not determine the migrations to revert: %s'),
+                        $e->getMessage()
+                    )
+                );
 
-            $this->runCommand(
-                $output,
-                'migrations:migrate',
-                [
-                    '--allow-no-migration' => true,
-                    'version' => $migrationVersion,
-                ]
-            );
-        } catch (Exception $e) {
-            // Rollback to the DB dump from earlier.
-            $io->error(
-                sprintf(
-                    __('Database migration failed: %s'),
-                    $e->getMessage()
-                )
-            );
+                return self::FAILURE;
+            }
 
-            return $this->tryEmergencyRestore($io, $dbDumpPath);
+            if ($migrationsToRevert === []) {
+                $io->success(
+                    sprintf(
+                        __('No migrations to revert for rollback to stable version "%s".'),
+                        $version
+                    )
+                );
+                return self::SUCCESS;
+            }
+
+            $io->listing($migrationsToRevert);
+
+            try {
+                $exitCode = $this->runCommand(
+                    $output,
+                    'migrations:execute',
+                    [
+                        'versions' => $migrationsToRevert,
+                        '--down' => true,
+                    ]
+                );
+
+                if ($exitCode !== self::SUCCESS) {
+                    throw new RuntimeException(
+                        sprintf('Reverting the migrations failed with exit code %d.', $exitCode)
+                    );
+                }
+            } catch (Throwable $e) {
+                // Rollback to the DB dump from earlier.
+                $io->error(
+                    sprintf(
+                        __('Database rollback failed: %s'),
+                        $e->getMessage()
+                    )
+                );
+
+                $this->tryEmergencyRestore($io, $dbDumpPath);
+
+                return self::FAILURE;
+            }
         } finally {
-            (new Filesystem())->remove($dbDumpPath);
+            new Filesystem()->remove($dbDumpPath);
         }
 
         $io->newLine();
@@ -100,7 +136,8 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
                 $version
             )
         );
-        return 0;
+
+        return self::SUCCESS;
     }
 
     protected function findMigration(string $version): string
@@ -118,45 +155,22 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
             );
         }
 
-        $migrationsDir = $this->environment->getBackendDirectory() . '/src/Entity/Migration';
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($migrationsDir, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        );
+        return $this->comparator->getStableMigration($version)
+            ?? throw new InvalidArgumentException(
+                'No migration found for the specified version. Make sure to specify a version after 0.17.0.'
+            );
+    }
 
-        $migrationFiles = [];
-
-        /** @var SplFileInfo $file */
-        foreach ($iterator as $file) {
-            // Skip dotfiles
-            $fileName = $file->getBasename('.php');
-            if ($fileName == $file->getBasename()) {
-                continue;
-            }
-
-            $className = 'App\\Entity\\Migration\\' . $fileName;
-            $migrationFiles[$fileName] = $className;
-        }
-
-        $migrationFiles = array_reverse($migrationFiles);
-
-        /** @var class-string $migrationClassName */
-        foreach ($migrationFiles as $migrationClassName) {
-            $reflClass = new ReflectionClass($migrationClassName);
-            $reflAttrs = $reflClass->getAttributes(StableMigration::class);
-
-            foreach ($reflAttrs as $reflAttrInfo) {
-                /** @var StableMigration $reflAttr */
-                $reflAttr = $reflAttrInfo->newInstance();
-
-                if ($version === $reflAttr->version) {
-                    return $migrationClassName;
-                }
-            }
-        }
-
-        throw new InvalidArgumentException(
-            'No migration found for the specified version. Make sure to specify a version after 0.17.0.'
+    /**
+     * @return list<string>
+     */
+    private function getExecutedMigrations(): array
+    {
+        return array_values(
+            array_map(
+                static fn(ExecutedMigration $migration): string => (string) $migration->getVersion(),
+                $this->migrationFactory->getMetadataStorage()->getExecutedMigrations()->getItems()
+            )
         );
     }
 }

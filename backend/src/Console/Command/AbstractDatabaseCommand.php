@@ -138,7 +138,8 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
                 __('Your database was restored due to a failed migration.'),
                 __('Please report this bug to our developers.'),
             ]);
-            return 0;
+
+            return self::SUCCESS;
         } catch (Exception $e) {
             $io->error(
                 sprintf(
@@ -146,7 +147,8 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
                     $e->getMessage()
                 )
             );
-            return 1;
+
+            return self::FAILURE;
         }
     }
 }

@@ -1,0 +1,67 @@
+{
+  "description": "A Requests-source playlist checks pending requests against the duplicate prevention history with the artist time range. The dump sets a 240-minute duplicate prevention time range and a 60-minute artist time range. A request by an artist played 90 minutes ago is served. A request by an artist played 30 minutes ago stays pending, so the filler plays.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "request-artist-outside-artist-time-range-is-served",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "mEarlier",
+            "playlist_ref": "lib",
+            "timestamp_played": "2018-01-15T11:00:00+00:00",
+            "is_visible": true
+          }
+        ],
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "reqpl",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    },
+    {
+      "name": "request-artist-inside-artist-time-range-stays-pending",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "mEarlier",
+            "playlist_ref": "lib",
+            "timestamp_played": "2018-01-15T12:00:00+00:00",
+            "is_visible": true
+          }
+        ],
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "filler",
+          "media_ref": "mFill",
+          "playlist_chain_refs": [],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

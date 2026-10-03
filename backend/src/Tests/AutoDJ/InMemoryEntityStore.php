@@ -23,6 +23,7 @@ final readonly class InMemoryEntityStore
      * @param array<string, StationPlaylist> $playlistsByRef
      * @param array<string, StationMedia> $mediaByRef
      * @param array<int, StationMedia> $mediaById
+     * @param array<int, string> $refByMediaId
      * @param array<int, StationPlaylistMedia> $spmById
      * @param array<int, StationPlaylistGroup> $groupMembersById
      * @param array<int, string> $refByPlaylistId
@@ -33,6 +34,7 @@ final readonly class InMemoryEntityStore
         public array $playlistsByRef,
         public array $mediaByRef,
         public array $mediaById,
+        public array $refByMediaId,
         public array $spmById,
         public array $groupMembersById,
         public array $refByPlaylistId,
@@ -44,6 +46,11 @@ final readonly class InMemoryEntityStore
     public function refForPlaylist(StationPlaylist $playlist): ?string
     {
         return $this->refByPlaylistId[$playlist->id] ?? null;
+    }
+
+    public function refForMedia(StationMedia $media): ?string
+    {
+        return $this->refByMediaId[$media->id] ?? null;
     }
 
     public function playlistForRef(string $ref): StationPlaylist

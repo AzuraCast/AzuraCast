@@ -187,6 +187,10 @@ Each case carries one or more expectation blocks, run by different test classes:
   - Each step is one successive build
     - State (played_at, queue position, consecutive plays, history) advances between steps, so a sequence verifies a real run of picks
     - A single expected track is just a one-step sequence
+- `simulation`
+  - Runs consecutive builds over a span of hours and asserts aggregate statistics
+    - Run by `QueueBuilderSimulationTest`, in-memory only
+  - See [Simulation](#simulation)
 
 A fixture may contain both scheduler and sequence expectations.
 
@@ -206,13 +210,14 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - A build's state changes are committed after the build, so queries inside it see the state as of the last commit
   - Commit points: after each build, after each slot of a merged group block, inside every queue reset
   - A queue reset rewrites the committed rows and refreshes the entities from them, dropping any pending change on those rows
-  - A column is deferred when production reads it through SQL (a `WHERE`, an `ORDER BY` or a scalar projection), and stays live when production reads it off a managed entity
+  - A column is deferred when the AutoDJ code reads it through SQL (a `WHERE`, an `ORDER BY` or a scalar projection), and stays live when it reads it off a managed entity
   - Limitation: the in-memory flush writes every tracked column, Doctrine only the changed ones
-    - The two agree because every bulk write is followed by a resync, in-memory as in production
+    - The two agree because every bulk write is followed by a resync, in-memory as in the repositories
 - **Station-level dump fields**
   - `station.timezone` (schedule windows evaluate in station-local time)
   - `station.requests_only_via_playlists`
   - and the request settings `station.request_delay` / `station.request_threshold`
+  - `station.backend_config` (`duplicate_prevention_time_range`, `duplicate_prevention_artist_time_range`, `autodj_queue_length`, `crossfade`), merged into the station defaults
 - **Nested groups**
   - Supported to any depth (a group whose member is itself a playlist group)
   - Every group, top-level or nested, honors its own `order` and consecutive-plays rotation.
@@ -226,7 +231,17 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - a group without schedule items is as always active
     - members without their own schedule are only reachable through their groups
 - **History-based gating**
-  - Built entries, cued media, and seeded `queue_history` all become unplayed queue rows that feed the OncePerXSongs window and duplicate prevention
+  - Built rows get their expected play time, visibility and played state the way the AutoDJ `Queue` assigns them:
+    - the play time is the build's `now`, following rows of a multi-row build are spaced by track length minus the crossfade overlap
+    - jingle rows are hidden
+    - rows of an interrupting build are marked played as soon as they are built
+  - Seeded `queue_history` entries are played rows at their timestamps
+    - Cued media and built rows stay unplayed unless a [simulation](#simulation) marks them played
+  - Duplicate prevention reads every unplayed row and played rows only while they are inside the duplicate prevention window
+    - Tracks and titles are always checked against the rows inside `duplicate_prevention_time_range`
+    - Artists are checked against the rows inside `duplicate_prevention_artist_time_range` when it is set
+  - Only unplayed rows count as cued (the loop-once and single-track rules)
+  - The OncePerXSongs window reads all rows regardless of played state
   - Cued and freshly built rows rank newer than any seeded history
   - A `queue_history` entry with a `media_ref` gets a faithful `song_id` (needed for
     same-track matching)
@@ -291,6 +306,74 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - Keep requests `skip_delay: true` (always playable)
     - Or set `station.request_delay: 0` and pin `timestamp` to exercise the "delay not yet satisfied" branch
   - The recently-played threshold is deterministic given seeded `queue_history`
+
+## Simulation
+
+A case with a `simulation` block runs the in-memory harness for hours or days in a row instead of asserting single picks. It is meant for long-run behaviour such as fairness and repeat patterns, e.g. a user report of a rotation that repeats every day.
+
+```json
+{
+  "name": "unique-case-name",
+  "now": "2026-09-07T00:00:00+02:00",
+  "seed": 12345,
+  "simulation": {
+    "measured_hours": 96,
+    "history_hours": 24,
+    "measure_playlists": ["<playlistRef>", "..."],
+    "backend_config": {
+      "duplicate_prevention_time_range": 120
+    },
+    "expect": {
+      "measured_play_count": 1200,
+      "min_repeat_interval_minutes": 120,
+      "max_repeat_share_near_window": 0.5,
+      "max_repeated_pair_share": 0.02,
+      "max_never_played_share": 0.05
+    }
+  }
+}
+```
+
+- `now` is the start of the run and `seed` seeds `mt_rand`, which makes the whole run reproducible
+- `measured_hours`
+  - length of the measured span in hours, counted from the end of `history_hours`
+  - the span is split into blocks of the duplicate prevention window, counted from the start of measuring
+    - a rotation that loops repeats with the window as its period, so one block covers one loop
+    - blocks and `max_repeat_share_near_window` always use `duplicate_prevention_time_range`, also when an artist time range is set
+    - the last block is partial when the span is not a multiple of the window
+    - `max_repeated_pair_share` needs at least 2 blocks
+- `history_hours`
+  - hours simulated before measuring starts, to build up queue history until the duplicate prevention window is filled
+  - these plays are not measured, but still count as a track's previous play
+- `measure_playlists`
+  - only plays of these playlists are measured, which keeps jingles and other interruptions out of the statistics
+- `backend_config`
+  - merged into the station `backend_config` from the dump
+  - allows differential cases (e.g. a smaller window or an artist time range) against the same dump
+- `expect` needs at least one of:
+  - `measured_play_count`: exact number of measured plays (checks clock advance, crossfade and the start of measuring)
+  - `min_repeat_interval_minutes`: no measured track may repeat sooner (fails when nothing repeats at all)
+  - `max_repeat_share_near_window`: share of repeat intervals within 60 minutes of the duplicate prevention window
+  - `max_repeated_pair_share`: share of consecutive measured plays in one block that also followed each other in the previous block
+  - `max_never_played_share`: share of the measured playlists' tracks without any measured play
+
+What the run models:
+
+- One build per slot at the slot's start time, the clock then advances by track length minus the crossfade overlap
+- Before each build every row that has started playing is marked played
+- An empty build advances the clock by one minute; more than 20,000 builds fail the case
+
+Every run writes a report before asserting, to `tests/_output/autodj-simulation/<fixture>-<case>`:
+
+- `.plays.csv` with one row per play of the run
+- `.summary.txt` with the settings, each metric next to its expectation, and the statistics behind the metrics
+
+Limitations:
+
+- The `autodj_queue_length` lookahead is not modelled, so no rows are cued ahead of the one being built
+- No requests, skips or listener feedback
+- The pick kind (strict, least recently played because of a repeated title or artist, unfiltered) is read from the log output of the build
+- Runtime grows with the measured hours and the size of the duplicate prevention window, a four-day run over ~500 tracks takes about 10 seconds
 
 ## Adding a new case
 

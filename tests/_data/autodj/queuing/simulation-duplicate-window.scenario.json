@@ -1,0 +1,61 @@
+{
+  "description": "Simulation mechanics on a synthetic station: ten 20-minute tracks with unique artists on a shuffle playlist plus a jingle every two songs. The dump sets a 150-minute duplicate prevention window and a crossfade of 20 (30 seconds of overlap). The window always leaves at least two tracks eligible, so no track repeats within it, played rows age out so tracks do repeat after it, and the play count follows from track length minus the crossfade overlap.",
+  "modes": [
+    "in_memory"
+  ],
+  "cases": [
+    {
+      "name": "window-and-crossfade-from-dump",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 48,
+        "history_hours": 3,
+        "measure_playlists": [
+          "music"
+        ],
+        "expect": {
+          "measured_play_count": 145,
+          "min_repeat_interval_minutes": 150,
+          "max_repeated_pair_share": 0.4,
+          "max_never_played_share": 0
+        }
+      }
+    },
+    {
+      "name": "backend-config-override-merges-into-dump-config",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 48,
+        "history_hours": 3,
+        "measure_playlists": [
+          "music"
+        ],
+        "backend_config": {
+          "crossfade": 0
+        },
+        "expect": {
+          "measured_play_count": 141,
+          "min_repeat_interval_minutes": 150
+        }
+      }
+    },
+    {
+      "name": "sub-day-span-with-partial-last-block",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 9,
+        "history_hours": 3,
+        "measure_playlists": [
+          "music"
+        ],
+        "expect": {
+          "measured_play_count": 27,
+          "max_repeated_pair_share": 0.4
+        }
+      }
+    }
+  ]
+}

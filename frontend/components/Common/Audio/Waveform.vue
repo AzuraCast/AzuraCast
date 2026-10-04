@@ -59,16 +59,14 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { onMounted, onUnmounted, ref, toRef, watch } from "vue";
+import {storeToRefs} from "pinia";
+import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import WaveSurfer from "wavesurfer.js";
-import regionsPlugin, {
-    RegionParams,
-} from "wavesurfer.js/dist/plugins/regions.js";
-import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
+import RegionsPlugin, {RegionParams,} from "wavesurfer.js/dist/plugins/regions.js";
+import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
-import { usePlayerStore } from "~/functions/usePlayerStore.ts";
-import { useAxios } from "~/vendor/axios";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {useAxios} from "~/vendor/axios";
 
 const props = withDefaults(
     defineProps<{
@@ -83,7 +81,7 @@ const props = withDefaults(
 );
 
 let wavesurfer: WaveSurfer | null = null;
-let wsRegions: regionsPlugin | null = null;
+let wsRegions: ReturnType<typeof RegionsPlugin.create> | null = null;
 
 const playerStore = usePlayerStore();
 const { showVolume, volume, logVolume, isMuted } = storeToRefs(playerStore);
@@ -130,15 +128,18 @@ const cacheWaveformRemotely = () => {
 };
 
 onMounted(async () => {
+    wsRegions = RegionsPlugin.create();
+    const wsTimeline = TimelinePlugin.create();
+
     wavesurfer = WaveSurfer.create({
         container: "#waveform_container",
         waveColor: "#2196f3",
         progressColor: "#4081CF",
+        plugins: [
+            wsRegions,
+            wsTimeline
+        ]
     });
-
-    wavesurfer.registerPlugin(timelinePlugin.create());
-
-    wsRegions = wavesurfer.registerPlugin(regionsPlugin.create());
 
     wavesurfer.on("ready", (newDuration: number) => {
         // Disable any other players.

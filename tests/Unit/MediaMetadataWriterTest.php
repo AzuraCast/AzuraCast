@@ -698,24 +698,6 @@ final class MediaMetadataWriterTest extends Unit
         );
     }
 
-    public function testCustomFieldWithKnownTagInNonCanonicalCaseIsImported(): void
-    {
-        $media = $this->generateMedia();
-        $customField = $this->addCustomField($media, 'Composer', self::CUSTOM_COMPOSER);
-
-        self::assertTrue($this->mediaRepo->writeToFile($media));
-
-        self::assertSame([self::CUSTOM_COMPOSER], $this->readFileTags($media)['composer'] ?? null);
-
-        $this->mediaRepo->loadFromFile($media, $this->getLocalPath($media->path));
-        $this->em->flush();
-
-        self::assertSame(
-            self::CUSTOM_COMPOSER,
-            $this->readCustomFieldValues($media)[$customField->short_name] ?? null
-        );
-    }
-
     public function testEmptyUnknownCustomFieldLeavesExistingTagUntouched(): void
     {
         $media = $this->generateMedia();

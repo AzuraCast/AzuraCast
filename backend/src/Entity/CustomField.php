@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Media\Enums\MetadataTags;
 use App\Utilities\File;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -68,7 +69,13 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
         )
     ]
     public ?string $auto_assign = null {
-        set => $this->truncateNullableString($value, 100, true);
+        set {
+            $value = $this->truncateNullableString($value, 100, true);
+
+            $this->auto_assign = ($value !== null)
+                ? (MetadataTags::getTag($value)->value ?? $value)
+                : null;
+        }
     }
 
     /** @var Collection<int, StationMediaCustomField> */

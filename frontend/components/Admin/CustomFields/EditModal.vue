@@ -47,8 +47,24 @@
                 input-trim
                 :input-attrs="{ maxlength: 100 }"
                 :label="$gettext('Custom Tag Name')"
-                :description="$gettext('The tag name to use. It is written as an ID3v2 TXXX frame in MP3 files and as a Vorbis comment in FLAC and Ogg files. Only printable ASCII characters except equals sign are allowed.')"
-            />
+            >
+                <template #description>
+                    <div
+                        v-if="matchingKnownTag !== null"
+                        class="mb-1 text-info"
+                    >
+                        {{
+                            $gettext(
+                                'The field will be linked to the known tag "%{tag}" when saved.',
+                                {tag: autoAssignTypes[matchingKnownTag]}
+                            )
+                        }}
+                    </div>
+                    {{
+                        $gettext('The tag name to use. It is written as an ID3v2 TXXX frame in MP3 files and as a Vorbis comment in FLAC and Ogg files. Only printable ASCII characters except equals sign are allowed.')
+                    }}
+                </template>
+            </form-group-field>
         </div>
     </modal-form>
 </template>
@@ -105,14 +121,16 @@ const hasChosenCustomTagOption = ref(false);
 
 const linkMode = computed<string>({
     get: () => {
+        if (hasChosenCustomTagOption.value) {
+            return CUSTOM_TAG_OPTION;
+        }
+
         const value = form.value.auto_assign ?? "";
         if (isKnownTag(value)) {
             return value;
         }
 
-        return value !== "" || hasChosenCustomTagOption.value
-            ? CUSTOM_TAG_OPTION
-            : "";
+        return value !== "" ? CUSTOM_TAG_OPTION : "";
     },
     set: (newMode) => {
         if (newMode === CUSTOM_TAG_OPTION) {
@@ -129,6 +147,27 @@ const linkMode = computed<string>({
 });
 
 const isCustomTag = computed(() => linkMode.value === CUSTOM_TAG_OPTION);
+
+const matchingKnownTag = computed<string | null>(() => {
+    if (!isCustomTag.value) {
+        return null;
+    }
+
+    const normalized = (form.value.auto_assign ?? "")
+        .toLowerCase()
+        .replace(/-/g, "_");
+
+    return isKnownTag(normalized) ? normalized : null;
+});
+
+const switchToMatchingKnownTag = () => {
+    const knownTag = matchingKnownTag.value;
+
+    if (knownTag !== null) {
+        hasChosenCustomTagOption.value = false;
+        form.value.auto_assign = knownTag;
+    }
+};
 
 const { r$ } = useAppRegle(
     form,
@@ -175,6 +214,8 @@ const {
             !!data.auto_assign && !isKnownTag(data.auto_assign);
     },
     async () => {
+        switchToMatchingKnownTag();
+
         const { valid } = await r$.$validate();
         return {
             valid,

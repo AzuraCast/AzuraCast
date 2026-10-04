@@ -108,7 +108,6 @@ return [
             },
         ]);
 
-        /** @phpstan-ignore-next-line */
         return Doctrine\DBAL\DriverManager::getConnection($connectionOptions, $config);
     },
 

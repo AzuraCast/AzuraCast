@@ -132,7 +132,7 @@ abstract class CestAbstract
             ]
         );
 
-        $stationId = $I->grabDataFromResponseByJsonPath('id');
+        $stationId = $I->grabDataFromResponseByJsonPath('$.id');
         $this->test_station = $this->em->find(Station::class, $stationId[0]);
     }
 
@@ -225,7 +225,7 @@ abstract class CestAbstract
 
         $I->seeResponseCodeIs(200);
 
-        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecord = $I->grabDataFromResponseByJsonPath('$.links.self');
         $newRecordSelfLink = $newRecord[0];
 
         // Get single record.

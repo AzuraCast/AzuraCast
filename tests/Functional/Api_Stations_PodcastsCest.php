@@ -52,8 +52,8 @@ class Api_Stations_PodcastsCest extends CestAbstract
         );
         $I->seeResponseCodeIs(200);
 
-        $newRecordSelfLink = ($I->grabDataFromResponseByJsonPath('links.self'))[0];
-        $episodesLink = ($I->grabDataFromResponseByJsonPath('links.episodes'))[0];
+        $newRecordSelfLink = ($I->grabDataFromResponseByJsonPath('$.links.self'))[0];
+        $episodesLink = ($I->grabDataFromResponseByJsonPath('$.links.episodes'))[0];
 
         $this->testCrudApi(
             $I,

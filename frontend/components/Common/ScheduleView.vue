@@ -17,13 +17,14 @@
 
 <script setup lang="ts">
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
-import { Calendar, CalendarOptions } from "@fullcalendar/core";
-import allLocales from "@fullcalendar/core/locales-all";
-import luxon3Plugin from "@fullcalendar/luxon3";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import FullCalendar from "@fullcalendar/vue3";
-import { computed, useTemplateRef } from "vue";
+import luxon3Plugin from "@fullcalendar/format-luxon3";
+import FullCalendar, { CalendarApi, CalendarOptions } from "@fullcalendar/vue3";
+import allLocales from "@fullcalendar/vue3/locales-all";
+import timeGridPlugin from "@fullcalendar/vue3/timegrid";
+import { computed, h, useTemplateRef } from "vue";
 import { useAzuraCast } from "~/vendor/azuracast";
+import IconIcChevronLeft from "~icons/ic/baseline-chevron-left";
+import IconIcChevronRight from "~icons/ic/baseline-chevron-right";
 
 defineOptions({
     inheritAttrs: false,
@@ -35,7 +36,7 @@ const props = defineProps<{
 
 const $calendar = useTemplateRef("$calendar");
 
-const getCalendarApi = (): Calendar => {
+const getCalendarApi = (): CalendarApi => {
     if ($calendar.value) {
         return $calendar.value?.getApi();
     } else {
@@ -48,20 +49,19 @@ defineExpose({
 });
 
 // Use the Bootstrap 5 theme, but revert some settings back to their defaults.
-bootstrap5Plugin.themeClasses.bootstrap5.prototype.baseIconClass = "fc-icon";
-bootstrap5Plugin.themeClasses.bootstrap5.prototype.iconOverridePrefix = "fc-";
-bootstrap5Plugin.themeClasses.bootstrap5.prototype.iconClasses = {
-    close: "fc-icon-x",
-    prev: "fc-icon-chevron-left",
-    next: "fc-icon-chevron-right",
-    prevYear: "fc-icon-chevrons-left",
-    nextYear: "fc-icon-chevrons-right",
-};
-bootstrap5Plugin.themeClasses.bootstrap5.prototype.rtlIconClasses = {
-    prev: "fc-icon-chevron-right",
-    next: "fc-icon-chevron-left",
-    prevYear: "fc-icon-chevrons-right",
-    nextYear: "fc-icon-chevrons-left",
+bootstrap5Plugin.optionDefaults.buttons = {
+    prev: {
+        iconContent: () => h(IconIcChevronLeft),
+    },
+    next: {
+        iconContent: () => h(IconIcChevronRight),
+    },
+    prevYear: {
+        iconContent: () => h(IconIcChevronLeft),
+    },
+    nextYear: {
+        iconContent: () => h(IconIcChevronRight),
+    },
 };
 
 const { localeShort, timeConfig } = useAzuraCast();
@@ -71,7 +71,6 @@ const calendarOptions = computed<CalendarOptions>(() => {
         locale: localeShort,
         locales: allLocales,
         plugins: [luxon3Plugin, timeGridPlugin, bootstrap5Plugin],
-        themeSystem: "bootstrap5",
         initialView: "timeGridWeek",
         nowIndicator: true,
         defaultTimedEventDuration: "00:20",
@@ -86,7 +85,7 @@ const calendarOptions = computed<CalendarOptions>(() => {
         },
         views: {
             timeGridWeek: {
-                slotLabelFormat: {
+                slotHeaderFormat: {
                     ...timeConfig,
                     hour: "numeric",
                     minute: "2-digit",
@@ -99,3 +98,8 @@ const calendarOptions = computed<CalendarOptions>(() => {
     };
 });
 </script>
+
+<style>
+@import "@fullcalendar/vue3/skeleton.css";
+@import "@fullcalendar/bootstrap5/theme.css";
+</style>

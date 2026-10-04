@@ -59,14 +59,16 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
+import { storeToRefs } from "pinia";
+import { onMounted, onUnmounted, ref, toRef, watch } from "vue";
 import WaveSurfer from "wavesurfer.js";
-import RegionsPlugin, {RegionParams,} from "wavesurfer.js/dist/plugins/regions.js";
+import RegionsPlugin, {
+    RegionParams,
+} from "wavesurfer.js/dist/plugins/regions.js";
 import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {useAxios} from "~/vendor/axios";
+import { usePlayerStore } from "~/functions/usePlayerStore.ts";
+import { useAxios } from "~/vendor/axios";
 
 const props = withDefaults(
     defineProps<{
@@ -135,10 +137,7 @@ onMounted(async () => {
         container: "#waveform_container",
         waveColor: "#2196f3",
         progressColor: "#4081CF",
-        plugins: [
-            wsRegions,
-            wsTimeline
-        ]
+        plugins: [wsRegions, wsTimeline],
     });
 
     wavesurfer.on("ready", (newDuration: number) => {

@@ -61,6 +61,20 @@ final class PhpReader extends AbstractReader
                 ];
             }
 
+            // getID3 also puts described frames into these tags, need to read without junk descriptions
+            if (isset($toProcess['id3v2'])) {
+                $id3v2Tags = array_diff_key(
+                    Types::array($toProcess['id3v2']),
+                    Id3v2Text::DESCRIPTIONLESS_FRAMES
+                );
+
+                foreach (Id3v2Text::getDescriptionlessFrameTexts($info) as $tag => $text) {
+                    $id3v2Tags[$tag] = [$text];
+                }
+
+                $toProcess['id3v2'] = $id3v2Tags;
+            }
+
             $this->aggregateMetaTags($metadata, $toProcess);
 
             $knownTags = $metadata->getKnownTags();

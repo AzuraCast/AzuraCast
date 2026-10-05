@@ -104,7 +104,8 @@ final class Writer
     private function buildId3v2TagData(MetadataInterface $metadata, array $info): array
     {
         $existing = self::getInfoSection($info, 'tags', 'id3v2');
-        if ($existing === []) {
+        $isId3v1Fallback = $existing === [];
+        if ($isId3v1Fallback) {
             // Fallback for ID3v1 files that would otherwise lose their values
             $existing = self::getInfoSection($info, 'tags', 'id3v1');
         }
@@ -141,16 +142,15 @@ final class Writer
             $textFrames['track_number'] = [$textFrames['track_number'][0] . '/' . $totalTracks];
         }
 
-        // getID3 writes these frames without a description, so only one of each can exist
-        foreach (['comment', 'url_user'] as $key) {
-            if (isset($knownTags[$key])) {
-                continue;
-            }
+        // getID3 writes these frames without description, so only those are kept
+        // ID3v1 has a single comment, getID3 still returns it as a list
+        $descriptionlessTexts = $isId3v1Fallback
+            ? ['comment' => Types::string(Types::array($existing['comment'] ?? [])[0] ?? null)]
+            : Id3v2Text::getDescriptionlessFrameTexts($info);
 
-            $firstValue = Types::array($existing[$key] ?? []);
-            $firstValue = reset($firstValue);
-            if (is_string($firstValue) && $firstValue !== '') {
-                $textFrames[$key] = [$firstValue];
+        foreach ($descriptionlessTexts as $key => $text) {
+            if ($text !== '' && !isset($knownTags[$key])) {
+                $textFrames[$key] = [$text];
             }
         }
 

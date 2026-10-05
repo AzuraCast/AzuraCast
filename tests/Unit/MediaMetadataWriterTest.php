@@ -11,6 +11,7 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
 use App\Entity\StorageLocation;
+use App\Media\Metadata\Id3v2Text;
 use App\Media\MetadataInterface;
 use App\Media\MetadataManager;
 use App\Service\PlaylistConfiguration\DummyMediaGenerator;
@@ -22,6 +23,7 @@ use Codeception\Test\Unit;
 use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFMpeg;
 use JamesHeinrich\GetID3\GetID3;
+use JamesHeinrich\GetID3\Write\ID3v2;
 use JamesHeinrich\GetID3\WriteTags;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -56,7 +58,12 @@ final class MediaMetadataWriterTest extends Unit
     private const string MP3GAIN_TRACK_GAIN = '-4.475000 dB';
     private const string DESCRIPTIONLESS_TXXX = 'no description';
     private const string ITUNES_ADVISORY_TAG = 'ITUNESADVISORY';
+    private const string ITUNES_NORMALIZATION_TAG = 'iTunNORM';
+    private const string ITUNES_NORMALIZATION = ' 0000044E 00000413 00002C8D 00002A0C';
+    private const string DESCRIBED_COMMENT = 'Described comment';
     private const string FOREIGN_URL = 'https://example.com/artist';
+    private const string DESCRIBED_URL_TAG = 'Discogs';
+    private const string DESCRIBED_URL = 'https://example.com/release';
     private const string ASCII_PUBLISHER = 'ASCII Records';
     private const string FOREIGN_COMPOSER = 'Seeded Composer';
     private const string CUSTOM_COMPOSER = 'Custom Composer';
@@ -512,6 +519,98 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame(0, $publisherFrame['encodingid'] ?? null);
     }
 
+    /**
+     * getID3 keys comments by description, but falls back to numeric keys for "0", numeric
+     * and repeated descriptions, so these must not be mistaken for the visible comment.
+     *
+     * @return array<string, array{list<array<string, mixed>>, ?string}>
+     */
+    public static function commentFramesProvider(): array
+    {
+        // iTunes keeps its loudness data in a COMM frame with a description, often ahead of the visible comment
+        $itunesFrame = self::commentFrame(self::ITUNES_NORMALIZATION_TAG, self::ITUNES_NORMALIZATION);
+        $visibleFrame = self::commentFrame('', self::FOREIGN_COMMENT);
+
+        return [
+            'described frame ahead of the comment' => [
+                [$itunesFrame, $visibleFrame],
+                self::FOREIGN_COMMENT,
+            ],
+            'numeric description' => [
+                [self::commentFrame('1', self::DESCRIBED_COMMENT), $visibleFrame],
+                self::FOREIGN_COMMENT,
+            ],
+            'same description in another language' => [
+                [
+                    $itunesFrame,
+                    self::commentFrame(self::ITUNES_NORMALIZATION_TAG, self::ITUNES_NORMALIZATION, 'deu'),
+                    $visibleFrame,
+                ],
+                self::FOREIGN_COMMENT,
+            ],
+            'only described frames' => [
+                [$itunesFrame, self::commentFrame('0', self::DESCRIBED_COMMENT)],
+                null,
+            ],
+        ];
+    }
+
+    /**
+     * @param list<array<string, mixed>> $frames
+     */
+    #[DataProvider('commentFramesProvider')]
+    public function testVisibleCommentIsTheCommentFrameWithoutDescription(
+        array $frames,
+        ?string $expectedComment
+    ): void {
+        $media = $this->generateMedia();
+        $this->seedId3v2Frames($media, ['COMM' => $frames]);
+
+        self::assertCount(count($frames), Types::array($this->analyze($media)['id3v2']['COMM'] ?? []));
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertSame($expectedComment, $this->readFrameTexts($media, 'COMM')[''] ?? null);
+    }
+
+    public function testUserUrlWithoutDescriptionSurvivesSave(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedId3v2Frames($media, [
+            'WXXX' => [
+                self::userUrlFrame(self::DESCRIBED_URL_TAG, self::DESCRIBED_URL),
+                self::userUrlFrame('', self::FOREIGN_URL),
+            ],
+        ]);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertSame(['' => self::FOREIGN_URL], $this->readFrameTexts($media, 'WXXX'));
+    }
+
+    public function testCommentAndUserUrlAreReadFromFramesWithoutDescription(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedId3v2Frames($media, [
+            'COMM' => [
+                self::commentFrame(self::ITUNES_NORMALIZATION_TAG, self::ITUNES_NORMALIZATION),
+                self::commentFrame('', self::FOREIGN_COMMENT),
+            ],
+            'WXXX' => [
+                self::userUrlFrame(self::DESCRIBED_URL_TAG, self::DESCRIBED_URL),
+                self::userUrlFrame('', self::FOREIGN_URL),
+            ],
+        ]);
+
+        $metadata = $this->readMetadata($media);
+
+        self::assertSame(self::FOREIGN_COMMENT, $metadata->getKnownTags()['comment'] ?? null);
+        self::assertSame(self::FOREIGN_URL, $metadata->getKnownTags()['url_user'] ?? null);
+
+        // The numeric keys getID3 falls back to must not end up as tags of their own
+        self::assertSame([], array_filter(array_keys($metadata->getExtraTags()), 'is_int'));
+    }
+
     #[DataProvider('replaceablePictureFormatProvider')]
     public function testEmbeddedPictureIsKeptWhenCachedArtIsMissing(string $extension): void
     {
@@ -805,6 +904,48 @@ final class MediaMetadataWriterTest extends Unit
     }
 
     /**
+     * Writes raw ID3v2 frames, bypassing WriteTags which drops descriptions of COMM frames.
+     *
+     * @param array<string, list<array<string, mixed>>> $frames
+     */
+    private function seedId3v2Frames(StationMedia $media, array $frames): void
+    {
+        $id3v2Writer = new ID3v2();
+        $id3v2Writer->filename = $this->getLocalPath($media->path);
+        $id3v2Writer->majorversion = 3;
+        $id3v2Writer->tag_data = $frames;
+
+        if (!$id3v2Writer->WriteID3v2()) {
+            throw new RuntimeException(implode(', ', $id3v2Writer->errors));
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function commentFrame(string $description, string $text, string $language = 'eng'): array
+    {
+        return [
+            'encodingid' => 0,
+            'language' => $language,
+            'description' => $description,
+            'data' => $text,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function userUrlFrame(string $description, string $url): array
+    {
+        return [
+            'encodingid' => 0,
+            'description' => $description,
+            'data' => $url,
+        ];
+    }
+
+    /**
      * @return array<string, ?string>
      */
     private function readCustomFieldValues(StationMedia $media): array
@@ -904,6 +1045,27 @@ final class MediaMetadataWriterTest extends Unit
         }
 
         return $frames;
+    }
+
+    /**
+     * @return array<string, string> Text of each frame with the given name, keyed by its description
+     */
+    private function readFrameTexts(StationMedia $media, string $frameName): array
+    {
+        $texts = [];
+        foreach (Types::array($this->analyze($media)['id3v2'][$frameName] ?? []) as $frame) {
+            $frame = Types::array($frame);
+
+            // getID3 keeps the link of URL frames apart from their data
+            $texts[Types::string($frame['description'] ?? null)] = isset($frame['url'])
+                ? Types::string($frame['url'])
+                : Id3v2Text::decode(
+                    Types::string($frame['encoding'] ?? null, 'ISO-8859-1'),
+                    Types::string($frame['data'] ?? null)
+                );
+        }
+
+        return $texts;
     }
 
     private function getLocalPath(string $path): string

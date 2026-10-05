@@ -2372,6 +2372,8 @@ export type Station = HasAutoIncrementId & {
     enable_requests?: boolean;
     /** @example 5 */
     request_delay?: number | null;
+    /** @example 5 */
+    request_delay_ip?: number | null;
     /** @example 15 */
     request_threshold?: number | null;
     /** @example false */

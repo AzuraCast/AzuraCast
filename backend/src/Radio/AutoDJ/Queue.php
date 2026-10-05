@@ -7,6 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Cache\QueueLogCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationQueue;
@@ -30,6 +31,7 @@ final class Queue
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
         private readonly StationQueueRepository $queueRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly Scheduler $scheduler,
         private readonly QueueLogCache $queueLogCache
     ) {
@@ -82,6 +84,7 @@ final class Queue
                 }
             } else {
                 if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                    $this->restorePlaylistQueueSlot($queueRow);
                     $this->em->remove($queueRow);
                     continue;
                 }
@@ -263,5 +266,25 @@ final class Queue
                 $expectedPlayTime,
                 true
             );
+    }
+
+    /**
+     * Re-queue the playlist media of a queue row that is dropped before it played.
+     */
+    private function restorePlaylistQueueSlot(StationQueue $queueRow): void
+    {
+        $playlist = $queueRow->playlist;
+        $media = $queueRow->media;
+
+        if ($playlist === null || $media === null) {
+            return;
+        }
+
+        $spm = $this->spmRepo->findByPlaylistAndMedia($playlist, $media);
+
+        if ($spm !== null) {
+            $spm->is_queued = true;
+            $this->em->persist($spm);
+        }
     }
 }

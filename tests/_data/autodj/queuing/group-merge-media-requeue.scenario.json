@@ -1,5 +1,5 @@
 {
-  "description": "Regression test for the identity-map resync in StationPlaylistMediaRepository::resetQueue: inside a merged block, a consecutive_plays=3 slot over a two-track sequential member re-picks its first track right after a mid-build media queue reset. Without the resync, that pick's played() state silently fails to persist (the bulk reset desynced the already-managed row), so the next block would wrongly start with the first track again instead of the remaining second track. The in-memory harness is immune (its fakes mutate state directly); the integration run is the actual regression.",
+  "description": "Regression test for the identity-map resync in StationPlaylistMediaRepository::resetQueue: inside a merged block, a consecutive_plays=3 slot over a two-track sequential member re-picks its first track right after a mid-build media queue reset. Without the resync, that pick's played() state silently fails to persist (the bulk reset desynced the already-managed row), so the next block would wrongly start with the first track again instead of the remaining second track. The in-memory harness models the resync: its fake reset mirrors the production method and refreshes the live rows from the committed ones, so it pins the expected outcome.",
   "modes": [
     "in_memory",
     "integration"

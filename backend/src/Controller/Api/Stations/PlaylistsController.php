@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanFilterResults;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\StationPlaylistComputedFields;
@@ -20,6 +21,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Utilities\DateRange;
+use App\Utilities\ListFilter;
 use Doctrine\ORM\AbstractQuery;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -35,6 +37,24 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'filter[source]',
+                description: 'Filter by playlist source. Repeat as filter[source][] to match several values.',
+                in: 'query',
+                schema: new OA\Schema(ref: PlaylistSources::class)
+            ),
+            new OA\Parameter(
+                name: 'filter[type]',
+                description: 'Filter by playlist type. Repeat as filter[type][] to match several values.',
+                in: 'query',
+                schema: new OA\Schema(ref: PlaylistTypes::class)
+            ),
+            new OA\Parameter(
+                name: 'filter[order]',
+                description: 'Filter by playback order. Repeat as filter[order][] to match several values.',
+                in: 'query',
+                schema: new OA\Schema(ref: PlaylistOrders::class)
+            ),
         ],
         responses: [
             new OpenApi\Response\Success(
@@ -158,6 +178,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 ]
 final class PlaylistsController extends AbstractScheduledEntityController
 {
+    use CanFilterResults;
     use CanSortResults;
     use CanSearchResults;
 
@@ -193,6 +214,16 @@ final class PlaylistsController extends AbstractScheduledEntityController
             [
                 'sp.name',
                 'sp.description',
+            ]
+        );
+
+        $qb = $this->filterQueryBuilder(
+            $request,
+            $qb,
+            [
+                'source' => ListFilter::fromEnum('sp.source', PlaylistSources::class),
+                'type' => ListFilter::fromEnum('sp.type', PlaylistTypes::class),
+                'order' => ListFilter::fromEnum('sp.order', PlaylistOrders::class),
             ]
         );
 
@@ -496,10 +527,9 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 ? [StationPlaylist::OPTION_MERGE]
                 : [];
 
-            $type = PlaylistTypes::tryFrom($data['type'] ?? '');
-            $data['type'] = ($type === PlaylistTypes::Advanced)
-                ? PlaylistTypes::Standard->value
-                : $data['type'];
+            if (PlaylistTypes::tryFrom($data['type'] ?? '') === PlaylistTypes::Advanced) {
+                $data['type'] = PlaylistTypes::Standard->value;
+            }
         }
 
         return parent::editRecord($data, $record, $context);

@@ -88,6 +88,45 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         return $queuedPlaylistQuery->getQuery()->execute();
     }
 
+    /**
+     * @return int[]
+     */
+    public function getPlaylistAndNestedMemberIds(StationPlaylist $playlist): array
+    {
+        $resolvedIds = [$playlist->id];
+
+        if ($playlist->source !== PlaylistSources::Playlists) {
+            return $resolvedIds;
+        }
+
+        $memberIdsQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT DISTINCT IDENTITY(spg.playlist) AS playlist_id
+                FROM App\Entity\StationPlaylistGroup spg
+                WHERE IDENTITY(spg.playlist_group) IN (:groupIds)
+            DQL
+        );
+
+        $pendingGroupIds = $resolvedIds;
+
+        while ($pendingGroupIds !== []) {
+            $memberIds = array_map(
+                'intval',
+                $memberIdsQuery->setParameter('groupIds', $pendingGroupIds)
+                    ->getSingleColumnResult()
+            );
+
+            $pendingGroupIds = array_values(array_diff($memberIds, $resolvedIds));
+
+            $resolvedIds = [
+                ...$resolvedIds,
+                ...$pendingGroupIds,
+            ];
+        }
+
+        return $resolvedIds;
+    }
+
     public function isPlaylistGroupQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
         if (PlaylistSources::Playlists !== $playlist->source) {

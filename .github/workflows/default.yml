@@ -77,6 +77,14 @@ jobs:
         run: |
           vendor/bin/codecept run Unit --no-interaction
 
+      - name: Check Added DB Migrations
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          php backend/bin/console azuracast:dev:check-migrations "$BASE_SHA"
+
   node-test:
     name: Node Test Suite
     runs-on: ubuntu-latest
@@ -145,7 +153,7 @@ jobs:
           backend/bin/console locale:generate
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@v3.0.0
+        uses: crowdin/github-action@v3.3.0
         with:
           upload_sources: true
           download_translations: true

@@ -525,7 +525,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     /** @var Collection<int, SongHistory> */
     #[
         ORM\OneToMany(targetEntity: SongHistory::class, mappedBy: 'station'),
-        ORM\OrderBy(['timestamp_start' => 'desc'])
+        ORM\OrderBy(['timestamp_start' => 'DESC'])
     ]
     public private(set) Collection $history;
 

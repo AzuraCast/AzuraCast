@@ -3901,6 +3901,24 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: 'filter[source]'
+          in: query
+          description: 'Filter by playlist source. Repeat as filter[source][] to match several values.'
+          schema:
+            $ref: '#/components/schemas/PlaylistSources'
+        -
+          name: 'filter[type]'
+          in: query
+          description: 'Filter by playlist type. Repeat as filter[type][] to match several values.'
+          schema:
+            $ref: '#/components/schemas/PlaylistTypes'
+        -
+          name: 'filter[order]'
+          in: query
+          description: 'Filter by playback order. Repeat as filter[order][] to match several values.'
+          schema:
+            $ref: '#/components/schemas/PlaylistOrders'
       responses:
         '200':
           description: Success
@@ -10053,6 +10071,10 @@ components:
           type: integer
         use_manual_autodj:
           type: boolean
+        reset_sequential_queues_on_restart:
+          description: 'Reset the internal queue of sequential playlists when the station is restarted or its configuration is rewritten.'
+          type: boolean
+          example: false
         autodj_queue_length:
           type: integer
         dj_mount_point:
@@ -10094,7 +10116,14 @@ components:
           type: number
           format: float
         duplicate_prevention_time_range:
+          description: 'The time range (in minutes) of the song history that duplicate prevention checks tracks and titles against, also applies to artists when duplicate_prevention_artist_time_range is not set.'
           type: integer
+          example: 120
+        duplicate_prevention_artist_time_range:
+          description: 'The time range (in minutes) of the song history that duplicate prevention checks artists against, uses duplicate_prevention_time_range if set to null.'
+          type: integer
+          example: 120
+          nullable: true
         performance_mode:
           type: string
         hls_segment_length:
@@ -10390,6 +10419,10 @@ components:
             avoid_duplicates:
               type: boolean
               example: true
+            preserve_queue_on_restart:
+              description: "Don't reset this playlist's queue when the station is restarted or its configuration is rewritten."
+              type: boolean
+              example: false
             schedule_items:
               type: array
               items: {}

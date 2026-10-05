@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "d1",
+      "path": "gnoxs/d1.mp3",
+      "unique_id": "gnoxsd100000000000000000",
+      "length": 10.0,
+      "artist": "Station",
+      "title": "Deep One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m1",
+      "path": "gnoxs/m1.mp3",
+      "unique_id": "gnoxsm100000000000000000",
+      "length": 120.0,
+      "artist": "Artist M",
+      "title": "Song M1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m2",
+      "path": "gnoxs/m2.mp3",
+      "unique_id": "gnoxsm200000000000000000",
+      "length": 120.0,
+      "artist": "Artist M",
+      "title": "Song M2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m3",
+      "path": "gnoxs/m3.mp3",
+      "unique_id": "gnoxsm300000000000000000",
+      "length": 120.0,
+      "artist": "Artist M",
+      "title": "Song M3",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "outer",
+      "name": "Outer Group",
+      "config": {
+        "type": "once_per_x_songs",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 3,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "inner",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "inner",
+      "name": "Inner Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "deep",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "deep",
+      "name": "Deep Leaf",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "d1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "music",
+      "name": "Music",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

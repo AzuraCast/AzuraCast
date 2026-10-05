@@ -108,7 +108,6 @@ return [
             },
         ]);
 
-        /** @phpstan-ignore-next-line */
         return Doctrine\DBAL\DriverManager::getConnection($connectionOptions, $config);
     },
 
@@ -247,6 +246,30 @@ return [
         );
     },
 
+    App\Doctrine\Migrations\StableReleaseComparator::class => static function (
+        Environment $environment
+    ) {
+        return new App\Doctrine\Migrations\StableReleaseComparator(
+            $environment->getBackendDirectory() . '/src/Entity/Migration'
+        );
+    },
+
+    Doctrine\Migrations\DependencyFactory::class => static function (
+        Doctrine\ORM\EntityManagerInterface $em,
+        Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+        App\Doctrine\Migrations\StableReleaseComparator $migrateComparator,
+        Monolog\Logger $logger,
+    ) {
+        $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
+            $migrateConfig,
+            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
+            $logger
+        );
+        $migrateFactory->setService(Doctrine\Migrations\Version\Comparator::class, $migrateComparator);
+
+        return $migrateFactory;
+    },
+
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
@@ -254,7 +277,7 @@ return [
         App\Version $version,
         Environment $environment,
         Doctrine\ORM\EntityManagerInterface $em,
-        Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+        Doctrine\Migrations\DependencyFactory $migrateFactory,
         Monolog\Logger $logger,
     ) {
         $console = new App\Console\Application(
@@ -275,11 +298,6 @@ return [
         );
 
         // Add Doctrine Migrations
-        $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
-            $migrateConfig,
-            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
-            $logger
-        );
         Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.

@@ -1,5 +1,5 @@
 {
-  "description": "A top-level Once-Per-X-Songs group (play_per_songs=1) is eligible when it is not among the recent plays and blocked when it is.",
+  "description": "A top-level Once-Per-X-Songs group (play_per_songs=1) is eligible when none of its members is among the recent plays and blocked when one is, since a play of any member counts as a play of the group.",
   "modes": [
     "in_memory",
     "integration"
@@ -26,8 +26,8 @@
       "runtime": {
         "queue_history": [
           {
-            "playlist_ref": "grp",
-            "song_id": "recentsong",
+            "media_ref": "mA",
+            "playlist_ref": "a",
             "timestamp_played": "2018-01-15T11:59:00+00:00",
             "is_visible": true
           }

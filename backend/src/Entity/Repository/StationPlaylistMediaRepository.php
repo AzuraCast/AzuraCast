@@ -336,18 +336,6 @@ final class StationPlaylistMediaRepository extends Repository
         $this->em->flush();
     }
 
-    public function resetAllQueues(Station $station): void
-    {
-        $now = Time::nowUtc();
-
-        foreach ($station->playlists as $playlist) {
-            if (PlaylistSources::Songs !== $playlist->source) {
-                continue;
-            }
-
-            $this->resetQueue($playlist, $now);
-        }
-    }
 
     /**
      * @return StationPlaylistQueue[]
@@ -439,6 +427,14 @@ final class StationPlaylistMediaRepository extends Repository
             ->getSingleScalarResult();
 
         return $notQueuedMediaCount === $totalMediaCount;
+    }
+
+    public function findByPlaylistAndMedia(StationPlaylist $playlist, StationMedia $media): ?StationPlaylistMedia
+    {
+        return $this->em->getRepository(StationPlaylistMedia::class)->findOneBy([
+            'playlist' => $playlist,
+            'media' => $media,
+        ]);
     }
 
     public function isMediaInPlaylist(StationMedia $media, StationPlaylist $playlist): bool

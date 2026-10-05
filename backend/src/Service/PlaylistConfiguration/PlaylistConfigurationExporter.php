@@ -111,6 +111,7 @@ final class PlaylistConfigurationExporter
             isEnabled: $playlist->is_enabled,
             isJingle: $playlist->is_jingle,
             avoidDuplicates: $playlist->avoid_duplicates,
+            preserveQueueOnRestart: $playlist->preserve_queue_on_restart,
             includeInRequests: $playlist->include_in_requests,
             includeInOnDemand: $playlist->include_in_on_demand,
             playPerSongs: $playlist->play_per_songs,

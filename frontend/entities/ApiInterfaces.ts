@@ -2449,6 +2449,11 @@ export interface StationBackendConfiguration {
     record_streams_format?: string;
     record_streams_bitrate?: number;
     use_manual_autodj?: boolean;
+    /**
+     * Reset the internal queue of sequential playlists when the station is restarted or its configuration is rewritten.
+     * @example false
+     */
+    reset_sequential_queues_on_restart?: boolean;
     autodj_queue_length?: number;
     dj_mount_point?: string;
     dj_buffer?: number;
@@ -2477,7 +2482,16 @@ export interface StationBackendConfiguration {
      * @format float
      */
     crossfade_smart_margin?: number;
+    /**
+     * The time range (in minutes) of the song history that duplicate prevention checks tracks and titles against, also applies to artists when duplicate_prevention_artist_time_range is not set.
+     * @example 120
+     */
     duplicate_prevention_time_range?: number;
+    /**
+     * The time range (in minutes) of the song history that duplicate prevention checks artists against, uses duplicate_prevention_time_range if set to null.
+     * @example 120
+     */
+    duplicate_prevention_artist_time_range?: number | null;
     performance_mode?: string;
     hls_segment_length?: number;
     hls_segments_in_playlist?: number;
@@ -2659,6 +2673,11 @@ export type StationPlaylist = HasAutoIncrementId & {
     backend_options?: string[];
     /** @example true */
     avoid_duplicates?: boolean;
+    /**
+     * Don't reset this playlist's queue when the station is restarted or its configuration is rewritten.
+     * @example false
+     */
+    preserve_queue_on_restart?: boolean;
     schedule_items?: any[];
     podcasts?: any[];
     playlists?: any[];

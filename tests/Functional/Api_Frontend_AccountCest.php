@@ -65,7 +65,7 @@ class Api_Frontend_AccountCest extends CestAbstract
         $I->sendPost('/api/frontend/account/api-keys', $createJson);
         $I->seeResponseCodeIsSuccessful();
 
-        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecord = $I->grabDataFromResponseByJsonPath('$.links.self');
         $newRecordSelfLink = $newRecord[0];
 
         $I->sendGet($newRecordSelfLink);

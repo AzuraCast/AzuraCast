@@ -264,6 +264,25 @@ final class Scheduler
             : 0;
     }
 
+    public function isPlaylistScheduledToLoopOnceAt(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): bool {
+        if ($playlist->schedule_items->count() === 0) {
+            return false;
+        }
+
+        // Using "excludeSpecialRules" to prevent resetting queues as side effect of this check
+        $scheduleItem = $this->getActiveScheduleFromCollection(
+            $playlist->schedule_items,
+            $playlist->station->getTimezoneObject(),
+            $now,
+            excludeSpecialRules: true
+        );
+
+        return $scheduleItem->loop_once ?? false;
+    }
+
     public function canStreamerStreamNow(
         StationStreamer $streamer,
         ?DateTimeImmutable $now = null

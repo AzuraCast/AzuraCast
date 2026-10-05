@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 150,
+      "autodj_queue_length": 3,
+      "crossfade": 20
+    }
+  },
+  "media": [
+    {
+      "ref": "m1",
+      "path": "simulate/track-1.mp3",
+      "unique_id": "simulatewindowaaaaaa001",
+      "length": 1200.0,
+      "artist": "Artist 1",
+      "title": "Track 1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m2",
+      "path": "simulate/track-2.mp3",
+      "unique_id": "simulatewindowaaaaaa002",
+      "length": 1200.0,
+      "artist": "Artist 2",
+      "title": "Track 2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m3",
+      "path": "simulate/track-3.mp3",
+      "unique_id": "simulatewindowaaaaaa003",
+      "length": 1200.0,
+      "artist": "Artist 3",
+      "title": "Track 3",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m4",
+      "path": "simulate/track-4.mp3",
+      "unique_id": "simulatewindowaaaaaa004",
+      "length": 1200.0,
+      "artist": "Artist 4",
+      "title": "Track 4",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m5",
+      "path": "simulate/track-5.mp3",
+      "unique_id": "simulatewindowaaaaaa005",
+      "length": 1200.0,
+      "artist": "Artist 5",
+      "title": "Track 5",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m6",
+      "path": "simulate/track-6.mp3",
+      "unique_id": "simulatewindowaaaaaa006",
+      "length": 1200.0,
+      "artist": "Artist 6",
+      "title": "Track 6",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m7",
+      "path": "simulate/track-7.mp3",
+      "unique_id": "simulatewindowaaaaaa007",
+      "length": 1200.0,
+      "artist": "Artist 7",
+      "title": "Track 7",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m8",
+      "path": "simulate/track-8.mp3",
+      "unique_id": "simulatewindowaaaaaa008",
+      "length": 1200.0,
+      "artist": "Artist 8",
+      "title": "Track 8",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m9",
+      "path": "simulate/track-9.mp3",
+      "unique_id": "simulatewindowaaaaaa009",
+      "length": 1200.0,
+      "artist": "Artist 9",
+      "title": "Track 9",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m10",
+      "path": "simulate/track-10.mp3",
+      "unique_id": "simulatewindowaaaaaa010",
+      "length": 1200.0,
+      "artist": "Artist 10",
+      "title": "Track 10",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "j1",
+      "path": "simulate/jingle.mp3",
+      "unique_id": "simulatewindowjingle001",
+      "length": 60.0,
+      "artist": "Station ID",
+      "title": "Jingle",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "music",
+      "name": "Music",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m5",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m6",
+          "weight": 6,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m7",
+          "weight": 7,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m8",
+          "weight": 8,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m9",
+          "weight": 9,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m10",
+          "weight": 10,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "jingles",
+      "name": "Jingles",
+      "config": {
+        "type": "once_per_x_songs",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 1,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 2,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "j1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

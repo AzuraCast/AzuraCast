@@ -108,6 +108,7 @@ final class PlaylistConfigurationImporter
             $playlist->is_enabled = $entry->isEnabled;
             $playlist->is_jingle = $entry->isJingle;
             $playlist->avoid_duplicates = $entry->avoidDuplicates;
+            $playlist->preserve_queue_on_restart = $entry->preserveQueueOnRestart;
             $playlist->include_in_requests = $entry->includeInRequests;
             $playlist->include_in_on_demand = $entry->includeInOnDemand;
             $playlist->play_per_songs = $entry->playPerSongs;

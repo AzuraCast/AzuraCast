@@ -15,6 +15,7 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Radio\AutoDJ\QueueBuilder;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Radio\AutoDJ\Scheduler;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use App\Utilities\UserUrlFilter;
@@ -89,8 +90,16 @@ final class InMemoryAutoDjHarnessFactory
     private function fakeEntityManager(InMemoryAutoDjDataProxy $dataProxy): ReloadableEntityManagerInterface
     {
         $entityManager = Mockery::mock(ReloadableEntityManagerInterface::class);
-        $entityManager->allows('persist');
-        $entityManager->allows('flush');
+        $entityManager->allows('persist')->andReturnUsing(
+            static function (object $entity) use ($dataProxy): void {
+                $dataProxy->persist($entity);
+            }
+        );
+        $entityManager->allows('flush')->andReturnUsing(
+            static function () use ($dataProxy): void {
+                $dataProxy->flush();
+            }
+        );
         $entityManager->allows('remove');
         $entityManager->allows('refetch')->andReturnUsing(static fn(object $entity): object => $entity);
         $entityManager->allows('find')->andReturnUsing(
@@ -195,7 +204,7 @@ final class InMemoryAutoDjHarnessFactory
             static fn(
                 Station $station,
                 ?DateTimeImmutable $now = null,
-                array $additionalSongHistory = []
+                ?RecentSongHistory $additionalSongHistory = null
             ): array => $dataProxy->getPlayableRequests($station, $now, $additionalSongHistory)
         );
 
@@ -203,7 +212,7 @@ final class InMemoryAutoDjHarnessFactory
             static fn(
                 Station $station,
                 ?DateTimeImmutable $now = null,
-                array $additionalSongHistory = []
+                ?RecentSongHistory $additionalSongHistory = null
             ): ?StationRequest => $dataProxy->getNextPlayableRequest($station, $now, $additionalSongHistory)
         );
 

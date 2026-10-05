@@ -36,6 +36,7 @@ export const useStationsPlaylistsForm = defineStore(
                 play_per_hour_minute: 0,
                 include_in_requests: true,
                 avoid_duplicates: true,
+                preserve_queue_on_restart: false,
                 backend_options: [],
                 schedule_items: [],
             });
@@ -65,6 +66,7 @@ export const useStationsPlaylistsForm = defineStore(
                         fields.play_per_hour_minute,
                         fields.include_in_requests,
                         fields.avoid_duplicates,
+                        fields.preserve_queue_on_restart,
                     ],
                     advancedTab: [fields.backend_options.$self],
                 }),

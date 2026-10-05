@@ -15,8 +15,8 @@
                 v-else
                 class="row gx-1 pt-3 overflow-hidden"
             >
-                <div class="col-6">
-                    <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow">
+                <div class="col-6 d-flex flex-column playlist-grouping-column">
+                    <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow flex-shrink-0">
                         {{ $gettext('Playlists') }}
                     </h4>
 
@@ -24,7 +24,7 @@
                         v-if="playlistBreadcrumbs.length"
                         style="--bs-breadcrumb-divider: '>';"
                         aria-label="breadcrumb"
-                        class="border border-3 border-top-0 border-primary p-3 overflow-scroll"
+                        class="border border-3 border-top-0 border-primary p-3 overflow-scroll flex-shrink-0"
                     >
                         <ol class="breadcrumb flex-nowrap m-0">
                             <li class="breadcrumb-item">
@@ -65,7 +65,7 @@
 
                     <ul
                         ref="$playlistList"
-                        class="list-group list-group-flush h-100 shadow"
+                        class="list-group list-group-flush shadow overflow-y-auto min-h-0"
                     >
                         <li
                             v-if="currentPlaylists.length === 0"
@@ -171,13 +171,13 @@
                     </ul>
                 </div>
 
-                <div class="col-6">
-                    <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow">
+                <div class="col-6 d-flex flex-column playlist-grouping-column">
+                    <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow flex-shrink-0">
                         {{ $gettext('Playlist Contents') }}
                     </h4>
                     <div
                         v-if="selectedPlaylist !== undefined"
-                        class="selected-playlist-details border border-3 border-top-0 border-primary p-3 shadow-lg"
+                        class="selected-playlist-details border border-3 border-top-0 border-primary p-3 shadow-lg flex-shrink-0"
                     >
                         <div class="d-flex flex-grow-1 justify-content-between align-items-start">
                             <span class="pr-2 fs-5">{{ selectedPlaylist.name }}</span>
@@ -280,7 +280,7 @@
 
                     <ul
                         ref="$playlistContents"
-                        class="list-group list-group-flush h-100 shadow"
+                        class="list-group list-group-flush shadow overflow-y-auto min-h-0"
                     >
                         <li
                             v-if="selectedPlaylist === undefined"
@@ -538,11 +538,15 @@ const playlistBreadcrumbs = ref<PlaylistBreadcrumb[]>([]);
 const selectedPlaylist = ref<StationPlaylistEnriched | undefined>(undefined);
 const playlistMembers = ref<StationPlaylistGroupMemberEnriched[]>([]);
 
-watch(selectedPlaylist, (playlist) => {
+watch(selectedPlaylist, (playlist, previousPlaylist) => {
     playlistMembers.value =
         playlist?.source === PlaylistSources.Playlists
             ? [...playlist.playlists]
             : [];
+
+    if (playlist?.id !== previousPlaylist?.id) {
+        $playlistContents.value?.scrollTo({ top: 0 });
+    }
 });
 
 watch($playlistList, (element) => {
@@ -709,6 +713,8 @@ const navigateFromBreadcrumb = (breadcrumbIndex: number = 0): void => {
     currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(
         playlistBreadcrumbs.value,
     );
+
+    $playlistList.value?.scrollTo({ top: 0 });
 };
 
 const enterPlaylistGroup = (playlist: StationPlaylistEnriched): void => {
@@ -722,6 +728,8 @@ const enterPlaylistGroup = (playlist: StationPlaylistEnriched): void => {
     }
 
     currentPlaylists.value = resolvedPlaylists as StationPlaylistEnriched[];
+
+    $playlistList.value?.scrollTo({ top: 0 });
 
     playlistBreadcrumbs.value.push({
         id: playlist.id,
@@ -951,6 +959,16 @@ const doUpdateAllowedRequests = (index: number, value: string | null): void => {
 </script>
 
 <style lang="scss" scoped>
+$playlist-grouping-column-min-height: 20rem;
+$playlist-grouping-column-viewport-offset: 21rem;
+
+.playlist-grouping-column {
+    max-height: max(
+        $playlist-grouping-column-min-height,
+        calc(100vh - #{$playlist-grouping-column-viewport-offset})
+    );
+}
+
 .breadcrumb-item + .breadcrumb-item::before {
     float: none;
 }
@@ -980,6 +998,10 @@ const doUpdateAllowedRequests = (index: number, value: string | null): void => {
 
 .min-w-0 {
     min-width: 0;
+}
+
+.min-h-0 {
+    min-height: 0;
 }
 
 .sortable-ghost {

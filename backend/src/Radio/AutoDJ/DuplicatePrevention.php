@@ -35,18 +35,20 @@ final class DuplicatePrevention
 
     /**
      * @param StationPlaylistQueue[] $eligibleTracks
-     * @param PlayedTrack[] $playedTracks
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
     public function preventDuplicates(
-        array $eligibleTracks = [],
-        array $playedTracks = [],
+        array $eligibleTracks,
+        RecentSongHistory $recentSongHistory,
         bool $allowDuplicates = false
     ): ?StationPlaylistQueue {
         if (empty($eligibleTracks)) {
             $this->logger->debug('Eligible song queue is empty!');
             return null;
         }
+
+        $playedTracks = $recentSongHistory->playedTracks;
+        $artistPlayedTracks = $recentSongHistory->artistPlayedTracks;
 
         $latestSongIdsPlayed = [];
 
@@ -78,11 +80,8 @@ final class DuplicatePrevention
             $notPlayedEligibleTracks[$mediaId] = $track;
         }
 
-        $validTrack = $this->getDistinctTrack($notPlayedEligibleTracks, $playedTracks);
-
-        if (null === $validTrack) {
-            $validTrack = $this->getDistinctTrack($eligibleTracks, $playedTracks);
-        }
+        $validTrack = $this->getDistinctTrack($notPlayedEligibleTracks, $playedTracks, $artistPlayedTracks)
+            ?? $this->getDistinctTrack($eligibleTracks, $playedTracks, $artistPlayedTracks);
 
         if (null !== $validTrack) {
             $this->logger->info(
@@ -98,56 +97,53 @@ final class DuplicatePrevention
         }
 
         // If we reach this point, there's no way to avoid a duplicate title and artist.
-        if ($allowDuplicates) {
-            usort(
-                $eligibleTracks,
-                fn (StationPlaylistQueue $a, StationPlaylistQueue $b) =>
-                    ($a->last_played ?? 0) <=> ($b->last_played ?? 0)
-            );
+        $unavoidableDuplicate = $this->hasTrackAvoidingDuplicateTitle($notPlayedEligibleTracks, $playedTracks)
+            ? 'artist'
+            : 'title';
 
-            // Pull the lowest value, which corresponds to the least recently played song.
-            $validTrack = reset($eligibleTracks);
-
-            $this->logger->warning(
-                'No way to avoid same title OR same artist; using least recently played song.',
-                [
-                    'media_id' => $validTrack->media_id,
-                    'title' => $validTrack->title,
-                    'artist' => $validTrack->artist,
-                ]
-            );
-
-            return $validTrack;
+        if (!$allowDuplicates) {
+            $this->logger->debug("No track avoids same {$unavoidableDuplicate}.");
+            return null;
         }
 
-        return null;
+        usort(
+            $eligibleTracks,
+            fn (StationPlaylistQueue $a, StationPlaylistQueue $b) =>
+                ($a->last_played ?? 0) <=> ($b->last_played ?? 0)
+        );
+
+        // Pull the lowest value, which corresponds to the least recently played song.
+        $validTrack = reset($eligibleTracks);
+
+        $this->logger->warning(
+            "No way to avoid same {$unavoidableDuplicate}; using least recently played song.",
+            [
+                'media_id' => $validTrack->media_id,
+                'title' => $validTrack->title,
+                'artist' => $validTrack->artist,
+            ]
+        );
+
+        return $validTrack;
     }
 
     /**
      * Given an array of eligible tracks, return the first ID that doesn't have a duplicate artist/
      *   title with any of the previously played tracks.
      *
-     * Both should be in the form of an array, i.e.:
-     *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
+     * Artists are checked against $artistPlayedTracks when given, otherwise against $playedTracks.
      *
      * @param StationPlaylistQueue[] $eligibleTracks
      * @param PlayedTrack[] $playedTracks
-     *
+     * @param ?PlayedTrack[] $artistPlayedTracks
      */
     public function getDistinctTrack(
         array $eligibleTracks,
-        array $playedTracks
+        array $playedTracks,
+        ?array $artistPlayedTracks = null
     ): ?StationPlaylistQueue {
-        $artists = [];
-        $titles = [];
-        foreach ($playedTracks as $playedTrack) {
-            $title = $this->prepareStringForMatching($playedTrack['title']);
-            $titles[$title] = $title;
-
-            foreach ($this->getArtistParts($playedTrack['artist']) as $artist) {
-                $artists[$artist] = $artist;
-            }
-        }
+        $titles = $this->getPlayedTitles($playedTracks);
+        $artists = $this->getPlayedArtists($artistPlayedTracks ?? $playedTracks);
 
         foreach ($eligibleTracks as $track) {
             // Avoid all direct title matches.
@@ -168,6 +164,56 @@ final class DuplicatePrevention
         }
 
         return null;
+    }
+
+    /**
+     * @param StationPlaylistQueue[] $eligibleTracks
+     * @param PlayedTrack[] $playedTracks
+     */
+    private function hasTrackAvoidingDuplicateTitle(array $eligibleTracks, array $playedTracks): bool
+    {
+        $titles = $this->getPlayedTitles($playedTracks);
+
+        foreach ($eligibleTracks as $track) {
+            if (!isset($titles[$this->prepareStringForMatching($track->title)])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param PlayedTrack[] $playedTracks
+     *
+     * @return array<string, string>
+     */
+    private function getPlayedTitles(array $playedTracks): array
+    {
+        $titles = [];
+        foreach ($playedTracks as $playedTrack) {
+            $title = $this->prepareStringForMatching($playedTrack['title']);
+            $titles[$title] = $title;
+        }
+
+        return $titles;
+    }
+
+    /**
+     * @param PlayedTrack[] $playedTracks
+     *
+     * @return array<string, string>
+     */
+    private function getPlayedArtists(array $playedTracks): array
+    {
+        $artists = [];
+        foreach ($playedTracks as $playedTrack) {
+            foreach ($this->getArtistParts($playedTrack['artist']) as $artist) {
+                $artists[$artist] = $artist;
+            }
+        }
+
+        return $artists;
     }
 
     private function getArtistParts(?string $artists): array

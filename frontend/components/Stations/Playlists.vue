@@ -60,6 +60,7 @@
                             id="station_playlists"
                             paginated
                             :fields="fields"
+                            :filters="filters"
                             :provider="listItemProvider"
                             detailed
                         >
@@ -389,11 +390,14 @@
 </template>
 
 <script setup lang="ts">
-import { EventImpl } from "@fullcalendar/core/internal";
+import { EventApi } from "@fullcalendar/vue3";
 import { toRefs } from "@vueuse/core";
 import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {
+    DataTableField,
+    DataTableFilter,
+} from "~/components/Common/DataTable.vue";
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
@@ -407,6 +411,7 @@ import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
 import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
 import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
+import { usePlaylistOptions } from "~/components/Stations/Playlists/playlistOptions.ts";
 import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
 import {
@@ -423,6 +428,7 @@ import { IconSize } from "~/functions/icons.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import { useFormatLength } from "~/functions/useFormatLength.ts";
+import { DataTableFilterType } from "~/functions/useHasDatatable.ts";
 import useHasEditModal from "~/functions/useHasEditModal";
 import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
 import { useStationData } from "~/functions/useStationQuery.ts";
@@ -460,6 +466,32 @@ const fields: DataTableField[] = [
     },
 ];
 
+const { sourceOptions, typeOptions, orderOptions } = usePlaylistOptions();
+
+const filters: DataTableFilter[] = [
+    {
+        key: "source",
+        label: $gettext("Source"),
+        type: DataTableFilterType.Select,
+        options: sourceOptions,
+        multiple: true,
+    },
+    {
+        key: "type",
+        label: $gettext("Playlist Type"),
+        type: DataTableFilterType.Select,
+        options: typeOptions,
+        multiple: true,
+    },
+    {
+        key: "order",
+        label: $gettext("Song Playback Order"),
+        type: DataTableFilterType.Select,
+        options: orderOptions,
+        multiple: true,
+    },
+];
+
 const listItemProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation([QueryKeys.StationPlaylists]),
@@ -485,7 +517,7 @@ const doShowMemberships = (url: string) => {
     $editModal.value?.editMemberships(url);
 };
 
-const doCalendarClick = (event: EventImpl) => {
+const doCalendarClick = (event: EventApi) => {
     doEdit(event.extendedProps.edit_url);
 };
 

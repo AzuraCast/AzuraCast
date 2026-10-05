@@ -7,6 +7,7 @@ namespace App\Tests\AutoDJ;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationRequest;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
@@ -22,7 +23,9 @@ final readonly class InMemoryEntityStore
      * @param array<string, StationPlaylist> $playlistsByRef
      * @param array<string, StationMedia> $mediaByRef
      * @param array<int, StationMedia> $mediaById
+     * @param array<int, string> $refByMediaId
      * @param array<int, StationPlaylistMedia> $spmById
+     * @param array<int, StationPlaylistGroup> $groupMembersById
      * @param array<int, string> $refByPlaylistId
      * @param StationRequest[] $requests In id order
      */
@@ -31,7 +34,9 @@ final readonly class InMemoryEntityStore
         public array $playlistsByRef,
         public array $mediaByRef,
         public array $mediaById,
+        public array $refByMediaId,
         public array $spmById,
+        public array $groupMembersById,
         public array $refByPlaylistId,
         public ScenarioRuntime $runtime,
         public array $requests
@@ -41,6 +46,11 @@ final readonly class InMemoryEntityStore
     public function refForPlaylist(StationPlaylist $playlist): ?string
     {
         return $this->refByPlaylistId[$playlist->id] ?? null;
+    }
+
+    public function refForMedia(StationMedia $media): ?string
+    {
+        return $this->refByMediaId[$media->id] ?? null;
     }
 
     public function playlistForRef(string $ref): StationPlaylist

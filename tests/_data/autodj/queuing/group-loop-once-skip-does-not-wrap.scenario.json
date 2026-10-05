@@ -1,0 +1,30 @@
+{
+  "description": "A loop_once group whose last queued member is outside its own schedule window does not wrap into a second cycle. The group contributes exactly one track and the build then falls back to the unscheduled 'fill' playlist, instead of the cycle wrap replaying the first member.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "loop-once-group-does-not-wrap-past-skipped-member",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "loopMember",
+          "media_ref": "mLoop1",
+          "playlist_chain_refs": [
+            "lgrp",
+            "loopMember"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fill",
+          "media_ref": "mFill",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

@@ -15,9 +15,12 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use InvalidArgumentException;
+use WeakMap;
 
 /**
  * Provides in-memory methods to emulate repository interactions that the Scheduler/QueueBuilder rely on
@@ -31,12 +34,14 @@ use DateTimeImmutable;
  *     playlist_ref: ?string,
  *     is_visible: bool
  * }
- * @phpstan-type QueueEntryShape array{
+ * @phpstan-type QueueRowShape array{
  *     song_id: string,
  *     artist: ?string,
  *     title: ?string,
  *     playlist_ref: ?string,
- *     is_visible: bool
+ *     is_visible: bool,
+ *     is_played: bool,
+ *     timestamp_played: ?int
  * }
  */
 final class InMemoryAutoDjDataProxy
@@ -44,50 +49,57 @@ final class InMemoryAutoDjDataProxy
     /** @var ?list<HistoryEntryShape> */
     private ?array $historyCache = null;
 
-    /** @var list<QueueEntryShape> */
-    private array $cuedEntries = [];
+    /** @var list<QueueRowShape> */
+    private array $queueRows = [];
+
+    /** @var WeakMap<StationQueue, int> */
+    private WeakMap $queueRowPositions;
+
+    private readonly InMemoryCommittedState $committedState;
 
     public function __construct(
         private readonly InMemoryEntityStore $entities,
         private readonly DuplicatePrevention $duplicatePrevention
     ) {
+        $this->committedState = new InMemoryCommittedState();
+        $this->committedState->trackGroupMembers($entities->groupMembersById);
+        $this->committedState->trackPlaylistMedia($entities->spmById);
+        $this->committedState->trackRequests($entities->requests);
+
+        $this->queueRowPositions = new WeakMap();
+
         foreach ($entities->runtime->cuedMedia as $cuedMediaEntry) {
             $media = $entities->mediaByRef[$cuedMediaEntry->mediaRef] ?? null;
-            if ($media === null || !isset($entities->playlistsByRef[$cuedMediaEntry->playlistRef])) {
+            $playlist = $entities->playlistsByRef[$cuedMediaEntry->playlistRef] ?? null;
+            if ($media === null || $playlist === null) {
                 continue;
             }
 
-            $this->recordBuiltEntry($media, $cuedMediaEntry->playlistRef);
+            $queueRow = StationQueue::fromMedia($entities->station, $media);
+            $queueRow->playlist = $playlist;
+
+            $this->commitQueueRow($queueRow);
         }
-    }
-
-    /**
-     * @template TEntry of StationQueue|StationMedia
-     *
-     * @param TEntry $entry
-     * @param (TEntry is StationMedia ? string : null) $playlistRef
-     */
-    public function recordBuiltEntry(StationQueue|StationMedia $entry, ?string $playlistRef = null): void
-    {
-        $isVisible = true;
-
-        if ($entry instanceof StationQueue) {
-            $playlist = $entry->playlist;
-
-            $playlistRef = ($playlist !== null) ? $this->entities->refForPlaylist($playlist) : null;
-            $isVisible = $entry->is_visible;
-        }
-
-        $this->cuedEntries[] = [
-            'song_id' => $entry->song_id,
-            'artist' => $entry->artist,
-            'title' => $entry->title,
-            'playlist_ref' => $playlistRef,
-            'is_visible' => $isVisible,
-        ];
     }
 
     // EntityManager
+
+    /**
+     * Only new queue rows need registering, managed entities are committed on flush regardless
+     */
+    public function persist(object $entity): void
+    {
+        if ($entity instanceof StationQueue) {
+            $this->committedState->persistQueueEntry($entity);
+        }
+    }
+
+    public function flush(): void
+    {
+        foreach ($this->committedState->flush() as $queueRow) {
+            $this->commitQueueRow($queueRow);
+        }
+    }
 
     public function find(string $className, int|string $id): ?object
     {
@@ -114,12 +126,17 @@ final class InMemoryAutoDjDataProxy
             shuffle($items);
         } else {
             $items = array_values(
-                array_filter($items, static fn(StationPlaylistMedia $spm): bool => $spm->is_queued)
+                array_filter(
+                    $items,
+                    fn(StationPlaylistMedia $spm): bool => $this->committedState->playlistMediaRow($spm)['is_queued']
+                )
             );
 
             usort(
                 $items,
-                static fn(StationPlaylistMedia $a, StationPlaylistMedia $b): int => $a->weight <=> $b->weight
+                fn(StationPlaylistMedia $a, StationPlaylistMedia $b): int
+                    => $this->committedState->playlistMediaRow($a)['weight']
+                        <=> $this->committedState->playlistMediaRow($b)['weight']
             );
         }
 
@@ -128,24 +145,36 @@ final class InMemoryAutoDjDataProxy
 
     public function resetQueue(StationPlaylist $playlist, ?CarbonImmutable $now = null): void
     {
+        if ($playlist->source !== PlaylistSources::Songs) {
+            throw new InvalidArgumentException('Playlist must contain songs.');
+        }
+
         /** @var StationPlaylistMedia[] $items */
         $items = $playlist->media_items->toArray();
 
-        $isShuffle = PlaylistOrders::Shuffle === $playlist->order;
-        if ($isShuffle) {
-            shuffle($items);
-        }
-
-        $weight = 1;
-        foreach ($items as $spm) {
-            if ($isShuffle) {
-                $spm->weight = $weight++;
+        if ($playlist->order === PlaylistOrders::Sequential) {
+            foreach ($items as $spm) {
+                $this->committedState->markPlaylistMediaQueued($spm);
             }
+        } elseif ($playlist->order === PlaylistOrders::Shuffle) {
+            shuffle($items);
 
-            $spm->is_queued = true;
+            $weight = 1;
+            foreach ($items as $spm) {
+                $this->committedState->markPlaylistMediaQueued($spm, $weight++);
+            }
         }
 
-        $playlist->queue_reset_at = $now ?? Time::nowUtc();
+        $this->committedState->resyncManagedEntities(
+            StationPlaylistMedia::class,
+            static fn(StationPlaylistMedia $spm): bool => $spm->playlist === $playlist
+        );
+
+        $now ??= Time::nowUtc();
+
+        $playlist->queue_reset_at = $now;
+        $this->persist($playlist);
+        $this->flush();
     }
 
     public function isQueueEmpty(StationPlaylist $playlist): bool
@@ -158,7 +187,7 @@ final class InMemoryAutoDjDataProxy
         }
 
         foreach ($playlist->media_items as $spm) {
-            if ($spm->is_queued) {
+            if ($this->committedState->playlistMediaRow($spm)['is_queued']) {
                 return false;
             }
         }
@@ -176,7 +205,7 @@ final class InMemoryAutoDjDataProxy
         }
 
         foreach ($playlist->media_items as $spm) {
-            if (!$spm->is_queued) {
+            if (!$this->committedState->playlistMediaRow($spm)['is_queued']) {
                 return false;
             }
         }
@@ -229,12 +258,17 @@ final class InMemoryAutoDjDataProxy
         }
 
         $members = array_values(
-            array_filter($members, static fn(StationPlaylistGroup $spg): bool => $spg->is_queued)
+            array_filter(
+                $members,
+                fn(StationPlaylistGroup $spg): bool => $this->committedState->groupMemberRow($spg)['is_queued']
+            )
         );
 
         usort(
             $members,
-            static fn(StationPlaylistGroup $a, StationPlaylistGroup $b): int => $a->weight <=> $b->weight
+            fn(StationPlaylistGroup $a, StationPlaylistGroup $b): int
+                => $this->committedState->groupMemberRow($a)['weight']
+                    <=> $this->committedState->groupMemberRow($b)['weight']
         );
 
         return $members;
@@ -242,25 +276,36 @@ final class InMemoryAutoDjDataProxy
 
     public function resetPlaylistGroupQueue(StationPlaylist $playlist, ?CarbonImmutable $now = null): void
     {
+        if ($playlist->source !== PlaylistSources::Playlists) {
+            throw new InvalidArgumentException('Playlist must contain playlists.');
+        }
+
         /** @var StationPlaylistGroup[] $members */
         $members = $playlist->playlists->toArray();
 
-        $isShuffle = PlaylistOrders::Shuffle === $playlist->order;
-        if ($isShuffle) {
-            shuffle($members);
-        }
-
-        $weight = 1;
-        foreach ($members as $spg) {
-            if ($isShuffle) {
-                $spg->weight = $weight++;
+        if ($playlist->order === PlaylistOrders::Sequential) {
+            foreach ($members as $spg) {
+                $this->committedState->markGroupMemberQueued($spg);
             }
+        } elseif ($playlist->order === PlaylistOrders::Shuffle) {
+            shuffle($members);
 
-            $spg->is_queued = true;
-            $spg->consecutive_plays_count = 0;
+            $weight = 1;
+            foreach ($members as $spg) {
+                $this->committedState->markGroupMemberQueued($spg, $weight++);
+            }
         }
 
-        $playlist->queue_reset_at = $now ?? Time::nowUtc();
+        $this->committedState->resyncManagedEntities(
+            StationPlaylistGroup::class,
+            static fn(StationPlaylistGroup $spg): bool => $spg->playlist_group === $playlist
+        );
+
+        $now ??= Time::nowUtc();
+
+        $playlist->queue_reset_at = $now;
+        $this->persist($playlist);
+        $this->flush();
     }
 
     public function isPlaylistGroupQueueEmpty(StationPlaylist $playlist): bool
@@ -277,7 +322,7 @@ final class InMemoryAutoDjDataProxy
                 continue;
             }
 
-            if ($spg->is_queued) {
+            if ($this->committedState->groupMemberRow($spg)['is_queued']) {
                 return false;
             }
         }
@@ -299,7 +344,7 @@ final class InMemoryAutoDjDataProxy
                 continue;
             }
 
-            if (!$spg->is_queued) {
+            if (!$this->committedState->groupMemberRow($spg)['is_queued']) {
                 return false;
             }
         }
@@ -335,16 +380,47 @@ final class InMemoryAutoDjDataProxy
             ];
         }
 
-        foreach (array_reverse($this->cuedEntries) as $entry) {
+        foreach (array_reverse($this->queueRows) as $row) {
+            if (
+                $row['is_played']
+                && (
+                    $row['timestamp_played'] === null
+                    || $row['timestamp_played'] < $threshold
+                )
+            ) {
+                continue;
+            }
+
             $result[] = [
-                'song_id' => $entry['song_id'],
-                'timestamp_played' => null,
-                'title' => $entry['title'],
-                'artist' => $entry['artist'],
+                'song_id' => $row['song_id'],
+                'timestamp_played' => $row['timestamp_played'],
+                'title' => $row['title'],
+                'artist' => $row['artist'],
             ];
         }
 
         return $result;
+    }
+
+    /**
+     * Has the same effect as running StationQueueRepository::trackPlayed at the start of every row.
+     * Rows without a play time (seeded cued media) are never marked played.
+     */
+    public function markQueueRowsPlayedUntil(DateTimeImmutable $time): void
+    {
+        $timestamp = $time->getTimestamp();
+
+        foreach ($this->queueRows as $position => $row) {
+            if (
+                $row['is_played']
+                || $row['timestamp_played'] === null
+                || $row['timestamp_played'] > $timestamp
+            ) {
+                continue;
+            }
+
+            $this->queueRows[$position]['is_played'] = true;
+        }
     }
 
     public function isPlaylistRecentlyPlayed(StationPlaylist $playlist, ?int $playPerSongs = null): bool
@@ -354,26 +430,28 @@ final class InMemoryAutoDjDataProxy
             return false;
         }
 
-        $ref = $this->entities->refForPlaylist($playlist);
+        $refs = $this->playlistAndNestedMemberRefs($playlist);
+        if ($refs === []) {
+            return false;
+        }
 
         $rows = [
-            ...array_reverse($this->cuedEntries),
+            ...array_reverse($this->queueRows),
             ...$this->history(),
         ];
 
         $candidates = array_values(array_filter(
             $rows,
-            static fn(array $entry): bool => $entry['is_visible'] || $entry['playlist_ref'] === $ref
+            static fn(array $entry): bool => (
+                $entry['is_visible']
+                || in_array($entry['playlist_ref'], $refs, true)
+            )
         ));
 
         $candidates = array_slice($candidates, 0, $playPerSongs);
 
         foreach ($candidates as $entry) {
-            if ($ref === null) {
-                continue;
-            }
-
-            if ($entry['playlist_ref'] === $ref) {
+            if (in_array($entry['playlist_ref'], $refs, true)) {
                 return true;
             }
         }
@@ -410,20 +488,19 @@ final class InMemoryAutoDjDataProxy
     // StationRequestRepository
 
     /**
-     * @param mixed[] $additionalSongHistory
-     *
      * @return list<StationRequest>
      */
     public function getPlayableRequests(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): array {
         $now ??= Time::nowUtc();
+        $additionalSongHistory ??= new RecentSongHistory();
 
         $unplayed = array_filter(
             $this->entities->requests,
-            static fn(StationRequest $request): bool => $request->played_at === null
+            fn(StationRequest $request): bool => $this->committedState->requestPlayedAt($request) === null
         );
 
         usort(
@@ -436,22 +513,51 @@ final class InMemoryAutoDjDataProxy
             $unplayed,
             fn(StationRequest $request): bool => $request->shouldPlayNow($now)
                 && !$this->hasRequestTrackPlayedRecently($request->track, $now)
-                && !$this->isDuplicateOfPlayedTrack($request->track, $additionalSongHistory)
+                && !$this->isDuplicateOfPlayedTrack(
+                    $request->track,
+                    $additionalSongHistory->playedTracks,
+                    $additionalSongHistory->artistPlayedTracks
+                )
         ));
     }
 
-    /**
-     * @param mixed[] $additionalSongHistory
-     */
     public function getNextPlayableRequest(
         Station $station,
         ?DateTimeImmutable $now = null,
-        array $additionalSongHistory = []
+        ?RecentSongHistory $additionalSongHistory = null
     ): ?StationRequest {
         return $this->getPlayableRequests($station, $now, $additionalSongHistory)[0] ?? null;
     }
 
     // Internal helpers
+
+    /**
+     * Inserts the row or overwrites its committed copy when the same row is flushed again
+     */
+    private function commitQueueRow(StationQueue $queueRow): void
+    {
+        $playlist = $queueRow->playlist;
+
+        $row = [
+            'song_id' => $queueRow->song_id,
+            'artist' => $queueRow->artist,
+            'title' => $queueRow->title,
+            'playlist_ref' => ($playlist !== null) ? $this->entities->refForPlaylist($playlist) : null,
+            'is_visible' => $queueRow->is_visible,
+            'is_played' => $queueRow->is_played,
+            'timestamp_played' => $queueRow->timestamp_played?->getTimestamp(),
+        ];
+
+        $position = $this->queueRowPositions[$queueRow] ?? null;
+        if ($position === null) {
+            $this->queueRowPositions[$queueRow] = count($this->queueRows);
+            $this->queueRows[] = $row;
+
+            return;
+        }
+
+        $this->queueRows[$position] = $row;
+    }
 
     private function isCued(StationPlaylist $playlist): bool
     {
@@ -460,13 +566,47 @@ final class InMemoryAutoDjDataProxy
             return false;
         }
 
-        foreach ($this->cuedEntries as $entry) {
-            if ($entry['playlist_ref'] === $ref) {
+        foreach ($this->queueRows as $row) {
+            if (!$row['is_played'] && $row['playlist_ref'] === $ref) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param int[] $visitedIds
+     *
+     * @return string[]
+     */
+    private function playlistAndNestedMemberRefs(StationPlaylist $playlist, array $visitedIds = []): array
+    {
+        if (in_array($playlist->id, $visitedIds, true)) {
+            return [];
+        }
+
+        $visitedIds[] = $playlist->id;
+
+        $refs = [];
+
+        $ref = $this->entities->refForPlaylist($playlist);
+        if ($ref !== null) {
+            $refs[] = $ref;
+        }
+
+        if ($playlist->source !== PlaylistSources::Playlists) {
+            return $refs;
+        }
+
+        foreach ($playlist->playlists as $membership) {
+            $refs = [
+                ...$refs,
+                ...$this->playlistAndNestedMemberRefs($membership->playlist, $visitedIds),
+            ];
+        }
+
+        return array_values(array_unique($refs));
     }
 
     private function toPlaylistQueue(StationPlaylistMedia $spm): StationPlaylistQueue
@@ -477,7 +617,7 @@ final class InMemoryAutoDjDataProxy
         $record->song_id = $spm->media->song_id;
         $record->artist = $spm->media->artist ?? '';
         $record->title = $spm->media->title ?? '';
-        $record->last_played = $spm->last_played;
+        $record->last_played = $this->committedState->playlistMediaRow($spm)['last_played'];
 
         return $record;
     }
@@ -540,10 +680,14 @@ final class InMemoryAutoDjDataProxy
 
     /**
      * @param mixed[] $playedTracks
+     * @param ?mixed[] $artistPlayedTracks
      */
-    private function isDuplicateOfPlayedTrack(StationMedia $media, array $playedTracks): bool
-    {
-        if ($playedTracks === []) {
+    private function isDuplicateOfPlayedTrack(
+        StationMedia $media,
+        array $playedTracks,
+        ?array $artistPlayedTracks = null
+    ): bool {
+        if ($playedTracks === [] && ($artistPlayedTracks ?? []) === []) {
             return false;
         }
 
@@ -553,6 +697,10 @@ final class InMemoryAutoDjDataProxy
         $eligibleTrack->title = $media->title ?? '';
         $eligibleTrack->artist = $media->artist ?? '';
 
-        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $playedTracks) === null;
+        return $this->duplicatePrevention->getDistinctTrack(
+            [$eligibleTrack],
+            $playedTracks,
+            $artistPlayedTracks
+        ) === null;
     }
 }

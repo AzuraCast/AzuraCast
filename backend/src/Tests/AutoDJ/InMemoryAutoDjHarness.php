@@ -8,8 +8,11 @@ use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\AutoDJ\QueueBuilder;
 use App\Radio\AutoDJ\Scheduler;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use LogicException;
 use Monolog\Handler\TestHandler;
+use Monolog\LogRecord;
 
 use const JSON_UNESCAPED_SLASHES;
 
@@ -48,6 +51,17 @@ final readonly class InMemoryAutoDjHarness
     }
 
     /**
+     * @return string[]
+     */
+    public function logMessages(): array
+    {
+        return array_map(
+            static fn(LogRecord $record): string => $record->message,
+            $this->logHandler->getRecords()
+        );
+    }
+
+    /**
      * @return StationQueue[]
      */
     public function buildNextSongs(DateTimeImmutable $now, bool $interrupting = false): array
@@ -67,10 +81,33 @@ final readonly class InMemoryAutoDjHarness
 
         $nextSongs = $event->getNextSongs();
 
-        foreach ($nextSongs as $stationQueueEntry) {
-            $this->dataProxy->recordBuiltEntry($stationQueueEntry);
+        ExpectedPlayTime::assignToBuiltRows(
+            $this->entities->station,
+            $nextSongs,
+            $now,
+            $interrupting
+        );
+
+        foreach ($nextSongs as $queueRow) {
+            $this->dataProxy->persist($queueRow);
         }
 
+        $this->dataProxy->flush();
+
         return $nextSongs;
+    }
+
+    public function markPlayedUntil(DateTimeImmutable $time): void
+    {
+        $this->dataProxy->markQueueRowsPlayedUntil($time);
+    }
+
+    public function expectedPlayTimeAfter(StationQueue $queueRow): CarbonImmutable
+    {
+        return ExpectedPlayTime::after(
+            $this->entities->station,
+            $queueRow->timestamp_played ?? throw new LogicException('Queue row has no play time.'),
+            $queueRow->duration
+        );
     }
 }

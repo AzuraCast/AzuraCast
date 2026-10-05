@@ -79,12 +79,12 @@
 
 <script setup lang="ts">
 import {
-    Calendar,
+    CalendarApi,
     EventApi,
-    EventClickArg,
-    EventHoveringArg,
-} from "@fullcalendar/core";
-import { EventImpl } from "@fullcalendar/core/internal";
+    EventClickInfo,
+    EventHoveringInfo,
+} from "@fullcalendar/vue3";
+import { EventImpl } from "@fullcalendar/vue3/protected-api";
 import { toRefs, useTimeoutFn } from "@vueuse/core";
 import { ref, useTemplateRef } from "vue";
 import Schedule from "~/components/Common/ScheduleView.vue";
@@ -120,7 +120,7 @@ const { timezone } = toRefs(stationData);
 const getEventProps = (event: EventApi): ScheduleEventCellProps =>
     event.extendedProps as ScheduleEventCellProps;
 
-const onClick = (arg: EventClickArg) => {
+const onClick = (arg: EventClickInfo) => {
     emit("click", arg.event);
 };
 
@@ -138,7 +138,7 @@ const { start: scheduleHide, stop: clearHideTimer } = useTimeoutFn(
     { immediate: false },
 );
 
-const onMouseEnter = (arg: EventHoveringArg) => {
+const onMouseEnter = (arg: EventHoveringInfo) => {
     const extendedProps = arg.event.extendedProps;
 
     if (!extendedProps.type) {
@@ -156,7 +156,7 @@ const onMouseEnter = (arg: EventHoveringArg) => {
 
 const $schedule = useTemplateRef("$schedule");
 
-const getCalendarApi = (): Calendar | undefined => {
+const getCalendarApi = (): CalendarApi | undefined => {
     return $schedule.value?.getCalendarApi();
 };
 

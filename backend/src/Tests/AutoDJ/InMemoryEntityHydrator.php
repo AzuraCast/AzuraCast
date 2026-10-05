@@ -64,12 +64,17 @@ final class InMemoryEntityHydrator
         $station->request_threshold = Types::intOrNull($stationData['request_threshold'] ?? null)
             ?? $station->request_threshold;
 
+        if (isset($stationData['backend_config'])) {
+            $station->backend_config = Types::array($stationData['backend_config']);
+        }
+
         $storageLocation = new StorageLocation(StorageLocationTypes::StationMedia, StorageLocationAdapters::Local);
         self::setId($storageLocation, 1);
 
         [
             'mediaByRef' => $mediaByRef,
             'mediaById' => $mediaById,
+            'refByMediaId' => $refByMediaId,
         ] = $this->hydrateMedia($storageLocation, $dump);
 
         [
@@ -88,7 +93,10 @@ final class InMemoryEntityHydrator
             mediaByRef: $mediaByRef
         );
 
-        $spgByRefPair = $this->hydrateGroupMemberships($playlistDataByRefIndex, $playlistsByRef);
+        [
+            'groupMembersById' => $groupMembersById,
+            'spgByRefPair' => $spgByRefPair,
+        ] = $this->hydrateGroupMemberships($playlistDataByRefIndex, $playlistsByRef);
 
         self::setCollection(
             $station,
@@ -110,7 +118,9 @@ final class InMemoryEntityHydrator
             $playlistsByRef,
             $mediaByRef,
             $mediaById,
+            $refByMediaId,
             $spmById,
+            $groupMembersById,
             $refByPlaylistId,
             $runtime,
             $requests
@@ -137,13 +147,15 @@ final class InMemoryEntityHydrator
      *
      * @return array{
      *     mediaByRef: array<string, StationMedia>,
-     *     mediaById: array<int, StationMedia>
+     *     mediaById: array<int, StationMedia>,
+     *     refByMediaId: array<int, string>
      * }
      */
     private function hydrateMedia(StorageLocation $storageLocation, array $dump): array
     {
         $mediaByRef = [];
         $mediaById = [];
+        $refByMediaId = [];
         foreach (Types::array($dump['media'] ?? []) as $mediaData) {
             $mediaData = Types::array($mediaData);
 
@@ -163,11 +175,13 @@ final class InMemoryEntityHydrator
 
             $mediaByRef[$ref] = $media;
             $mediaById[$id] = $media;
+            $refByMediaId[$id] = $ref;
         }
 
         return [
             'mediaByRef' => $mediaByRef,
             'mediaById' => $mediaById,
+            'refByMediaId' => $refByMediaId,
         ];
     }
 
@@ -313,12 +327,16 @@ final class InMemoryEntityHydrator
      * @param PlaylistDataByRefIndex $playlistDataByRefIndex
      * @param array<string, StationPlaylist> $playlistsByRef
      *
-     * @return array<string, StationPlaylistGroup> Keyed by ref pair
+     * @return array{
+     *     groupMembersById: array<int, StationPlaylistGroup>,
+     *     spgByRefPair: array<string, StationPlaylistGroup>
+     * }
      */
     private function hydrateGroupMemberships(
         array $playlistDataByRefIndex,
         array $playlistsByRef
     ): array {
+        $groupMembersById = [];
         $spgByRefPair = [];
         foreach ($playlistDataByRefIndex as $entry) {
             $containerRef = Types::string($entry['ref']);
@@ -354,11 +372,15 @@ final class InMemoryEntityHydrator
                 $container->playlists->add($group);
                 $member->playlist_groups->add($group);
 
+                $groupMembersById[$group->id] = $group;
                 $spgByRefPair[$containerRef . ':' . $memberRef] = $group;
             }
         }
 
-        return $spgByRefPair;
+        return [
+            'groupMembersById' => $groupMembersById,
+            'spgByRefPair' => $spgByRefPair,
+        ];
     }
 
     /**

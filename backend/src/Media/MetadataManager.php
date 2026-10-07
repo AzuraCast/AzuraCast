@@ -52,11 +52,13 @@ final class MetadataManager
         }
     }
 
-    public function write(MetadataInterface $metadata, string $filePath): void
+    public function write(MetadataInterface $metadata, string $filePath): bool
     {
         try {
             $event = new WriteMetadata($metadata, $filePath);
             $this->eventDispatcher->dispatch($event);
+
+            return true;
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
@@ -69,6 +71,8 @@ final class MetadataManager
                     'exception' => $e,
                 ]
             );
+
+            return false;
         }
     }
 }

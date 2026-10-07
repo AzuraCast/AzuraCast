@@ -9432,7 +9432,7 @@ components:
               description: 'The programmatic name for the field. Can be auto-generated from the full name.'
               type: string
             auto_assign:
-              description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
+              description: 'The media file tag this field is read from on import and written back to when the media is saved.'
               type: string
               nullable: true
           type: object

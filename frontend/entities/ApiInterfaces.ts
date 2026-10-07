@@ -1975,7 +1975,7 @@ export type CustomField = HasAutoIncrementId & {
     name: string;
     /** The programmatic name for the field. Can be auto-generated from the full name. */
     short_name?: string;
-    /** An ID3v2 field to automatically assign to this value, if it exists in the media file. */
+    /** The media file tag this field is read from on import and written back to when the media is saved. */
     auto_assign?: string | null;
 };
 

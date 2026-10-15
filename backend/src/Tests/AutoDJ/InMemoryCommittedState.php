@@ -124,6 +124,14 @@ final class InMemoryCommittedState
         $this->groupMemberRowsById[$member->id] = $row;
     }
 
+    public function markGroupMemberUnqueued(StationPlaylistGroup $member): void
+    {
+        $row = $this->groupMemberRow($member);
+        $row['is_queued'] = false;
+
+        $this->groupMemberRowsById[$member->id] = $row;
+    }
+
     public function markPlaylistMediaQueued(StationPlaylistMedia $spm, ?int $weight = null): void
     {
         $row = $this->playlistMediaRow($spm);

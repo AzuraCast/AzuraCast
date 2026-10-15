@@ -230,6 +230,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - `Advanced`/`custom` members are never auto-selected
     - windowed types respect their windows
   - ineligible members are skipped so the group advances
+  - Disabled members are never selected and are treated as played until the next group reset
   - Members with their own schedule also play standalone via the top-level rotation:
     - only while no ancestor-group chain is scheduled (the group takes precedence)
     - a group without schedule items is as always active

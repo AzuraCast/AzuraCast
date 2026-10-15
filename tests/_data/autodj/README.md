@@ -101,6 +101,9 @@ For a quick reference example of the scenario format see the following .json str
       "expect_sequence": [
         {
           "now": "2018-01-15T12:30:00+00:00",
+          "playlist_enabled_by_ref": {
+            "<playlistRef>": false
+          },
           "mode": "exact",
           "interrupting": false,
           "playlist_ref": "<playlistRef>",
@@ -149,6 +152,7 @@ For a quick reference example of the scenario format see the following .json str
   - one step per successive build
   - per step:
     - `now` (optional, advances the frozen clock)
+    - `playlist_enabled_by_ref` (optional, map of playlist ref to enabled state, applied and committed before the build to model a playlist being toggled between builds)
     - `mode` (`exact` | `membership` | `none`, default `exact`)
     - `interrupting` (run as an interrupting build)
     -  `playlist_ref` / `media_ref` (exact match)
@@ -226,6 +230,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - `Advanced`/`custom` members are never auto-selected
     - windowed types respect their windows
   - ineligible members are skipped so the group advances
+  - Disabled members are never selected and are treated as played until the next group reset
   - Members with their own schedule also play standalone via the top-level rotation:
     - only while no ancestor-group chain is scheduled (the group takes precedence)
     - a group without schedule items is as always active

@@ -296,6 +296,14 @@ final class InMemoryAutoDjDataProxy
             }
         }
 
+        if ($playlist->order !== PlaylistOrders::Random) {
+            foreach ($members as $spg) {
+                if (!$spg->playlist->is_enabled) {
+                    $this->committedState->markGroupMemberUnqueued($spg);
+                }
+            }
+        }
+
         $this->committedState->resyncManagedEntities(
             StationPlaylistGroup::class,
             static fn(StationPlaylistGroup $spg): bool => $spg->playlist_group === $playlist

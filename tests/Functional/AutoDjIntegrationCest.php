@@ -164,6 +164,15 @@ final class AutoDjIntegrationCest extends CestAbstract
                     CarbonImmutable::setTestNow($stepNow);
                 }
 
+                if ($step->playlistEnabledByRef !== []) {
+                    foreach ($step->playlistEnabledByRef as $ref => $isEnabled) {
+                        $playlistsByRef[$ref]->is_enabled = $isEnabled;
+                        $this->em->persist($playlistsByRef[$ref]);
+                    }
+
+                    $this->em->flush();
+                }
+
                 $result = $this->buildNext(
                     $station,
                     $stepNow,

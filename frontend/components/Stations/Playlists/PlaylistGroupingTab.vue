@@ -323,6 +323,7 @@
                             v-for="(member, index) in playlistMembers"
                             :key="`${selectedPlaylist.id}-${member.id}-${index}`"
                             class="list-group-item"
+                            :class="{'no-drag': !isReorderable}"
                         >
                             <div class="d-flex">
                                 <div class="d-flex flex-column flex-grow-1 min-w-0 gap-2">
@@ -421,7 +422,10 @@
                                             />
                                         </div>
 
-                                        <div class="btn-group btn-group-sm">
+                                        <div
+                                            v-if="isReorderable"
+                                            class="btn-group btn-group-sm"
+                                        >
                                             <button
                                                 v-if="index + 1 < playlistMembers.length"
                                                 type="button"
@@ -476,7 +480,7 @@
 
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/core";
-import { ref, useTemplateRef, watch } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useDraggable } from "vue-draggable-plus";
 import Tab from "~/components/Common/Tab.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
@@ -583,6 +587,7 @@ watch($playlistContents, (element) => {
             put: true,
         },
         filter: ".no-drag",
+        preventOnFilter: false,
         onEnd() {
             void saveMembersForSelected(playlistMembers.value);
         },
@@ -773,6 +778,10 @@ const isAssignable = (playlist: StationPlaylistEnriched): boolean => {
 
 const hasButtons = (playlist: StationPlaylistEnriched): boolean =>
     isAssignable(playlist) || playlist.source === PlaylistSources.Playlists;
+
+const isReorderable = computed<boolean>(
+    () => selectedPlaylist.value?.order === PlaylistOrders.Sequential,
+);
 
 const saveMembersForSelected = async (
     members: StationPlaylistGroupMemberEnriched[],

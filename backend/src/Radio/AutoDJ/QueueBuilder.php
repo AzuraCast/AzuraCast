@@ -1156,7 +1156,7 @@ final class QueueBuilder implements EventSubscriberInterface
         StationPlaylist $group,
         ?StationMedia $requestedMedia
     ): bool {
-        // Resets an exhausted queue, else the gate sees no next member at the end of a cycle
+        // Reset a fully played queue first so the next cycle's first member is checked
         $members = ($group->order === PlaylistOrders::Random)
             ? $group->playlists->toArray()
             : array_slice($this->getPlaylistGroupQueueForOrder($group), 0, 1);

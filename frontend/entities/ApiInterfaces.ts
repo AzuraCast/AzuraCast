@@ -1171,6 +1171,11 @@ export interface ApiPodcastMedia {
     length?: number;
     length_text?: string | null;
     path?: string | null;
+    /**
+     * The file size (in bytes).
+     * @example 19693056
+     */
+    size?: number;
 }
 
 export type ApiResolvableUrl = string;

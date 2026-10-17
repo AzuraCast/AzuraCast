@@ -27,6 +27,8 @@ use RuntimeException;
 
 abstract class CestAbstract
 {
+    protected const string TEST_SONG_PATH = '/var/azuracast/www/resources/error.mp3';
+
     protected ContainerInterface $di;
 
     protected Environment $environment;
@@ -159,14 +161,12 @@ abstract class CestAbstract
     {
         $testStation = $this->getTestStation();
 
-        $songSrc = '/var/azuracast/www/resources/error.mp3';
-
         $storageLocation = $testStation->media_storage_location;
 
         $storageLocationRepo = $this->di->get(StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-        $storageFs->upload($songSrc, $destPath);
+        $storageFs->upload(self::TEST_SONG_PATH, $destPath);
 
         /** @var MediaProcessor $mediaProcessor */
         $mediaProcessor = $this->di->get(MediaProcessor::class);

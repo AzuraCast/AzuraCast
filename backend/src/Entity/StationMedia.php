@@ -62,6 +62,10 @@ final class StationMedia implements
     #[ORM\Column(type: 'float', nullable: false)]
     public float $length = 0.0;
 
+    /** @var int The media file's size (in bytes) */
+    #[ORM\Column(type: 'bigint', nullable: false)]
+    public int $size = 0;
+
     #[ORM\Column(length: 500)]
     public string $path {
         get => $this->path;

@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Media\Enums\MetadataTags;
 use App\Utilities\File;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[
     OA\Schema(
@@ -22,7 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     ),
     ORM\Entity,
     ORM\Table(name: 'custom_field'),
-    Attributes\Auditable
+    Attributes\Auditable,
+    AppAssert\UniqueEntity(fields: ['auto_assign'], ignoreNull: true)
 ]
 final class CustomField implements Stringable, IdentifiableEntityInterface
 {
@@ -56,12 +60,22 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            description: "An ID3v2 field to automatically assign to this value, if it exists in the media file."
+            description: "The media file tag this field is read from on import and written back to when the media is saved."
         ),
-        ORM\Column(length: 100, nullable: true)
+        ORM\Column(length: 100, nullable: true),
+        Assert\Regex(
+            pattern: '/^[\x20-\x3C\x3E-\x7D]+$/D', // See james-heinrich/getid3 VorbisComment::CleanVorbisCommentName
+            message: 'Tag names may only contain printable ASCII characters, except "=".'
+        )
     ]
     public ?string $auto_assign = null {
-        set => $this->truncateNullableString($value, 100);
+        set {
+            $value = $this->truncateNullableString($value, 100, true);
+
+            $this->auto_assign = ($value !== null)
+                ? (MetadataTags::getTag($value)->value ?? $value)
+                : null;
+        }
     }
 
     /** @var Collection<int, StationMediaCustomField> */
@@ -81,6 +95,19 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
     public function __toString(): string
     {
         return $this->short_name;
+    }
+
+    #[Assert\Callback]
+    public function hasValidAutoAssign(ExecutionContextInterface $context): void
+    {
+        if (
+            $this->auto_assign !== null
+            && in_array(mb_strtolower($this->auto_assign), StationMediaMetadata::getFields(), true)
+        ) {
+            $context->buildViolation(__('This tag name is reserved for AzuraCast playback metadata.'))
+                ->atPath('auto_assign')
+                ->addViolation();
+        }
     }
 
     public static function generateShortName(string $str): string

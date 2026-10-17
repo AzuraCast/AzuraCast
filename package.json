@@ -68,7 +68,7 @@
     "@types/zxcvbn": "^4.4.5",
     "@vitejs/plugin-vue": "^6",
     "@vue/eslint-config-typescript": "^14",
-    "del": "^8",
+    "del": "^9",
     "glob": "^13",
     "jsdom": "^30",
     "sass": "^1.39.2",
@@ -78,5 +78,9 @@
     "vite": "^8",
     "vite-plugin-biome": "^1.2.0",
     "vue-tsc": "3.3.9"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "vue-demi@0.14.10": true
   }
 }

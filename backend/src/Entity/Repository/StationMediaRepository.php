@@ -22,7 +22,6 @@ use Generator;
 use League\Flysystem\FilesystemException;
 
 use const JSON_PRETTY_PRINT;
-use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 
 /**
@@ -333,7 +332,7 @@ final class StationMediaRepository extends Repository
             $waveformPath,
             json_encode(
                 $waveformData,
-                JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_PARTIAL_OUTPUT_ON_ERROR
+                JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR
             )
         );
     }

@@ -87,6 +87,7 @@ final class PodcastEpisodeApiGenerator
                     $media->length = $mediaRow->length;
                     $media->length_text = $mediaRow->length_text;
                     $media->path = $mediaRow->path;
+                    $media->size = $mediaRow->size;
 
                     $return->has_media = true;
                     $return->media = $media;

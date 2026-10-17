@@ -166,6 +166,7 @@ final class StationMediaRepository extends Repository
         $metadata = $this->metadataManager->read($filePath);
 
         $media->fromMetadata($metadata);
+        $media->size = filesize($filePath) ?: 0;
 
         // Persist the media record for later custom field operations.
         $this->em->persist($media);

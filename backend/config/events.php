@@ -68,6 +68,7 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
             $e->addTasks([
                 App\Sync\Task\CheckFolderPlaylistsTask::class,
                 App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckPodcastMediaTask::class,
                 App\Sync\Task\CheckPodcastPlaylistsTask::class,
                 App\Sync\Task\CheckRequestsTask::class,
                 App\Sync\Task\CheckUpdatesTask::class,

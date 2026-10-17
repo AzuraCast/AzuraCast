@@ -166,6 +166,7 @@ final class PodcastEpisodeRepository extends Repository
         // Load metadata from local file while it's available.
         $podcastMedia->length = $metadata->getDuration();
         $podcastMedia->mime_type = $metadata->getMimeType();
+        $podcastMedia->size = $size;
 
         // Upload local file remotely.
         $fs->uploadAndDeleteOriginal($uploadPath, $path);

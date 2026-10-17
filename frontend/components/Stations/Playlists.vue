@@ -390,7 +390,7 @@
 </template>
 
 <script setup lang="ts">
-import { EventImpl } from "@fullcalendar/core/internal";
+import { EventApi } from "@fullcalendar/vue3";
 import { toRefs } from "@vueuse/core";
 import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
@@ -517,7 +517,7 @@ const doShowMemberships = (url: string) => {
     $editModal.value?.editMemberships(url);
 };
 
-const doCalendarClick = (event: EventImpl) => {
+const doCalendarClick = (event: EventApi) => {
     doEdit(event.extendedProps.edit_url);
 };
 

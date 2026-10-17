@@ -9,7 +9,9 @@ use App\Service\IpGeolocator\GeoLite;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use MaxMind\Db\Reader;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 final class UpdateGeoLiteTask extends AbstractTask
@@ -17,6 +19,8 @@ final class UpdateGeoLiteTask extends AbstractTask
     use SettingsAwareTrait;
 
     private const int UPDATE_THRESHOLD = 86000;
+
+    private const string EDITION_ID = 'GeoLite2-City';
 
     public function __construct(
         private readonly Client $httpClient
@@ -31,6 +35,15 @@ final class UpdateGeoLiteTask extends AbstractTask
     public function run(bool $force = false): void
     {
         $settings = $this->readSettings();
+
+        if (
+            !$force
+            && GeoLite::isAvailable()
+            && GeoLite::getReader() === null
+        ) {
+            $this->logger->warning('Installed GeoLite database is invalid; updating regardless of last check.');
+            $force = true;
+        }
 
         if (!$force) {
             $lastRun = $settings->geolite_last_run;
@@ -65,45 +78,83 @@ final class UpdateGeoLiteTask extends AbstractTask
             return;
         }
 
-        $baseDir = GeoLite::getBaseDirectory();
-        $downloadPath = $baseDir . '/geolite.tar.gz';
+        $databasePath = GeoLite::getDatabasePath();
 
-        set_time_limit(900);
+        $tmpDir = GeoLite::getBaseDirectory() . '/.update_' . bin2hex(random_bytes(8));
 
-        $this->httpClient->get(
-            'https://download.maxmind.com/app/geoip_download',
-            [
-                RequestOptions::HTTP_ERRORS => true,
-                RequestOptions::QUERY => [
-                    'license_key' => $licenseKey,
-                    'edition_id' => 'GeoLite2-City',
-                    'suffix' => 'tar.gz',
+        $fsUtils = new Filesystem();
+        $fsUtils->mkdir($tmpDir);
+
+        try {
+            $downloadPath = $tmpDir . '/geolite.tar.gz';
+
+            set_time_limit(900);
+
+            $this->httpClient->get(
+                'https://download.maxmind.com/app/geoip_download',
+                [
+                    RequestOptions::HTTP_ERRORS => true,
+                    RequestOptions::QUERY => [
+                        'license_key' => $licenseKey,
+                        'edition_id' => self::EDITION_ID,
+                        'suffix' => 'tar.gz',
+                    ],
+                    RequestOptions::DECODE_CONTENT => false,
+                    RequestOptions::SINK => $downloadPath,
+                    RequestOptions::TIMEOUT => 600,
+                ]
+            );
+
+            if (!is_file($downloadPath)) {
+                throw new RuntimeException('New GeoLite database .tar.gz file not found.');
+            }
+
+            $process = new Process(
+                [
+                    'tar',
+                    'xzf',
+                    $downloadPath,
+                    '--strip-components=1',
                 ],
-                RequestOptions::DECODE_CONTENT => false,
-                RequestOptions::SINK => $downloadPath,
-                RequestOptions::TIMEOUT => 600,
-            ]
-        );
+                $tmpDir
+            );
 
-        if (!is_file($downloadPath)) {
-            throw new RuntimeException('New GeoLite database .tar.gz file not found.');
+            $process->mustRun();
+
+            $newDatabasePath = $tmpDir . '/' . basename($databasePath);
+            if (!is_file($newDatabasePath)) {
+                throw new RuntimeException('New GeoLite database .mmdb file not found.');
+            }
+
+            $this->validateDatabase($newDatabasePath);
+
+            if (!rename($newDatabasePath, $databasePath)) {
+                throw new RuntimeException('Could not move new GeoLite database into place.');
+            }
+        } finally {
+            $fsUtils->remove($tmpDir);
         }
-
-        $process = new Process(
-            [
-                'tar',
-                'xvzf',
-                $downloadPath,
-                '--strip-components=1',
-            ],
-            $baseDir
-        );
-
-        $process->mustRun();
-
-        unlink($downloadPath);
 
         $newVersion = GeoLite::getVersion();
         $this->logger->info('GeoLite DB updated. New version: ' . $newVersion);
+    }
+
+    private function validateDatabase(string $path): void
+    {
+        $reader = new Reader($path);
+
+        try {
+            $databaseType = $reader->metadata()->databaseType;
+            if ($databaseType !== self::EDITION_ID) {
+                throw new RuntimeException(
+                    sprintf('New GeoLite database has unexpected type "%s".', $databaseType)
+                );
+            }
+
+            // Sample lookup to double check integrity
+            $reader->get('8.8.8.8');
+        } finally {
+            $reader->close();
+        }
     }
 }

@@ -1,0 +1,110 @@
+{
+  "description": "A sequential Once-Per-Hour (:00) group with the 'merge' backend option holds 'scheduled' (weight 1) and 'steady' (weight 2), both Once-Per-0-Songs playlists. 'scheduled' stays enabled and is limited to its active hours by its own schedule (07:00-23:30 station time), while 'steady' is unscheduled. Inside the window the merged Once-Per-Hour group cues 'scheduled' directly followed by 'steady' as one block, outside it 'steady' alone, including the first firings after the window opens and closes. 'scheduled' never plays outside the group, since its unscheduled group is always active and therefore covers it.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "window-opens-plays-full-block",
+      "now": "2026-10-11T05:00:00+02:00",
+      "expect_sequence": [
+        {
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady",
+              "playlist_chain_refs": [
+                "grp",
+                "steady"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T06:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T07:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "scheduled",
+              "media_ref": "mScheduled",
+              "playlist_chain_refs": [
+                "grp",
+                "scheduled"
+              ]
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady",
+              "playlist_chain_refs": [
+                "grp",
+                "steady"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T07:05:00+02:00",
+          "mode": "none"
+        },
+        {
+          "now": "2026-10-11T08:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "scheduled",
+              "media_ref": "mScheduled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "window-closes-plays-steady-alone",
+      "now": "2026-10-11T23:00:00+02:00",
+      "expect_sequence": [
+        {
+          "entries": [
+            {
+              "playlist_ref": "scheduled",
+              "media_ref": "mScheduled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-12T00:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-12T01:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

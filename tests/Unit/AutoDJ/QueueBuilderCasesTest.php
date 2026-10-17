@@ -63,6 +63,10 @@ final class QueueBuilderCasesTest extends Unit
                     CarbonImmutable::setTestNow($stepNow);
                 }
 
+                foreach ($step->playlistEnabledByRef as $ref => $isEnabled) {
+                    $autoDjHarness->entities->playlistForRef($ref)->is_enabled = $isEnabled;
+                }
+
                 $autoDjHarness->clearLogs();
 
                 $nextSongs = $autoDjHarness->buildNextSongs(

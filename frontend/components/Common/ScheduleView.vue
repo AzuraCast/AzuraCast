@@ -75,6 +75,7 @@ const calendarOptions = computed<CalendarOptions>(() => {
         nowIndicator: true,
         defaultTimedEventDuration: "00:20",
         headerToolbar: false,
+        headerToolbarClass: "px-3 pt-3",
         footerToolbar: false,
         height: "auto",
         eventTimeFormat: {

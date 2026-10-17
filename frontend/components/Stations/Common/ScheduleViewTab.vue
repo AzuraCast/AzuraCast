@@ -20,7 +20,10 @@
                 }"
             >
                 <template #eventContent="arg">
-                    <div class="fc-event-main-frame schedule-event-content px-1">
+                    <div
+                        class="schedule-event-content d-flex flex-grow-1 overflow-hidden"
+                        :class="arg.isShort ? 'align-items-center gap-1' : 'flex-column'"
+                    >
                         <div class="d-flex align-items-center justify-content-between gap-1">
                             <span class="d-inline-flex flex-shrink-0">
                                 <icon-bi-info-circle-fill
@@ -53,13 +56,17 @@
 
                             <span
                                 v-if="arg.timeText"
-                                class="fc-event-time text-truncate"
+                                class="text-truncate"
+                                :class="arg.timeClass"
                             >
                                 {{ arg.timeText }}
                             </span>
                         </div>
 
-                        <div class="fc-event-title fc-sticky text-center text-truncate">
+                        <div
+                            class="text-center text-truncate"
+                            :class="arg.titleClass"
+                        >
                             {{ arg.event.title }}
                         </div>
                     </div>

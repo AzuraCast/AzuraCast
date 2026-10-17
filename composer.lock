@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c5b9439d09c6898f4f3c808bb5cbf9c",
+    "content-hash": "2a035cd3a7a0d2152b294dbec5f08c70",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -159,25 +159,26 @@
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "d38f6fecf35faaf7b10d5999686ea9648abd91ab"
+                "reference": "52965427baecf10c9d38f7e8eac9d5aa6bd90a39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/d38f6fecf35faaf7b10d5999686ea9648abd91ab",
-                "reference": "d38f6fecf35faaf7b10d5999686ea9648abd91ab",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/52965427baecf10c9d38f7e8eac9d5aa6bd90a39",
+                "reference": "52965427baecf10c9d38f7e8eac9d5aa6bd90a39",
                 "shasum": ""
             },
             "require": {
                 "doctrine/collections": ">1",
                 "doctrine/inflector": "^2",
                 "doctrine/orm": "^3",
-                "doctrine/persistence": "^2|^3",
+                "doctrine/persistence": "^2|^3|^4",
                 "php": ">=8.4",
-                "symfony/property-info": "^7",
+                "symfony/property-access": "^7|^8",
+                "symfony/property-info": "^7|^8",
                 "symfony/serializer": "^8"
             },
             "require-dev": {
@@ -206,7 +207,7 @@
             "description": "An implementation of the Symfony Serializer with custom support for Doctrine 3 ORM entities.",
             "support": {
                 "issues": "https://github.com/AzuraCast/doctrine-entity-normalizer/issues",
-                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.3.0"
+                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.4.0"
             },
             "funding": [
                 {
@@ -214,7 +215,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-14T21:11:17+00:00"
+            "time": "2026-10-17T20:29:30+00:00"
         },
         {
             "name": "azuracast/nowplaying",

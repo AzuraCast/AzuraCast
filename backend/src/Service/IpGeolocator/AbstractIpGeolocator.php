@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Service\IpGeolocator;
 
 use Carbon\CarbonImmutable;
+use InvalidArgumentException;
 use MaxMind\Db\Reader;
+use MaxMind\Db\Reader\InvalidDatabaseException;
 
 abstract class AbstractIpGeolocator implements IpGeolocatorInterface
 {
@@ -20,10 +22,15 @@ abstract class AbstractIpGeolocator implements IpGeolocatorInterface
     {
         $databasePath = static::getDatabasePath();
 
-        if (file_exists($databasePath)) {
-            return new Reader($databasePath);
+        if (!file_exists($databasePath)) {
+            return null;
         }
-        return null;
+
+        try {
+            return new Reader($databasePath);
+        } catch (InvalidDatabaseException | InvalidArgumentException) {
+            return null;
+        }
     }
 
     public static function getVersion(): ?string

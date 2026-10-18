@@ -13,6 +13,7 @@ use App\Environment;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use App\Validator\Constraints as AppAssert;
 use Azura\Normalizer\Attributes\DeepNormalize;
@@ -444,7 +445,16 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 100, nullable: false),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    public string $timezone = 'UTC';
+    public string $timezone = 'UTC' {
+        set {
+            try {
+                Time::validateTimezone($value);
+                $this->timezone = $value;
+            } catch (InvalidArgumentException) {
+                $this->timezone = 'UTC';
+            }
+        }
+    }
 
     public function getTimezoneObject(): DateTimeZone
     {

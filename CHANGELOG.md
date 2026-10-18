@@ -21,7 +21,20 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Improved the security around StereoTool invocation in Liquidsoap.
+
+- Extended the internal URL filtering security mechanism implemented in previous versions to include additional webhook
+  types.
+
+- Improved the security around waveform API endpoints.
+
+- Improved the security of environment variables in Supervisor process configuration.
+
+- Prevented station managers without the "Manage Broadcasting" permission from setting Shoutcast configuration.
+
 ## Bug Fixes
+
+- Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.
 
 ---
 

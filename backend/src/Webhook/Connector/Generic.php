@@ -8,19 +8,10 @@ use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Utilities\Types;
-use App\Utilities\UserUrlFilter;
-use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 final class Generic extends AbstractConnector
 {
-    public function __construct(
-        Client $httpClient,
-        private readonly UserUrlFilter $userUrlFilter
-    ) {
-        parent::__construct($httpClient);
-    }
-
     /**
      * @inheritDoc
      */

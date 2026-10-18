@@ -9,6 +9,7 @@ use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\StationWebhook;
 use App\Utilities\Arrays;
 use App\Utilities\Types;
+use App\Utilities\UserUrlFilter;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +21,8 @@ abstract class AbstractConnector implements ConnectorInterface
     public const string RATE_LIMIT_KEY = 'rate_limit';
 
     public function __construct(
-        protected Client $httpClient
+        protected readonly Client $httpClient,
+        protected readonly UserUrlFilter $userUrlFilter
     ) {
     }
 

@@ -22,11 +22,11 @@ final class MatomoAnalytics extends AbstractConnector
 {
     public function __construct(
         Client $httpClient,
+        UserUrlFilter $userUrlFilter,
         private readonly RouterInterface $router,
-        private readonly ListenerRepository $listenerRepo,
-        private readonly UserUrlFilter $userUrlFilter
+        private readonly ListenerRepository $listenerRepo
     ) {
-        parent::__construct($httpClient);
+        parent::__construct($httpClient, $userUrlFilter);
     }
 
     protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool

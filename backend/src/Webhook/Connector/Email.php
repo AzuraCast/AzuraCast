@@ -9,6 +9,7 @@ use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\Mail;
 use App\Utilities\Types;
+use App\Utilities\UserUrlFilter;
 use GuzzleHttp\Client;
 use RuntimeException;
 
@@ -16,9 +17,10 @@ final class Email extends AbstractConnector
 {
     public function __construct(
         Client $httpClient,
+        UserUrlFilter $userUrlFilter,
         private readonly Mail $mail
     ) {
-        parent::__construct($httpClient);
+        parent::__construct($httpClient, $userUrlFilter);
     }
 
     /**

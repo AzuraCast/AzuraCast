@@ -25,6 +25,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.
 
+- Improved the security around StereoTool invocation in Liquidsoap.
+
 ---
 
 # AzuraCast 0.23.8 (Aug 9, 2026)

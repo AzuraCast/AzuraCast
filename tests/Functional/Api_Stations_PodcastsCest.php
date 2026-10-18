@@ -104,7 +104,7 @@ class Api_Stations_PodcastsCest extends CestAbstract
         );
         $I->seeResponseCodeIs(200);
 
-        $playlistId = Types::int(($I->grabDataFromResponseByJsonPath('id'))[0]);
+        $playlistId = Types::int(($I->grabDataFromResponseByJsonPath('$.id'))[0]);
 
         $I->sendPOST(
             '/api/station/' . $station->id . '/podcasts',
@@ -121,7 +121,7 @@ class Api_Stations_PodcastsCest extends CestAbstract
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['playlist_id' => $playlistId]);
 
-        $podcastSelfLink = ($I->grabDataFromResponseByJsonPath('links.self'))[0];
+        $podcastSelfLink = ($I->grabDataFromResponseByJsonPath('$.links.self'))[0];
 
         // The UI keeps sending the previously selected playlist after switching the source.
         $I->sendPUT(

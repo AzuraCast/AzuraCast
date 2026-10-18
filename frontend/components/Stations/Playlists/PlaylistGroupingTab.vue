@@ -557,7 +557,15 @@ import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
 
 interface NestedResetExemption {
     group: StationPlaylistEnriched;
-    subgroup: StationPlaylistGroupMemberEnriched | null;
+    subgroup:
+        | StationPlaylistEnriched
+        | StationPlaylistGroupMemberEnriched
+        | null;
+}
+
+interface NestedMembership {
+    playlistGroup: StationPlaylistEnriched;
+    member: StationPlaylistGroupMemberEnriched;
 }
 
 const props = defineProps<{
@@ -1138,15 +1146,22 @@ const getNestedResetExemptionsOfGroup = (
 ): Map<number, NestedResetExemption> => {
     const exemptionsByMemberId = new Map<number, NestedResetExemption>();
 
-    for (const member of playlistGroup.playlists) {
+    for (const membership of getNestedMemberships(playlistGroup)) {
+        const member = membership.member;
+
         if (!member.preserve_queue_on_recursive_reset) {
             continue;
         }
 
-        if (!isSelectedGroup(playlistGroup)) {
+        if (membership.playlistGroup.id === playlistGroup.id) {
             exemptionsByMemberId.set(member.id, {
                 group: playlistGroup,
                 subgroup: null,
+            });
+        } else if (!exemptionsByMemberId.has(member.id)) {
+            exemptionsByMemberId.set(member.id, {
+                group: playlistGroup,
+                subgroup: membership.playlistGroup,
             });
         }
 
@@ -1164,29 +1179,51 @@ const getNestedResetExemptionsOfGroup = (
 };
 
 const getNestedMemberIds = (playlistGroupId: number): number[] => {
-    const nestedMemberIds: number[] = [];
-    const visitedGroupIds = new Set<number>([playlistGroupId]);
-    const pendingGroupIds = [playlistGroupId];
+    const playlistGroup = playlistGroupsById.value.get(playlistGroupId);
 
-    for (let index = 0; index < pendingGroupIds.length; index++) {
-        const playlistGroup = playlistGroupsById.value.get(
-            pendingGroupIds[index],
-        );
+    if (playlistGroup === undefined) {
+        return [];
+    }
 
-        for (const member of playlistGroup?.playlists ?? []) {
-            nestedMemberIds.push(member.id);
+    return getNestedMemberships(playlistGroup).map((membership) => {
+        return membership.member.id;
+    });
+};
 
-            if (
-                playlistGroupsById.value.has(member.id) &&
-                !visitedGroupIds.has(member.id)
-            ) {
+const getNestedMemberships = (
+    playlistGroup: StationPlaylistEnriched,
+): NestedMembership[] => {
+    const nestedMemberships: NestedMembership[] = [];
+    const visitedGroupIds = new Set<number>([playlistGroup.id]);
+    const pendingGroups = [playlistGroup];
+
+    for (let index = 0; index < pendingGroups.length; index++) {
+        const group = pendingGroups[index];
+
+        for (const member of getMembersWithUnsavedChanges(group)) {
+            nestedMemberships.push({
+                playlistGroup: group,
+                member: member,
+            });
+
+            const memberGroup = playlistGroupsById.value.get(member.id);
+
+            if (memberGroup !== undefined && !visitedGroupIds.has(member.id)) {
                 visitedGroupIds.add(member.id);
-                pendingGroupIds.push(member.id);
+                pendingGroups.push(memberGroup);
             }
         }
     }
 
-    return nestedMemberIds;
+    return nestedMemberships;
+};
+
+const getMembersWithUnsavedChanges = (
+    playlistGroup: StationPlaylistEnriched,
+): StationPlaylistGroupMemberEnriched[] => {
+    return isSelectedGroup(playlistGroup)
+        ? playlistMembers.value
+        : playlistGroup.playlists;
 };
 
 const getAllowedRequestsOptions = (

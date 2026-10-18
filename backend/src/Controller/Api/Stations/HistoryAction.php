@@ -17,9 +17,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
+use App\Utilities\Csv;
 use App\Utilities\Types;
 use Doctrine\ORM\Query;
-use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -145,7 +145,7 @@ final class HistoryAction implements SingleActionInterface
         if (!($tempFile = tmpfile())) {
             throw new RuntimeException('Could not create temp file.');
         }
-        $csv = Writer::from($tempFile);
+        $csv = Csv::exportWriter($tempFile);
 
         $csv->insertOne([
             'Date',

@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Functional;
 
+use App\Entity\Listener;
+use App\Entity\ListenerDevice;
+use App\Entity\ListenerLocation;
+use App\Entity\Song;
+use App\Entity\SongHistory;
+use Carbon\CarbonImmutable;
 use Codeception\Util\Shared\Asserts;
 use DateInterval;
 use DateTime;
@@ -49,6 +55,8 @@ class Api_Stations_ReportsCest extends CestAbstract
     {
         $I->wantTo('Download station listener report CSV via API.');
 
+        $this->createListenerWithFormulaUserAgent();
+
         $station = $this->getTestStation();
         $uriBase = '/api/station/' . $station->id;
 
@@ -85,7 +93,9 @@ class Api_Stations_ReportsCest extends CestAbstract
             'Location: Longitude',
         ];
 
-        $this->testReportCsv($I, $requestUrl, $csvHeaders);
+        $listenerRow = $this->testReportCsv($I, $requestUrl, $csvHeaders)->first();
+
+        $this->assertSame("'=1+1", $listenerRow['User Agent']);
     }
 
     /**
@@ -95,6 +105,8 @@ class Api_Stations_ReportsCest extends CestAbstract
     public function downloadHistoryReportCsv(FunctionalTester $I): void
     {
         $I->wantTo('Download station timeline report CSV via API.');
+
+        $this->createSongHistoryWithFormulaSong();
 
         $station = $this->getTestStation();
         $uriBase = '/api/station/' . $station->id;
@@ -121,14 +133,17 @@ class Api_Stations_ReportsCest extends CestAbstract
             'Streamer',
         ];
 
-        $this->testReportCsv($I, $requestUrl, $csvHeaders);
+        $historyRow = $this->testReportCsv($I, $requestUrl, $csvHeaders)->first();
+
+        $this->assertSame("'=1+1", $historyRow['Track']);
+        $this->assertSame("'@SUM(A1)", $historyRow['Artist']);
     }
 
     protected function testReportCsv(
         FunctionalTester $I,
         string $url,
         array $headerFields
-    ): void {
+    ): Reader {
         $I->sendGet($url);
 
         $response = $I->grabResponse();
@@ -150,5 +165,40 @@ class Api_Stations_ReportsCest extends CestAbstract
                 'CSV has header field'
             );
         }
+
+        return $csvReader;
+    }
+
+    private function createListenerWithFormulaUserAgent(): void
+    {
+        $listener = new Listener(
+            station: $this->getTestStation(),
+            mount: null,
+            remote: null,
+            hls_stream: null,
+            listener_uid: 1,
+            listener_ip: '127.0.0.1',
+            listener_user_agent: '=1+1',
+            listener_hash: 'formula-user-agent',
+            timestamp_start: CarbonImmutable::now()->subHour(),
+            timestamp_end: null,
+            location: ListenerLocation::fromArray(['description' => 'Unknown']),
+            device: ListenerDevice::fromArray(['client' => 'Unknown']),
+        );
+
+        $this->em->persist($listener);
+        $this->em->flush();
+    }
+
+    private function createSongHistoryWithFormulaSong(): void
+    {
+        $songHistory = new SongHistory(
+            $this->getTestStation(),
+            Song::createFromArray(['title' => '=1+1', 'artist' => '@SUM(A1)'])
+        );
+        $songHistory->listeners_start = 0;
+
+        $this->em->persist($songHistory);
+        $this->em->flush();
     }
 }

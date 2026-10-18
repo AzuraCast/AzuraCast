@@ -78,6 +78,10 @@ final class PlaylistQueueResetter
 
             $preservedPlaylistIds[$membership->playlist_id] = true;
 
+            if ($membership->playlist->source !== PlaylistSources::Playlists) {
+                continue;
+            }
+
             foreach ($this->getNestedMemberships($membership->playlist) as $nestedMembership) {
                 $preservedPlaylistIds[$nestedMembership->playlist_id] = true;
             }

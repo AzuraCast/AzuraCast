@@ -21,11 +21,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Improved the security around StereoTool invocation in Liquidsoap.
+
+- Extended the internal URL filtering security mechanism implemented in previous versions to include additional webhook
+  types.
+
 ## Bug Fixes
 
 - Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.
-
-- Improved the security around StereoTool invocation in Liquidsoap.
 
 ---
 

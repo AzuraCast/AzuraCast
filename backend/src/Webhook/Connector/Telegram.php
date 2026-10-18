@@ -43,7 +43,7 @@ final class Telegram extends AbstractConnector
 
         $apiUrl = Types::stringOrNull($config['api'], true);
         $apiUrl = (null !== $apiUrl)
-            ? rtrim($apiUrl, '/')
+            ? $this->userUrlFilter->filterSensitiveUserUrl(rtrim($apiUrl, '/'), 'Webhook Custom API URL')
             : 'https://api.telegram.org';
 
         $webhookUrl = $apiUrl . '/bot' . $botToken . '/sendMessage';

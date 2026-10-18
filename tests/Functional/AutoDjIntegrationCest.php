@@ -30,6 +30,7 @@ use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use Codeception\Attribute\DataProvider;
+use Codeception\Attribute\Group;
 use Codeception\Example;
 use DateTimeImmutable;
 use FunctionalTester;
@@ -38,6 +39,7 @@ use FunctionalTester;
  * @phpstan-import-type PlaylistConfigurationDump from PlaylistConfigurationSchema
  * @phpstan-import-type ProviderRow from DumpLoader
  */
+#[Group('autodj')]
 final class AutoDjIntegrationCest extends CestAbstract
 {
     /**

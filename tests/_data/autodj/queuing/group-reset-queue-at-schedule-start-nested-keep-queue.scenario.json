@@ -1,5 +1,5 @@
 {
-  "description": "Member rows with 'preserve_queue_on_recursive_reset' keep their member's queue when a schedule with 'reset_queue_at_start' plus 'reset_queue_recursive' resets a sequential playlist group tree. Each tree has its own window and ref suffix. A kept playlist group also keeps its own rotation and the queues of its nested members. A playlist is kept when any marked row leads to it, directly or through a kept playlist group, even if an unmarked row also leads to it. The kept member's slot in the parent rotation is still re-queued. The '_dup' dump marks only the second row. The importer and the in-memory hydrator mark both rows, because they share a member playlist. The '_dup' case leaves 'outer_dup:twice_dup' out of group_members, because that key matches only one of the two rows. The '_ctl' tree marks nothing and resets completely.",
+  "description": "Member rows with 'preserve_queue_on_recursive_reset' keep their member's queue when a schedule with 'reset_queue_at_start' plus 'reset_queue_recursive' resets a sequential playlist group tree. Each tree has its own window and ref suffix. A kept playlist group also keeps its own rotation and the queues of its nested members. A playlist is kept when any marked row leads to it, directly or through a kept playlist group, even if an unmarked row also leads to it. The kept member's slot in the parent rotation is still re-queued. The '_dup' dump marks only the second row. The importer and the in-memory hydrator mark both rows, because they share a member playlist. The '_dup' case leaves 'outer_dup:twice_dup' out of group_members, because that key matches only one of the two rows. The '_ctl' tree marks nothing and resets completely. The '_flat' schedule has no 'reset_queue_recursive'. It only re-queues the group's own rotation, so the unmarked sibling resumes as well. The '_own' kept member has its own schedule with 'reset_queue_at_start'. That schedule still resets its queue.",
   "modes": [
     "in_memory",
     "integration"
@@ -274,6 +274,88 @@
             "outer_ctl",
             "inner_ctl",
             "x_ctl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flag-ignored-without-recursive-reset",
+      "now": "2018-01-15T08:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_flat:kept_flat": {
+            "is_queued": false
+          },
+          "outer_flat:sib_flat": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "kept_flat:m_k1_flat": {
+            "is_queued": false
+          },
+          "kept_flat:m_k2_flat": {
+            "is_queued": true
+          },
+          "sib_flat:m_s1_flat": {
+            "is_queued": false
+          },
+          "sib_flat:m_s2_flat": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_flat",
+          "media_ref": "m_k2_flat",
+          "playlist_chain_refs": [
+            "outer_flat",
+            "kept_flat"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "sib_flat",
+          "media_ref": "m_s2_flat",
+          "playlist_chain_refs": [
+            "outer_flat",
+            "sib_flat"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kept-member-own-schedule-still-resets",
+      "now": "2018-01-15T10:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "kept_own:m_k1_own": {
+            "is_queued": false
+          },
+          "kept_own:m_k2_own": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_own",
+          "media_ref": "m_k1_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "kept_own"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_own",
+          "media_ref": "m_k2_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "kept_own"
           ]
         }
       ]

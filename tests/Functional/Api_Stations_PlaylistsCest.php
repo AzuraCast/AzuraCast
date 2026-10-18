@@ -258,6 +258,11 @@ class Api_Stations_PlaylistsCest extends CestAbstract
             'source' => PlaylistSources::Requests->value,
         ])['id'] ?? null);
 
+        $nestedGroupId = Types::int($this->createPlaylist($I, $listUrl, [
+            'name' => 'Nested Group Member',
+            'source' => PlaylistSources::Playlists->value,
+        ])['id'] ?? null);
+
         $group = $this->createPlaylist($I, $listUrl, [
             'name' => 'Playlist Group',
             'source' => PlaylistSources::Playlists->value,
@@ -287,6 +292,11 @@ class Api_Stations_PlaylistsCest extends CestAbstract
                     'weight' => 4,
                     'preserve_queue_on_recursive_reset' => true,
                 ],
+                [
+                    'id' => $nestedGroupId,
+                    'weight' => 5,
+                    'preserve_queue_on_recursive_reset' => true,
+                ],
             ],
         ]);
         $I->seeResponseCodeIs(200);
@@ -312,6 +322,7 @@ class Api_Stations_PlaylistsCest extends CestAbstract
                 [$otherSongsId, false],
                 [$songsId, true],
                 [$requestsId, false],
+                [$nestedGroupId, true],
             ],
             $memberRows
         );

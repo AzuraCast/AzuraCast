@@ -236,6 +236,66 @@
       "title": "Leaf y y2 ctl",
       "album": null,
       "genre": null
+    },
+    {
+      "ref": "m_k1_flat",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_k1_flat.mp3",
+      "unique_id": "000000000000000000000024",
+      "length": 120.0,
+      "artist": "Kept Artist",
+      "title": "Kept k1 flat",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_k2_flat",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_k2_flat.mp3",
+      "unique_id": "000000000000000000000025",
+      "length": 120.0,
+      "artist": "Kept Artist",
+      "title": "Kept k2 flat",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_s1_flat",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_s1_flat.mp3",
+      "unique_id": "000000000000000000000026",
+      "length": 120.0,
+      "artist": "Sibling Artist",
+      "title": "Sibling s1 flat",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_s2_flat",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_s2_flat.mp3",
+      "unique_id": "000000000000000000000027",
+      "length": 120.0,
+      "artist": "Sibling Artist",
+      "title": "Sibling s2 flat",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_k1_own",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_k1_own.mp3",
+      "unique_id": "000000000000000000000028",
+      "length": 120.0,
+      "artist": "Kept Artist",
+      "title": "Kept k1 own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_k2_own",
+      "path": "group-reset-queue-at-schedule-start-nested-keep-queue/m_k2_own.mp3",
+      "unique_id": "000000000000000000000029",
+      "length": 120.0,
+      "artist": "Kept Artist",
+      "title": "Kept k2 own",
+      "album": null,
+      "genre": null
     }
   ],
   "playlists": [
@@ -1207,6 +1267,233 @@
           "consecutive_plays": 0,
           "allowed_requests": "any",
           "preserve_queue_on_recursive_reset": false
+        }
+      ]
+    },
+    {
+      "ref": "kept_flat",
+      "name": "Kept flat",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_k1_flat",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_k2_flat",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "sib_flat",
+      "name": "Sibling flat",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_s1_flat",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_s2_flat",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "outer_flat",
+      "name": "Outer flat",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 800,
+          "end_time": 900,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "kept_flat",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any",
+          "preserve_queue_on_recursive_reset": true
+        },
+        {
+          "playlist_ref": "sib_flat",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any",
+          "preserve_queue_on_recursive_reset": false
+        }
+      ]
+    },
+    {
+      "ref": "kept_own",
+      "name": "Kept own",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_k1_own",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_k2_own",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [
+        {
+          "start_time": 1000,
+          "end_time": 1100,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": []
+    },
+    {
+      "ref": "outer_own",
+      "name": "Outer own",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1000,
+          "end_time": 1100,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": true
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "kept_own",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any",
+          "preserve_queue_on_recursive_reset": true
         }
       ]
     }

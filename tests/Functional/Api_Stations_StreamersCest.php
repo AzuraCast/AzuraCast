@@ -36,7 +36,7 @@ class Api_Stations_StreamersCest extends CestAbstract
 
         $I->seeResponseCodeIs(200);
 
-        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecord = $I->grabDataFromResponseByJsonPath('$.links.self');
         $newRecordSelfLink = $newRecord[0];
 
         // Get single record.

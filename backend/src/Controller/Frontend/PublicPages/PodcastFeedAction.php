@@ -8,11 +8,13 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\Podcast;
 use App\Entity\ApiGenerator\PodcastApiGenerator;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastCategory;
 use App\Entity\PodcastEpisode;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\MimeType;
 use App\Xml\Writer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
@@ -174,17 +176,31 @@ final readonly class PodcastFeedAction implements SingleActionInterface
             'itunes:explicit' => $episodeApi->explicit ? 'true' : 'false',
         ];
 
-        $podcastMedia = $episode->media;
-        if (null !== $podcastMedia) {
-            $item['enclosure']['@length'] = $podcastMedia->length;
-            $item['enclosure']['@type'] = $podcastMedia->mime_type;
+        switch ($episode->podcast->source) {
+            case PodcastSources::Playlist:
+                $playlistMedia = $episode->playlist_media;
+                if ($playlistMedia !== null) {
+                    $item['enclosure']['@length'] = (string) $playlistMedia->size;
+                    $item['enclosure']['@type'] = MimeType::getMimeTypeFromPath($playlistMedia->path);
+                    $item['itunes:duration'] = (string) round($playlistMedia->length);
+                }
+                break;
+
+            case PodcastSources::Manual:
+                $podcastMedia = $episode->media;
+                if ($podcastMedia !== null) {
+                    $item['enclosure']['@length'] = (string) $podcastMedia->size;
+                    $item['enclosure']['@type'] = $podcastMedia->mime_type;
+                    $item['itunes:duration'] = (string) round($podcastMedia->length);
+                }
+                break;
         }
 
-        if (null !== $episodeApi->season_number) {
-            $item['itunes:season'] = (string)$episodeApi->season_number;
+        if ($episodeApi->season_number !== null) {
+            $item['itunes:season'] = (string) $episodeApi->season_number;
         }
-        if (null !== $episodeApi->episode_number) {
-            $item['itunes:episode'] = (string)$episodeApi->episode_number;
+        if ($episodeApi->episode_number !== null) {
+            $item['itunes:episode'] = (string) $episodeApi->episode_number;
         }
 
         return $item;

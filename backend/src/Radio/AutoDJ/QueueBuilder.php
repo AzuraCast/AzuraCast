@@ -1156,9 +1156,10 @@ final class QueueBuilder implements EventSubscriberInterface
         StationPlaylist $group,
         ?StationMedia $requestedMedia
     ): bool {
+        // Reset a fully played queue first so the next cycle's first member is checked
         $members = ($group->order === PlaylistOrders::Random)
             ? $group->playlists->toArray()
-            : array_slice($this->spRepo->getPlaylistGroupQueue($group), 0, 1);
+            : array_slice($this->getPlaylistGroupQueueForOrder($group), 0, 1);
 
         foreach ($members as $member) {
             if ($member->allowed_requests === PlaylistGroupAllowedRequests::None) {
@@ -1189,6 +1190,38 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         return false;
+    }
+
+    /**
+     * Advance the slots that permitted a global request.
+     *
+     * Random groups have no rotation state and play full cycle slots last until their cycle completes.
+     */
+    private function consumeRequestSlotInHierarchy(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime
+    ): void {
+        if ($group->order === PlaylistOrders::Random) {
+            return;
+        }
+
+        $slot = $this->spRepo->getPlaylistGroupQueue($group)[0] ?? null;
+        if ($slot === null) {
+            return;
+        }
+
+        if ($slot->playlist->source === PlaylistSources::Playlists) {
+            $this->consumeRequestSlotInHierarchy($slot->playlist, $expectedPlayTime);
+        }
+
+        $slot->played(
+            $expectedPlayTime->getTimestamp(),
+            keepQueued: $slot->play_full_cycle && $slot->supportsPlayFullCycle()
+        );
+        $this->em->persist($slot);
+
+        $group->played_at = $expectedPlayTime;
+        $this->em->persist($group);
     }
 
     /**
@@ -1291,6 +1324,7 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
+        $requestPermittingGroups = [];
         foreach ($station->playlists as $playlist) {
             if (
                 !$playlist->is_enabled
@@ -1316,6 +1350,16 @@ final class QueueBuilder implements EventSubscriberInterface
 
             if ($this->isRequestBlockedInHierarchy($playlist, $request->track)) {
                 return;
+            }
+
+            $requestPermittingGroups[] = $playlist;
+        }
+
+        // Consume only after every group permitted the request
+        foreach ($requestPermittingGroups as $playlistGroup) {
+            // Interval types stay due, so their slot plays right after the request
+            if (PlaylistTypes::Standard === $playlistGroup->type) {
+                $this->consumeRequestSlotInHierarchy($playlistGroup, $expectedPlayTime);
             }
         }
 

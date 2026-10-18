@@ -1,0 +1,277 @@
+{
+  "description": "A global request permitted by a scheduled sequential group's allowed_requests=any slot takes that slot's place and advances the rotation, so a request backlog is spread one per cycle instead of played back to back, and a request becoming playable at the end of a cycle waits for the any slot instead of preceding the next jingle.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "request-backlog-one-per-any-slot",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mR1",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR2",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR3",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ1",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "media_ref": "mR1",
+          "playlist_chain_refs": [],
+          "from_request": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF1",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF2",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ2",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "media_ref": "mR2",
+          "playlist_chain_refs": [],
+          "from_request": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF3",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF4",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ1",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "media_ref": "mR3",
+          "playlist_chain_refs": [],
+          "from_request": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF5",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF6",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ2",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF7",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF8",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF1",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ1",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        }
+      ]
+    },
+    {
+      "name": "request-at-cycle-end-waits-for-any-slot",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mR1",
+            "skip_delay": false,
+            "timestamp": "2018-01-15T12:40:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2018-01-15T12:30:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ1",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:33:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF1",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:36:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF2",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:39:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF3",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:42:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ2",
+          "playlist_chain_refs": [
+            "grp",
+            "jingle"
+          ],
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:45:00+00:00",
+          "mode": "exact",
+          "media_ref": "mR1",
+          "playlist_chain_refs": [],
+          "from_request": true
+        },
+        {
+          "now": "2018-01-15T12:48:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "fdm",
+          "media_ref": "mF4",
+          "playlist_chain_refs": [
+            "grp",
+            "fdm"
+          ],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

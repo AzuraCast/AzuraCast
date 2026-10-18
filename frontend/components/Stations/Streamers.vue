@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { EventImpl } from "@fullcalendar/core/internal";
+import { EventApi } from "@fullcalendar/vue3";
 import { useQuery } from "@tanstack/vue-query";
 import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
@@ -206,7 +206,7 @@ const relist = () => {
 const $editModal = useTemplateRef("$editModal");
 const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const doCalendarClick = (event: EventImpl) => {
+const doCalendarClick = (event: EventApi) => {
     doEdit(event.extendedProps.edit_url);
 };
 

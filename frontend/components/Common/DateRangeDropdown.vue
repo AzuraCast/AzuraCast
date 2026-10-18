@@ -23,6 +23,7 @@
 import { RootProps, VueDatePicker } from "@vuepic/vue-datepicker";
 import { isString } from "es-toolkit";
 import { merge } from "es-toolkit/compat";
+import type { DateTime as LuxonDateTime } from "luxon";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { getDateFnLocale } from "~/functions/getDateFnLocale.ts";
@@ -53,6 +54,8 @@ const { isDark } = storeToRefs(useTheme());
 const { DateTime } = useLuxon();
 
 type DateRangeTuple = Date[] | null;
+
+type RangeFromNow = (nowTz: LuxonDateTime) => [LuxonDateTime, LuxonDateTime];
 
 const dateRange = computed<DateRangeTuple>({
     get() {
@@ -91,70 +94,61 @@ const getTimezone = (options?: Partial<RootProps>): string => {
 const ranges = computed(() => {
     const tz = getTimezone(props.options);
 
-    const nowTz = DateTime.now().setZone(tz);
-    const nowAtMidnightDate = nowTz.endOf("day").toJSDate();
+    const relativeRange = (getRange: RangeFromNow) => (): Date[] => {
+        const nowTz = DateTime.now().setZone(tz);
+        return getRange(nowTz).map((date) => date.toJSDate());
+    };
+
+    const lastDays = (days: number) =>
+        relativeRange((nowTz) => [
+            nowTz.minus({ days: days - 1 }).startOf("day"),
+            nowTz.endOf("day"),
+        ]);
 
     return [
         {
             label: $gettext("Last 24 Hours"),
-            value: [nowTz.minus({ days: 1 }).toJSDate(), nowTz.toJSDate()],
+            value: relativeRange((nowTz) => [nowTz.minus({ days: 1 }), nowTz]),
         },
         {
             label: $gettext("Today"),
-            value: [
-                nowTz.minus({ days: 1 }).startOf("day").toJSDate(),
-                nowAtMidnightDate,
-            ],
+            value: relativeRange((nowTz) => [
+                nowTz.startOf("day"),
+                nowTz.endOf("day"),
+            ]),
         },
         {
             label: $gettext("Yesterday"),
-            value: [
-                nowTz.minus({ days: 2 }).startOf("day").toJSDate(),
-                nowTz.minus({ days: 1 }).endOf("day").toJSDate(),
-            ],
+            value: relativeRange((nowTz) => {
+                const yesterday = nowTz.minus({ days: 1 });
+                return [yesterday.startOf("day"), yesterday.endOf("day")];
+            }),
         },
         {
             label: $gettext("Last 7 Days"),
-            value: [
-                nowTz.minus({ days: 7 }).startOf("day").toJSDate(),
-                nowAtMidnightDate,
-            ],
+            value: lastDays(7),
         },
         {
             label: $gettext("Last 14 Days"),
-            value: [
-                nowTz.minus({ days: 14 }).startOf("day").toJSDate(),
-                nowAtMidnightDate,
-            ],
+            value: lastDays(14),
         },
         {
             label: $gettext("Last 30 Days"),
-            value: [
-                nowTz.minus({ days: 30 }).startOf("day").toJSDate(),
-                nowAtMidnightDate,
-            ],
+            value: lastDays(30),
         },
         {
             label: $gettext("This Month"),
-            value: [
-                nowTz.startOf("month").startOf("day").toJSDate(),
-                nowTz.endOf("month").endOf("day").toJSDate(),
-            ],
+            value: relativeRange((nowTz) => [
+                nowTz.startOf("month"),
+                nowTz.endOf("month"),
+            ]),
         },
         {
             label: $gettext("Last Month"),
-            value: [
-                nowTz
-                    .minus({ months: 1 })
-                    .startOf("month")
-                    .startOf("day")
-                    .toJSDate(),
-                nowTz
-                    .minus({ months: 1 })
-                    .endOf("month")
-                    .endOf("day")
-                    .toJSDate(),
-            ],
+            value: relativeRange((nowTz) => {
+                const lastMonth = nowTz.minus({ months: 1 });
+                return [lastMonth.startOf("month"), lastMonth.endOf("month")];
+            }),
         },
     ];
 });

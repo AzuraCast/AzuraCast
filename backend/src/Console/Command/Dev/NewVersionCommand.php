@@ -6,9 +6,11 @@ namespace App\Console\Command\Dev;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
+use App\Doctrine\Migrations\StableReleaseComparator;
 use App\Entity\Attributes\StableMigration;
 use App\Utilities\Types;
 use DirectoryIterator;
+use Doctrine\Migrations\Version\Version;
 use LogicException;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
@@ -27,6 +29,12 @@ use Symfony\Component\Filesystem\Filesystem;
 final class NewVersionCommand extends CommandAbstract
 {
     use EnvironmentAwareTrait;
+
+    public function __construct(
+        private readonly StableReleaseComparator $migrationComparator,
+    ) {
+        parent::__construct();
+    }
 
     protected function configure(): void
     {
@@ -115,7 +123,7 @@ final class NewVersionCommand extends CommandAbstract
     {
         $migrationsDir = $this->environment->getBackendDirectory() . '/src/Entity/Migration';
 
-        $migrationsByPath = [];
+        $migrationsByClass = [];
         foreach (new DirectoryIterator($migrationsDir) as $file) {
             if ($file->isDot() || !$file->isFile()) {
                 continue;
@@ -124,13 +132,16 @@ final class NewVersionCommand extends CommandAbstract
             $pathBase = $file->getBasename('.php');
 
             if (str_starts_with($pathBase, 'Version')) {
-                $pathBase = str_replace('Version', '', $pathBase);
-                $migrationsByPath[$pathBase] = $file->getPathname();
+                $classKey = StableReleaseComparator::APP_MIGRATIONS_NAMESPACE . $pathBase;
+                $migrationsByClass[$classKey] = $file->getPathname();
             }
         }
 
-        krsort($migrationsByPath);
-        $latestMigration = reset($migrationsByPath);
+        uksort(
+            $migrationsByClass,
+            fn(string $a, string $b): int => $this->migrationComparator->compare(new Version($b), new Version($a))
+        );
+        $latestMigration = reset($migrationsByClass);
 
         if (false === $latestMigration) {
             throw new LogicException('Cannot find latest migration!');

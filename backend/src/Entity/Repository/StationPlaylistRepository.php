@@ -190,14 +190,20 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         }
 
         if (PlaylistOrders::Sequential === $playlist->order) {
-            $this->em->createQuery(
-                <<<'DQL'
-                    UPDATE App\Entity\StationPlaylistGroup spg
-                    SET spg.is_queued = 1, spg.consecutive_plays_count = 0
-                    WHERE spg.playlist_group = :playlistGroup
-                DQL
-            )->setParameter('playlistGroup', $playlist)
-                ->execute();
+            $this->em->wrapInTransaction(
+                function () use ($playlist): void {
+                    $this->em->createQuery(
+                        <<<'DQL'
+                            UPDATE App\Entity\StationPlaylistGroup spg
+                            SET spg.is_queued = 1, spg.consecutive_plays_count = 0
+                            WHERE spg.playlist_group = :playlistGroup
+                        DQL
+                    )->setParameter('playlistGroup', $playlist)
+                        ->execute();
+
+                    $this->unqueueDisabledPlaylistGroupMembers($playlist);
+                }
+            );
         } elseif (PlaylistOrders::Shuffle === $playlist->order) {
             $this->em->wrapInTransaction(
                 function () use ($playlist): void {
@@ -228,6 +234,8 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
 
                         $weight++;
                     }
+
+                    $this->unqueueDisabledPlaylistGroupMembers($playlist);
                 }
             );
         }
@@ -242,5 +250,25 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         $playlist->queue_reset_at = $now;
         $this->em->persist($playlist);
         $this->em->flush();
+    }
+
+    /**
+     * Treat disabled members as played until the next reset
+     */
+    private function unqueueDisabledPlaylistGroupMembers(StationPlaylist $playlist): void
+    {
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationPlaylistGroup spg
+                SET spg.is_queued = 0
+                WHERE spg.playlist_group = :playlistGroup
+                AND IDENTITY(spg.playlist) IN (
+                    SELECT sp.id
+                    FROM App\Entity\StationPlaylist sp
+                    WHERE sp.is_enabled = 0
+                )
+            DQL
+        )->setParameter('playlistGroup', $playlist)
+            ->execute();
     }
 }

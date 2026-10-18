@@ -126,6 +126,7 @@ final class CheckMediaTask extends AbstractTask
                 $musicFiles[$pathHash] = [
                     StorageAttributes::ATTRIBUTE_PATH => $file->path(),
                     StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
+                    StorageAttributes::ATTRIBUTE_FILE_SIZE => $size,
                 ];
             } elseif (MimeType::isPathImage($file->path())) {
                 $stats['cover_art']++;
@@ -202,11 +203,19 @@ final class CheckMediaTask extends AbstractTask
     ): void {
         $existingMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT sm.id, sm.path, sm.mtime, sm.unique_id
+                SELECT sm.id, sm.path, sm.mtime, sm.unique_id, sm.size
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation);
+
+        $updateMediaSizeQuery = $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationMedia sm
+                SET sm.size = :size
+                WHERE sm.id = :id
+            DQL
+        );
 
         /** @var array<array-key, int|string> $mediaRow */
         foreach ($existingMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $mediaRow) {
@@ -227,6 +236,14 @@ final class CheckMediaTask extends AbstractTask
                     $this->messageBus->dispatch($message);
                     $stats['updated']++;
                 } else {
+                    // Keep the stored file size in sync without reprocessing the file.
+                    $fileSize = $fileInfo[StorageAttributes::ATTRIBUTE_FILE_SIZE];
+                    if ($fileSize !== Types::int($mediaRow['size'])) {
+                        $updateMediaSizeQuery->setParameter('size', $fileSize)
+                            ->setParameter('id', $mediaRow['id'])
+                            ->execute();
+                    }
+
                     $stats['unchanged']++;
                 }
 

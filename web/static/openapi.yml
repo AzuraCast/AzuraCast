@@ -8193,6 +8193,10 @@ components:
         path:
           type: string
           nullable: true
+        size:
+          description: 'The file size (in bytes).'
+          type: integer
+          example: 19693056
       type: object
     Api_ResolvableUrl:
       type: string

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Attributes\AfterStableRelease;
 use Doctrine\DBAL\Schema\Schema;
 
+#[AfterStableRelease('0.23.8')]
 final class Version20250920195939 extends AbstractMigration
 {
     public function getDescription(): string

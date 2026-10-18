@@ -1,0 +1,180 @@
+{
+  "description": "A sequential Once-Per-Hour (:00) group with the 'merge' backend option holds 'toggled' (weight 1) and 'steady' (weight 2), both unscheduled Once-Per-0-Songs playlists. 'toggled' has no schedule and is switched on and off by toggling it between enabled and disabled. While it is enabled every firing should cue 'toggled' directly followed by 'steady' as one block, while it is disabled 'steady' alone, and the unscheduled members never play outside the group.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "toggled-disabled-steady-plays-alone",
+      "now": "2026-10-11T00:00:00+02:00",
+      "expect_sequence": [
+        {
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady",
+              "playlist_chain_refs": [
+                "grp",
+                "steady"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T00:05:00+02:00",
+          "mode": "none"
+        },
+        {
+          "now": "2026-10-11T01:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "toggled-enabled-plays-full-block",
+      "now": "2026-10-11T08:00:00+02:00",
+      "expect_sequence": [
+        {
+          "playlist_enabled_by_ref": {
+            "toggled": true
+          },
+          "entries": [
+            {
+              "playlist_ref": "toggled",
+              "media_ref": "mToggled",
+              "playlist_chain_refs": [
+                "grp",
+                "toggled"
+              ]
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady",
+              "playlist_chain_refs": [
+                "grp",
+                "steady"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T08:05:00+02:00",
+          "mode": "none"
+        },
+        {
+          "now": "2026-10-11T09:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "toggled",
+              "media_ref": "mToggled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "toggled-enabled-after-disabled-hours-plays-full-block",
+      "now": "2026-10-11T05:00:00+02:00",
+      "expect_sequence": [
+        {
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T06:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T07:00:00+02:00",
+          "playlist_enabled_by_ref": {
+            "toggled": true
+          },
+          "entries": [
+            {
+              "playlist_ref": "toggled",
+              "media_ref": "mToggled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T08:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "toggled",
+              "media_ref": "mToggled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "toggled-disabled-after-enabled-hours-plays-steady-alone",
+      "now": "2026-10-11T22:00:00+02:00",
+      "expect_sequence": [
+        {
+          "playlist_enabled_by_ref": {
+            "toggled": true
+          },
+          "entries": [
+            {
+              "playlist_ref": "toggled",
+              "media_ref": "mToggled"
+            },
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-11T23:00:00+02:00",
+          "playlist_enabled_by_ref": {
+            "toggled": false
+          },
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        },
+        {
+          "now": "2026-10-12T00:00:00+02:00",
+          "entries": [
+            {
+              "playlist_ref": "steady",
+              "media_ref": "mSteady"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

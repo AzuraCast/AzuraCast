@@ -28,6 +28,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Improved the security around waveform API endpoints.
 
+- Improved the security of environment variables in Supervisor process configuration.
+
 ## Bug Fixes
 
 - Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.

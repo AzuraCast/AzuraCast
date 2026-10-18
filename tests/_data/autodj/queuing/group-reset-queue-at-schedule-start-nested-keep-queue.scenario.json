@@ -1,0 +1,364 @@
+{
+  "description": "Member rows with 'preserve_queue_on_recursive_reset' keep their member's queue when a schedule with 'reset_queue_at_start' plus 'reset_queue_recursive' resets a sequential playlist group tree. Each tree has its own window and ref suffix. A kept playlist group also keeps its own rotation and the queues of its nested members. A playlist is kept when any marked row leads to it, directly or through a kept playlist group, even if an unmarked row also leads to it. The kept member's slot in the parent rotation is still re-queued. The '_dup' dump marks only the second row. The importer and the in-memory hydrator mark both rows, because they share a member playlist. The '_dup' case leaves 'outer_dup:twice_dup' out of group_members, because that key matches only one of the two rows. The '_ctl' tree marks nothing and resets completely. The '_flat' schedule has no 'reset_queue_recursive'. It only re-queues the group's own rotation, so the unmarked sibling resumes as well. The '_own' kept member has its own schedule with 'reset_queue_at_start'. That schedule still resets its queue.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "kept-songs-member-resumes-while-siblings-reset",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_song:kept_song": {
+            "is_queued": false
+          },
+          "outer_song:sib_song": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "kept_song:m_k1_song": {
+            "is_queued": false
+          },
+          "kept_song:m_k2_song": {
+            "is_queued": true
+          },
+          "sib_song:m_s1_song": {
+            "is_queued": false
+          },
+          "sib_song:m_s2_song": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_song",
+          "media_ref": "m_k2_song",
+          "playlist_chain_refs": [
+            "outer_song",
+            "kept_song"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "sib_song",
+          "media_ref": "m_s1_song",
+          "playlist_chain_refs": [
+            "outer_song",
+            "sib_song"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kept-nested-group-keeps-rotation-and-members",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_grp:opener_grp": {
+            "is_queued": false
+          },
+          "outer_grp:inner_grp": {
+            "is_queued": true
+          },
+          "inner_grp:x_grp": {
+            "is_queued": false
+          },
+          "inner_grp:y_grp": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_grp:m_o1_grp": {
+            "is_queued": false
+          },
+          "opener_grp:m_o2_grp": {
+            "is_queued": true
+          },
+          "y_grp:m_y1_grp": {
+            "is_queued": false
+          },
+          "y_grp:m_y2_grp": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opener_grp",
+          "media_ref": "m_o1_grp",
+          "playlist_chain_refs": [
+            "outer_grp",
+            "opener_grp"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "y_grp",
+          "media_ref": "m_y2_grp",
+          "playlist_chain_refs": [
+            "outer_grp",
+            "inner_grp",
+            "y_grp"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate-member-kept-by-one-marked-row",
+      "now": "2018-01-15T16:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "twice_dup:m_d1_dup": {
+            "is_queued": false
+          },
+          "twice_dup:m_d2_dup": {
+            "is_queued": true
+          },
+          "twice_dup:m_d3_dup": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "twice_dup",
+          "media_ref": "m_d2_dup",
+          "playlist_chain_refs": [
+            "outer_dup",
+            "twice_dup"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "twice_dup",
+          "media_ref": "m_d3_dup",
+          "playlist_chain_refs": [
+            "outer_dup",
+            "twice_dup"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "member-of-two-nested-groups-kept-by-one-marked-row",
+      "now": "2018-01-15T18:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "shared_two:m_sh1_two": {
+            "is_queued": false
+          },
+          "shared_two:m_sh2_two": {
+            "is_queued": true
+          },
+          "shared_two:m_sh3_two": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "shared_two",
+          "media_ref": "m_sh2_two",
+          "playlist_chain_refs": [
+            "outer_two",
+            "a_two",
+            "shared_two"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "shared_two",
+          "media_ref": "m_sh3_two",
+          "playlist_chain_refs": [
+            "outer_two",
+            "b_two",
+            "shared_two"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "member-below-kept-group-kept-on-unmarked-path",
+      "now": "2018-01-15T20:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "leaf_via:m_l1_via": {
+            "is_queued": false
+          },
+          "leaf_via:m_l2_via": {
+            "is_queued": true
+          },
+          "leaf_via:m_l3_via": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "leaf_via",
+          "media_ref": "m_l2_via",
+          "playlist_chain_refs": [
+            "outer_via",
+            "open_via",
+            "leaf_via"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "leaf_via",
+          "media_ref": "m_l3_via",
+          "playlist_chain_refs": [
+            "outer_via",
+            "kept_via",
+            "leaf_via"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nothing-marked-resets-whole-tree",
+      "now": "2018-01-15T22:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_ctl:opener_ctl": {
+            "is_queued": false
+          },
+          "outer_ctl:inner_ctl": {
+            "is_queued": true
+          },
+          "inner_ctl:x_ctl": {
+            "is_queued": false
+          },
+          "inner_ctl:y_ctl": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "opener_ctl:m_o1_ctl": {
+            "is_queued": false
+          },
+          "opener_ctl:m_o2_ctl": {
+            "is_queued": true
+          },
+          "y_ctl:m_y1_ctl": {
+            "is_queued": false
+          },
+          "y_ctl:m_y2_ctl": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opener_ctl",
+          "media_ref": "m_o1_ctl",
+          "playlist_chain_refs": [
+            "outer_ctl",
+            "opener_ctl"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "x_ctl",
+          "media_ref": "m_x_ctl",
+          "playlist_chain_refs": [
+            "outer_ctl",
+            "inner_ctl",
+            "x_ctl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flag-ignored-without-recursive-reset",
+      "now": "2018-01-15T08:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "outer_flat:kept_flat": {
+            "is_queued": false
+          },
+          "outer_flat:sib_flat": {
+            "is_queued": true
+          }
+        },
+        "playlist_media": {
+          "kept_flat:m_k1_flat": {
+            "is_queued": false
+          },
+          "kept_flat:m_k2_flat": {
+            "is_queued": true
+          },
+          "sib_flat:m_s1_flat": {
+            "is_queued": false
+          },
+          "sib_flat:m_s2_flat": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_flat",
+          "media_ref": "m_k2_flat",
+          "playlist_chain_refs": [
+            "outer_flat",
+            "kept_flat"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "sib_flat",
+          "media_ref": "m_s2_flat",
+          "playlist_chain_refs": [
+            "outer_flat",
+            "sib_flat"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kept-member-own-schedule-still-resets",
+      "now": "2018-01-15T10:00:00+00:00",
+      "runtime": {
+        "playlist_media": {
+          "kept_own:m_k1_own": {
+            "is_queued": false
+          },
+          "kept_own:m_k2_own": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_own",
+          "media_ref": "m_k1_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "kept_own"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "kept_own",
+          "media_ref": "m_k2_own",
+          "playlist_chain_refs": [
+            "outer_own",
+            "kept_own"
+          ]
+        }
+      ]
+    }
+  ]
+}

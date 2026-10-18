@@ -231,19 +231,120 @@ class Api_Stations_PlaylistsCest extends CestAbstract
     }
 
     /**
+     * @before setupComplete
+     * @before login
+     */
+    public function savePreserveQueueOnRecursiveResetOfMembers(FunctionalTester $I): void
+    {
+        $I->wantTo('Save the recursive queue reset opt-out of playlist group members via API.');
+
+        $station = $this->getTestStation();
+        $listUrl = "/api/station/{$station->id}/playlists";
+
+        $this->clearPlaylists($I, $listUrl);
+
+        $songsId = Types::int($this->createPlaylist($I, $listUrl, [
+            'name' => 'Songs Member',
+            'source' => PlaylistSources::Songs->value,
+        ])['id'] ?? null);
+
+        $otherSongsId = Types::int($this->createPlaylist($I, $listUrl, [
+            'name' => 'Other Songs Member',
+            'source' => PlaylistSources::Songs->value,
+        ])['id'] ?? null);
+
+        $requestsId = Types::int($this->createPlaylist($I, $listUrl, [
+            'name' => 'Requests Member',
+            'source' => PlaylistSources::Requests->value,
+        ])['id'] ?? null);
+
+        $nestedGroupId = Types::int($this->createPlaylist($I, $listUrl, [
+            'name' => 'Nested Group Member',
+            'source' => PlaylistSources::Playlists->value,
+        ])['id'] ?? null);
+
+        $group = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Playlist Group',
+            'source' => PlaylistSources::Playlists->value,
+        ]);
+        $groupLinks = Types::array($group['links'] ?? null);
+
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPut(Types::string($groupLinks['members'] ?? null), [
+            'members' => [
+                [
+                    'id' => $songsId,
+                    'weight' => 1,
+                    'preserve_queue_on_recursive_reset' => false,
+                ],
+                [
+                    'id' => $otherSongsId,
+                    'weight' => 2,
+                    'preserve_queue_on_recursive_reset' => false,
+                ],
+                [
+                    'id' => $songsId,
+                    'weight' => 3,
+                    'preserve_queue_on_recursive_reset' => true,
+                ],
+                [
+                    'id' => $requestsId,
+                    'weight' => 4,
+                    'preserve_queue_on_recursive_reset' => true,
+                ],
+                [
+                    'id' => $nestedGroupId,
+                    'weight' => 5,
+                    'preserve_queue_on_recursive_reset' => true,
+                ],
+            ],
+        ]);
+        $I->seeResponseCodeIs(200);
+
+        $I->sendGet(Types::string($groupLinks['self'] ?? null));
+        $I->seeResponseCodeIs(200);
+
+        $body = Types::array(json_decode($I->grabResponse(), true, 512, JSON_THROW_ON_ERROR));
+
+        $memberRows = [];
+        foreach (Types::array($body['playlists'] ?? null) as $member) {
+            $member = Types::array($member);
+
+            $memberRows[] = [
+                Types::int($member['id'] ?? null),
+                $member['preserve_queue_on_recursive_reset'] ?? null,
+            ];
+        }
+
+        $I->assertSame(
+            [
+                [$songsId, true],
+                [$otherSongsId, false],
+                [$songsId, true],
+                [$requestsId, false],
+                [$nestedGroupId, true],
+            ],
+            $memberRows
+        );
+    }
+
+    /**
      * @param array<string, mixed> $json
      * @param array<string, mixed>|null $expectedJson
+     * @return array<array-key, mixed>
      */
     private function createPlaylist(
         FunctionalTester $I,
         string $listUrl,
         array $json,
         ?array $expectedJson = null
-    ): void {
+    ): array {
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPost($listUrl, $json);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson($expectedJson ?? $json);
+
+        return Types::array(json_decode($I->grabResponse(), true, 512, JSON_THROW_ON_ERROR));
     }
 
     /**

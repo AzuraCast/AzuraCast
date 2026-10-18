@@ -189,6 +189,7 @@ final class PlaylistConfigurationExporter
                 weight: $playlistGroup->weight,
                 consecutivePlays: $playlistGroup->consecutive_plays,
                 playFullCycle: $playlistGroup->play_full_cycle,
+                preserveQueueOnRecursiveReset: $playlistGroup->preserve_queue_on_recursive_reset,
                 allowedRequests: $playlistGroup->allowed_requests,
             );
         }

@@ -343,7 +343,10 @@ final class InMemoryEntityHydrator
             $playlistData = Types::array($entry['data']);
             $container = $playlistsByRef[$containerRef];
 
-            foreach (Types::array($playlistData['members'] ?? []) as $memberData) {
+            $membersData = Types::array($playlistData['members'] ?? []);
+            $memberRefsExemptFromNestedReset = $this->getMemberRefsExemptFromNestedReset($membersData);
+
+            foreach ($membersData as $memberData) {
                 $memberData = Types::array($memberData);
                 $memberRef = Types::string($memberData['playlist_ref'] ?? '');
 
@@ -363,6 +366,8 @@ final class InMemoryEntityHydrator
                     $memberData['play_full_cycle'] ?? $group->play_full_cycle
                 );
 
+                $group->preserve_queue_on_recursive_reset = isset($memberRefsExemptFromNestedReset[$memberRef]);
+
                 $group->allowed_requests = PlaylistGroupAllowedRequests::tryFrom(
                     Types::string($memberData['allowed_requests'] ?? null)
                 ) ?? PlaylistGroupAllowedRequests::Any;
@@ -381,6 +386,26 @@ final class InMemoryEntityHydrator
             'groupMembersById' => $groupMembersById,
             'spgByRefPair' => $spgByRefPair,
         ];
+    }
+
+    /**
+     * @param array<array-key, mixed> $membersData
+     *
+     * @return array<string, true>
+     */
+    private function getMemberRefsExemptFromNestedReset(array $membersData): array
+    {
+        $memberRefsExemptFromNestedReset = [];
+
+        foreach ($membersData as $memberData) {
+            $memberData = Types::array($memberData);
+
+            if (Types::bool($memberData['preserve_queue_on_recursive_reset'] ?? false)) {
+                $memberRefsExemptFromNestedReset[Types::string($memberData['playlist_ref'] ?? '')] = true;
+            }
+        }
+
+        return $memberRefsExemptFromNestedReset;
     }
 
     /**

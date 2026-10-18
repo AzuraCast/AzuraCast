@@ -122,7 +122,7 @@
                     class="col-md-6"
                     :field="r$.reset_queue_recursive"
                     :label="$gettext('Also Reset Nested Playlists')"
-                    :description="$gettext('Also restart every nested playlist group and member playlist from the beginning.')"
+                    :description="$gettext('Also restart every nested playlist group and member playlist from the beginning. Members exempted from nested reset in the Playlist Grouping tab keep their queues.')"
                 />
             </div>
         </div>

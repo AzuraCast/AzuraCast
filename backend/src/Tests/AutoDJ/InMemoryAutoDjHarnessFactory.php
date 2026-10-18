@@ -14,6 +14,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
+use App\Radio\AutoDJ\PlaylistQueueResetter;
 use App\Radio\AutoDJ\QueueBuilder;
 use App\Radio\AutoDJ\RecentSongHistory;
 use App\Radio\AutoDJ\Scheduler;
@@ -56,7 +57,9 @@ final class InMemoryAutoDjHarnessFactory
 
         $entityManager = $this->fakeEntityManager($dataProxy);
 
-        $scheduler = new Scheduler($spRepo, $spmRepo, $queueRepo);
+        $playlistQueueResetter = new PlaylistQueueResetter($spRepo, $spmRepo);
+
+        $scheduler = new Scheduler($spRepo, $spmRepo, $queueRepo, $playlistQueueResetter);
         $scheduler->setEntityManager($entityManager);
         $scheduler->setLogger($logger);
 

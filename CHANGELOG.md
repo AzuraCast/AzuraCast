@@ -26,6 +26,8 @@ release channel, you can take advantage of these new features and fixes.
 - Extended the internal URL filtering security mechanism implemented in previous versions to include additional webhook
   types.
 
+- Improved the security around waveform API endpoints.
+
 ## Bug Fixes
 
 - Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.

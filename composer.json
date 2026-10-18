@@ -191,8 +191,14 @@
       "@dev-test",
       "@codeception-no-coverage"
     ],
+    "cleanup-and-test-skip-autodj": [
+      "@phpcbf",
+      "@dev-test",
+      "@codeception-skip-autodj"
+    ],
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
+    "codeception-skip-autodj": "codecept run --no-interaction --skip-group autodj",
     "dev-test": [
       "@phplint",
       "@phpstan",

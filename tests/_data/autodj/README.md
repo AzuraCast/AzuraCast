@@ -26,6 +26,7 @@ The **same** fixtures are executed by two harnesses, both using the real (not mo
   - Authoritative tests against the database
   - Imports the dump into a test station
     - Re-linking existing media, or generating silent placeholders via ffmpeg
+  - Slow, tagged with the `autodj` group so it can be skipped
 
 If the two harnesses disagree on a case, that is a fake-vs-reality drift bug to fix and the integration suites result is most likely correct.
 
@@ -403,8 +404,15 @@ Limitations:
 2. Create `<name>.scenario.json`
    - Set the `now`, any `runtime` overrides, and the expected outcome
 3. Run it
-   - `codecept run Unit AutoDJ` (fast, in-memory)
-   - `codecept run Functional AutoDjIntegrationCest` (DB, integration)
+   - `vendor/bin/codecept run Unit AutoDJ` (fast, in-memory)
+   - `vendor/bin/codecept run Functional AutoDjIntegrationCest` (DB, integration)
 
 Console and `codecept` commands should be run inside the container, e.g.
-`docker exec azuracast codecept run Unit AutoDJ` in order to have the correct environment available.
+`docker exec azuracast vendor/bin/codecept run Unit AutoDJ` in order to have the correct environment available.
+
+`AutoDjIntegrationCest` takes most of the Functional suite's runtime. It is in the `autodj` group, so it can be left out when a change does not touch the AutoDJ.
+
+- `composer codeception-skip-autodj` runs every suite without it
+- `vendor/bin/codecept run -g autodj` runs only the cest
+
+The in-memory tests in `tests/Unit/AutoDJ/` are not in the group and still run.

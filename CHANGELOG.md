@@ -23,6 +23,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.
+
 ---
 
 # AzuraCast 0.23.8 (Aug 9, 2026)

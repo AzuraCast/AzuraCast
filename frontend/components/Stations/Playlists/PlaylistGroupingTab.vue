@@ -1036,23 +1036,6 @@ const doUpdatePreserveQueueOnRecursiveReset = (
     void debouncedSaveMembers(selectedPlaylist.value, updated);
 };
 
-const nestedResetExemptionsByMemberId = computed(() => {
-    const exemptionsByMemberId = new Map<number, NestedResetExemption[]>();
-
-    for (const playlistGroup of playlistGroupsById.value.values()) {
-        for (const [memberId, exemption] of getNestedResetExemptionsOfGroup(
-            playlistGroup,
-        )) {
-            exemptionsByMemberId.set(memberId, [
-                ...(exemptionsByMemberId.get(memberId) ?? []),
-                exemption,
-            ]);
-        }
-    }
-
-    return exemptionsByMemberId;
-});
-
 const isExemptElsewhere = (
     member: StationPlaylistGroupMemberEnriched,
 ): boolean => {
@@ -1125,20 +1108,21 @@ const getExemptionListEntry = (exemption: NestedResetExemption): string => {
     });
 };
 
-const isSelectedGroup = (playlistGroup: StationPlaylistEnriched): boolean => {
-    return playlistGroup.id === selectedPlaylist.value?.id;
-};
+const nestedResetExemptionsByMemberId = computed(() => {
+    const exemptionsByMemberId = new Map<number, NestedResetExemption[]>();
 
-const playlistGroupsById = computed(() => {
-    return new Map(
-        playlists.value
-            .filter((playlist) => {
-                return playlist.source === PlaylistSources.Playlists;
-            })
-            .map((playlistGroup) => {
-                return [playlistGroup.id, playlistGroup];
-            }),
-    );
+    for (const playlistGroup of playlistGroupsById.value.values()) {
+        for (const [memberId, exemption] of getNestedResetExemptionsOfGroup(
+            playlistGroup,
+        )) {
+            exemptionsByMemberId.set(memberId, [
+                ...(exemptionsByMemberId.get(memberId) ?? []),
+                exemption,
+            ]);
+        }
+    }
+
+    return exemptionsByMemberId;
 });
 
 const getNestedResetExemptionsOfGroup = (
@@ -1225,6 +1209,22 @@ const getMembersWithUnsavedChanges = (
         ? playlistMembers.value
         : playlistGroup.playlists;
 };
+
+const isSelectedGroup = (playlistGroup: StationPlaylistEnriched): boolean => {
+    return playlistGroup.id === selectedPlaylist.value?.id;
+};
+
+const playlistGroupsById = computed(() => {
+    return new Map(
+        playlists.value
+            .filter((playlist) => {
+                return playlist.source === PlaylistSources.Playlists;
+            })
+            .map((playlistGroup) => {
+                return [playlistGroup.id, playlistGroup];
+            }),
+    );
+});
 
 const getAllowedRequestsOptions = (
     member: StationPlaylistGroupMemberEnriched,

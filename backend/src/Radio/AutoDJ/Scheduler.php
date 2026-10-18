@@ -30,7 +30,8 @@ final class Scheduler
     public function __construct(
         private readonly StationPlaylistRepository $spRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly StationQueueRepository $queueRepo
+        private readonly StationQueueRepository $queueRepo,
+        private readonly PlaylistQueueResetter $queueResetter
     ) {
     }
 
@@ -485,43 +486,9 @@ final class Scheduler
         if ($playlist->source === PlaylistSources::Songs) {
             $this->spmRepo->resetQueue($playlist, $resetAt);
         } elseif ($recursive) {
-            $this->resetPlaylistGroupTree($playlist, $resetAt);
+            $this->queueResetter->resetPlaylistGroupAndNestedMembers($playlist, $resetAt);
         } else {
             $this->spRepo->resetPlaylistGroupQueue($playlist, $resetAt);
-        }
-    }
-
-    /**
-     * @param int[] $visitedIds
-     */
-    private function resetPlaylistGroupTree(
-        StationPlaylist $group,
-        CarbonImmutable $resetAt,
-        array $visitedIds = []
-    ): void {
-        if (in_array($group->id, $visitedIds, true)) {
-            return;
-        }
-
-        $visitedIds[] = $group->id;
-
-        $this->spRepo->resetPlaylistGroupQueue($group, $resetAt);
-
-        foreach ($group->playlists as $membership) {
-            $member = $membership->playlist;
-
-            switch ($member->source) {
-                case PlaylistSources::Playlists:
-                    $this->resetPlaylistGroupTree($member, $resetAt, $visitedIds);
-                    break;
-
-                case PlaylistSources::Songs:
-                    if (!in_array($member->id, $visitedIds, true)) {
-                        $visitedIds[] = $member->id;
-                        $this->spmRepo->resetQueue($member, $resetAt);
-                    }
-                    break;
-            }
         }
     }
 

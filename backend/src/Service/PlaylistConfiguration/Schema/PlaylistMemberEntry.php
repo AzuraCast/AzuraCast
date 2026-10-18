@@ -14,6 +14,7 @@ use JsonSerializable;
  *     weight: int,
  *     consecutive_plays: int,
  *     play_full_cycle: bool,
+ *     preserve_queue_on_recursive_reset: bool,
  *     allowed_requests: string
  * }
  */
@@ -24,6 +25,7 @@ final class PlaylistMemberEntry implements JsonSerializable
         public readonly int $weight,
         public readonly int $consecutivePlays,
         public readonly bool $playFullCycle,
+        public readonly bool $preserveQueueOnRecursiveReset,
         public readonly PlaylistGroupAllowedRequests $allowedRequests,
     ) {
     }
@@ -38,6 +40,7 @@ final class PlaylistMemberEntry implements JsonSerializable
             weight: Types::int($data['weight'] ?? null),
             consecutivePlays: Types::int($data['consecutive_plays'] ?? null),
             playFullCycle: Types::bool($data['play_full_cycle'] ?? false),
+            preserveQueueOnRecursiveReset: Types::bool($data['preserve_queue_on_recursive_reset'] ?? false),
             allowedRequests: PlaylistGroupAllowedRequests::tryFrom(
                 Types::string($data['allowed_requests'] ?? null)
             ) ?? PlaylistGroupAllowedRequests::Any,
@@ -54,6 +57,7 @@ final class PlaylistMemberEntry implements JsonSerializable
             'weight' => $this->weight,
             'consecutive_plays' => $this->consecutivePlays,
             'play_full_cycle' => $this->playFullCycle,
+            'preserve_queue_on_recursive_reset' => $this->preserveQueueOnRecursiveReset,
             'allowed_requests' => $this->allowedRequests->value,
         ];
     }

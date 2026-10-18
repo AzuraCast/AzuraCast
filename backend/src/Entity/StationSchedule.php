@@ -128,7 +128,7 @@ final class StationSchedule implements IdentifiableEntityInterface
 
     #[
         OA\Property(
-            description: "Also reset nested playlist groups and member playlists (playlist groups only).",
+            description: "Also reset nested playlist groups and member playlists (playlist groups only). Members with preserve_queue_on_recursive_reset keep their queues.",
             example: false
         ),
         ORM\Column

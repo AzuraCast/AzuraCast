@@ -1184,7 +1184,7 @@ const getNestedMemberships = (
     for (let index = 0; index < pendingGroups.length; index++) {
         const group = pendingGroups[index];
 
-        for (const member of getMembersWithUnsavedChanges(group)) {
+        for (const member of getMembersIncludingUnsavedChanges(group)) {
             nestedMemberships.push({
                 playlistGroup: group,
                 member: member,
@@ -1202,7 +1202,7 @@ const getNestedMemberships = (
     return nestedMemberships;
 };
 
-const getMembersWithUnsavedChanges = (
+const getMembersIncludingUnsavedChanges = (
     playlistGroup: StationPlaylistEnriched,
 ): StationPlaylistGroupMemberEnriched[] => {
     return isSelectedGroup(playlistGroup)

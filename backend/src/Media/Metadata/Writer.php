@@ -17,6 +17,7 @@ use RuntimeException;
 /**
  * Writes the managed tags into a media file and keeps the file's other tags where getID3 allows it.
  * Embedded pictures stay untouched unless the metadata sets or removes the artwork.
+ * Fallback artwork is only written to files without an embedded picture.
  *
  * Restrictions from getID3:
  * - Existing ID3v2 frames other than text, URL, TXXX, UFID, APIC and the first COMM/WXXX are dropped
@@ -178,7 +179,7 @@ final class Writer
             ];
         }
 
-        $artwork = $metadata->getArtwork();
+        $artwork = self::getArtworkToWrite($metadata, $info);
         if ($artwork !== null) {
             $tagData['attached_picture'] = [self::buildAttachedPicture($artwork)];
         } elseif (!$metadata->shouldRemoveArtwork()) {
@@ -452,7 +453,7 @@ final class Writer
             $tagData[$key] = [$value];
         }
 
-        $artwork = $metadata->getArtwork();
+        $artwork = self::getArtworkToWrite($metadata, $info);
         if ($artwork !== null) {
             if (!$isFlac) {
                 [$width, $height] = getimagesizefromstring($artwork) ?: [0, 0];
@@ -511,6 +512,21 @@ final class Writer
         }
 
         return $blocks;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     */
+    private static function getArtworkToWrite(MetadataInterface $metadata, array $info): ?string
+    {
+        $artwork = $metadata->getArtwork();
+        if ($artwork !== null || $metadata->shouldRemoveArtwork()) {
+            return $artwork;
+        }
+
+        return self::getInfoSection($info, 'comments', 'picture') === []
+            ? $metadata->getFallbackArtwork()
+            : null;
     }
 
     private static function getWrittenKnownTag(MetadataInterface $metadata, string $key): ?string

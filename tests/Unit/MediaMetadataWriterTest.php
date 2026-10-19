@@ -284,12 +284,10 @@ final class MediaMetadataWriterTest extends Unit
     {
         $media = $this->generateMedia($extension);
 
-        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
-        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('red')));
         self::assertCount(1, $this->readPictures($media));
 
-        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('blue'));
-        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('blue')));
 
         $pictures = $this->readPictures($media);
         self::assertCount(1, $pictures);
@@ -313,15 +311,13 @@ final class MediaMetadataWriterTest extends Unit
     {
         $media = $this->generateMedia('flac');
 
-        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
-        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('red')));
         self::assertCount(1, $this->readPictures($media));
 
         self::assertTrue($this->mediaRepo->writeToFile($media));
         self::assertCount(1, $this->readPictures($media));
 
-        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('blue'));
-        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('blue')));
         self::assertCount(1, $this->readPictures($media));
 
         $this->mediaRepo->removeAlbumArt($media);
@@ -616,17 +612,16 @@ final class MediaMetadataWriterTest extends Unit
     }
 
     #[DataProvider('replaceablePictureFormatProvider')]
-    public function testEmbeddedPictureIsKeptWhenCachedArtIsMissing(string $extension): void
+    public function testEmbeddedPictureIsKeptWhenCachedArtDiffers(string $extension): void
     {
         $media = $this->generateMedia($extension);
 
-        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
-        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('red')));
 
         $pictureData = $this->readPictures($media)[0]['data'] ?? null;
         self::assertNotNull($pictureData);
 
-        unlink($this->getLocalPath(StationMedia::getArtPath($media->unique_id)));
+        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('blue'));
 
         $media->title = 'Changed Title';
         self::assertTrue($this->mediaRepo->writeToFile($media));
@@ -639,21 +634,48 @@ final class MediaMetadataWriterTest extends Unit
         self::assertCount(0, $this->readPictures($media));
     }
 
-    public function testForeignEmbeddedPictureSurvivesSaveWithoutCachedArt(): void
+    public function testForeignEmbeddedPicturesSurviveTagSave(): void
     {
         $media = $this->generateMedia();
-        $this->embedCoverWithFfmpeg($media, $this->createCoverImageFile('red'));
+        $this->embedCoversWithFfmpeg($media, [
+            'Cover (front)' => $this->createCoverImageFile('red'),
+            'Cover (back)' => $this->createCoverImageFile('blue'),
+        ]);
 
-        $pictures = $this->readPictures($media);
-        self::assertCount(1, $pictures);
+        $pictures = array_column($this->readPictures($media), null, 'description');
+        self::assertSame([3, 4], array_column($pictures, 'picturetypeid'));
+
+        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
 
         $media->extra_metadata = ['cue_in' => 1.5];
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
-        $picturesAfter = $this->readPictures($media);
-        self::assertCount(1, $picturesAfter);
-        self::assertSame($pictures[0]['data'] ?? null, $picturesAfter[0]['data'] ?? null);
-        self::assertSame($pictures[0]['picturetypeid'] ?? null, $picturesAfter[0]['picturetypeid'] ?? null);
+        $picturesAfter = array_column($this->readPictures($media), null, 'description');
+        self::assertSame(array_keys($pictures), array_keys($picturesAfter));
+
+        foreach ($pictures as $description => $picture) {
+            self::assertSame($picture['data'] ?? null, $picturesAfter[$description]['data'] ?? null);
+            self::assertSame($picture['picturetypeid'] ?? null, $picturesAfter[$description]['picturetypeid'] ?? null);
+        }
+    }
+
+    #[DataProvider('formatProvider')]
+    public function testCachedArtIsEmbeddedWhenTheFileHasNoPicture(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        self::assertCount(0, $this->readPictures($media));
+
+        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
+
+        $media->title = 'Changed Title';
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $pictures = $this->readPictures($media);
+        self::assertCount(1, $pictures);
+        self::assertSame(
+            file_get_contents($this->getLocalPath(StationMedia::getArtPath($media->unique_id))),
+            $pictures[0]['data'] ?? null
+        );
     }
 
     #[DataProvider('formatProvider')]
@@ -1123,35 +1145,39 @@ final class MediaMetadataWriterTest extends Unit
     }
 
     /**
-     * Embeds a cover the way an external tagger would, without touching AzuraCast's album art cache.
+     * Embeds covers the way an external tagger would, without touching AzuraCast's album art cache.
+     *
+     * @param array<string, string> $coverPathsByType Image paths keyed by ffmpeg picture type, e.g. "Cover (back)"
      */
-    private function embedCoverWithFfmpeg(StationMedia $media, string $coverPath): void
+    private function embedCoversWithFfmpeg(StationMedia $media, array $coverPathsByType): void
     {
         $path = $this->getLocalPath($media->path);
         $taggedPath = $this->storagePath . '/with-cover.' . pathinfo($path, PATHINFO_EXTENSION);
 
-        $this->ffmpeg->getFFMpegDriver()->command([
-            '-y',
-            '-i',
-            $path,
-            '-i',
-            $coverPath,
-            '-map',
-            '0:a',
-            '-map',
-            '1:v',
-            '-c',
-            'copy',
-            '-id3v2_version',
-            '3',
-            '-disposition:v',
-            'attached_pic',
-            '-metadata:s:v',
-            'title=Album cover',
-            '-metadata:s:v',
-            'comment=Cover (front)',
-            $taggedPath,
-        ]);
+        $arguments = ['-y', '-i', $path];
+        foreach ($coverPathsByType as $coverPath) {
+            array_push($arguments, '-i', $coverPath);
+        }
+        array_push($arguments, '-map', '0:a', '-c', 'copy', '-id3v2_version', '3');
+
+        foreach (array_keys($coverPathsByType) as $streamIndex => $pictureType) {
+            $inputIndex = $streamIndex + 1;
+
+            array_push(
+                $arguments,
+                '-map',
+                "{$inputIndex}:v",
+                "-disposition:v:{$streamIndex}",
+                'attached_pic',
+                "-metadata:s:v:{$streamIndex}",
+                "title={$pictureType}",
+                "-metadata:s:v:{$streamIndex}",
+                "comment={$pictureType}"
+            );
+        }
+        $arguments[] = $taggedPath;
+
+        $this->ffmpeg->getFFMpegDriver()->command($arguments);
 
         rename($taggedPath, $path);
     }

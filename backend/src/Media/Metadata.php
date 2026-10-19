@@ -24,6 +24,8 @@ final class Metadata implements MetadataInterface
 
     private bool $removeArtwork = false;
 
+    private ?string $fallbackArtwork = null;
+
     private string $mimeType = '';
 
     public function getKnownTags(): array
@@ -76,6 +78,16 @@ final class Metadata implements MetadataInterface
     public function shouldRemoveArtwork(): bool
     {
         return $this->removeArtwork;
+    }
+
+    public function getFallbackArtwork(): ?string
+    {
+        return $this->fallbackArtwork;
+    }
+
+    public function setFallbackArtwork(?string $artwork): void
+    {
+        $this->fallbackArtwork = $artwork;
     }
 
     public function getMimeType(): string

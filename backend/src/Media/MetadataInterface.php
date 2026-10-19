@@ -53,6 +53,10 @@ interface MetadataInterface
 
     public function shouldRemoveArtwork(): bool;
 
+    public function getFallbackArtwork(): ?string;
+
+    public function setFallbackArtwork(?string $artwork): void;
+
     public function getMimeType(): string;
 
     public function setMimeType(string $mimeType): void;

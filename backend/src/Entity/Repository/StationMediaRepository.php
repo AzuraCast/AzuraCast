@@ -248,15 +248,17 @@ final class StationMediaRepository extends Repository
     ): bool {
         $fs = $this->getFilesystem($media);
 
-        $this->writeAlbumArt($media, $rawArtString, $fs);
-        return $this->writeToFile($media, $fs);
+        $metadata = $media->toMetadata();
+        $metadata->setArtwork($this->writeAlbumArt($media, $rawArtString, $fs));
+
+        return $this->writeMetadata($media, $metadata, $fs);
     }
 
     public function writeAlbumArt(
         StationMedia $media,
         string $rawArtString,
         ?ExtendedFilesystemInterface $fs = null
-    ): void {
+    ): string {
         $fs ??= $this->getFilesystem($media);
 
         $albumArtPath = StationMedia::getArtPath($media->unique_id);
@@ -266,6 +268,8 @@ final class StationMediaRepository extends Repository
 
         $media->art_updated_at = time();
         $this->em->persist($media);
+
+        return $albumArtString;
     }
 
     public function removeAlbumArt(
@@ -297,7 +301,7 @@ final class StationMediaRepository extends Repository
 
         $artPath = StationMedia::getArtPath($media->unique_id);
         if ($fs->fileExists($artPath)) {
-            $metadata->setArtwork($fs->read($artPath));
+            $metadata->setFallbackArtwork($fs->read($artPath));
         }
 
         return $this->writeMetadata($media, $metadata, $fs);

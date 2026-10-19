@@ -133,9 +133,14 @@ final class Writer
             }
 
             $strings = array_values(array_map('strval', array_filter(Types::array($values), 'is_scalar')));
-            if ($strings !== []) {
-                $tagValues[$key] = $strings;
+            if ($strings === []) {
+                continue;
             }
+
+            // getID3 writes a frame per value but each text frame may only occur once
+            $tagValues[$key] = ($frameName[0] === 'T')
+                ? [implode("\x00", $strings)]
+                : $strings;
         }
 
         $totalTracksEntries = Types::array($existing['totaltracks'] ?? []);

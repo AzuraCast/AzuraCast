@@ -66,6 +66,8 @@ final class MediaMetadataWriterTest extends Unit
     private const string DESCRIBED_URL = 'https://example.com/release';
     private const string ASCII_PUBLISHER = 'ASCII Records';
     private const string FOREIGN_COMPOSER = 'Seeded Composer';
+    private const string SECOND_FOREIGN_COMPOSER = 'Second Composer';
+    private const string NON_ASCII_COMPOSER = 'Søren Müller';
     private const string CUSTOM_COMPOSER = 'Custom Composer';
     private const string CUSTOM_ALBUM_ARTIST = 'Custom Album Artist';
     private const string CUSTOM_TAG = 'Likes';
@@ -517,6 +519,49 @@ final class MediaMetadataWriterTest extends Unit
 
         $publisherFrame = Types::array(Types::array($this->analyze($media)['id3v2']['TPUB'] ?? [])[0] ?? []);
         self::assertSame(0, $publisherFrame['encodingid'] ?? null);
+    }
+
+    /**
+     * Mp3tag & Picard store several values in one text frame, separated by null characters.
+     *
+     * @return array<string, array{int, string, list<string>}>
+     */
+    public static function multiValueTextFrameProvider(): array
+    {
+        $asciiComposers = [self::FOREIGN_COMPOSER, self::SECOND_FOREIGN_COMPOSER];
+        $mixedComposers = [self::NON_ASCII_COMPOSER, self::FOREIGN_COMPOSER];
+
+        return [
+            'ISO-8859-1' => [0, implode("\x00", $asciiComposers), $asciiComposers],
+            'UTF-16 with a BOM per value' => [
+                1,
+                implode("\x00\x00", array_map(
+                    static fn(string $value): string => "\xFF\xFE" . mb_convert_encoding($value, 'UTF-16LE', 'UTF-8'),
+                    $mixedComposers
+                )),
+                $mixedComposers,
+            ],
+        ];
+    }
+
+    /**
+     * @param list<string> $values
+     */
+    #[DataProvider('multiValueTextFrameProvider')]
+    public function testTextFrameWithSeveralValuesStaysOneFrame(int $encodingId, string $data, array $values): void
+    {
+        $media = $this->generateMedia();
+        $this->seedId3v2Frames($media, ['TCOM' => [['encodingid' => $encodingId, 'data' => $data]]]);
+        self::assertSame($values, $this->readFileTags($media)['composer'] ?? null);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        $hash = md5_file($this->getLocalPath($media->path));
+
+        self::assertCount(1, Types::array($this->analyze($media)['id3v2']['TCOM'] ?? []));
+        self::assertSame($values, $this->readFileTags($media)['composer'] ?? null);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertSame($hash, md5_file($this->getLocalPath($media->path)));
     }
 
     /**

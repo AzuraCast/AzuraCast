@@ -18,6 +18,6 @@ final class WritePlaylistFileMessage extends AbstractUniqueMessage
 
     public function getQueue(): QueueNames
     {
-        return QueueNames::LowPriority;
+        return QueueNames::Media;
     }
 }

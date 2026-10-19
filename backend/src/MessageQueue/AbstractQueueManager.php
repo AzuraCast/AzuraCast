@@ -42,11 +42,13 @@ abstract class AbstractQueueManager implements QueueManagerInterface
         ];
     }
 
-    public function getTransports(): array
+    public function getTransports(bool $fast): array
     {
         $transports = [];
         foreach (QueueNames::cases() as $queue) {
-            $transports[$queue->value] = $this->getTransport($queue);
+            if ($queue->isFast() === $fast) {
+                $transports[$queue->value] = $this->getTransport($queue);
+            }
         }
         return $transports;
     }

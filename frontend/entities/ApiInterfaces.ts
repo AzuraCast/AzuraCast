@@ -1171,6 +1171,11 @@ export interface ApiPodcastMedia {
     length?: number;
     length_text?: string | null;
     path?: string | null;
+    /**
+     * The file size (in bytes).
+     * @example 19693056
+     */
+    size?: number;
 }
 
 export type ApiResolvableUrl = string;
@@ -2695,6 +2700,11 @@ export type StationPlaylistGroup = HasAutoIncrementId & {
     consecutive_plays?: number;
     /** @example false */
     play_full_cycle?: boolean;
+    /**
+     * Keep the member's queue on a recursive queue reset of a parent playlist group, also keeps the queues of its nested members. If the same playlist is added to a group more than once, all of its entries share this setting.
+     * @example false
+     */
+    preserve_queue_on_recursive_reset?: boolean;
     allowed_requests?: PlaylistGroupAllowedRequests;
 };
 
@@ -2765,7 +2775,7 @@ export type StationSchedule = HasAutoIncrementId & {
      */
     reset_queue_at_start?: boolean;
     /**
-     * Also reset nested playlist groups and member playlists (playlist groups only).
+     * Also reset nested playlist groups and member playlists (playlist groups only). Members with preserve_queue_on_recursive_reset keep their queues.
      * @example false
      */
     reset_queue_recursive?: boolean;

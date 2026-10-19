@@ -42,7 +42,7 @@ final class GroupMe extends AbstractConnector
 
         $apiUrl = Types::stringOrNull($config['api'], true);
         $apiUrl = (null !== $apiUrl)
-            ? rtrim($apiUrl, '/')
+            ? $this->userUrlFilter->filterSensitiveUserUrl(rtrim($apiUrl, '/'))
             : 'https://api.groupme.com/v3';
 
         $webhookUrl = $apiUrl . '/bots/post';

@@ -387,6 +387,46 @@
                                         />
                                     </div>
 
+                                    <div
+                                        v-if="supportsPreserveQueueOnRecursiveReset(member)"
+                                        class="mb-2"
+                                    >
+                                        <form-group-checkbox
+                                            :id="`preserve-queue-on-recursive-reset-${index}`"
+                                            :model-value="member.preserve_queue_on_recursive_reset"
+                                            @update:model-value="doUpdatePreserveQueueOnRecursiveReset(member.id, $event)"
+                                            :input-attrs="{
+                                                disabled: saving,
+                                                'aria-describedby': isExemptElsewhere(member)
+                                                    ? `preserve-queue-on-recursive-reset-${index}-description`
+                                                    : undefined,
+                                            }"
+                                        >
+                                            <template #label>
+                                                {{ member.source === PlaylistSources.Playlists
+                                                    ? $gettext('Exempt group and members from nested reset')
+                                                    : $gettext('Exempt from nested reset') }}
+
+                                                <span
+                                                    v-if="isExemptElsewhere(member)"
+                                                    class="text-info ms-1"
+                                                    aria-hidden="true"
+                                                    :title="getExemptElsewhereDescription(member)"
+                                                >
+                                                    <icon-bi-exclamation-circle-fill :class="IconSize.Small" />
+                                                </span>
+                                            </template>
+                                        </form-group-checkbox>
+
+                                        <span
+                                            v-if="isExemptElsewhere(member)"
+                                            :id="`preserve-queue-on-recursive-reset-${index}-description`"
+                                            class="visually-hidden"
+                                        >
+                                            {{ getExemptElsewhereDescription(member) }}
+                                        </span>
+                                    </div>
+
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge text-bg-secondary">
@@ -498,12 +538,14 @@ import {
     type StationPlaylistEnriched,
     type StationPlaylistGroupMemberEnriched,
 } from "~/entities/StationPlaylist.ts";
+import { IconSize } from "~/functions/icons.ts";
 import { useAxios } from "~/vendor/axios";
 import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
 import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
+import IconBiExclamationCircleFill from "~icons/bi/exclamation-circle-fill";
 import IconBiFolder from "~icons/bi/folder";
 import IconBiPeople from "~icons/bi/people";
 import IconIcDelete from "~icons/ic/baseline-delete";
@@ -512,6 +554,19 @@ import IconIcHome from "~icons/ic/baseline-home";
 import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcPublic from "~icons/ic/baseline-public";
 import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
+
+interface NestedResetExemption {
+    group: StationPlaylistEnriched;
+    subgroup:
+        | StationPlaylistEnriched
+        | StationPlaylistGroupMemberEnriched
+        | null;
+}
+
+interface NestedMembership {
+    playlistGroup: StationPlaylistEnriched;
+    member: StationPlaylistGroupMemberEnriched;
+}
 
 const props = defineProps<{
     listUrl: string;
@@ -549,6 +604,7 @@ watch(selectedPlaylist, (playlist, previousPlaylist) => {
             : [];
 
     if (playlist?.id !== previousPlaylist?.id) {
+        debouncedSaveMembers.flush();
         $playlistContents.value?.scrollTo({ top: 0 });
     }
 });
@@ -571,6 +627,7 @@ watch($playlistList, (element) => {
             weight: 0,
             consecutive_plays: 0,
             play_full_cycle: false,
+            preserve_queue_on_recursive_reset: false,
             allowed_requests: PlaylistGroupAllowedRequests.Any,
         }),
     });
@@ -626,6 +683,8 @@ const buildTree = (
                           weight: member.weight,
                           consecutive_plays: member.consecutive_plays ?? 0,
                           play_full_cycle: member.play_full_cycle ?? false,
+                          preserve_queue_on_recursive_reset:
+                              member.preserve_queue_on_recursive_reset ?? false,
                           allowed_requests:
                               member.allowed_requests ??
                               PlaylistGroupAllowedRequests.Any,
@@ -633,6 +692,8 @@ const buildTree = (
                     : {
                           ...member,
                           play_full_cycle: member.play_full_cycle ?? false,
+                          preserve_queue_on_recursive_reset:
+                              member.preserve_queue_on_recursive_reset ?? false,
                           allowed_requests:
                               member.allowed_requests ??
                               PlaylistGroupAllowedRequests.Any,
@@ -786,7 +847,25 @@ const isReorderable = computed<boolean>(
 const saveMembersForSelected = async (
     members: StationPlaylistGroupMemberEnriched[],
 ): Promise<void> => {
-    const group = selectedPlaylist.value;
+    debouncedSaveMembers.cancel();
+
+    await saveMembers(selectedPlaylist.value, members);
+};
+
+const debouncedSaveMembers = useDebounceFn(
+    (
+        group: StationPlaylistEnriched | undefined,
+        members: StationPlaylistGroupMemberEnriched[],
+    ) => {
+        return saveMembers(group, members);
+    },
+    1500,
+);
+
+const saveMembers = async (
+    group: StationPlaylistEnriched | undefined,
+    members: StationPlaylistGroupMemberEnriched[],
+): Promise<void> => {
     if (!group?.links.members) {
         return;
     }
@@ -799,21 +878,24 @@ const saveMembersForSelected = async (
                 weight: index + 1,
                 consecutive_plays: member.consecutive_plays ?? 0,
                 play_full_cycle: member.play_full_cycle ?? false,
+                preserve_queue_on_recursive_reset:
+                    member.preserve_queue_on_recursive_reset ?? false,
                 allowed_requests:
                     member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
             })),
         });
 
-        const savedId = group.id;
-        const savedBreadcrumbs = [...playlistBreadcrumbs.value];
-
         await fetchAndBuildPlaylists();
 
-        currentPlaylists.value =
-            resolveCurrentPlaylistsByCreadcrumbs(savedBreadcrumbs);
-        selectedPlaylist.value = playlists.value.find(
-            (playlist) => playlist.id === savedId,
+        const selectedPlaylistId = selectedPlaylist.value?.id;
+
+        currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(
+            playlistBreadcrumbs.value,
         );
+
+        selectedPlaylist.value = playlists.value.find((playlist) => {
+            return playlist.id === selectedPlaylistId;
+        });
 
         notifySuccess($gettext("Playlist group updated."));
     } catch {
@@ -822,12 +904,6 @@ const saveMembersForSelected = async (
         saving.value = false;
     }
 };
-
-const debouncedSaveMembers = useDebounceFn(
-    (members: StationPlaylistGroupMemberEnriched[]) =>
-        saveMembersForSelected(members),
-    1500,
-);
 
 const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
     const group = selectedPlaylist.value;
@@ -841,6 +917,7 @@ const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
         weight: group.playlists.length + 1,
         consecutive_plays: 0,
         play_full_cycle: false,
+        preserve_queue_on_recursive_reset: false,
         allowed_requests: PlaylistGroupAllowedRequests.Any,
         source: playlist.source,
         order: playlist.order,
@@ -901,7 +978,7 @@ const doUpdateConsecutivePlays = (
     updated[index] = { ...updated[index], consecutive_plays: consecutivePlays };
     playlistMembers.value = updated;
 
-    void debouncedSaveMembers(updated);
+    void debouncedSaveMembers(selectedPlaylist.value, updated);
 };
 
 const isFullCyclePlayable = (
@@ -929,8 +1006,225 @@ const doUpdatePlayFullCycle = (index: number, value: boolean | null): void => {
     };
     playlistMembers.value = updated;
 
-    void debouncedSaveMembers(updated);
+    void debouncedSaveMembers(selectedPlaylist.value, updated);
 };
+
+const supportsPreserveQueueOnRecursiveReset = (
+    member: StationPlaylistGroupMemberEnriched,
+): boolean => {
+    return [PlaylistSources.Songs, PlaylistSources.Playlists].includes(
+        member.source as PlaylistSources,
+    );
+};
+
+const doUpdatePreserveQueueOnRecursiveReset = (
+    memberId: number,
+    value: boolean | null,
+): void => {
+    const updated = playlistMembers.value.map((member) => {
+        if (member.id !== memberId) {
+            return member;
+        }
+
+        return {
+            ...member,
+            preserve_queue_on_recursive_reset: value ?? false,
+        };
+    });
+    playlistMembers.value = updated;
+
+    void debouncedSaveMembers(selectedPlaylist.value, updated);
+};
+
+const isExemptElsewhere = (
+    member: StationPlaylistGroupMemberEnriched,
+): boolean => {
+    return (
+        !member.preserve_queue_on_recursive_reset &&
+        nestedResetExemptionsByMemberId.value.has(member.id)
+    );
+};
+
+const getExemptElsewhereDescription = (
+    member: StationPlaylistGroupMemberEnriched,
+): string => {
+    const exemptions =
+        nestedResetExemptionsByMemberId.value.get(member.id) ?? [];
+
+    if (exemptions.length === 1) {
+        return getSingleExemptionDescription(exemptions[0]);
+    }
+
+    return [
+        $gettext(
+            "Already exempt in these groups, so its queue is kept whenever one of them is reset:",
+        ),
+        ...exemptions.map((exemption) => {
+            return `- ${getExemptionListEntry(exemption)}`;
+        }),
+    ].join("\n");
+};
+
+const getSingleExemptionDescription = (
+    exemption: NestedResetExemption,
+): string => {
+    if (exemption.subgroup === null) {
+        return $gettext(
+            'Already exempt in "%{group}", so its queue is kept whenever that group is reset.',
+            { group: exemption.group.name },
+        );
+    }
+
+    if (isSelectedGroup(exemption.group)) {
+        return $gettext(
+            'Already exempt through "%{subgroup}", so its queue is kept whenever this group is reset.',
+            { subgroup: exemption.subgroup.name },
+        );
+    }
+
+    return $gettext(
+        'Already exempt in "%{group}" through "%{subgroup}", so its queue is kept whenever that group is reset.',
+        {
+            group: exemption.group.name,
+            subgroup: exemption.subgroup.name,
+        },
+    );
+};
+
+const getExemptionListEntry = (exemption: NestedResetExemption): string => {
+    if (exemption.subgroup === null) {
+        return `"${exemption.group.name}"`;
+    }
+
+    if (isSelectedGroup(exemption.group)) {
+        return $gettext('This group through "%{subgroup}"', {
+            subgroup: exemption.subgroup.name,
+        });
+    }
+
+    return $gettext('"%{group}" through "%{subgroup}"', {
+        group: exemption.group.name,
+        subgroup: exemption.subgroup.name,
+    });
+};
+
+const nestedResetExemptionsByMemberId = computed(() => {
+    const exemptionsByMemberId = new Map<number, NestedResetExemption[]>();
+
+    for (const playlistGroup of playlistGroupsById.value.values()) {
+        for (const [memberId, exemption] of getNestedResetExemptionsOfGroup(
+            playlistGroup,
+        )) {
+            exemptionsByMemberId.set(memberId, [
+                ...(exemptionsByMemberId.get(memberId) ?? []),
+                exemption,
+            ]);
+        }
+    }
+
+    return exemptionsByMemberId;
+});
+
+const getNestedResetExemptionsOfGroup = (
+    playlistGroup: StationPlaylistEnriched,
+): Map<number, NestedResetExemption> => {
+    const exemptionsByMemberId = new Map<number, NestedResetExemption>();
+
+    for (const membership of getNestedMemberships(playlistGroup)) {
+        const member = membership.member;
+
+        if (!member.preserve_queue_on_recursive_reset) {
+            continue;
+        }
+
+        if (membership.playlistGroup.id === playlistGroup.id) {
+            exemptionsByMemberId.set(member.id, {
+                group: playlistGroup,
+                subgroup: null,
+            });
+        } else if (!exemptionsByMemberId.has(member.id)) {
+            exemptionsByMemberId.set(member.id, {
+                group: playlistGroup,
+                subgroup: membership.playlistGroup,
+            });
+        }
+
+        for (const nestedMemberId of getNestedMemberIds(member.id)) {
+            if (!exemptionsByMemberId.has(nestedMemberId)) {
+                exemptionsByMemberId.set(nestedMemberId, {
+                    group: playlistGroup,
+                    subgroup: member,
+                });
+            }
+        }
+    }
+
+    return exemptionsByMemberId;
+};
+
+const getNestedMemberIds = (playlistGroupId: number): number[] => {
+    const playlistGroup = playlistGroupsById.value.get(playlistGroupId);
+
+    if (playlistGroup === undefined) {
+        return [];
+    }
+
+    return getNestedMemberships(playlistGroup).map((membership) => {
+        return membership.member.id;
+    });
+};
+
+const getNestedMemberships = (
+    playlistGroup: StationPlaylistEnriched,
+): NestedMembership[] => {
+    const nestedMemberships: NestedMembership[] = [];
+    const visitedGroupIds = new Set<number>([playlistGroup.id]);
+    const pendingGroups = [playlistGroup];
+
+    for (let index = 0; index < pendingGroups.length; index++) {
+        const group = pendingGroups[index];
+
+        for (const member of getMembersIncludingUnsavedChanges(group)) {
+            nestedMemberships.push({
+                playlistGroup: group,
+                member: member,
+            });
+
+            const memberGroup = playlistGroupsById.value.get(member.id);
+
+            if (memberGroup !== undefined && !visitedGroupIds.has(member.id)) {
+                visitedGroupIds.add(member.id);
+                pendingGroups.push(memberGroup);
+            }
+        }
+    }
+
+    return nestedMemberships;
+};
+
+const getMembersIncludingUnsavedChanges = (
+    playlistGroup: StationPlaylistEnriched,
+): StationPlaylistGroupMemberEnriched[] => {
+    return isSelectedGroup(playlistGroup)
+        ? playlistMembers.value
+        : playlistGroup.playlists;
+};
+
+const isSelectedGroup = (playlistGroup: StationPlaylistEnriched): boolean => {
+    return playlistGroup.id === selectedPlaylist.value?.id;
+};
+
+const playlistGroupsById = computed(() => {
+    return new Map(
+        playlists.value
+            .filter((playlist) => {
+                return playlist.source === PlaylistSources.Playlists;
+            })
+            .map((playlistGroup) => {
+                return [playlistGroup.id, playlistGroup];
+            }),
+    );
+});
 
 const getAllowedRequestsOptions = (
     member: StationPlaylistGroupMemberEnriched,
@@ -963,7 +1257,7 @@ const doUpdateAllowedRequests = (index: number, value: string | null): void => {
     };
     playlistMembers.value = updated;
 
-    void debouncedSaveMembers(updated);
+    void debouncedSaveMembers(selectedPlaylist.value, updated);
 };
 </script>
 

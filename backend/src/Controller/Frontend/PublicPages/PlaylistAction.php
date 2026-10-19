@@ -39,11 +39,11 @@ final readonly class PlaylistAction implements SingleActionInterface
                     continue;
                 }
 
-                $streamUrl = $fa->getUrlForMount($station, $mount);
+                $streamUrl = $this->filterLine((string)$fa->getUrlForMount($station, $mount));
 
                 $streamUrls[] = $streamUrl;
                 $streams[] = [
-                    'name' => $station->name . ' - ' . $mount->display_name,
+                    'name' => $this->filterLine($station->name . ' - ' . $mount->display_name),
                     'url' => $streamUrl,
                 ];
             }
@@ -54,12 +54,14 @@ final readonly class PlaylistAction implements SingleActionInterface
                 continue;
             }
 
-            $streamUrl = $this->adapters->getRemoteAdapter($remote)
-                ->getPublicUrl($remote);
+            $streamUrl = $this->filterLine(
+                $this->adapters->getRemoteAdapter($remote)
+                    ->getPublicUrl($remote)
+            );
 
             $streamUrls[] = $streamUrl;
             $streams[] = [
-                'name' => $station->name . ' - ' . $remote->display_name,
+                'name' => $this->filterLine($station->name . ' - ' . $remote->display_name),
                 'url' => $streamUrl,
             ];
         }
@@ -69,10 +71,10 @@ final readonly class PlaylistAction implements SingleActionInterface
             $backendConfig = $station->backend_config;
 
             if (null !== $backend && $backendConfig->hls_enable_on_public_player) {
-                $streamUrl = $backend->getHlsUrl($station);
+                $streamUrl = $this->filterLine((string)$backend->getHlsUrl($station));
                 $streamRow = [
-                    'name' => $station->name . ' - HLS',
-                    'url' => (string)$streamUrl,
+                    'name' => $this->filterLine($station->name . ' - HLS'),
+                    'url' => $streamUrl,
                 ];
 
                 if ($backendConfig->hls_is_default) {
@@ -120,5 +122,13 @@ final readonly class PlaylistAction implements SingleActionInterface
                     ->withHeader('Content-Type', 'audio/x-scpls')
                     ->withHeader('Content-Disposition', 'attachment; filename=' . $station->short_name . '.pls');
         }
+    }
+
+    /**
+     * Remove newlines from values to prevent user values from inserting newlines.
+     */
+    private function filterLine(string $line): string
+    {
+        return str_replace(["\r", "\n"], '', $line);
     }
 }

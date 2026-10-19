@@ -380,6 +380,7 @@ final class PlaylistConfigurationImporter
         array $memberRefsByPlaylist
     ): void {
         $container = $summary->playlistsByRef[$playlistRef];
+        $memberRefsExemptFromNestedReset = $this->getMemberRefsExemptFromNestedReset($memberEntries);
 
         foreach ($memberEntries as $memberEntry) {
             $memberRef = $memberEntry->playlistRef;
@@ -415,6 +416,7 @@ final class PlaylistConfigurationImporter
             $playlistGroup->weight = $memberEntry->weight;
             $playlistGroup->consecutive_plays = max(0, $memberEntry->consecutivePlays);
             $playlistGroup->play_full_cycle = $memberEntry->playFullCycle;
+            $playlistGroup->preserve_queue_on_recursive_reset = isset($memberRefsExemptFromNestedReset[$memberRef]);
 
             $allowedRequests = $memberEntry->allowedRequests;
             if (
@@ -430,6 +432,24 @@ final class PlaylistConfigurationImporter
 
             $summary->membersCreated++;
         }
+    }
+
+    /**
+     * @param PlaylistMemberEntry[] $memberEntries
+     *
+     * @return array<string, true>
+     */
+    private function getMemberRefsExemptFromNestedReset(array $memberEntries): array
+    {
+        $memberRefsExemptFromNestedReset = [];
+
+        foreach ($memberEntries as $memberEntry) {
+            if ($memberEntry->preserveQueueOnRecursiveReset) {
+                $memberRefsExemptFromNestedReset[$memberEntry->playlistRef] = true;
+            }
+        }
+
+        return $memberRefsExemptFromNestedReset;
     }
 
     /**

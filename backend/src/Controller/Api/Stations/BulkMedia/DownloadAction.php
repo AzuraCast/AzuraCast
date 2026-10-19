@@ -12,7 +12,7 @@ use App\Entity\StationMediaMetadata;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use League\Csv\Writer;
+use App\Utilities\Csv;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -119,7 +119,7 @@ final class DownloadAction implements SingleActionInterface
         if (!($tempFile = tmpfile())) {
             throw new RuntimeException('Could not create temp file.');
         }
-        $csv = Writer::from($tempFile);
+        $csv = Csv::exportWriter($tempFile);
 
         $extraMetadataFields = StationMediaMetadata::getFields();
 

@@ -418,7 +418,7 @@ final class Configuration
                 static fn(string $k, mixed $v) => sprintf(
                     '%s="%s"',
                     $k,
-                    str_replace('%', '%%', $v)
+                    str_replace(["\r", "\n", '%'], ['', '', '%%'], $v)
                 ),
                 array_keys($values),
                 array_values($values)

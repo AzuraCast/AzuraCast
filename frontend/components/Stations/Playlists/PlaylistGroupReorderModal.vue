@@ -165,6 +165,8 @@ const save = async () => {
             weight: index + 1,
             consecutive_plays: member.consecutive_plays ?? 0,
             play_full_cycle: member.play_full_cycle ?? false,
+            preserve_queue_on_recursive_reset:
+                member.preserve_queue_on_recursive_reset ?? false,
             allowed_requests:
                 member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
         })),

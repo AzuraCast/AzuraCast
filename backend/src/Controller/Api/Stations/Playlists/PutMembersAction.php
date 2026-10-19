@@ -69,6 +69,7 @@ final readonly class PutMembersAction implements SingleActionInterface
          *     weight?: mixed,
          *     consecutive_plays?: mixed,
          *     play_full_cycle?: mixed,
+         *     preserve_queue_on_recursive_reset?: mixed,
          *     allowed_requests?: mixed
          * }> $members
          */
@@ -100,6 +101,8 @@ final readonly class PutMembersAction implements SingleActionInterface
             }
         }
 
+        $memberIdsExemptFromNestedReset = $this->getMemberIdsExemptFromNestedReset($members);
+
         // Since we allow having a playlist multiple times as a member of a group
         // we need to recreate all memberships of the playlist group instead of updating entries.
         // Not the most elegant solution but I didn't want to overcomplicate this for the first version.
@@ -126,6 +129,9 @@ final readonly class PutMembersAction implements SingleActionInterface
             $stationPlaylistGroup->weight = $weight;
             $stationPlaylistGroup->consecutive_plays = max(0, $consecutivePlays);
             $stationPlaylistGroup->play_full_cycle = $playFullCycle;
+            $stationPlaylistGroup->preserve_queue_on_recursive_reset = isset(
+                $memberIdsExemptFromNestedReset[$memberId]
+            );
 
             $allowedRequests = PlaylistGroupAllowedRequests::tryFrom(
                 Types::stringOrNull($member['allowed_requests'] ?? null) ?? ''
@@ -173,5 +179,26 @@ final readonly class PutMembersAction implements SingleActionInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param array<array{
+     *  id?: mixed,
+     *  preserve_queue_on_recursive_reset?: mixed
+     * }> $members
+     *
+     * @return array<int, true>
+     */
+    private function getMemberIdsExemptFromNestedReset(array $members): array
+    {
+        $memberIdsExemptFromNestedReset = [];
+
+        foreach ($members as $member) {
+            if (Types::bool($member['preserve_queue_on_recursive_reset'] ?? false)) {
+                $memberIdsExemptFromNestedReset[Types::int($member['id'] ?? null)] = true;
+            }
+        }
+
+        return $memberIdsExemptFromNestedReset;
     }
 }

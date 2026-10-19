@@ -26,6 +26,7 @@ The **same** fixtures are executed by two harnesses, both using the real (not mo
   - Authoritative tests against the database
   - Imports the dump into a test station
     - Re-linking existing media, or generating silent placeholders via ffmpeg
+  - Slow, tagged with the `autodj` group so it can be skipped
 
 If the two harnesses disagree on a case, that is a fake-vs-reality drift bug to fix and the integration suites result is most likely correct.
 
@@ -280,6 +281,20 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - The `single_track` & schedule `loop_once` drive the scheduled-window special rules
   - The schedule `reset_queue_at_start` resets the playlist's own queue once when its window first becomes active (`queue_reset_at` = window start minus one second)
     - The `reset_queue_recursive` extends that to nested groups and songs members of a playlist group
+      - Each nested member is reset once, also when the playlist group reaches it on several paths
+      - A member row with `preserve_queue_on_recursive_reset` keeps the queue of its member
+        - A kept playlist group also keeps its own rotation and the queues of all its nested members
+        - A playlist has one queue for all of its groups, so keeping it takes precedence over resetting it
+          - A playlist is kept when any marked row leads to it, directly or through a kept playlist group
+          - An unmarked row that also leads to it does not change this
+        - The kept member's slot in its parent group's rotation is still re-queued
+        - The Scheduler ignores the flag without `reset_queue_recursive`
+        - A member's own schedule reset is not affected
+      - When a playlist group lists the same member twice, leave that pair out of `runtime.group_members`
+        - Both rows then start fresh: queued, never played, no consecutive plays
+        - The member's song state can still be seeded through `runtime.playlist_media`
+        - A `<containerRef>:<memberRef>` key matches only one of the two rows
+          - The two harnesses pick different rows, so the modes would start from different states
   - The `merge` on a songs playlist cues the entire playlist in one build
   - The `merge` on a playlist group cues one full rotation pass as a single block per build
     - Sequential/shuffle groups keep picking until the rotation queue empties once (a `consecutive_plays` slot contributes that many tracks, a `play_full_cycle` member its whole remaining cycle; for a `Requests`-source member that cycle is the currently playable request queue)
@@ -389,8 +404,15 @@ Limitations:
 2. Create `<name>.scenario.json`
    - Set the `now`, any `runtime` overrides, and the expected outcome
 3. Run it
-   - `codecept run Unit AutoDJ` (fast, in-memory)
-   - `codecept run Functional AutoDjIntegrationCest` (DB, integration)
+   - `vendor/bin/codecept run Unit AutoDJ` (fast, in-memory)
+   - `vendor/bin/codecept run Functional AutoDjIntegrationCest` (DB, integration)
 
 Console and `codecept` commands should be run inside the container, e.g.
-`docker exec azuracast codecept run Unit AutoDJ` in order to have the correct environment available.
+`docker exec azuracast vendor/bin/codecept run Unit AutoDJ` in order to have the correct environment available.
+
+`AutoDjIntegrationCest` takes most of the Functional suite's runtime. It is in the `autodj` group, so it can be left out when a change does not touch the AutoDJ.
+
+- `composer codeception-skip-autodj` runs every suite without it
+- `vendor/bin/codecept run -g autodj` runs only the cest
+
+The in-memory tests in `tests/Unit/AutoDJ/` are not in the group and still run.

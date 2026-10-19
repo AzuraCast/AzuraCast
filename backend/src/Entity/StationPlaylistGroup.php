@@ -85,6 +85,17 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     }
 
     #[
+        OA\Property(
+            description: "Keep the member's queue on a recursive queue reset of a parent playlist group, also keeps the queues of its nested members. If the same playlist is added to a group more than once, all of its entries share this setting.",
+            example: false
+        ),
+        ORM\Column
+    ]
+    public bool $preserve_queue_on_recursive_reset = false {
+        set => $value && $this->supportsPreserveQueueOnRecursiveReset();
+    }
+
+    #[
         OA\Property(example: 'any'),
         ORM\Column(type: 'string', enumType: PlaylistGroupAllowedRequests::class)
     ]
@@ -139,6 +150,15 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
             );
     }
 
+    public function supportsPreserveQueueOnRecursiveReset(): bool
+    {
+        return in_array(
+            $this->playlist->source,
+            [PlaylistSources::Songs, PlaylistSources::Playlists],
+            true
+        );
+    }
+
     /**
      * @inheritDoc
      */
@@ -150,6 +170,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
             'weight' => $this->weight,
             'consecutive_plays' => $this->consecutive_plays,
             'play_full_cycle' => $this->play_full_cycle,
+            'preserve_queue_on_recursive_reset' => $this->preserve_queue_on_recursive_reset,
             'allowed_requests' => $this->allowed_requests->value,
         ];
     }

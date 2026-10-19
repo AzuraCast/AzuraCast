@@ -74,13 +74,15 @@ final class ProfileEditController extends StationsController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        // Explicitly filter out Liquidsoap configuration sections if the user cannot modify them.
+        // Explicitly filter out some configuration sections if the user cannot modify them.
         $requestBody = (array)$request->getParsedBody();
 
         if (!$request->getAcl()->isAllowed(StationPermissions::Broadcasting, $station)) {
             foreach (StationBackendConfiguration::getCustomConfigurationSections() as $key) {
                 unset($requestBody['backend_config'][$key]);
             }
+
+            unset($requestBody['frontend_config']['custom_config']);
         }
 
         $this->editRecord($requestBody, $station, $this->getContext($request));

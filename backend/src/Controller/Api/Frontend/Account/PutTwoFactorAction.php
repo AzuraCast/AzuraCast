@@ -12,6 +12,7 @@ use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use Carbon\FactoryImmutable;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use OTPHP\TOTP;
@@ -59,7 +60,10 @@ final class PutTwoFactorAction implements SingleActionInterface
             // Customize TOTP code
             $user = $request->getUser();
 
-            $totp = TOTP::create($secret);
+            $totp = TOTP::create(
+                secret: $secret,
+                clock: new FactoryImmutable()
+            );
             $totp->setLabel($user->email ?: 'AzuraCast');
 
             if (!empty($params['otp'])) {

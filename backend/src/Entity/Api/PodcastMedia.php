@@ -26,4 +26,10 @@ final class PodcastMedia
 
     #[OA\Property]
     public ?string $path = null;
+
+    #[OA\Property(
+        description: 'The file size (in bytes).',
+        example: 19693056
+    )]
+    public int $size = 0;
 }

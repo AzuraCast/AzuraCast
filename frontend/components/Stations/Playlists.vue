@@ -553,6 +553,8 @@ const doGroupReorder = async (
                       weight: weight,
                       consecutive_plays: consecutivePlays,
                       play_full_cycle: member.play_full_cycle ?? false,
+                      preserve_queue_on_recursive_reset:
+                          member.preserve_queue_on_recursive_reset ?? false,
                       allowed_requests:
                           member.allowed_requests ??
                           PlaylistGroupAllowedRequests.Any,
@@ -563,6 +565,8 @@ const doGroupReorder = async (
                       weight: weight,
                       consecutive_plays: consecutivePlays,
                       play_full_cycle: member.play_full_cycle ?? false,
+                      preserve_queue_on_recursive_reset:
+                          member.preserve_queue_on_recursive_reset ?? false,
                       allowed_requests:
                           member.allowed_requests ??
                           PlaylistGroupAllowedRequests.Any,

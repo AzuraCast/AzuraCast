@@ -10,6 +10,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Exception;
+use InvalidArgumentException;
 
 final class Time
 {
@@ -130,13 +131,30 @@ final class Time
         return (float)$seconds;
     }
 
-    public static function getTimezones(): array
-    {
-        $tzSelect = [
-            'UTC' => [
+    public static function validateTimezone(
+        string $tz
+    ): void {
+        $tzList = self::getTimezones(true);
+
+        if (!array_key_exists($tz, $tzList)) {
+            throw new InvalidArgumentException('Invalid time zone provided.');
+        }
+    }
+
+    public static function getTimezones(
+        bool $flatten = false
+    ): array {
+        if ($flatten) {
+            $tzSelect = [
                 'UTC' => 'UTC',
-            ],
-        ];
+            ];
+        } else {
+            $tzSelect = [
+                'UTC' => [
+                    'UTC' => 'UTC',
+                ],
+            ];
+        }
 
         $nowUtc = self::nowUtc();
 
@@ -159,7 +177,11 @@ final class Time
                 $tzSubregion .= ' (' . $prettyOffset . ')';
             }
 
-            $tzSelect[$tzRegion][$tzIdentifier] = $tzSubregion;
+            if ($flatten) {
+                $tzSelect[$tzIdentifier] = $tzSubregion;
+            } else {
+                $tzSelect[$tzRegion][$tzIdentifier] = $tzSubregion;
+            }
         }
 
         return $tzSelect;

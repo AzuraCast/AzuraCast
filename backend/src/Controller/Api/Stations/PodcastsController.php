@@ -8,6 +8,7 @@ use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\Podcast as ApiPodcast;
 use App\Entity\ApiGenerator\PodcastApiGenerator;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
 use App\Entity\Repository\PodcastRepository;
@@ -293,12 +294,16 @@ final class PodcastsController extends AbstractApiCrudController
             unset($data['categories']);
         }
 
-        if (isset($data['playlist_id'])) {
+        if (array_key_exists('playlist_id', $data)) {
             $data['playlist'] = $data['playlist_id'];
             unset($data['playlist_id']);
         }
 
         $record = parent::fromArray($data, $record, $context);
+
+        if ($record->source === PodcastSources::Manual) {
+            $record->playlist = null;
+        }
 
         if (null !== $newCategories) {
             $categories = $record->categories;

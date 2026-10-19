@@ -77,6 +77,8 @@ final class MediaMetadataWriterTest extends Unit
     private const string CUSTOM_URL = 'https://example.com/custom';
     private const string EMAIL_URL = 'mailto:artist@example.com';
     private const string NON_ASCII_COPYRIGHT = '© 2020 Müller Records';
+    private const string LINKED_PICTURE_MIME = '-->';
+    private const string LINKED_PICTURE_URL = 'https://example.com/cover.jpg';
 
     private EntityManagerInterface $em;
     private DummyMediaGenerator $dummyMediaGenerator;
@@ -723,6 +725,23 @@ final class MediaMetadataWriterTest extends Unit
         );
     }
 
+    #[DataProvider('replaceablePictureFormatProvider')]
+    public function testCachedArtReplacesLinkedPicture(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->seedLinkedPicture($media);
+
+        $this->assertCachedArtIsEmbeddedOnSave($media);
+    }
+
+    public function testCachedArtIsEmbeddedNextToApeCover(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedApeCover($media, $this->createCoverImage('blue'));
+
+        $this->assertCachedArtIsEmbeddedOnSave($media);
+    }
+
     #[DataProvider('formatProvider')]
     public function testCustomFieldWithNativeTagIsWritten(string $extension): void
     {
@@ -1225,6 +1244,74 @@ final class MediaMetadataWriterTest extends Unit
         $this->ffmpeg->getFFMpegDriver()->command($arguments);
 
         rename($taggedPath, $path);
+    }
+
+    /**
+     * Embeds a picture that only links to an image, which the writer cannot keep.
+     */
+    private function seedLinkedPicture(StationMedia $media): void
+    {
+        if (pathinfo($media->path, PATHINFO_EXTENSION) === 'mp3') {
+            $this->seedId3v2Frames($media, [
+                'APIC' => [
+                    [
+                        'encodingid' => 0,
+                        'mime' => self::LINKED_PICTURE_MIME,
+                        'picturetypeid' => 3,
+                        'description' => '',
+                        'data' => self::LINKED_PICTURE_URL,
+                    ],
+                ],
+            ]);
+
+            return;
+        }
+
+        $pictureBlock = self::encodePictureBlock(self::LINKED_PICTURE_MIME, self::LINKED_PICTURE_URL);
+
+        $this->seedTagsWithGetId3($media, ['METADATA_BLOCK_PICTURE' => [$pictureBlock]], ['vorbiscomment']);
+    }
+
+    /**
+     * Writes an APE cover item, which getID3 can only write as text.
+     */
+    private function seedApeCover(StationMedia $media, string $cover): void
+    {
+        $placeholder = str_repeat('x', strlen($cover));
+
+        $this->seedTagsWithGetId3($media, ['COVER ART (FRONT)' => ['cover.jpg', $placeholder]], ['ape']);
+
+        $path = $this->getLocalPath($media->path);
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($path, str_replace($placeholder, $cover, $filesystem->readFile($path)));
+    }
+
+    private static function encodePictureBlock(string $mime, string $data): string
+    {
+        return base64_encode(
+            pack('N', 3)
+            . pack('N', strlen($mime)) . $mime
+            . pack('N', 0)
+            . pack('N4', 0, 0, 0, 0)
+            . pack('N', strlen($data)) . $data
+        );
+    }
+
+    private function assertCachedArtIsEmbeddedOnSave(StationMedia $media): void
+    {
+        self::assertCount(1, Types::array($this->analyze($media)['comments']['picture'] ?? []));
+
+        $this->mediaRepo->writeAlbumArt($media, $this->createCoverImage('red'));
+
+        $media->title = 'Changed Title';
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $pictures = $this->readPictures($media);
+        self::assertCount(1, $pictures);
+        self::assertSame(
+            file_get_contents($this->getLocalPath(StationMedia::getArtPath($media->unique_id))),
+            $pictures[0]['data'] ?? null
+        );
     }
 
     /**

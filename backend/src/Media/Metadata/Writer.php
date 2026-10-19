@@ -17,13 +17,21 @@ use RuntimeException;
 /**
  * Writes the managed tags into a media file and keeps the file's other tags where getID3 allows it.
  * Embedded pictures stay untouched unless the metadata sets or removes the artwork.
- * Fallback artwork is only written to files without an embedded picture.
+ * Fallback artwork is only written if none of the file's embedded pictures can be kept.
  *
  * Restrictions from getID3:
  * - Existing ID3v2 frames other than text, URL, TXXX, UFID, APIC and the first COMM/WXXX are dropped
  * - ID3v2 pictures with an identical description field are reduced to the first one
  * - FLAC pictures can only be added, never replaced or removed
  * - URL tags with non-ASCII text or an @ are written as TXXX frames
+ *
+ * @phpstan-type AttachedPicture array{
+ *     encodingid: int,
+ *     description: string,
+ *     data: string,
+ *     picturetypeid: int,
+ *     mime: string
+ * }
  */
 final class Writer
 {
@@ -184,14 +192,9 @@ final class Writer
             ];
         }
 
-        $artwork = self::getArtworkToWrite($metadata, $info);
-        if ($artwork !== null) {
-            $tagData['attached_picture'] = [self::buildAttachedPicture($artwork)];
-        } elseif (!$metadata->shouldRemoveArtwork()) {
-            $pictures = self::buildExistingAttachedPictures($info);
-            if ($pictures !== []) {
-                $tagData['attached_picture'] = $pictures;
-            }
+        $pictures = self::getAttachedPicturesToWrite($metadata, $info);
+        if ($pictures !== []) {
+            $tagData['attached_picture'] = $pictures;
         }
 
         return $tagData;
@@ -323,13 +326,25 @@ final class Writer
     /**
      * @param array<string, mixed> $info
      *
-     * @return list<array{
-     *  encodingid: int,
-     *  description: string,
-     *  data: string,
-     *  picturetypeid: int,
-     *  mime: string
-     * }>
+     * @return list<AttachedPicture>
+     */
+    private static function getAttachedPicturesToWrite(MetadataInterface $metadata, array $info): array
+    {
+        $pictures = !$metadata->shouldRemoveArtwork()
+            ? self::buildExistingAttachedPictures($info)
+            : [];
+
+        $artwork = self::getArtworkToWrite($metadata, $pictures !== []);
+
+        return ($artwork !== null)
+            ? [self::buildAttachedPicture($artwork)]
+            : $pictures;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<AttachedPicture>
      */
     private static function buildExistingAttachedPictures(array $info): array
     {
@@ -458,32 +473,50 @@ final class Writer
             $tagData[$key] = [$value];
         }
 
-        $artwork = self::getArtworkToWrite($metadata, $info);
-        if ($artwork !== null) {
-            if (!$isFlac) {
-                [$width, $height] = getimagesizefromstring($artwork) ?: [0, 0];
-                $tagData['metadata_block_picture'] = [
-                    self::encodeFlacPictureBlock(
-                        $artwork,
-                        'image/jpeg',
-                        'cover art',
-                        self::PICTURE_TYPE_COVER_FRONT,
-                        $width,
-                        $height
-                    ),
-                ];
-            } elseif (empty(self::getInfoSection($info, 'flac')['PICTURE'])) {
-                // getID3 can only add FLAC pictures since its metaflac call doesn't remove PICTURE blocks
-                $tagData['attached_picture'] = [self::buildAttachedPicture($artwork)];
-            }
-        } elseif (!$isFlac && !$metadata->shouldRemoveArtwork()) {
-            $pictures = self::buildExistingVorbisPictures($info);
+        if (!$isFlac) {
+            $pictures = self::getVorbisPicturesToWrite($metadata, $info);
             if ($pictures !== []) {
                 $tagData['metadata_block_picture'] = $pictures;
+            }
+        } elseif (empty(self::getInfoSection($info, 'flac')['PICTURE'])) {
+            // getID3 can only add FLAC pictures since its metaflac call doesn't remove PICTURE blocks
+            $artwork = self::getArtworkToWrite($metadata, keepsPicture: false);
+            if ($artwork !== null) {
+                $tagData['attached_picture'] = [self::buildAttachedPicture($artwork)];
             }
         }
 
         return $tagData;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<string>
+     */
+    private static function getVorbisPicturesToWrite(MetadataInterface $metadata, array $info): array
+    {
+        $pictures = !$metadata->shouldRemoveArtwork()
+            ? self::buildExistingVorbisPictures($info)
+            : [];
+
+        $artwork = self::getArtworkToWrite($metadata, $pictures !== []);
+        if ($artwork === null) {
+            return $pictures;
+        }
+
+        [$width, $height] = getimagesizefromstring($artwork) ?: [0, 0];
+
+        return [
+            self::encodeFlacPictureBlock(
+                $artwork,
+                'image/jpeg',
+                'cover art',
+                self::PICTURE_TYPE_COVER_FRONT,
+                $width,
+                $height
+            ),
+        ];
     }
 
     /**
@@ -519,19 +552,14 @@ final class Writer
         return $blocks;
     }
 
-    /**
-     * @param array<string, mixed> $info
-     */
-    private static function getArtworkToWrite(MetadataInterface $metadata, array $info): ?string
+    private static function getArtworkToWrite(MetadataInterface $metadata, bool $keepsPicture): ?string
     {
         $artwork = $metadata->getArtwork();
-        if ($artwork !== null || $metadata->shouldRemoveArtwork()) {
+        if ($artwork !== null || $metadata->shouldRemoveArtwork() || $keepsPicture) {
             return $artwork;
         }
 
-        return self::getInfoSection($info, 'comments', 'picture') === []
-            ? $metadata->getFallbackArtwork()
-            : null;
+        return $metadata->getFallbackArtwork();
     }
 
     private static function getWrittenKnownTag(MetadataInterface $metadata, string $key): ?string
@@ -620,13 +648,7 @@ final class Writer
     }
 
     /**
-     * @return array{
-     *  encodingid: int,
-     *  description: string,
-     *  data: string,
-     *  picturetypeid: int,
-     *  mime: string
-     * }
+     * @return AttachedPicture
      */
     private static function buildAttachedPicture(string $artwork): array
     {

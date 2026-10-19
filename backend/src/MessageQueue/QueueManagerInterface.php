@@ -20,7 +20,7 @@ interface QueueManagerInterface extends SendersLocatorInterface
     /**
      * @return TransportInterface[]
      */
-    public function getTransports(): array;
+    public function getTransports(bool $fast): array;
 
     public function getQueueCount(QueueNames $queue): int;
 }

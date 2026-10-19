@@ -21,6 +21,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Separated background message queue processing into "fast" and "slow" queues to avoid slower tasks interrupting
+  immediate ones (like webhook dispatch).
+
 - Improved the security around StereoTool invocation in Liquidsoap.
 
 - Extended the internal URL filtering security mechanism implemented in previous versions to include additional webhook

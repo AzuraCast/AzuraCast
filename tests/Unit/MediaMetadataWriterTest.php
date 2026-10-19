@@ -73,6 +73,8 @@ final class MediaMetadataWriterTest extends Unit
     private const string CUSTOM_MUSICBRAINZ_ALBUM_ID = '9a8b7c6d-1111-2222-3333-444455556666';
     private const string CUSTOM_YEAR = '2020';
     private const string CUSTOM_URL = 'https://example.com/custom';
+    private const string EMAIL_URL = 'mailto:artist@example.com';
+    private const string NON_ASCII_COPYRIGHT = '© 2020 Müller Records';
 
     private EntityManagerInterface $em;
     private DummyMediaGenerator $dummyMediaGenerator;
@@ -807,9 +809,74 @@ final class MediaMetadataWriterTest extends Unit
 
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
-        $text = Types::array($this->readFileTags($media)['text'] ?? []);
-        self::assertArrayNotHasKey('website', $text);
-        self::assertSame(self::CUSTOM_URL, $text['url_artist'] ?? null);
+        $tags = $this->readFileTags($media);
+        self::assertArrayNotHasKey('website', Types::array($tags['text'] ?? []));
+        self::assertSame([self::CUSTOM_URL], $tags['url_artist'] ?? null);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function urlTagProvider(): array
+    {
+        return [
+            'WOAR' => ['url_artist'],
+            'WCOP' => ['copyright'],
+            'WCOM' => ['commercial_information'],
+            'WXXX' => ['url_user'],
+        ];
+    }
+
+    #[DataProvider('urlTagProvider')]
+    public function testCustomFieldWithUrlTagReplacesUrlFrame(string $tag): void
+    {
+        $media = $this->generateMedia();
+        $this->seedTagsWithGetId3($media, [$tag => [self::FOREIGN_URL]], ['id3v2.3']);
+        $this->addCustomField($media, $tag, self::CUSTOM_URL);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertSame([self::CUSTOM_URL], $this->readFileTags($media)[$tag] ?? null);
+        self::assertArrayNotHasKey($tag, $this->readTxxxFrames($media));
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function urlTagValueWithoutUrlFrameProvider(): array
+    {
+        return [
+            'e-mail address' => ['url_artist', self::EMAIL_URL],
+            'user URL with e-mail address' => ['url_user', self::EMAIL_URL],
+            'non-ASCII text' => ['copyright', self::NON_ASCII_COPYRIGHT],
+        ];
+    }
+
+    #[DataProvider('urlTagValueWithoutUrlFrameProvider')]
+    public function testCustomFieldUrlGetId3CannotWriteIsWrittenAsTxxx(string $tag, string $value): void
+    {
+        $media = $this->generateMedia();
+        $this->addCustomField($media, $tag, $value);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertArrayNotHasKey($tag, $tags);
+        self::assertSame($value, Types::array($tags['text'] ?? [])[$tag] ?? null);
+    }
+
+    #[DataProvider('urlTagValueWithoutUrlFrameProvider')]
+    public function testUrlFrameGetId3CannotRewriteIsMovedToTxxx(string $tag, string $value): void
+    {
+        $media = $this->generateMedia();
+        $this->seedUrlFrame($media, ID3v2::ID3v2ShortFrameNameLookup(3, $tag), $value);
+        self::assertSame([$value], $this->readFileTags($media)[$tag] ?? null);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertArrayNotHasKey($tag, $tags);
+        self::assertSame($value, Types::array($tags['text'] ?? [])[$tag] ?? null);
     }
 
     /**
@@ -959,6 +1026,21 @@ final class MediaMetadataWriterTest extends Unit
         if (!$id3v2Writer->WriteID3v2()) {
             throw new RuntimeException(implode(', ', $id3v2Writer->errors));
         }
+    }
+
+    /**
+     * Writes a URL frame as ISO-8859-1, including an @ which getID3 refuses to write.
+     */
+    private function seedUrlFrame(StationMedia $media, string $frameName, string $url): void
+    {
+        $latin1Url = mb_convert_encoding($url, 'ISO-8859-1', 'UTF-8');
+        $placeholder = str_repeat('x', strlen($latin1Url));
+
+        $this->seedId3v2Frames($media, [$frameName => [self::userUrlFrame('', $placeholder)]]);
+
+        $path = $this->getLocalPath($media->path);
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($path, str_replace($placeholder, $latin1Url, $filesystem->readFile($path)));
     }
 
     /**

@@ -22,6 +22,7 @@ use RuntimeException;
  * - Existing ID3v2 frames other than text, URL, TXXX, UFID, APIC and the first COMM/WXXX are dropped
  * - ID3v2 pictures with an identical description field are reduced to the first one
  * - FLAC pictures can only be added, never replaced or removed
+ * - URL tags with non-ASCII text or an @ are written as TXXX frames
  */
 final class Writer
 {
@@ -112,8 +113,8 @@ final class Writer
 
         $knownTags = $metadata->getKnownTags();
 
-        /** @var array<string, list<string>> $textFrames */
-        $textFrames = [];
+        /** @var array<string, list<string>> $tagValues */
+        $tagValues = [];
 
         // getID3 only rewrites text (T***) & URL (W***) frames from plain values
         // The managed tag, TXXX & WXXX are added separately afterwards.
@@ -132,14 +133,14 @@ final class Writer
 
             $strings = array_values(array_map('strval', array_filter(Types::array($values), 'is_scalar')));
             if ($strings !== []) {
-                $textFrames[$key] = $strings;
+                $tagValues[$key] = $strings;
             }
         }
 
         $totalTracksEntries = Types::array($existing['totaltracks'] ?? []);
         $totalTracks = Types::stringOrNull($totalTracksEntries[0] ?? null, true);
-        if ($totalTracks !== null && isset($textFrames['track_number'][0])) {
-            $textFrames['track_number'] = [$textFrames['track_number'][0] . '/' . $totalTracks];
+        if ($totalTracks !== null && isset($tagValues['track_number'][0])) {
+            $tagValues['track_number'] = [$tagValues['track_number'][0] . '/' . $totalTracks];
         }
 
         // getID3 writes these frames without description, so only those are kept
@@ -150,25 +151,17 @@ final class Writer
 
         foreach ($descriptionlessTexts as $key => $text) {
             if ($text !== '' && !isset($knownTags[$key])) {
-                $textFrames[$key] = [$text];
+                $tagValues[$key] = [$text];
             }
         }
 
-        /** @var array<string, string> $knownTagsAsTxxx */
-        $knownTagsAsTxxx = [];
-
-        // Known tags without a plain ID3v2.3 frame would make getID3 abort the whole write
         foreach ($knownTags as $key => $value) {
-            if (self::supportsId3v2PlainValue($key)) {
-                $textFrames[$key] = [(string) $value];
-            } else {
-                $knownTagsAsTxxx[$key] = (string) $value;
-            }
+            $tagValues[$key] = [(string) $value];
         }
 
-        $tagData = $textFrames;
+        $tagData = self::getId3v2PlainValues($tagValues);
 
-        $txxxRows = $this->buildTxxxRows($metadata, $info, $knownTagsAsTxxx);
+        $txxxRows = $this->buildTxxxRows($metadata, $info, self::getTxxxFallbackValues($tagValues));
         if ($txxxRows !== []) {
             $tagData['text'] = $txxxRows;
         }
@@ -199,8 +192,55 @@ final class Writer
     }
 
     /**
+     * @param array<string, list<string>> $tagValues
+     *
+     * @return array<string, list<string>>
+     */
+    private static function getId3v2PlainValues(array $tagValues): array
+    {
+        $plainValues = [];
+
+        foreach ($tagValues as $key => $values) {
+            $values = array_values(array_filter(
+                $values,
+                static fn(string $value): bool => self::supportsId3v2PlainValue($key, $value)
+            ));
+
+            if ($values !== []) {
+                $plainValues[$key] = $values;
+            }
+        }
+
+        return $plainValues;
+    }
+
+    /**
+     * getID3 would abort the write, drop or mangle these values, so they get moved to TXXX frames.
+     * Only the first value per tag is kept since a TXXX description can only occur once.
+     *
+     * @param array<string, list<string>> $tagValues
+     *
+     * @return array<string, string>
+     */
+    private static function getTxxxFallbackValues(array $tagValues): array
+    {
+        $fallbackValues = [];
+
+        foreach ($tagValues as $key => $values) {
+            foreach ($values as $value) {
+                if (!self::supportsId3v2PlainValue($key, $value)) {
+                    $fallbackValues[$key] = $value;
+                    break;
+                }
+            }
+        }
+
+        return $fallbackValues;
+    }
+
+    /**
      * @param array<string, mixed> $info
-     * @param array<string, string> $knownTagsAsTxxx
+     * @param array<string, string> $fallbackValues
      *
      * @return list<array{
      *  encodingid: int,
@@ -208,7 +248,7 @@ final class Writer
      *  data: string
      * }>
      */
-    private function buildTxxxRows(MetadataInterface $metadata, array $info, array $knownTagsAsTxxx): array
+    private function buildTxxxRows(MetadataInterface $metadata, array $info, array $fallbackValues): array
     {
         $managedDescriptions = array_map(
             static fn(int|string $key): string => strtolower((string) $key),
@@ -236,7 +276,7 @@ final class Writer
             );
         }
 
-        foreach (array_replace($this->getExtraTagValues($metadata), $knownTagsAsTxxx) as $key => $value) {
+        foreach (array_replace($this->getExtraTagValues($metadata), $fallbackValues) as $key => $value) {
             $values[(string) $key] = $value;
         }
 
@@ -248,7 +288,7 @@ final class Writer
         return $rows;
     }
 
-    private static function supportsId3v2PlainValue(string $key): bool
+    private static function supportsId3v2PlainValue(string $key, string $value): bool
     {
         if (in_array($key, self::ID3V2_PLAIN_VALUE_TAGS, true)) {
             return true;
@@ -259,7 +299,19 @@ final class Writer
             long_description: $key
         );
 
+        if (str_starts_with($frameName, 'W')) {
+            return self::isWritableUrl($value);
+        }
+
         return $frameName !== 'TXXX' && str_starts_with($frameName, 'T');
+    }
+
+    /**
+     * getID3 copies URL frame text verbatim and drops the frame if it contains an @
+     */
+    private static function isWritableUrl(string $value): bool
+    {
+        return ID3v2::IsValidURL($value, false) && self::isAscii($value);
     }
 
     /**
@@ -513,7 +565,12 @@ final class Writer
      */
     private static function pickEncodingId(string ...$values): int
     {
-        return preg_match('/[^\x00-\x7F]/', implode('', $values)) ? 1 : 0;
+        return self::isAscii(...$values) ? 0 : 1;
+    }
+
+    private static function isAscii(string ...$values): bool
+    {
+        return !preg_match('/[^\x00-\x7F]/', implode('', $values));
     }
 
     private static function encodeFrameText(int $encodingId, string $value): string

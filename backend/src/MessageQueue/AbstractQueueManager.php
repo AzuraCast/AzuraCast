@@ -32,7 +32,7 @@ abstract class AbstractQueueManager implements QueueManagerInterface
 
         if (!$message instanceof AbstractMessage) {
             return [
-                QueueNames::NormalPriority->value => $this->getTransport(QueueNames::NormalPriority),
+                QueueNames::FastNormalPriority->value => $this->getTransport(QueueNames::FastNormalPriority),
             ];
         }
 

@@ -16,6 +16,6 @@ final class AddNewMediaMessage extends AbstractUniqueMessage
 
     public function getQueue(): QueueNames
     {
-        return QueueNames::Media;
+        return QueueNames::SlowMedia;
     }
 }

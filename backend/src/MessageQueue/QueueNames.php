@@ -7,18 +7,18 @@ namespace App\MessageQueue;
 enum QueueNames: string
 {
     // "Fast" queues (that have their own dedicated processor)
-    case HighPriority = 'high_priority';
-    case NormalPriority = 'normal_priority';
-    case LowPriority = 'low_priority';
+    case FastHighPriority = 'high_priority';
+    case FastNormalPriority = 'normal_priority';
+    case FastLowPriority = 'low_priority';
 
     // "Slow" queues (tasks that take longer)
-    case Media = 'media';
-    case Backup = 'backup';
+    case SlowMedia = 'media';
+    case SlowBackup = 'backup';
 
     public function isFast(): bool
     {
         return match ($this) {
-            self::HighPriority, self::NormalPriority, self::LowPriority => true,
+            self::FastHighPriority, self::FastNormalPriority, self::FastLowPriority => true,
             default => false
         };
     }

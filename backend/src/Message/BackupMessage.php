@@ -33,6 +33,6 @@ final class BackupMessage extends AbstractUniqueMessage
 
     public function getQueue(): QueueNames
     {
-        return QueueNames::Backup;
+        return QueueNames::SlowBackup;
     }
 }

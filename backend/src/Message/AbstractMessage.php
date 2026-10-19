@@ -10,6 +10,6 @@ abstract class AbstractMessage
 {
     public function getQueue(): QueueNames
     {
-        return QueueNames::NormalPriority;
+        return QueueNames::FastNormalPriority;
     }
 }

@@ -212,10 +212,7 @@ final class Writer
     {
         $managedDescriptions = array_map(
             static fn(int|string $key): string => strtolower((string) $key),
-            [
-                ...array_keys($metadata->getExtraTags()),
-                ...array_keys($knownTagsAsTxxx),
-            ]
+            array_keys($metadata->getExtraTags())
         );
 
         /** @var array<string, string> $values */
@@ -228,6 +225,7 @@ final class Writer
             if (
                 isset($values[$description])
                 || in_array(strtolower($description), $managedDescriptions, true)
+                || self::getWrittenKnownTag($metadata, $description) !== null
             ) {
                 continue;
             }
@@ -340,11 +338,20 @@ final class Writer
             ]
         );
 
+        /** @var array<string, list<string>> $commentNamesByKnownTag */
+        $commentNamesByKnownTag = [];
+
         $tagData = [];
 
         foreach (self::getInfoSection($info, 'tags', 'vorbiscomment') as $key => $values) {
             $key = (string) $key;
             if (in_array(strtolower($key), $managedTags, true)) {
+                continue;
+            }
+
+            $knownTag = self::getWrittenKnownTag($metadata, $key);
+            if ($knownTag !== null) {
+                $commentNamesByKnownTag[$knownTag][] = $key;
                 continue;
             }
 
@@ -383,8 +390,10 @@ final class Writer
             }
         }
 
-        foreach ($metadata->getKnownTags() as $key => $value) {
-            $tagData[$key] = [(string) $value];
+        foreach ($metadata->getKnownTags() as $knownTag => $value) {
+            foreach ($commentNamesByKnownTag[$knownTag] ?? [$knownTag] as $key) {
+                $tagData[$key] = [(string) $value];
+            }
         }
 
         foreach ($this->getExtraTagValues($metadata) as $key => $value) {
@@ -450,6 +459,20 @@ final class Writer
         }
 
         return $blocks;
+    }
+
+    private static function getWrittenKnownTag(MetadataInterface $metadata, string $key): ?string
+    {
+        $knownTag = MetadataTags::getTag($key);
+        if ($knownTag === null) {
+            return null;
+        }
+
+        if (!array_key_exists($knownTag->value, $metadata->getKnownTags())) {
+            return null;
+        }
+
+        return $knownTag->value;
     }
 
     /**

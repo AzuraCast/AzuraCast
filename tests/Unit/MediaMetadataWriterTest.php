@@ -71,6 +71,8 @@ final class MediaMetadataWriterTest extends Unit
     private const string CUSTOM_TAG = 'Likes';
     private const string CUSTOM_TAG_VALUE = '42';
     private const string CUSTOM_MUSICBRAINZ_ALBUM_ID = '9a8b7c6d-1111-2222-3333-444455556666';
+    private const string CUSTOM_YEAR = '2020';
+    private const string CUSTOM_URL = 'https://example.com/custom';
 
     private EntityManagerInterface $em;
     private DummyMediaGenerator $dummyMediaGenerator;
@@ -795,6 +797,45 @@ final class MediaMetadataWriterTest extends Unit
             self::CUSTOM_MUSICBRAINZ_ALBUM_ID,
             $this->readMetadata($media)->getExtraTags()[$expectedDescription] ?? null
         );
+    }
+
+    public function testCustomFieldReplacesForeignTxxxWithAliasName(): void
+    {
+        $media = $this->generateMedia();
+        $this->tagFile($media, ['website' => self::FOREIGN_URL]);
+        $this->addCustomField($media, 'url_artist', self::CUSTOM_URL);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $text = Types::array($this->readFileTags($media)['text'] ?? []);
+        self::assertArrayNotHasKey('website', $text);
+        self::assertSame(self::CUSTOM_URL, $text['url_artist'] ?? null);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function vorbisFormatProvider(): array
+    {
+        return [
+            'flac' => ['flac'],
+            'ogg' => ['ogg'],
+        ];
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testCustomFieldReplacesVorbisCommentWithAliasName(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->tagFile($media, ['date' => self::FOREIGN_DATE]);
+        $this->addCustomField($media, 'year', self::CUSTOM_YEAR);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertSame([self::CUSTOM_YEAR], $tags['date'] ?? null);
+        self::assertArrayNotHasKey('year', $tags);
+        self::assertSame(self::CUSTOM_YEAR, $this->readMetadata($media)->getKnownTags()['year'] ?? null);
     }
 
     public function testEmptyUnknownCustomFieldLeavesExistingTagUntouched(): void

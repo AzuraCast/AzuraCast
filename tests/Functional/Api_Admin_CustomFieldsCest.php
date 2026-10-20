@@ -48,7 +48,7 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
         $I->sendPOST($listUrl, ['name' => 'Likes', 'auto_assign' => 'likes']);
         $I->seeResponseCodeIs(200);
 
-        $selfLink = $I->grabDataFromResponseByJsonPath('links.self')[0];
+        $selfLink = $I->grabDataFromResponseByJsonPath('$.links.self')[0];
 
         $I->sendPOST($listUrl, ['name' => 'Likes Copy', 'auto_assign' => 'Likes']);
         $I->seeResponseCodeIs(400);
@@ -73,12 +73,12 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['auto_assign' => 'album_artist']);
 
-        $albumArtistLink = $I->grabDataFromResponseByJsonPath('links.self')[0];
+        $albumArtistLink = $I->grabDataFromResponseByJsonPath('$.links.self')[0];
 
         $I->sendPOST($listUrl, ['name' => 'Year', 'auto_assign' => 'year']);
         $I->seeResponseCodeIs(200);
 
-        $yearLink = $I->grabDataFromResponseByJsonPath('links.self')[0];
+        $yearLink = $I->grabDataFromResponseByJsonPath('$.links.self')[0];
 
         // "date" is an alias of the year tag
         $I->sendPOST($listUrl, ['name' => 'Date', 'auto_assign' => 'date']);

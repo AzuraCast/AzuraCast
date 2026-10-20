@@ -307,36 +307,6 @@ final class StationMediaRepository extends Repository
         return $this->writeMetadata($media, $metadata, $fs);
     }
 
-    private function writeMetadata(
-        StationMedia $media,
-        MetadataInterface $metadata,
-        ExtendedFilesystemInterface $fs
-    ): bool {
-        $media->updateMetaFields();
-
-        $written = $fs->withLocalFile(
-            $media->path,
-            function (string $path) use ($media, $metadata, $fs): bool {
-                if (!$this->metadataManager->write($metadata, $path)) {
-                    return false;
-                }
-
-                if (!$fs->isLocal()) {
-                    $fs->upload($path, $media->path);
-                }
-
-                return true;
-            }
-        ) === true;
-
-        if ($written) {
-            // Keep record newer than file so tags are not read back over it
-            $media->mtime = time() + 5;
-        }
-
-        return $written;
-    }
-
     public function updateWaveform(
         StationMedia $media,
         ?ExtendedFilesystemInterface $fs = null
@@ -419,5 +389,55 @@ final class StationMediaRepository extends Repository
     {
         return $this->storageLocationRepo->getAdapter($media->storage_location)
             ->getFilesystem();
+    }
+
+    private function writeMetadata(
+        StationMedia $media,
+        MetadataInterface $metadata,
+        ExtendedFilesystemInterface $fs
+    ): bool {
+        $media->updateMetaFields();
+
+        $written = $this->writeTagsToStorage($media, $metadata, $fs);
+
+        if ($written) {
+            // Keep record newer than file so tags are not read back over it
+            $media->mtime = time() + 5;
+        }
+
+        return $written;
+    }
+
+    private function writeTagsToStorage(
+        StationMedia $media,
+        MetadataInterface $metadata,
+        ExtendedFilesystemInterface $fs
+    ): bool {
+        try {
+            return $fs->withLocalFile(
+                $media->path,
+                function (string $path) use ($media, $metadata, $fs): bool {
+                    if (!$this->metadataManager->write($metadata, $path)) {
+                        return false;
+                    }
+
+                    if (!$fs->isLocal()) {
+                        $fs->upload($path, $media->path);
+                    }
+
+                    return true;
+                }
+            ) === true;
+        } catch (FilesystemException $e) {
+            $this->logger->error(
+                'Cannot write metadata to storage.',
+                [
+                    'path' => $media->path,
+                    'exception' => $e,
+                ]
+            );
+
+            return false;
+        }
     }
 }

@@ -368,6 +368,17 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame(['Changed Title'], $this->readFileTags($media)['title'] ?? null);
     }
 
+    public function testStorageErrorLeavesMediaUntouched(): void
+    {
+        $media = $this->generateMedia();
+        $mtimeBefore = $media->mtime;
+
+        $emptyRemoteFs = new RemoteFilesystem(new LocalFilesystemAdapter("{$this->storagePath}/empty"));
+
+        self::assertFalse($this->mediaRepo->writeToFile($media, $emptyRemoteFs));
+        self::assertSame($mtimeBefore, $media->mtime);
+    }
+
     public function testTagsGetId3CannotReadAreNotRewritten(): void
     {
         $media = $this->generateMedia();

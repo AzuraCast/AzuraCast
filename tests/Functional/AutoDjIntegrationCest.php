@@ -711,7 +711,9 @@ final class AutoDjIntegrationCest extends CestAbstract
         $event = new BuildQueue(
             station: $station,
             expectedCueTime: $now,
-            expectedPlayTime: $now,
+            expectedPlayTime: $interrupting
+                ? $now
+                : $this->di->get(Scheduler::class)->applyScheduleStartTolerance($station, $now),
             isInterrupting: $interrupting
         );
 

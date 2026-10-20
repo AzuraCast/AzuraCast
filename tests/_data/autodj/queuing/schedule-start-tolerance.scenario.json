@@ -1,0 +1,119 @@
+{
+  "description": "A pick within 15 seconds before a schedule window starts checks schedules 15 seconds later. The starting show then wins over the rotation and over a show whose window ends at that time. A pick 16 seconds before the start sees no shift. A disabled show starting within 15 seconds causes no shift either. A single track show picked at the shifted or the exact window start plays only once in that window.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "pick-just-before-window-start-plays-starting-show",
+      "now": "2018-01-15T12:59:56+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showC",
+          "media_ref": "c1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "pick-past-tolerance-plays-rotation",
+      "now": "2018-01-15T12:59:44+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rotation",
+          "media_ref": "r1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "pick-just-before-handover-plays-starting-show",
+      "now": "2018-01-15T09:59:56+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showB",
+          "media_ref": "b1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "pick-past-tolerance-before-handover-plays-ending-show",
+      "now": "2018-01-15T09:59:44+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showA",
+          "media_ref": "a1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "pick-before-disabled-show-start-plays-ending-show",
+      "now": "2018-01-15T16:59:56+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showF",
+          "media_ref": "f1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "pick-just-before-midnight-plays-next-day-show",
+      "now": "2018-01-15T23:59:56+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showE",
+          "media_ref": "e1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "single-track-show-picked-at-tolerance-limit-plays-once",
+      "now": "2018-01-15T14:59:45+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showD",
+          "media_ref": "d1",
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2018-01-15T15:10:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "rotation",
+          "media_ref": "r1",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "single-track-show-picked-at-window-start-plays-once",
+      "now": "2018-01-15T15:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "showD",
+          "media_ref": "d1",
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2018-01-15T15:10:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "rotation",
+          "media_ref": "r1",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

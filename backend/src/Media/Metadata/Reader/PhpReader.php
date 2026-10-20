@@ -72,6 +72,17 @@ final class PhpReader extends AbstractReader
                     $id3v2Tags[$tag] = [$text];
                 }
 
+                // getID3 returns a TXXX frame with several values as one null-separated string
+                if (isset($id3v2Tags['text'])) {
+                    $id3v2Tags['text'] = array_map(
+                        static fn(mixed $value): array => explode(
+                            Id3v2Text::MULTI_VALUE_SEPARATOR,
+                            Types::string($value)
+                        ),
+                        Types::array($id3v2Tags['text'])
+                    );
+                }
+
                 $toProcess['id3v2'] = $id3v2Tags;
             }
 

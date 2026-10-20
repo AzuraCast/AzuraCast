@@ -11,6 +11,7 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
 use App\Entity\StorageLocation;
+use App\Media\Metadata;
 use App\Media\Metadata\Id3v2Text;
 use App\Media\MetadataInterface;
 use App\Media\MetadataManager;
@@ -79,6 +80,20 @@ final class MediaMetadataWriterTest extends Unit
     private const string NON_ASCII_COPYRIGHT = '© 2020 Müller Records';
     private const string LINKED_PICTURE_MIME = '-->';
     private const string LINKED_PICTURE_URL = 'https://example.com/cover.jpg';
+
+    /** Tags whose text frame only exists in ID3v2.4 */
+    private const array ID3V24_ONLY_TEXT_TAGS = [
+        'encoding_time' => ['2020-05-13T10:00'],
+        'involved_people_list' => ['producer', 'Jane Doe', 'mix', 'Søren Müller'],
+        'mood' => ['Happy', 'Calm'],
+        'musician_credits_list' => ['guitar', 'John', 'drums', 'Paul'],
+        'original_release_time' => ['1999-03-01'],
+        'produced_notice' => ['2020 Müller Records'],
+        'recording_time' => ['2020-05-12'],
+        'release_time' => ['2020-06-01'],
+        'set_subtitle' => ['Disc One'],
+        'tagging_time' => ['2020-05-14T12:30:00'],
+    ];
 
     private EntityManagerInterface $em;
     private DummyMediaGenerator $dummyMediaGenerator;
@@ -534,7 +549,7 @@ final class MediaMetadataWriterTest extends Unit
         $mixedComposers = [self::NON_ASCII_COMPOSER, self::FOREIGN_COMPOSER];
 
         return [
-            'ISO-8859-1' => [0, implode("\x00", $asciiComposers), $asciiComposers],
+            'ISO-8859-1' => [0, implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $asciiComposers), $asciiComposers],
             'UTF-16 with a BOM per value' => [
                 1,
                 implode("\x00\x00", array_map(
@@ -963,6 +978,37 @@ final class MediaMetadataWriterTest extends Unit
         $tags = $this->readFileTags($media);
         self::assertArrayNotHasKey($tag, $tags);
         self::assertSame($value, Types::array($tags['text'] ?? [])[$tag] ?? null);
+    }
+
+    public function testId3v24OnlyTextFramesAreMovedToTxxx(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedTagsWithGetId3(
+            $media,
+            array_map(
+                static fn(array $values): array => [implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $values)],
+                self::ID3V24_ONLY_TEXT_TAGS
+            ),
+            ['id3v2.4']
+        );
+        $knownTagsBefore = $this->readMetadata($media)->getKnownTags();
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        $hash = md5_file($this->getLocalPath($media->path));
+
+        $text = Types::array($this->readFileTags($media)['text'] ?? []);
+        $knownTags = $this->readMetadata($media)->getKnownTags();
+
+        foreach (self::ID3V24_ONLY_TEXT_TAGS as $tag => $values) {
+            $readValue = implode(Metadata::MULTI_VALUE_SEPARATOR . ' ', $values);
+
+            self::assertSame($readValue, $knownTagsBefore[$tag] ?? null);
+            self::assertSame(implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $values), $text[$tag] ?? null);
+            self::assertSame($readValue, $knownTags[$tag] ?? null);
+        }
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        self::assertSame($hash, md5_file($this->getLocalPath($media->path)));
     }
 
     /**

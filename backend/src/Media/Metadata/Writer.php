@@ -24,6 +24,7 @@ use RuntimeException;
  * - ID3v2 pictures with an identical description field are reduced to the first one
  * - FLAC pictures can only be added, never replaced or removed
  * - URL tags with non-ASCII text or an @ are written as TXXX frames
+ * - Text frames that only exist in ID3v2.4 are written as TXXX frames
  *
  * @phpstan-type AttachedPicture array{
  *     encodingid: int,
@@ -140,15 +141,19 @@ final class Writer
                 continue;
             }
 
-            $strings = array_values(array_map('strval', array_filter(Types::array($values), 'is_scalar')));
+            $strings = self::getStringValues($values);
             if ($strings === []) {
                 continue;
             }
 
             // getID3 writes a frame per value but each text frame may only occur once
             $tagValues[$key] = ($frameName[0] === 'T')
-                ? [implode("\x00", $strings)]
+                ? [implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $strings)]
                 : $strings;
+        }
+
+        foreach (self::getId3v24OnlyTextValues($existing) as $key => $value) {
+            $tagValues[$key] = [$value];
         }
 
         $totalTracksEntries = Types::array($existing['totaltracks'] ?? []);
@@ -198,6 +203,51 @@ final class Writer
         }
 
         return $tagData;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function getStringValues(mixed $values): array
+    {
+        $strings = [];
+
+        foreach (Types::array($values) as $value) {
+            if (is_scalar($value)) {
+                $strings[] = (string) $value;
+            }
+        }
+
+        return $strings;
+    }
+
+    /**
+     * These frames have no counterpart in the written ID3v2.3 tag and will move to TXXX frames
+     *
+     * @param array<array-key, mixed> $existing
+     *
+     * @return array<string, string>
+     */
+    private static function getId3v24OnlyTextValues(array $existing): array
+    {
+        $joinedValues = [];
+
+        foreach ($existing as $key => $values) {
+            $key = (string) $key;
+            if (
+                str_starts_with(ID3v2::ID3v2ShortFrameNameLookup(3, $key), 'T')
+                || !str_starts_with(ID3v2::ID3v2ShortFrameNameLookup(4, $key), 'T')
+            ) {
+                continue;
+            }
+
+            $strings = self::getStringValues($values);
+            if ($strings !== []) {
+                $joinedValues[$key] = implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $strings);
+            }
+        }
+
+        return $joinedValues;
     }
 
     /**

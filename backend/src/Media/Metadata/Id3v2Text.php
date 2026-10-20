@@ -9,6 +9,8 @@ use JamesHeinrich\GetID3\Utils;
 
 final class Id3v2Text
 {
+    public const string MULTI_VALUE_SEPARATOR = "\x00";
+
     /**
      * Tags getID3 can only write as a single frame without description
      */

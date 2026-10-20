@@ -40,6 +40,10 @@ final class BuildQueue extends Event
         return $this->expectedCueTime;
     }
 
+    /**
+     * Can be up to Scheduler::SCHEDULE_START_TOLERANCE_SECONDS later than
+     * the queue row's play time when a schedule window starts
+     */
     public function getExpectedPlayTime(): DateTimeImmutable
     {
         return $this->expectedPlayTime;

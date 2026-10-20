@@ -27,8 +27,6 @@ final class Queue
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
 
-    private const int SCHEDULE_START_TOLERANCE_SECONDS = 15;
-
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
         private readonly StationQueueRepository $queueRepo,
@@ -84,7 +82,7 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
-                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                if (!$this->isQueueRowStillValid($station, $queueRow, $expectedPlayTime)) {
                     $this->restorePlaylistQueueSlot($queueRow);
                     $this->em->remove($queueRow);
                     continue;
@@ -116,14 +114,29 @@ final class Queue
                 ]
             );
 
+            $expectedPlayTimeForSchedule = $this->scheduler->applyScheduleStartTolerance(
+                $station,
+                $expectedPlayTime
+            );
+
             // Push another test handler specifically for this one queue task.
             $testHandler = new TestHandler(LogLevel::DEBUG, true);
             $this->logger->pushHandler($testHandler);
 
+            if (!$expectedPlayTimeForSchedule->equalTo($expectedPlayTime)) {
+                $this->logger->debug(
+                    'Checking schedules at a later time because a schedule window starts within the tolerance.',
+                    [
+                        'expected_play_time' => (string) $expectedPlayTime,
+                        'schedule_check_time' => (string) $expectedPlayTimeForSchedule,
+                    ]
+                );
+            }
+
             $event = new BuildQueue(
                 $station,
                 $expectedCueTime,
-                $expectedPlayTime,
+                $expectedPlayTimeForSchedule,
                 $lastSongId
             );
 
@@ -251,6 +264,7 @@ final class Queue
     }
 
     private function isQueueRowStillValid(
+        Station $station,
         StationQueue $queueRow,
         CarbonImmutable $expectedPlayTime
     ): bool {
@@ -265,15 +279,9 @@ final class Queue
 
         // Intentionally only checking the playlists own schedule, a standalone queued group member
         // row is not removed when a group schedule window starts mid-queue.
-        if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $expectedPlayTime, excludeSpecialRules: true)) {
-            return true;
-        }
-
-        // Liquidsoap can change tracks a few seconds before the expected play time
-        // so we need to include some tolerance in our check here
         return $this->scheduler->isPlaylistScheduledToPlayNow(
             $playlist,
-            $expectedPlayTime->addSeconds(self::SCHEDULE_START_TOLERANCE_SECONDS),
+            $this->scheduler->applyScheduleStartTolerance($station, $expectedPlayTime),
             excludeSpecialRules: true
         );
     }

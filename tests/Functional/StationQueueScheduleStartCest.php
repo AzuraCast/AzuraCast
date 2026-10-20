@@ -57,17 +57,35 @@ final class StationQueueScheduleStartCest extends CestAbstract
     /**
      * @before setupComplete
      */
-    public function trackSlidingFarBeforeScheduleStartIsReplaced(FunctionalTester $I): void
+    public function trackSlidingToToleranceLimitKeepsItsPlace(FunctionalTester $I): void
     {
-        $I->wantTo('Replace a queued track that now starts well before its playlist is scheduled.');
+        $I->wantTo('Keep a queued track that now starts exactly 15 seconds before its playlist is scheduled.');
 
         $this->seedPlaylists(scheduleStart: 2200, scheduleEnd: 2300);
         $sentTrack = $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '22:00:02');
 
-        $this->startSentTrack($sentTrack, offsetSeconds: -32);
+        $this->startSentTrack($sentTrack, offsetSeconds: -17);
 
         $I->assertSame(
-            ['21:59:30 Filler 1', '22:03:30 Program 1', '22:13:30 Program 2'],
+            ['21:59:45 Program 1', '22:09:45 Program 2', '22:19:45 Program 3'],
+            $this->upcomingQueue()
+        );
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function trackSlidingPastToleranceLimitIsReplaced(FunctionalTester $I): void
+    {
+        $I->wantTo('Replace a queued track that now starts 16 seconds before its playlist is scheduled.');
+
+        $this->seedPlaylists(scheduleStart: 2200, scheduleEnd: 2300);
+        $sentTrack = $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '22:00:02');
+
+        $this->startSentTrack($sentTrack, offsetSeconds: -18);
+
+        $I->assertSame(
+            ['21:59:44 Filler 1', '22:03:44 Program 1', '22:13:44 Program 2'],
             $this->upcomingQueue()
         );
     }
@@ -90,25 +108,119 @@ final class StationQueueScheduleStartCest extends CestAbstract
         );
     }
 
+    /**
+     * @before setupComplete
+     */
+    public function pickJustBeforeScheduleStartPlaysProgram(FunctionalTester $I): void
+    {
+        $I->wantTo('Pick the program for a track expected a few seconds before its playlist is scheduled.');
+
+        $this->seedPlaylists(scheduleStart: 2200, scheduleEnd: 2300);
+        $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '21:59:56');
+
+        $I->assertSame(
+            ['21:56:00 Sent Track', '21:59:56 Program 1', '22:09:56 Program 2'],
+            $this->upcomingQueue()
+        );
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function pickPastToleranceLimitPlaysFiller(FunctionalTester $I): void
+    {
+        $I->wantTo('Pick a filler for a track expected 16 seconds before the program is scheduled.');
+
+        $this->seedPlaylists(scheduleStart: 2200, scheduleEnd: 2300);
+        $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '21:59:44');
+
+        $I->assertSame(
+            ['21:56:00 Sent Track', '21:59:44 Filler 1', '22:03:44 Program 1'],
+            $this->upcomingQueue()
+        );
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function trackOfEndingScheduleIsReplacedWhenNextScheduleStarts(FunctionalTester $I): void
+    {
+        $I->wantTo('Replace a queued track of an ending schedule when it now starts just before the next schedule.');
+
+        $this->seedBackToBackPrograms();
+        $sentTrack = $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '21:59:40');
+
+        $I->assertSame(
+            ['21:56:00 Sent Track', '21:59:40 Early Program 1', '22:09:40 Late Program 1'],
+            $this->upcomingQueue()
+        );
+
+        $this->startSentTrack($sentTrack, offsetSeconds: 16);
+
+        $I->assertSame(
+            ['21:59:56 Late Program 1', '22:09:56 Late Program 2', '22:19:56 Late Program 3'],
+            $this->upcomingQueue()
+        );
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function loopOnceShowStartingJustBeforeScheduleStartPlaysOnce(FunctionalTester $I): void
+    {
+        $I->wantTo('Play a loop once show only once when it starts a few seconds before its schedule.');
+
+        $this->seedRecordedShow();
+        $sentTrack = $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '22:00:02');
+
+        $this->startSentTrack($sentTrack, offsetSeconds: -6);
+
+        $I->assertSame(
+            ['21:59:56 Recorded Show', '22:29:56 Filler 1', '22:33:56 Filler 2'],
+            $this->upcomingQueue()
+        );
+
+        $this->startNextQueuedTrack(startedAt: '21:59:56');
+
+        $I->assertSame(
+            ['22:29:56 Filler 1', '22:33:56 Filler 2', '22:37:56 Filler 3'],
+            $this->upcomingQueue()
+        );
+    }
+
     private function seedPlaylists(int $scheduleStart, int $scheduleEnd): void
     {
         $this->disableCrossfade();
+        $this->seedGeneralPlaylist();
+        $this->seedProgram('Program', $scheduleStart, $scheduleEnd);
 
-        $general = $this->seedPlaylist('General');
-        foreach (range(1, 3) as $number) {
-            $this->addMedia($general, "Filler {$number}", 240);
-        }
+        $this->em->flush();
+        $this->em->clear();
+    }
 
-        $program = $this->seedPlaylist('Program');
-        foreach (range(1, 3) as $number) {
-            $this->addMedia($program, "Program {$number}", 600);
-        }
+    private function seedBackToBackPrograms(): void
+    {
+        $this->disableCrossfade();
+        $this->seedGeneralPlaylist();
+        $this->seedProgram('Early Program', 2100, 2200);
+        $this->seedProgram('Late Program', 2200, 2300);
 
-        $schedule = new StationSchedule($program);
-        $schedule->start_time = $scheduleStart;
-        $schedule->end_time = $scheduleEnd;
+        $this->em->flush();
+        $this->em->clear();
+    }
 
-        $this->em->persist($schedule);
+    private function seedRecordedShow(): void
+    {
+        $this->disableCrossfade();
+        $this->seedGeneralPlaylist();
+
+        $show = $this->seedPlaylist('Recorded Show');
+        $this->addMedia($show, 'Recorded Show', 1800);
+
+        $schedule = $this->addSchedule($show, 2200, 2300);
+        $schedule->loop_once = true;
+        $schedule->reset_queue_at_start = true;
+
         $this->em->flush();
         $this->em->clear();
     }
@@ -154,11 +266,23 @@ final class StationQueueScheduleStartCest extends CestAbstract
 
     private function startSentTrack(StationQueue $sentTrack, int $offsetSeconds): void
     {
-        CarbonImmutable::setTestNow($this->at(self::SENT_TRACK_EXPECTED_AT)->addSeconds($offsetSeconds));
+        $this->startTrack($sentTrack, $this->at(self::SENT_TRACK_EXPECTED_AT)->addSeconds($offsetSeconds));
+    }
+
+    private function startNextQueuedTrack(string $startedAt): void
+    {
+        $nextTrack = $this->di->get(StationQueueRepository::class)->getUnplayedQueue($this->getTestStation())[0];
+
+        $this->startTrack($nextTrack, $this->at($startedAt));
+    }
+
+    private function startTrack(StationQueue $track, CarbonImmutable $startedAt): void
+    {
+        CarbonImmutable::setTestNow($startedAt);
 
         $this->sendFeedback([
-            'media_id' => (string) $sentTrack->media?->id,
-            'sq_id' => (string) $sentTrack->id,
+            'media_id' => (string) $track->media?->id,
+            'sq_id' => (string) $track->id,
         ]);
 
         $this->buildQueue();
@@ -174,6 +298,24 @@ final class StationQueueScheduleStartCest extends CestAbstract
 
         $this->em->persist($station);
         $this->em->flush();
+    }
+
+    private function seedGeneralPlaylist(): void
+    {
+        $general = $this->seedPlaylist('General');
+        foreach (range(1, 3) as $number) {
+            $this->addMedia($general, "Filler {$number}", 240);
+        }
+    }
+
+    private function seedProgram(string $name, int $scheduleStart, int $scheduleEnd): void
+    {
+        $program = $this->seedPlaylist($name);
+        foreach (range(1, 3) as $number) {
+            $this->addMedia($program, "{$name} {$number}", 600);
+        }
+
+        $this->addSchedule($program, $scheduleStart, $scheduleEnd);
     }
 
     private function seedPlaylist(string $name): StationPlaylist
@@ -195,6 +337,17 @@ final class StationQueueScheduleStartCest extends CestAbstract
 
         $this->di->get(StationPlaylistMediaRepository::class)->addMediaToPlaylist($media, $playlist);
         $this->em->flush();
+    }
+
+    private function addSchedule(StationPlaylist $playlist, int $startTime, int $endTime): StationSchedule
+    {
+        $schedule = new StationSchedule($playlist);
+        $schedule->start_time = $startTime;
+        $schedule->end_time = $endTime;
+
+        $this->em->persist($schedule);
+
+        return $schedule;
     }
 
     private function uploadMedia(string $title, float $length): StationMedia

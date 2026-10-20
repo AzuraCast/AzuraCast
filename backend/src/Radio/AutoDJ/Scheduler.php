@@ -11,6 +11,7 @@ use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
@@ -26,6 +27,8 @@ final class Scheduler
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+
+    public const int SCHEDULE_START_TOLERANCE_SECONDS = 15;
 
     public function __construct(
         private readonly StationPlaylistRepository $spRepo,
@@ -132,6 +135,21 @@ final class Scheduler
         );
 
         return null !== $scheduleItem;
+    }
+
+    /**
+     * Liquidsoap can change tracks a few seconds before the expected play time.
+     */
+    public function applyScheduleStartTolerance(
+        Station $station,
+        DateTimeImmutable $expectedPlayTime
+    ): CarbonImmutable {
+        $expectedPlayTime = CarbonImmutable::instance($expectedPlayTime);
+        $toleratedPlayTime = $expectedPlayTime->addSeconds(self::SCHEDULE_START_TOLERANCE_SECONDS);
+
+        return $this->isScheduleStartingBetween($station, $expectedPlayTime, $toleratedPlayTime)
+            ? $toleratedPlayTime
+            : $expectedPlayTime;
     }
 
     /**
@@ -436,7 +454,7 @@ final class Scheduler
         if ($playlist->backendPlaySingleTrack()) {
             $playedAt = $playlist->played_at;
 
-            if (null !== $playedAt && $dateRange->start->isBefore($playedAt)) {
+            if (null !== $playedAt && $dateRange->start->lessThanOrEqualTo($playedAt)) {
                 return false;
             }
         }
@@ -449,7 +467,7 @@ final class Scheduler
         // Handle "Loop Once" schedule specification.
         if (
             $schedule->loop_once
-            && !$this->shouldPlaylistLoopNow($schedule, $dateRange)
+            && !$this->shouldPlaylistLoopNow($schedule, $dateRange, CarbonImmutable::instance($now))
         ) {
             return false;
         }
@@ -494,7 +512,8 @@ final class Scheduler
 
     private function shouldPlaylistLoopNow(
         StationSchedule $schedule,
-        DateRange $dateRange
+        DateRange $dateRange,
+        CarbonImmutable $now
     ): bool {
         $this->logger->debug('Checking if playlist should loop now.');
 
@@ -523,14 +542,14 @@ final class Scheduler
                 : $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $dateRange->start->subSecond();
+                $resetAt = $dateRange->start->subSecond();
 
-                $this->logger->debug('Resetting playlist queue with now override', [$now]);
+                $this->logger->debug('Resetting playlist queue with now override', [$resetAt]);
 
                 if (PlaylistSources::Playlists === $playlist->source) {
-                    $this->spRepo->resetPlaylistGroupQueue($playlist, $now);
+                    $this->spRepo->resetPlaylistGroupQueue($playlist, $resetAt);
                 } else {
-                    $this->spmRepo->resetQueue($playlist, $now);
+                    $this->spmRepo->resetQueue($playlist, $resetAt);
                 }
 
                 $isQueueEmpty = false;
@@ -539,9 +558,9 @@ final class Scheduler
             $this->logger->debug('Resetting playlist queue.');
 
             if (PlaylistSources::Playlists === $playlist->source) {
-                $this->spRepo->resetPlaylistGroupQueue($playlist);
+                $this->spRepo->resetPlaylistGroupQueue($playlist, $now);
             } else {
-                $this->spmRepo->resetQueue($playlist);
+                $this->spmRepo->resetQueue($playlist, $now);
             }
 
             $isQueueEmpty = false;
@@ -661,5 +680,30 @@ final class Scheduler
         $playOnceDays = $schedule->days;
         return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
+    }
+
+    private function isScheduleStartingBetween(
+        Station $station,
+        CarbonImmutable $from,
+        CarbonImmutable $until
+    ): bool {
+        $stationTz = $station->getTimezoneObject();
+
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
+                continue;
+            }
+
+            foreach ($playlist->schedule_items as $scheduleItem) {
+                if (
+                    !$this->shouldSchedulePlayNow($scheduleItem, $stationTz, $from, excludeSpecialRules: true)
+                    && $this->shouldSchedulePlayNow($scheduleItem, $stationTz, $until, excludeSpecialRules: true)
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

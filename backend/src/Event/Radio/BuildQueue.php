@@ -41,8 +41,8 @@ final class BuildQueue extends Event
     }
 
     /**
-     * Can be up to Scheduler::SCHEDULE_START_TOLERANCE_SECONDS later than
-     * the queue row's play time when a schedule window starts
+     * Can be a few seconds later than the queue row's play time when a schedule starts,
+     * since Liquidsoap can change tracks early
      */
     public function getExpectedPlayTime(): DateTimeImmutable
     {

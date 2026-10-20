@@ -69,7 +69,9 @@ final readonly class InMemoryAutoDjHarness
         $event = new BuildQueue(
             station: $this->entities->station,
             expectedCueTime: $now,
-            expectedPlayTime: $now,
+            expectedPlayTime: $interrupting
+                ? $now
+                : $this->scheduler->applyScheduleStartTolerance($this->entities->station, $now),
             lastPlayedSongId: null,
             isInterrupting: $interrupting
         );

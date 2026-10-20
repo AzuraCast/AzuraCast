@@ -7216,8 +7216,14 @@ components:
     Api_Admin_Vue_CustomFieldProps:
       required:
         - autoAssignTypes
+        - autoAssignAliases
       properties:
         autoAssignTypes:
+          type: object
+          additionalProperties:
+            type: string
+        autoAssignAliases:
+          description: 'Alternative tag names mapped to the known tag they are saved as.'
           type: object
           additionalProperties:
             type: string

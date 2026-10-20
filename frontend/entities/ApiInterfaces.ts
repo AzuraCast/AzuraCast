@@ -596,6 +596,8 @@ export interface ApiAdminVueBackupProps {
 
 export interface ApiAdminVueCustomFieldProps {
     autoAssignTypes: Record<string, string>;
+    /** Alternative tag names mapped to the known tag they are saved as. */
+    autoAssignAliases: Record<string, string>;
 }
 
 export interface ApiAdminVuePermissionsProps {

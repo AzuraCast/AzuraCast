@@ -154,13 +154,19 @@ enum MetadataTags: string
             return $tag;
         }
 
-        $aliases = [
+        return self::getAliases()[$value] ?? null;
+    }
+
+    /**
+     * @return array<string, self>
+     */
+    public static function getAliases(): array
+    {
+        return [
             'date' => self::Year,
             'encodedby' => self::EncodedBy,
             'encoder' => self::EncoderSettings,
             'website' => self::UrlArtist,
         ];
-
-        return $aliases[$value] ?? null;
     }
 }

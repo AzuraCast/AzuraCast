@@ -50,6 +50,7 @@
             v-if="props"
             :create-url="listUrl"
             :auto-assign-types="props.autoAssignTypes"
+            :auto-assign-aliases="props.autoAssignAliases"
             @relist="() => relist()"
         />
     </loading>

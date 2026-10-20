@@ -90,4 +90,24 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
         $I->sendDELETE($yearLink);
         $I->seeResponseCodeIs(200);
     }
+
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function providesKnownTagAliasesToTheEditor(FunctionalTester $I): void
+    {
+        $I->wantTo('Provide the aliases of known media file tags to the custom field editor.');
+
+        $I->sendGET('/api/admin/vue/custom_fields');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson([
+            'autoAssignAliases' => [
+                'date' => 'year',
+                'encodedby' => 'encoded_by',
+                'encoder' => 'encoder_settings',
+                'website' => 'url_artist',
+            ],
+        ]);
+    }
 }

@@ -94,6 +94,7 @@ import { useAppRegle } from "~/vendor/regle.ts";
 const props = defineProps<
     BaseEditModalProps & {
         autoAssignTypes: Record<string, string>;
+        autoAssignAliases: Record<string, string>;
     }
 >();
 const emit = defineEmits<BaseEditModalEmits>();
@@ -156,8 +157,9 @@ const matchingKnownTag = computed<string | null>(() => {
     const normalized = (form.value.auto_assign ?? "")
         .toLowerCase()
         .replace(/-/g, "_");
+    const tagName = props.autoAssignAliases[normalized] ?? normalized;
 
-    return isKnownTag(normalized) ? normalized : null;
+    return isKnownTag(tagName) ? tagName : null;
 });
 
 const switchToMatchingKnownTag = () => {

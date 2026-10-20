@@ -11,6 +11,8 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
 use App\Entity\StorageLocation;
+use App\Flysystem\Adapter\LocalFilesystemAdapter;
+use App\Flysystem\RemoteFilesystem;
 use App\Media\Metadata;
 use App\Media\Metadata\Id3v2Text;
 use App\Media\MetadataInterface;
@@ -353,6 +355,17 @@ final class MediaMetadataWriterTest extends Unit
 
         self::assertFalse($this->mediaRepo->writeToFile($media));
         self::assertSame($mtimeBefore, $media->mtime);
+    }
+
+    public function testTagsAreUploadedToRemoteStorage(): void
+    {
+        $media = $this->generateMedia();
+        $media->title = 'Changed Title';
+
+        $remoteFs = new RemoteFilesystem(new LocalFilesystemAdapter($this->storagePath));
+
+        self::assertTrue($this->mediaRepo->writeToFile($media, $remoteFs));
+        self::assertSame(['Changed Title'], $this->readFileTags($media)['title'] ?? null);
     }
 
     public function testTagsGetId3CannotReadAreNotRewritten(): void

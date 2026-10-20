@@ -316,7 +316,17 @@ final class StationMediaRepository extends Repository
 
         $written = $fs->withLocalFile(
             $media->path,
-            fn(string $path): bool => $this->metadataManager->write($metadata, $path)
+            function (string $path) use ($media, $metadata, $fs): bool {
+                if (!$this->metadataManager->write($metadata, $path)) {
+                    return false;
+                }
+
+                if (!$fs->isLocal()) {
+                    $fs->upload($path, $media->path);
+                }
+
+                return true;
+            }
         ) === true;
 
         if ($written) {

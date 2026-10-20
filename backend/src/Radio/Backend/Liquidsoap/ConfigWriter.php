@@ -1015,15 +1015,17 @@ final class ConfigWriter implements EventSubscriberInterface
                 $stereoToolLibraryPath = StereoTool::getLibraryPath();
                 $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
 
-                $stereoToolConfiguration = escapeshellarg(
-                    $station->getRadioConfigDir()
-                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path
-                );
+                $stereoToolConfiguration = $station->getRadioConfigDir()
+                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path;
 
                 $stereoToolLicenseKey = $settings->stereo_tool_license_key;
 
                 if (is_file($stereoToolBinary)) {
-                    $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+                    $stereoToolProcess = sprintf(
+                        '%s --silent - - -s %s',
+                        $stereoToolBinary,
+                        escapeshellarg($stereoToolConfiguration)
+                    );
 
                     if (!empty($stereoToolLicenseKey)) {
                         $stereoToolProcess .= ' -k ' . escapeshellarg($stereoToolLicenseKey);

@@ -75,6 +75,9 @@ final class MediaMetadataWriterTest extends Unit
     private const string CUSTOM_TAG_VALUE = '42';
     private const string CUSTOM_MUSICBRAINZ_ALBUM_ID = '9a8b7c6d-1111-2222-3333-444455556666';
     private const string CUSTOM_YEAR = '2020';
+    private const string FOREIGN_ENCODED_BY = 'Seeded Encoding Person';
+    private const string CUSTOM_ENCODED_BY = 'Custom Encoding Person';
+    private const string CUSTOM_ENCODER_SETTINGS = 'Custom Encoder 1.0';
     private const string CUSTOM_URL = 'https://example.com/custom';
     private const string EMAIL_URL = 'mailto:artist@example.com';
     private const string NON_ASCII_COPYRIGHT = '© 2020 Müller Records';
@@ -1022,19 +1025,94 @@ final class MediaMetadataWriterTest extends Unit
         ];
     }
 
-    #[DataProvider('vorbisFormatProvider')]
-    public function testCustomFieldReplacesVorbisCommentWithAliasName(string $extension): void
+    /**
+     * @return array<string, array{string, string, string, string, string}>
+     */
+    public static function vorbisCommentAliasProvider(): array
     {
+        return [
+            'flac date' => [
+                'flac',
+                'date',
+                'year',
+                self::FOREIGN_DATE,
+                self::CUSTOM_YEAR,
+            ],
+            'ogg date' => [
+                'ogg',
+                'date',
+                'year',
+                self::FOREIGN_DATE,
+                self::CUSTOM_YEAR,
+            ],
+            'flac encodedby' => [
+                'flac',
+                'encodedby',
+                'encoded_by',
+                self::FOREIGN_ENCODED_BY,
+                self::CUSTOM_ENCODED_BY,
+            ],
+            'ogg encodedby' => [
+                'ogg',
+                'encodedby',
+                'encoded_by',
+                self::FOREIGN_ENCODED_BY,
+                self::CUSTOM_ENCODED_BY,
+            ],
+        ];
+    }
+
+    #[DataProvider('vorbisCommentAliasProvider')]
+    public function testCustomFieldReplacesVorbisCommentWithAliasName(
+        string $extension,
+        string $commentName,
+        string $tag,
+        string $foreignValue,
+        string $customValue
+    ): void {
         $media = $this->generateMedia($extension);
-        $this->tagFile($media, ['date' => self::FOREIGN_DATE]);
-        $this->addCustomField($media, 'year', self::CUSTOM_YEAR);
+        $this->tagFile($media, [$commentName => $foreignValue]);
+        $this->addCustomField($media, $tag, $customValue);
 
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
         $tags = $this->readFileTags($media);
-        self::assertSame([self::CUSTOM_YEAR], $tags['date'] ?? null);
-        self::assertArrayNotHasKey('year', $tags);
-        self::assertSame(self::CUSTOM_YEAR, $this->readMetadata($media)->getKnownTags()['year'] ?? null);
+        self::assertSame([$customValue], $tags[$commentName] ?? null);
+        self::assertArrayNotHasKey($tag, $tags);
+        self::assertSame($customValue, $this->readMetadata($media)->getKnownTags()[$tag] ?? null);
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testEncodedByLeavesEncoderCommentUntouched(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $ffmpegEncoder = $this->readFileTags($media)['encoder'] ?? null;
+        self::assertIsArray($ffmpegEncoder);
+
+        $this->addCustomField($media, 'encoded_by', self::CUSTOM_ENCODED_BY);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertSame($ffmpegEncoder, $tags['encoder'] ?? null);
+        self::assertSame([self::CUSTOM_ENCODED_BY], $tags['encoded_by'] ?? null);
+
+        $knownTags = $this->readMetadata($media)->getKnownTags();
+        self::assertSame(self::CUSTOM_ENCODED_BY, $knownTags['encoded_by'] ?? null);
+        self::assertSame($ffmpegEncoder[0] ?? null, $knownTags['encoder_settings'] ?? null);
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testEncoderSettingsReplaceEncoderComment(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->addCustomField($media, 'encoder_settings', self::CUSTOM_ENCODER_SETTINGS);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertSame([self::CUSTOM_ENCODER_SETTINGS], $tags['encoder'] ?? null);
+        self::assertArrayNotHasKey('encoder_settings', $tags);
     }
 
     public function testEmptyUnknownCustomFieldLeavesExistingTagUntouched(): void

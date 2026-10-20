@@ -115,7 +115,12 @@ const fields: DataTableField<Row>[] = [
                 return $gettext("None");
             }
 
-            return props.value?.autoAssignTypes[value] ?? value;
+            const autoAssignTypes = props.value?.autoAssignTypes ?? {};
+            if (Object.keys(autoAssignTypes).includes(value)) {
+                return autoAssignTypes[value];
+            }
+
+            return value;
         },
     },
     {

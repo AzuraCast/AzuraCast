@@ -115,7 +115,7 @@ const form = ref<Form>({
 });
 
 const isKnownTag = (value: string | null | undefined): value is string => {
-    return !!value && value in props.autoAssignTypes;
+    return !!value && Object.keys(props.autoAssignTypes).includes(value);
 };
 
 const hasChosenCustomTagOption = ref(false);

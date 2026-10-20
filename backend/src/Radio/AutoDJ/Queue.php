@@ -126,7 +126,7 @@ final class Queue
             if (!$expectedPlayTimeForSchedule->equalTo($expectedPlayTime)) {
                 $toleranceSeconds = Scheduler::SCHEDULE_START_TOLERANCE_SECONDS;
                 $this->logger->debug(
-                    "Checking schedules {$toleranceSeconds}s after expected play time since a schedule starts then.",
+                    "Checking schedules {$toleranceSeconds}s after expected play time as a schedule starts by then.",
                     [
                         'expected_play_time' => (string) $expectedPlayTime,
                         'schedule_check_time' => (string) $expectedPlayTimeForSchedule,

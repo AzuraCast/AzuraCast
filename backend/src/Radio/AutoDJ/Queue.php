@@ -14,7 +14,6 @@ use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Monolog\Handler\TestHandler;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -27,6 +26,8 @@ final class Queue
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+
+    private const int SCHEDULE_START_TOLERANCE_SECONDS = 15;
 
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
@@ -251,21 +252,30 @@ final class Queue
 
     private function isQueueRowStillValid(
         StationQueue $queueRow,
-        DateTimeImmutable $expectedPlayTime
+        CarbonImmutable $expectedPlayTime
     ): bool {
         $playlist = $queueRow->playlist;
         if (null === $playlist) {
             return true;
         }
 
+        if (!$playlist->is_enabled) {
+            return false;
+        }
+
         // Intentionally only checking the playlists own schedule, a standalone queued group member
         // row is not removed when a group schedule window starts mid-queue.
-        return $playlist->is_enabled &&
-            $this->scheduler->isPlaylistScheduledToPlayNow(
-                $playlist,
-                $expectedPlayTime,
-                true
-            );
+        if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $expectedPlayTime, excludeSpecialRules: true)) {
+            return true;
+        }
+
+        // Liquidsoap can change tracks a few seconds before the expected play time
+        // so we need to include some tolerance in our check here
+        return $this->scheduler->isPlaylistScheduledToPlayNow(
+            $playlist,
+            $expectedPlayTime->addSeconds(self::SCHEDULE_START_TOLERANCE_SECONDS),
+            excludeSpecialRules: true
+        );
     }
 
     /**

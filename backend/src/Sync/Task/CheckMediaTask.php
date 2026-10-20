@@ -54,7 +54,7 @@ final class CheckMediaTask extends AbstractTask
     public function run(bool $force = false): void
     {
         // Clear existing media queue.
-        $this->queueManager->clearQueue(QueueNames::Media);
+        $this->queueManager->clearQueue(QueueNames::SlowMedia);
 
         // Process for each storage location.
         $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);

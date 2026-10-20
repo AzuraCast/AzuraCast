@@ -134,16 +134,16 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import { computed, onMounted, ref } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import FlowUpload from "~/components/Common/FlowUpload.vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
-import {useAxios} from "~/vendor/axios";
-import {useTranslate} from "~/vendor/gettext";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiAdminStereoToolStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
 const { getApiUrl } = useApiRouter();
 const apiUrl = getApiUrl("/admin/stereo_tool");

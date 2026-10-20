@@ -10,6 +10,7 @@ use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistGroup;
 use App\Entity\StationQueue;
 use App\Entity\StationSchedule;
 use App\Radio\AutoDJ\Queue;
@@ -188,6 +189,31 @@ final class StationQueueScheduleStartCest extends CestAbstract
         );
     }
 
+    /**
+     * @before setupComplete
+     */
+    public function loopOnceGroupStartingJustBeforeScheduleStartPlaysOnce(FunctionalTester $I): void
+    {
+        $I->wantTo('Play a loop once group only once when it starts a few seconds before its schedule.');
+
+        $this->seedRecordedShowGroup();
+        $sentTrack = $this->buildQueueAfterSentTrack(nextTrackExpectedAt: '22:00:02');
+
+        $this->startSentTrack($sentTrack, offsetSeconds: -6);
+
+        $I->assertSame(
+            ['21:59:56 Recorded Show', '22:29:56 Filler 1', '22:33:56 Filler 2'],
+            $this->upcomingQueue()
+        );
+
+        $this->startNextQueuedTrack(startedAt: '21:59:56');
+
+        $I->assertSame(
+            ['22:29:56 Filler 1', '22:33:56 Filler 2', '22:37:56 Filler 3'],
+            $this->upcomingQueue()
+        );
+    }
+
     private function seedPlaylists(int $scheduleStart, int $scheduleEnd): void
     {
         $this->disableCrossfade();
@@ -216,10 +242,23 @@ final class StationQueueScheduleStartCest extends CestAbstract
 
         $show = $this->seedPlaylist('Recorded Show');
         $this->addMedia($show, 'Recorded Show', 1800);
+        $this->addLoopOnceSchedule($show);
 
-        $schedule = $this->addSchedule($show, 2200, 2300);
-        $schedule->loop_once = true;
-        $schedule->reset_queue_at_start = true;
+        $this->em->flush();
+        $this->em->clear();
+    }
+
+    private function seedRecordedShowGroup(): void
+    {
+        $this->disableCrossfade();
+        $this->seedGeneralPlaylist();
+
+        $show = $this->seedPlaylist('Recorded Show');
+        $this->addMedia($show, 'Recorded Show', 1800);
+
+        $group = $this->seedPlaylist('Recorded Show Group', PlaylistSources::Playlists);
+        $this->em->persist(new StationPlaylistGroup($show, $group));
+        $this->addLoopOnceSchedule($group);
 
         $this->em->flush();
         $this->em->clear();
@@ -318,11 +357,13 @@ final class StationQueueScheduleStartCest extends CestAbstract
         $this->addSchedule($program, $scheduleStart, $scheduleEnd);
     }
 
-    private function seedPlaylist(string $name): StationPlaylist
-    {
+    private function seedPlaylist(
+        string $name,
+        PlaylistSources $source = PlaylistSources::Songs
+    ): StationPlaylist {
         $playlist = new StationPlaylist($this->getTestStation());
         $playlist->name = $name;
-        $playlist->source = PlaylistSources::Songs;
+        $playlist->source = $source;
         $playlist->order = PlaylistOrders::Sequential;
 
         $this->em->persist($playlist);
@@ -337,6 +378,13 @@ final class StationQueueScheduleStartCest extends CestAbstract
 
         $this->di->get(StationPlaylistMediaRepository::class)->addMediaToPlaylist($media, $playlist);
         $this->em->flush();
+    }
+
+    private function addLoopOnceSchedule(StationPlaylist $playlist): void
+    {
+        $schedule = $this->addSchedule($playlist, 2200, 2300);
+        $schedule->loop_once = true;
+        $schedule->reset_queue_at_start = true;
     }
 
     private function addSchedule(StationPlaylist $playlist, int $startTime, int $endTime): StationSchedule

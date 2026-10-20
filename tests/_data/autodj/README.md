@@ -239,7 +239,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
 - **History-based gating**
   - Built rows get their expected play time, visibility and played state the way the AutoDJ `Queue` assigns them:
     - the play time is the build's `now`, following rows of a multi-row build are spaced by track length minus the crossfade overlap
-    - when a schedule window starts within `Scheduler::SCHEDULE_START_TOLERANCE_SECONDS` after `now`, a non-interrupting build checks schedules at the end of that span
+    - when a schedule window of an enabled playlist starts within `Scheduler::SCHEDULE_START_TOLERANCE_SECONDS` after `now`, a non-interrupting build checks schedules at the end of that span
       - The rows keep `now` as their play time
     - jingle rows are hidden
     - rows of an interrupting build are marked played as soon as they are built

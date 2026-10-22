@@ -72,7 +72,11 @@ final class MediaMetadataWriterTest extends Unit
     private const string SECOND_FOREIGN_COMPOSER = 'Second Composer';
     private const string NON_ASCII_COMPOSER = 'Søren Müller';
     private const string CUSTOM_COMPOSER = 'Custom Composer';
+    private const string FOREIGN_ALBUM_ARTIST = 'Seeded Album Artist';
     private const string CUSTOM_ALBUM_ARTIST = 'Custom Album Artist';
+    private const string CUSTOM_COMMENT = 'Custom Comment';
+    private const string FOREIGN_LYRICS = 'Seeded Lyrics';
+    private const string CUSTOM_LYRICS = 'Custom Lyrics';
     private const string CUSTOM_TAG = 'Likes';
     private const string CUSTOM_TAG_VALUE = '42';
     private const string CUSTOM_MUSICBRAINZ_ALBUM_ID = '9a8b7c6d-1111-2222-3333-444455556666';
@@ -248,15 +252,13 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame(self::TEST_ARTIST, $knownTags['artist'] ?? null);
         self::assertSame(self::FOREIGN_PUBLISHER, $knownTags['publisher'] ?? null);
         self::assertSame(self::FOREIGN_DATE, $knownTags['year'] ?? null);
+        self::assertSame(self::FOREIGN_COMMENT, $knownTags['comment'] ?? null);
 
         if ($extension === 'mp3') {
-            self::assertSame(self::FOREIGN_COMMENT, $knownTags['comment'] ?? null);
             self::assertSame(self::FOREIGN_TRACK_NUMBER, $knownTags['track_number'] ?? null);
             self::assertSame(self::FOREIGN_TRACK_TOTAL, $extraTags['totaltracks'] ?? null);
         } else {
-            // ffmpeg stores a Vorbis comment as DESCRIPTION, which getID3 reports under that name.
-            self::assertSame(self::FOREIGN_COMMENT, $extraTags['description'] ?? null);
-            self::assertSame(self::FOREIGN_TRACK, $extraTags['tracknumber'] ?? null);
+            self::assertSame(self::FOREIGN_TRACK, $knownTags['track_number'] ?? null);
         }
         self::assertSame(self::REPLAYGAIN_TRACK_GAIN, $extraTags['replaygain_track_gain'] ?? null);
         self::assertSame(self::REPLAYGAIN_TRACK_PEAK, $extraTags['replaygain_track_peak'] ?? null);
@@ -795,24 +797,60 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame([self::CUSTOM_COMPOSER], $this->readFileTags($media)['composer'] ?? null);
     }
 
-    #[DataProvider('formatProvider')]
-    public function testCustomFieldWithoutId3v2FrameIsWrittenAsTxxx(string $extension): void
+    public function testCustomFieldWithoutId3v2FrameIsWrittenAsTxxx(): void
     {
-        $media = $this->generateMedia($extension);
+        $media = $this->generateMedia();
         $this->addCustomField($media, 'album_artist', self::CUSTOM_ALBUM_ARTIST);
 
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
-        $tags = $this->readFileTags($media);
-        $fileValue = $extension === 'mp3'
-            ? Types::array($tags['text'] ?? [])['album_artist'] ?? null
-            : Types::array($tags['album_artist'] ?? [])[0] ?? null;
-
-        self::assertSame(self::CUSTOM_ALBUM_ARTIST, $fileValue);
+        self::assertSame(
+            self::CUSTOM_ALBUM_ARTIST,
+            Types::array($this->readFileTags($media)['text'] ?? [])['album_artist'] ?? null
+        );
         self::assertSame(
             self::CUSTOM_ALBUM_ARTIST,
             $this->readMetadata($media)->getKnownTags()['album_artist'] ?? null
         );
+    }
+
+    /**
+     * @return array<string, array{string, string, string, string}>
+     */
+    public static function vorbisCommentNameProvider(): array
+    {
+        $tags = [
+            'album artist' => ['album_artist', 'albumartist', self::CUSTOM_ALBUM_ARTIST],
+            'track number' => ['track_number', 'tracknumber', self::FOREIGN_TRACK],
+            'year' => ['year', 'date', self::CUSTOM_YEAR],
+        ];
+
+        $cases = [];
+        foreach (self::vorbisFormatProvider() as $format => [$extension]) {
+            foreach ($tags as $name => [$tag, $commentName, $value]) {
+                $cases["{$format} {$name}"] = [$extension, $tag, $commentName, $value];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[DataProvider('vorbisCommentNameProvider')]
+    public function testCustomFieldIsWrittenUnderStandardVorbisCommentName(
+        string $extension,
+        string $tag,
+        string $commentName,
+        string $value
+    ): void {
+        $media = $this->generateMedia($extension);
+        $this->addCustomField($media, $tag, $value);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertSame([$value], $tags[$commentName] ?? null);
+        self::assertArrayNotHasKey($tag, $tags);
+        self::assertSame($value, $this->readMetadata($media)->getKnownTags()[$tag] ?? null);
     }
 
     public function testEmptyCustomFieldLeavesExistingTagUntouched(): void
@@ -1077,36 +1115,23 @@ final class MediaMetadataWriterTest extends Unit
      */
     public static function vorbisCommentAliasProvider(): array
     {
-        return [
-            'flac date' => [
-                'flac',
-                'date',
-                'year',
-                self::FOREIGN_DATE,
-                self::CUSTOM_YEAR,
-            ],
-            'ogg date' => [
-                'ogg',
-                'date',
-                'year',
-                self::FOREIGN_DATE,
-                self::CUSTOM_YEAR,
-            ],
-            'flac encodedby' => [
-                'flac',
-                'encodedby',
-                'encoded_by',
-                self::FOREIGN_ENCODED_BY,
-                self::CUSTOM_ENCODED_BY,
-            ],
-            'ogg encodedby' => [
-                'ogg',
-                'encodedby',
-                'encoded_by',
-                self::FOREIGN_ENCODED_BY,
-                self::CUSTOM_ENCODED_BY,
-            ],
+        $comments = [
+            'date' => ['year', self::FOREIGN_DATE, self::CUSTOM_YEAR],
+            'encodedby' => ['encoded_by', self::FOREIGN_ENCODED_BY, self::CUSTOM_ENCODED_BY],
+            'albumartist' => ['album_artist', self::FOREIGN_ALBUM_ARTIST, self::CUSTOM_ALBUM_ARTIST],
+            'album artist' => ['album_artist', self::FOREIGN_ALBUM_ARTIST, self::CUSTOM_ALBUM_ARTIST],
+            'tracknumber' => ['track_number', self::FOREIGN_TRACK, '8/10'],
+            'description' => ['comment', self::FOREIGN_COMMENT, self::CUSTOM_COMMENT],
         ];
+
+        $cases = [];
+        foreach (self::vorbisFormatProvider() as $format => [$extension]) {
+            foreach ($comments as $commentName => [$tag, $foreignValue, $customValue]) {
+                $cases["{$format} {$commentName}"] = [$extension, $commentName, $tag, $foreignValue, $customValue];
+            }
+        }
+
+        return $cases;
     }
 
     #[DataProvider('vorbisCommentAliasProvider')]
@@ -1142,7 +1167,7 @@ final class MediaMetadataWriterTest extends Unit
 
         $tags = $this->readFileTags($media);
         self::assertSame($ffmpegEncoder, $tags['encoder'] ?? null);
-        self::assertSame([self::CUSTOM_ENCODED_BY], $tags['encoded_by'] ?? null);
+        self::assertSame([self::CUSTOM_ENCODED_BY], $tags['encodedby'] ?? null);
 
         $knownTags = $this->readMetadata($media)->getKnownTags();
         self::assertSame(self::CUSTOM_ENCODED_BY, $knownTags['encoded_by'] ?? null);
@@ -1160,6 +1185,48 @@ final class MediaMetadataWriterTest extends Unit
         $tags = $this->readFileTags($media);
         self::assertSame([self::CUSTOM_ENCODER_SETTINGS], $tags['encoder'] ?? null);
         self::assertArrayNotHasKey('encoder_settings', $tags);
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testLyricsReplaceUnsynchronisedLyricComment(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->tagFile($media, ['unsynchronised_lyric' => self::FOREIGN_LYRICS]);
+        $media->lyrics = self::CUSTOM_LYRICS;
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $tags = $this->readFileTags($media);
+        self::assertSame([self::CUSTOM_LYRICS], $tags['lyrics'] ?? null);
+        self::assertArrayNotHasKey('unsynchronised_lyric', $tags);
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function aliasedLyricsTagProvider(): array
+    {
+        return [
+            'mp3 unsyncedlyrics' => ['mp3', 'unsyncedlyrics'],
+            'flac lyrics' => ['flac', 'lyrics'],
+            'ogg lyrics' => ['ogg', 'lyrics'],
+        ];
+    }
+
+    #[DataProvider('aliasedLyricsTagProvider')]
+    public function testClearedLyricsRemoveAliasedLyricsTag(string $extension, string $tagName): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->tagFile($media, [$tagName => self::FOREIGN_LYRICS]);
+
+        self::assertSame(
+            self::FOREIGN_LYRICS,
+            $this->readMetadata($media)->getKnownTags()['unsynchronised_lyric'] ?? null
+        );
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertArrayNotHasKey('unsynchronised_lyric', $this->readMetadata($media)->getKnownTags());
     }
 
     public function testEmptyUnknownCustomFieldLeavesExistingTagUntouched(): void

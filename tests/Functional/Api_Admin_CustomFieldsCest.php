@@ -103,9 +103,12 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson([
             'autoAssignAliases' => [
+                'albumartist' => 'album_artist',
                 'date' => 'year',
+                'description' => 'comment',
                 'encodedby' => 'encoded_by',
                 'encoder' => 'encoder_settings',
+                'tracknumber' => 'track_number',
                 'website' => 'url_artist',
             ],
         ]);

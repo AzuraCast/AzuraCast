@@ -162,11 +162,50 @@ enum MetadataTags: string
      */
     public static function getAliases(): array
     {
-        return [
-            'date' => self::Year,
-            'encodedby' => self::EncodedBy,
-            'encoder' => self::EncoderSettings,
-            'website' => self::UrlArtist,
+        // Spellings some taggers use instead of the Vorbis comment name
+        $aliases = [
+            'album artist' => self::AlbumArtist, // foobar2000
+            'description' => self::Comment, // Vorbis spec, ffmpeg
+            'unsyncedlyrics' => self::UnsynchronisedLyric, // Mp3tag
         ];
+
+        foreach (self::cases() as $tag) {
+            $vorbisCommentName = $tag->getVorbisCommentName();
+            if ($vorbisCommentName !== $tag->value) {
+                $aliases[$vorbisCommentName] = $tag;
+            }
+        }
+
+        return $aliases;
+    }
+
+    /**
+     * The common name for this tag in Vorbis comments so players and other taggers can read it
+     */
+    public function getVorbisCommentName(): string
+    {
+        return match ($this) {
+            self::AlbumArtist => 'albumartist',
+            self::AlbumArtistSortOrder => 'albumartistsort',
+            self::AlbumSortOrder => 'albumsort',
+            self::ComposerSortOrder => 'composersort',
+            self::ContentGroupDescription => 'grouping',
+            self::EncodedBy => 'encodedby',
+            self::EncoderSettings => 'encoder',
+            self::InitialKey => 'key',
+            self::MediaType => 'media',
+            self::OriginalReleaseTime => 'originaldate',
+            self::OriginalYear => 'originalyear',
+            self::PartOfACompilation => 'compilation',
+            self::PartOfASet => 'discnumber',
+            self::PerformerSortOrder => 'artistsort',
+            self::SetSubtitle => 'discsubtitle',
+            self::TitleSortOrder => 'titlesort',
+            self::TrackNumber => 'tracknumber',
+            self::UnsynchronisedLyric => 'lyrics',
+            self::UrlArtist => 'website',
+            self::Year => 'date',
+            default => $this->value,
+        };
     }
 }

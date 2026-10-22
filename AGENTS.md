@@ -1,6 +1,6 @@
 ## AzuraCast's Policy on Generative AI
 
-AzuraCast is built and maintained by humans. Except for limited cases, we do not use, nor do we encourage the use of, generative AI tooling in the software development process. [See our full policy on Generative AI here.](./CONTRIBUTING.md#our-policy-on-generative-ai)
+AzuraCast is built and maintained by humans. Except for limited cases, we do not use, nor do we encourage the use of, generative AI tooling in the software development process. [See our full policy on Generative AI here.](https://github.com/AzuraCast/.github/blob/main/CONTRIBUTING.md#our-policy-on-generative-ai)
 
 To summarize this stance:
 

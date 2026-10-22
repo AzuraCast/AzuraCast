@@ -107,11 +107,11 @@ final class Writer
      */
     private function buildId3v2TagData(MetadataInterface $metadata, array $info): array
     {
-        $existing = self::getInfoSection($info, 'tags', 'id3v2');
-        $isId3v1Fallback = $existing === [];
+        $existingTags = self::getInfoSection($info, 'tags', 'id3v2');
+        $isId3v1Fallback = $existingTags === [];
         if ($isId3v1Fallback) {
             // Fallback for ID3v1 files that would otherwise lose their values
-            $existing = self::getInfoSection($info, 'tags', 'id3v1');
+            $existingTags = self::getInfoSection($info, 'tags', 'id3v1');
         }
 
         $knownTags = $metadata->getKnownTags();
@@ -121,7 +121,7 @@ final class Writer
 
         // getID3 only rewrites text (T***) & URL (W***) frames from plain values
         // The managed tag, TXXX & WXXX are added separately afterwards.
-        foreach ($existing as $key => $values) {
+        foreach ($existingTags as $key => $values) {
             $key = (string) $key;
             $frameName = ID3v2::ID3v2ShortFrameNameLookup(3, $key);
 
@@ -145,20 +145,14 @@ final class Writer
                 : $strings;
         }
 
-        foreach (self::getId3v24OnlyTextValues($existing) as $key => $value) {
+        foreach (self::getId3v24OnlyTextValues($existingTags) as $key => $value) {
             $tagValues[$key] = [$value];
-        }
-
-        $totalTracksEntries = Types::array($existing['totaltracks'] ?? []);
-        $totalTracks = Types::stringOrNull($totalTracksEntries[0] ?? null, true);
-        if ($totalTracks !== null && isset($tagValues['track_number'][0])) {
-            $tagValues['track_number'] = [$tagValues['track_number'][0] . '/' . $totalTracks];
         }
 
         // getID3 writes these frames without description, so only those are kept
         // ID3v1 has a single comment, getID3 still returns it as a list
         $descriptionlessTexts = $isId3v1Fallback
-            ? ['comment' => Types::string(Types::array($existing['comment'] ?? [])[0] ?? null)]
+            ? ['comment' => Types::string(Types::array($existingTags['comment'] ?? [])[0] ?? null)]
             : Id3v2Text::getDescriptionlessFrameTexts($info);
 
         foreach ($descriptionlessTexts as $key => $text) {
@@ -169,6 +163,11 @@ final class Writer
 
         foreach ($knownTags as $key => $value) {
             $tagValues[$key] = [(string) $value];
+        }
+
+        $trackNumber = self::getTrackNumberWithTotal($existingTags, $tagValues['track_number'][0] ?? null);
+        if ($trackNumber !== null) {
+            $tagValues['track_number'] = [$trackNumber];
         }
 
         $tagData = self::getId3v2PlainValues($tagValues);
@@ -217,15 +216,15 @@ final class Writer
     /**
      * These frames have no counterpart in the written ID3v2.3 tag and will move to TXXX frames
      *
-     * @param array<array-key, mixed> $existing
+     * @param array<array-key, mixed> $existingTags
      *
      * @return array<string, string>
      */
-    private static function getId3v24OnlyTextValues(array $existing): array
+    private static function getId3v24OnlyTextValues(array $existingTags): array
     {
         $joinedValues = [];
 
-        foreach ($existing as $key => $values) {
+        foreach ($existingTags as $key => $values) {
             $key = (string) $key;
             if (
                 str_starts_with(ID3v2::ID3v2ShortFrameNameLookup(3, $key), 'T')
@@ -241,6 +240,27 @@ final class Writer
         }
 
         return $joinedValues;
+    }
+
+    /**
+     * getID3 splits the track total off while reading. A track number with its own total keeps it.
+     *
+     * @param array<array-key, mixed> $existingTags
+     */
+    private static function getTrackNumberWithTotal(array $existingTags, ?string $trackNumber): ?string
+    {
+        $totalTracksValues = Types::array($existingTags['totaltracks'] ?? []);
+        $totalTracks = Types::stringOrNull($totalTracksValues[0] ?? null, true);
+
+        if (
+            $trackNumber === null
+            || $totalTracks === null
+            || str_contains($trackNumber, '/')
+        ) {
+            return $trackNumber;
+        }
+
+        return "{$trackNumber}/{$totalTracks}";
     }
 
     /**

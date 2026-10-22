@@ -836,6 +836,29 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame([self::TEST_TITLE], $this->readFileTags($media)['title'] ?? null);
     }
 
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function trackNumberProvider(): array
+    {
+        return [
+            'imported track number' => [self::FOREIGN_TRACK_NUMBER, self::FOREIGN_TRACK],
+            'track number with its own total' => ['8/10', '8/10'],
+        ];
+    }
+
+    #[DataProvider('trackNumberProvider')]
+    public function testCustomFieldWithTrackNumberWritesTrackTotal(string $trackNumber, string $expectedTrack): void
+    {
+        $media = $this->generateMedia();
+        $this->tagFile($media, ['track' => self::FOREIGN_TRACK]);
+        $this->addCustomField($media, 'track_number', $trackNumber);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertSame(['' => $expectedTrack], $this->readFrameTexts($media, 'TRCK'));
+    }
+
     public function testCustomFieldTagIsReadBackByLoadFromFile(): void
     {
         $media = $this->generateMedia();

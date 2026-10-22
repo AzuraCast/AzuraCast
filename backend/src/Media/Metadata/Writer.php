@@ -27,6 +27,8 @@ use Symfony\Component\Filesystem\Filesystem;
  * - URL tags with non-ASCII text or an @ are written as TXXX frames
  * - Text frames that only exist in ID3v2.4 are written as TXXX frames
  * - Vorbis ReplayGain comments are rewritten from parsed numbers in dB under their REPLAYGAIN_* names
+ * - Multi-line Vorbis comments are split into one comment per line and lose their empty lines
+ * - Multi-line Vorbis lyrics are also split into one comment per line but keep their empty lines
  *
  * @phpstan-type AttachedPicture array{
  *     encodingid: int,
@@ -530,8 +532,12 @@ final class Writer
             $commentNames = $commentNamesByKnownTag[$knownTag]
                 ?? [MetadataTags::from($knownTag)->getVorbisCommentName()];
 
+            $commentValues = ($knownTag === MetadataTags::UnsynchronisedLyric->value)
+                ? self::getLyricsLines((string) $value)
+                : [(string) $value];
+
             foreach ($commentNames as $key) {
-                $tagData[$key] = [(string) $value];
+                $tagData[$key] = $commentValues;
             }
         }
 
@@ -553,6 +559,16 @@ final class Writer
         }
 
         return $tagData;
+    }
+
+    /**
+     * getID3 would split the lyrics into lines itself but drop the empty ones
+     *
+     * @return list<string>
+     */
+    private static function getLyricsLines(string $lyrics): array
+    {
+        return explode("\n", str_replace(["\r\n", "\r"], "\n", $lyrics));
     }
 
     /**

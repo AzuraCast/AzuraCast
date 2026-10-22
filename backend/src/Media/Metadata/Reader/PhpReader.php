@@ -9,6 +9,7 @@ use App\Event\Media\ReadMetadata;
 use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
 use App\Media\Metadata\Id3v2Text;
+use App\Utilities\Strings;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use JamesHeinrich\GetID3\GetID3;
@@ -97,6 +98,11 @@ final class PhpReader extends AbstractReader
 
             $knownTags = $metadata->getKnownTags();
             $extraTags = $metadata->getExtraTags();
+
+            $vorbisCommentLyrics = $this->readVorbisCommentLyrics($info);
+            if ($vorbisCommentLyrics !== null) {
+                $knownTags[MetadataTags::UnsynchronisedLyric->value] = $vorbisCommentLyrics;
+            }
 
             // getID3 skips TXXX frames whose text is "0" when building $info['tags']
             foreach (Types::array($info['id3v2']['TXXX'] ?? []) as $frame) {
@@ -189,6 +195,30 @@ final class PhpReader extends AbstractReader
         }
 
         return $return;
+    }
+
+    /**
+     * Joins several lyrics comments line by line.
+     * Uses getID3's raw comments since its tags drop the empty lines.
+     *
+     * @param array<array-key, mixed> $info
+     */
+    private function readVorbisCommentLyrics(array $info): ?string
+    {
+        $vorbisComments = Types::array($info['flac']['comments'] ?? $info['ogg']['comments'] ?? []);
+
+        foreach ($vorbisComments as $name => $values) {
+            if (MetadataTags::getTagByAnyName((string) $name) !== MetadataTags::UnsynchronisedLyric) {
+                continue;
+            }
+
+            $lyrics = implode("\n", array_filter(Types::array($values), 'is_string'));
+            if (trim($lyrics) !== '') {
+                return Strings::stringToUtf8($lyrics);
+            }
+        }
+
+        return null;
     }
 
     /**

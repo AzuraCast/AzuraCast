@@ -78,6 +78,8 @@ final class MediaMetadataWriterTest extends Unit
     private const string FOREIGN_DESCRIPTION = 'Seeded Description';
     private const string FOREIGN_LYRICS = 'Seeded Lyrics';
     private const string CUSTOM_LYRICS = 'Custom Lyrics';
+    private const string MULTI_LINE_LYRICS = "First line\n\n  Chorus line\n  Chorus line";
+    private const string MULTI_LINE_DESCRIPTION = "First line\n\nSecond line";
     private const string CUSTOM_TAG = 'Likes';
     private const string CUSTOM_TAG_VALUE = '42';
     private const string CUSTOM_MUSICBRAINZ_ALBUM_ID = '9a8b7c6d-1111-2222-3333-444455556666';
@@ -1264,6 +1266,35 @@ final class MediaMetadataWriterTest extends Unit
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
         self::assertArrayNotHasKey('unsynchronised_lyric', $this->readMetadata($media)->getKnownTags());
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testMultiLineLyricsSurviveImportAndRepeatedSaves(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->tagFile($media, ['lyrics' => self::MULTI_LINE_LYRICS]);
+
+        $this->mediaRepo->loadFromFile($media, $this->getLocalPath($media->path));
+        self::assertSame(self::MULTI_LINE_LYRICS, $media->lyrics);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        $this->mediaRepo->loadFromFile($media, $this->getLocalPath($media->path));
+        self::assertSame(self::MULTI_LINE_LYRICS, $media->lyrics);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+        $this->mediaRepo->loadFromFile($media, $this->getLocalPath($media->path));
+        self::assertSame(self::MULTI_LINE_LYRICS, $media->lyrics);
+    }
+
+    #[DataProvider('vorbisFormatProvider')]
+    public function testMultiLineCommentIsSplitIntoOneCommentPerLine(string $extension): void
+    {
+        $media = $this->generateMedia($extension);
+        $this->tagFile($media, ['description' => self::MULTI_LINE_DESCRIPTION]);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        self::assertSame(['First line', 'Second line'], $this->readFileTags($media)['description'] ?? null);
     }
 
     public function testVorbisCommentNamesInTxxxFramesSurviveSave(): void

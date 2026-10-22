@@ -86,6 +86,12 @@ final class PhpReader extends AbstractReader
                 $toProcess['id3v2'] = $id3v2Tags;
             }
 
+            if (isset($toProcess['vorbiscomment'])) {
+                $toProcess['vorbiscomment'] = $this->renameVorbisCommentsToTags(
+                    Types::array($toProcess['vorbiscomment'])
+                );
+            }
+
             $this->aggregateMetaTags($metadata, $toProcess);
 
             $knownTags = $metadata->getKnownTags();
@@ -182,5 +188,22 @@ final class PhpReader extends AbstractReader
         }
 
         return $return;
+    }
+
+    /**
+     * @param array<array-key, mixed> $vorbisComments
+     *
+     * @return array<string, mixed>
+     */
+    private function renameVorbisCommentsToTags(array $vorbisComments): array
+    {
+        $renamedComments = [];
+
+        foreach ($vorbisComments as $name => $values) {
+            $name = (string) $name;
+            $renamedComments[MetadataTags::getTagByAnyName($name)->value ?? $name] = $values;
+        }
+
+        return $renamedComments;
     }
 }

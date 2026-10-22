@@ -145,9 +145,20 @@ enum MetadataTags: string
         ];
     }
 
+    /**
+     * Also maps the names that only identify a tag inside Vorbis comments
+     */
+    public static function getTagByAnyName(string $name): ?self
+    {
+        return self::getTag($name) ?? self::getVorbisCommentAliases()[self::normalizeName($name)] ?? null;
+    }
+
+    /**
+     * Leaves out the names that only identify a tag inside Vorbis comments
+     */
     public static function getTag(string $value): ?self
     {
-        $value = str_replace('-', '_', mb_strtolower($value));
+        $value = self::normalizeName($value);
 
         $tag = self::tryFrom($value);
         if (null !== $tag) {
@@ -161,6 +172,19 @@ enum MetadataTags: string
      * @return array<string, self>
      */
     public static function getAliases(): array
+    {
+        return [
+            'date' => self::Year,
+            'encodedby' => self::EncodedBy,
+            'encoder' => self::EncoderSettings,
+            'website' => self::UrlArtist,
+        ];
+    }
+
+    /**
+     * @return array<string, self>
+     */
+    public static function getVorbisCommentAliases(): array
     {
         // Spellings some taggers use instead of the Vorbis comment name
         $aliases = [
@@ -207,5 +231,10 @@ enum MetadataTags: string
             self::Year => 'date',
             default => $this->value,
         };
+    }
+
+    private static function normalizeName(string $name): string
+    {
+        return str_replace('-', '_', mb_strtolower($name));
     }
 }

@@ -75,6 +75,7 @@ final class MediaMetadataWriterTest extends Unit
     private const string FOREIGN_ALBUM_ARTIST = 'Seeded Album Artist';
     private const string CUSTOM_ALBUM_ARTIST = 'Custom Album Artist';
     private const string CUSTOM_COMMENT = 'Custom Comment';
+    private const string FOREIGN_DESCRIPTION = 'Seeded Description';
     private const string FOREIGN_LYRICS = 'Seeded Lyrics';
     private const string CUSTOM_LYRICS = 'Custom Lyrics';
     private const string CUSTOM_TAG = 'Likes';
@@ -1204,20 +1205,21 @@ final class MediaMetadataWriterTest extends Unit
     /**
      * @return array<string, array{string, string}>
      */
-    public static function aliasedLyricsTagProvider(): array
+    public static function lyricsCommentProvider(): array
     {
         return [
-            'mp3 unsyncedlyrics' => ['mp3', 'unsyncedlyrics'],
             'flac lyrics' => ['flac', 'lyrics'],
             'ogg lyrics' => ['ogg', 'lyrics'],
+            'flac unsyncedlyrics' => ['flac', 'unsyncedlyrics'],
+            'ogg unsyncedlyrics' => ['ogg', 'unsyncedlyrics'],
         ];
     }
 
-    #[DataProvider('aliasedLyricsTagProvider')]
-    public function testClearedLyricsRemoveAliasedLyricsTag(string $extension, string $tagName): void
+    #[DataProvider('lyricsCommentProvider')]
+    public function testClearedLyricsRemoveLyricsComment(string $extension, string $commentName): void
     {
         $media = $this->generateMedia($extension);
-        $this->tagFile($media, [$tagName => self::FOREIGN_LYRICS]);
+        $this->tagFile($media, [$commentName => self::FOREIGN_LYRICS]);
 
         self::assertSame(
             self::FOREIGN_LYRICS,
@@ -1227,6 +1229,37 @@ final class MediaMetadataWriterTest extends Unit
         self::assertTrue($this->mediaRepo->writeToFile($media));
 
         self::assertArrayNotHasKey('unsynchronised_lyric', $this->readMetadata($media)->getKnownTags());
+    }
+
+    public function testVorbisCommentNamesInTxxxFramesSurviveSave(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedTagsWithGetId3(
+            $media,
+            [
+                'text' => [
+                    [
+                        'encodingid' => 0,
+                        'description' => 'LYRICS',
+                        'data' => self::FOREIGN_LYRICS,
+                    ],
+                    [
+                        'encodingid' => 0,
+                        'description' => 'DESCRIPTION',
+                        'data' => self::FOREIGN_DESCRIPTION,
+                    ],
+                ],
+            ],
+            ['id3v2.3']
+        );
+        $media->lyrics = self::CUSTOM_LYRICS;
+        $this->addCustomField($media, 'comment', self::CUSTOM_COMMENT);
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $txxxFrames = $this->readTxxxFrames($media);
+        self::assertSame(self::FOREIGN_LYRICS, $txxxFrames['LYRICS']['data'] ?? null);
+        self::assertSame(self::FOREIGN_DESCRIPTION, $txxxFrames['DESCRIPTION']['data'] ?? null);
     }
 
     public function testEmptyUnknownCustomFieldLeavesExistingTagUntouched(): void

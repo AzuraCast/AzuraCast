@@ -23,7 +23,10 @@ final class CustomFieldsAction implements SingleActionInterface
                 autoAssignTypes: MetadataTags::getNames(),
                 autoAssignAliases: array_map(
                     static fn(MetadataTags $tag): string => $tag->value,
-                    MetadataTags::getAliases()
+                    [
+                        ...MetadataTags::getAliases(),
+                        ...MetadataTags::getVorbisCommentAliases(),
+                    ]
                 ),
             )
         );

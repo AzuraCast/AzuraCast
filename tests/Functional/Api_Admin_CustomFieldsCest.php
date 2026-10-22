@@ -75,6 +75,12 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
 
         $albumArtistLink = $I->grabDataFromResponseByJsonPath('$.links.self')[0];
 
+        $I->sendPOST($listUrl, ['name' => 'Track Number', 'auto_assign' => 'TRACKNUMBER']);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['auto_assign' => 'track_number']);
+
+        $trackNumberLink = $I->grabDataFromResponseByJsonPath('$.links.self')[0];
+
         $I->sendPOST($listUrl, ['name' => 'Year', 'auto_assign' => 'year']);
         $I->seeResponseCodeIs(200);
 
@@ -85,6 +91,9 @@ class Api_Admin_CustomFieldsCest extends CestAbstract
         $I->seeResponseCodeIs(400);
 
         $I->sendDELETE($albumArtistLink);
+        $I->seeResponseCodeIs(200);
+
+        $I->sendDELETE($trackNumberLink);
         $I->seeResponseCodeIs(200);
 
         $I->sendDELETE($yearLink);

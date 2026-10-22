@@ -73,7 +73,7 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
             $value = $this->truncateNullableString($value, 100, true);
 
             $this->auto_assign = ($value !== null)
-                ? (MetadataTags::getTag($value)->value ?? $value)
+                ? (MetadataTags::getTagByAnyName($value)->value ?? $value)
                 : null;
         }
     }

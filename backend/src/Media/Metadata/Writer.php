@@ -337,8 +337,7 @@ final class Writer
             if (
                 isset($values[$description])
                 || in_array(strtolower($description), $managedDescriptions, true)
-                || self::isManagedTag($description)
-                || self::getWrittenKnownTag($metadata, $description) !== null
+                || self::getWrittenKnownTag($metadata, MetadataTags::getTag($description)) !== null
             ) {
                 continue;
             }
@@ -481,11 +480,12 @@ final class Writer
 
         foreach (self::getInfoSection($info, 'tags', 'vorbiscomment') as $key => $values) {
             $key = (string) $key;
-            if (in_array(strtolower($key), $managedTags, true) || self::isManagedTag($key)) {
+            $tag = MetadataTags::getTagByAnyName($key);
+            if (in_array(strtolower($key), $managedTags, true) || self::isManagedTag($tag)) {
                 continue;
             }
 
-            $knownTag = self::getWrittenKnownTag($metadata, $key);
+            $knownTag = self::getWrittenKnownTag($metadata, $tag);
             if ($knownTag !== null) {
                 $commentNamesByKnownTag[$knownTag][] = $key;
                 continue;
@@ -671,14 +671,13 @@ final class Writer
         return $metadata->getFallbackArtwork();
     }
 
-    private static function isManagedTag(string $key): bool
+    private static function isManagedTag(?MetadataTags $tag): bool
     {
-        return in_array(MetadataTags::getTag($key)?->value, self::MANAGED_TAGS, true);
+        return in_array($tag?->value, self::MANAGED_TAGS, true);
     }
 
-    private static function getWrittenKnownTag(MetadataInterface $metadata, string $key): ?string
+    private static function getWrittenKnownTag(MetadataInterface $metadata, ?MetadataTags $knownTag): ?string
     {
-        $knownTag = MetadataTags::getTag($key);
         if ($knownTag === null) {
             return null;
         }

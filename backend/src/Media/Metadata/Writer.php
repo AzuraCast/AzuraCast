@@ -645,13 +645,15 @@ final class Writer
     {
         $filesystem = new Filesystem();
         $tempPath = $filesystem->tempnam(sys_get_temp_dir(), 'azuracast_tags_');
+        $replacementPath = $filesystem->tempnam(dirname($path), '.azuracast_tags_', '.tmp');
 
         try {
             $filesystem->copy($path, $tempPath, true);
             $this->writeTags($tempPath, $tagFormats, $tagData);
-            $filesystem->copy($tempPath, $path, true);
+            $filesystem->copy($tempPath, $replacementPath, true);
+            $filesystem->rename($replacementPath, $path, true);
         } finally {
-            $filesystem->remove($tempPath);
+            $filesystem->remove([$tempPath, $replacementPath]);
         }
     }
 

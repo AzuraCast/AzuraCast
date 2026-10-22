@@ -13,6 +13,7 @@ use JamesHeinrich\GetID3\Utils;
 use JamesHeinrich\GetID3\Write\ID3v2;
 use JamesHeinrich\GetID3\WriteTags;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Writes the managed tags into a media file and keeps the file's other tags where getID3 allows it.
@@ -91,19 +92,10 @@ final class Writer
             ? $this->buildVorbisTagData($metadata, $info, $pathExt === 'flac')
             : $this->buildId3v2TagData($metadata, $info);
 
-        $tagwriter = new WriteTags();
-        $tagwriter->filename = $path;
-        $tagwriter->tagformats = $tagFormats;
-        $tagwriter->tag_data = $tagData;
-        $tagwriter->overwrite_tags = true;
-        $tagwriter->remove_other_tags = false;
-        $tagwriter->tag_encoding = 'UTF-8';
-        $tagwriter->WriteTags();
-
-        if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
-            $messages = array_merge($tagwriter->errors, $tagwriter->warnings);
-
-            throw new RuntimeException(implode(', ', $messages));
+        if ($pathExt === 'ogg') {
+            $this->writeTagsThroughTempCopy($path, $tagFormats, $tagData);
+        } else {
+            $this->writeTags($path, $tagFormats, $tagData);
         }
     }
 
@@ -600,6 +592,49 @@ final class Writer
         }
 
         return $blocks;
+    }
+
+    /**
+     * getID3 puts the file name unescaped into the vorbiscomment shell command
+     * so we need to give it a safe tmp name instead of the real one
+     *
+     * @param list<string> $tagFormats
+     * @param array<string, mixed> $tagData
+     */
+    private function writeTagsThroughTempCopy(string $path, array $tagFormats, array $tagData): void
+    {
+        $filesystem = new Filesystem();
+        $tempPath = $filesystem->tempnam(sys_get_temp_dir(), 'azuracast_tags_');
+
+        try {
+            $filesystem->copy($path, $tempPath, true);
+            $this->writeTags($tempPath, $tagFormats, $tagData);
+            $filesystem->copy($tempPath, $path, true);
+        } finally {
+            $filesystem->remove($tempPath);
+        }
+    }
+
+    /**
+     * @param list<string> $tagFormats
+     * @param array<string, mixed> $tagData
+     */
+    private function writeTags(string $path, array $tagFormats, array $tagData): void
+    {
+        $tagwriter = new WriteTags();
+        $tagwriter->filename = $path;
+        $tagwriter->tagformats = $tagFormats;
+        $tagwriter->tag_data = $tagData;
+        $tagwriter->overwrite_tags = true;
+        $tagwriter->remove_other_tags = false;
+        $tagwriter->tag_encoding = 'UTF-8';
+        $tagwriter->WriteTags();
+
+        if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
+            $messages = array_merge($tagwriter->errors, $tagwriter->warnings);
+
+            throw new RuntimeException(implode(', ', $messages));
+        }
     }
 
     private static function getArtworkToWrite(MetadataInterface $metadata, bool $keepsPicture): ?string

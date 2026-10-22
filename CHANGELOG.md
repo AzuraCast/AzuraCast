@@ -41,6 +41,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.9 (Oct 21, 2026)
+
+This release is solely intended to update our distributed Docker containers to an updated version of PHP that patches recently released high-severity security vulnerabilities.
+
+It does not introduce any new features nor require any additional steps to migrate.
+
+ALL existing AzuraCast users are strongly urged to upgrade to this version if on an older one.
+
+---
+
 # AzuraCast 0.23.8 (Aug 9, 2026)
 
 This release is primarily a quality-of-life release, addressing several security issues that were identified by

@@ -446,6 +446,26 @@ final class MediaMetadataWriterTest extends Unit
         self::assertSame([self::TEST_TITLE], $this->readFileTags($media)['title'] ?? null);
     }
 
+    public function testSavedTagsAreReadBackWithoutOldApeValues(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedTagsWithGetId3(
+            $media,
+            [
+                'TITLE' => [self::FOREIGN_TITLE],
+                'ARTIST' => [self::FOREIGN_ARTISTS],
+            ],
+            ['ape']
+        );
+
+        self::assertTrue($this->mediaRepo->writeToFile($media));
+
+        $knownTags = $this->readMetadata($media)->getKnownTags();
+
+        self::assertSame(self::TEST_TITLE, $knownTags['title'] ?? null);
+        self::assertSame(self::TEST_ARTIST, $knownTags['artist'] ?? null);
+    }
+
     public function testId3v1OnlyTagsAreCarriedIntoId3v2(): void
     {
         $media = $this->generateMedia();
@@ -785,6 +805,21 @@ final class MediaMetadataWriterTest extends Unit
         $this->seedApeCover($media, $this->createCoverImage('blue'));
 
         $this->assertCachedArtIsEmbeddedOnSave($media);
+    }
+
+    public function testSavedArtworkIsReadBackWithoutOldApeCover(): void
+    {
+        $media = $this->generateMedia();
+        $this->seedApeCover($media, $this->createCoverImage('blue'));
+
+        self::assertTrue($this->mediaRepo->updateAlbumArt($media, $this->createCoverImage('red')));
+        self::assertSame(
+            file_get_contents($this->getLocalPath(StationMedia::getArtPath($media->unique_id))),
+            $this->readMetadata($media)->getArtwork()
+        );
+
+        $this->mediaRepo->removeAlbumArt($media);
+        self::assertNull($this->readMetadata($media)->getArtwork());
     }
 
     #[DataProvider('formatProvider')]

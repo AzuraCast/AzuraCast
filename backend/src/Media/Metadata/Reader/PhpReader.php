@@ -48,9 +48,10 @@ final class PhpReader extends AbstractReader
                 );
             }
 
-            // ID3v2 should always supersede ID3v1.
-            if (isset($info['tags']['id3v2'])) {
-                unset($info['tags']['id3v1']);
+            // ID3v2 should always supersede ID3v1 and APE.
+            $hasId3v2 = isset($info['tags']['id3v2']);
+            if ($hasId3v2) {
+                unset($info['tags']['id3v1'], $info['tags']['ape']);
             }
 
             if (!empty($info['tags'])) {
@@ -132,7 +133,7 @@ final class PhpReader extends AbstractReader
             $artwork = null;
             if (!empty($info['attached_picture'][0])) {
                 $artwork = $info['attached_picture'][0]['data'];
-            } elseif (!empty($info['comments']['picture'][0])) {
+            } elseif (!$hasId3v2 && !empty($info['comments']['picture'][0])) {
                 $artwork = $info['comments']['picture'][0]['data'];
             } elseif (!empty($info['id3v2']['APIC'][0]['data'])) {
                 $artwork = $info['id3v2']['APIC'][0]['data'];

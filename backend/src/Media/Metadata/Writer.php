@@ -26,6 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * - FLAC pictures can only be added, never replaced or removed
  * - URL tags with non-ASCII text or an @ are written as TXXX frames
  * - Text frames that only exist in ID3v2.4 are written as TXXX frames
+ * - Vorbis ReplayGain comments are rewritten from parsed numbers in dB under their REPLAYGAIN_* names
  *
  * @phpstan-type AttachedPicture array{
  *     encodingid: int,

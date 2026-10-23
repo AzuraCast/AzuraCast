@@ -11,6 +11,8 @@ final class StationMediaComputedAutoCue extends AbstractArrayEntity
 {
     private const int MAX_AGE_DAYS = 7;
 
+    private const string LIQUIDSOAP_START_NEXT = 'start_next';
+
     public int $mtime = 0;
 
     public int $computed_at = 0;
@@ -26,16 +28,28 @@ final class StationMediaComputedAutoCue extends AbstractArrayEntity
         return new self([
             'mtime' => $mtime,
             'computed_at' => Time::nowUtc()->getTimestamp(),
-            'values' => array_filter(
-                new StationMediaMetadata($computedValues)->toArray() ?? [],
-                fn(?float $value): bool => $value !== null
-            ),
+            'values' => self::toStoredValues($computedValues),
         ]);
     }
 
     public function isValidFor(int $mtime): bool
     {
         return $this->mtime === $mtime && !$this->isExpired();
+    }
+
+    /**
+     * @param array<array-key, mixed> $computedValues
+     *
+     * @return array<string, float>
+     */
+    private static function toStoredValues(array $computedValues): array
+    {
+        $computedValues[StationMediaMetadata::CROSS_START_NEXT] ??= $computedValues[self::LIQUIDSOAP_START_NEXT] ?? null;
+
+        return array_filter(
+            new StationMediaMetadata($computedValues)->toArray() ?? [],
+            fn(?float $value): bool => $value !== null
+        );
     }
 
     private function isExpired(): bool

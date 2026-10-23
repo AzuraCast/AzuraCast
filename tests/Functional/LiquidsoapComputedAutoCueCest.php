@@ -88,6 +88,26 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function computedStartNextIsAnnotated(FunctionalTester $I): void
+    {
+        $I->wantTo('Keep the crossfade start point Liquidsoap computed for a track.');
+
+        $this->enableAutoCue();
+        $media = $this->uploadTestSong();
+
+        $this->saveComputedValues(
+            $I,
+            $this->cacheKeyFor($media),
+            [...self::COMPUTED_VALUES, 'start_next' => 18.5]
+        );
+
+        $annotations = $this->annotate($I, $this->reloadMedia($media));
+        $I->assertSame(18.5, (float) $annotations['autocue_start_next']);
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function stationWithoutAutoCueIgnoresComputedValues(FunctionalTester $I): void
     {
         $I->wantTo('Leave out saved AutoCue values on a station with AutoCue disabled.');
@@ -337,22 +357,34 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
         return array_combine($matches[1], $matches[2]);
     }
 
-    private function saveComputedValues(FunctionalTester $I, string $cacheKey): void
-    {
+    /**
+     * @param array<string, mixed> $computedValues
+     */
+    private function saveComputedValues(
+        FunctionalTester $I,
+        string $cacheKey,
+        array $computedValues = self::COMPUTED_VALUES
+    ): void {
         $I->assertTrue(
-            $this->saveCache($this->getTestStation(), $cacheKey),
+            $this->saveCache($this->getTestStation(), $cacheKey, $computedValues),
             'Computed values should be saved.'
         );
     }
 
-    private function saveCache(Station $station, string $cacheKey): mixed
-    {
+    /**
+     * @param array<string, mixed> $computedValues
+     */
+    private function saveCache(
+        Station $station,
+        string $cacheKey,
+        array $computedValues = self::COMPUTED_VALUES
+    ): mixed {
         return $this->di->get(SaveCacheCommand::class)->run(
             $station,
             true,
             [
                 'cache_key' => $cacheKey,
-                'data' => self::COMPUTED_VALUES,
+                'data' => $computedValues,
             ]
         );
     }

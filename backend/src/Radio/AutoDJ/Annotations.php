@@ -126,16 +126,32 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $cacheKey = $this->autoCueCache->getCacheKey($media);
+        if (!$station->backend_config->enable_auto_cue) {
+            return;
+        }
 
+        $cacheKey = $this->autoCueCache->getCacheKey($media);
         $event->addAnnotations([
             'azuracast_cache_key' => $cacheKey,
-            ...$this->processAutocueAnnotations(
-                $station,
-                $this->autoCueCache->getForCacheKey($cacheKey),
-                $media->length
-            ),
         ]);
+
+        $computedValues = $this->autoCueCache->getForCacheKey($cacheKey);
+        if ($computedValues === null) {
+            return;
+        }
+
+        $manualValues = array_filter(
+            $media->extra_metadata->toArray() ?? [],
+            fn(mixed $value): bool => $value !== null
+        );
+
+        $event->addAnnotations(
+            $this->processAutocueAnnotations(
+                $station,
+                [...$computedValues, ...$manualValues],
+                $media->length
+            )
+        );
     }
 
     /**

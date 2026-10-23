@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
-use App\Cache\AutoCueCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationQueueRepository;
@@ -14,6 +13,7 @@ use App\Entity\StationMediaMetadata as Meta;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
+use App\Radio\Backend\Liquidsoap\AutoCueCacheKey;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -28,7 +28,6 @@ final class Annotations implements EventSubscriberInterface
         private readonly StationQueueRepository $queueRepo,
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly AutoCueCache $autoCueCache,
     ) {
     }
 
@@ -41,7 +40,7 @@ final class Annotations implements EventSubscriberInterface
             AnnotateNextSong::class => [
                 ['annotateSongPath', 20],
                 ['annotateForLiquidsoap', 15],
-                ['addCachedAutocueData', 12],
+                ['addComputedAutoCueValues', 12],
                 ['annotatePlaylist', 10],
                 ['annotateRequest', 5],
                 ['postAnnotation', -10],
@@ -114,7 +113,7 @@ final class Annotations implements EventSubscriberInterface
         ]);
     }
 
-    public function addCachedAutocueData(AnnotateNextSong $event): void
+    public function addComputedAutoCueValues(AnnotateNextSong $event): void
     {
         $media = $event->getMedia();
         if (null === $media) {
@@ -130,12 +129,11 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $cacheKey = $this->autoCueCache->getCacheKey($media);
         $event->addAnnotations([
-            'azuracast_cache_key' => $cacheKey,
+            'azuracast_cache_key' => (string) new AutoCueCacheKey($media->id, $media->mtime),
         ]);
 
-        $computedValues = $this->autoCueCache->getForCacheKey($cacheKey);
+        $computedValues = $this->getComputedAutoCueValues($media);
         if ($computedValues === null) {
             return;
         }
@@ -309,5 +307,18 @@ final class Annotations implements EventSubscriberInterface
             $this->em->persist($queueRow);
             $this->em->flush();
         }
+    }
+
+    /**
+     * @return ?array<string, float>
+     */
+    private function getComputedAutoCueValues(StationMedia $media): ?array
+    {
+        $computedAutoCue = $media->computed_auto_cue;
+        if ($computedAutoCue === null || !$computedAutoCue->isValidFor($media->mtime)) {
+            return null;
+        }
+
+        return $computedAutoCue->values;
     }
 }

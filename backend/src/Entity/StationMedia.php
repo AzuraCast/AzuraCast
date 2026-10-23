@@ -94,6 +94,15 @@ final class StationMedia implements
         }
     }
 
+    #[ORM\Column(name: 'computed_auto_cue', type: 'json', nullable: true)]
+    private ?array $computed_auto_cue_raw = null;
+
+    public ?StationMediaComputedAutoCue $computed_auto_cue {
+        get => $this->computed_auto_cue_raw === null
+            ? null
+            : new StationMediaComputedAutoCue($this->computed_auto_cue_raw);
+    }
+
     /** @var Collection<int, StationPlaylistMedia> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'media'),

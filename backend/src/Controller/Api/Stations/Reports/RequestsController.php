@@ -139,6 +139,8 @@ final class RequestsController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function ($row) use ($router) {
+            unset($row['track']['computed_auto_cue_raw']);
+
             $row['links'] = [];
 
             if (0 === $row['played_at']) {

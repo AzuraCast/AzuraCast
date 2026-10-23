@@ -77,7 +77,7 @@
     "unplugin-icons": "^24",
     "vite": "^8",
     "vite-plugin-biome": "^1.2.0",
-    "vue-tsc": "3.3.9"
+    "vue-tsc": "3.3.13"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,

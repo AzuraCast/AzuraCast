@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit;
+namespace Functional;
 
 use App\Entity\CustomField;
 use App\Entity\Enums\StorageLocationAdapters;

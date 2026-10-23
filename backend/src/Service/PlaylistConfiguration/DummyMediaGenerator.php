@@ -32,7 +32,7 @@ final class DummyMediaGenerator
         $path = $identity->path;
         $length = $identity->length;
 
-        $tmpPath = $this->renderSilentFile($length);
+        $tmpPath = $this->renderSilentFile($length, $path);
 
         try {
             $media = $this->mediaProcessor->processAndUpload($storageLocation, $path, $tmpPath);
@@ -61,9 +61,15 @@ final class DummyMediaGenerator
         return $media;
     }
 
-    private function renderSilentFile(float $length): string
+    private function renderSilentFile(float $length, string $targetPath): string
     {
-        $tmpPath = File::generateTempPath('dummy.mp3');
+        [$codec, $extension] = match (strtolower(pathinfo($targetPath, PATHINFO_EXTENSION))) {
+            'flac' => ['flac', 'flac'],
+            'ogg' => ['libvorbis', 'ogg'],
+            default => ['libmp3lame', 'mp3'],
+        };
+
+        $tmpPath = File::generateTempPath('dummy.' . $extension);
         @unlink($tmpPath); // Ffmpeg won't overwrite the empty file.
 
         $seconds = max(1, (int) round($length));
@@ -78,7 +84,7 @@ final class DummyMediaGenerator
             '-q:a',
             '9',
             '-acodec',
-            'libmp3lame',
+            $codec,
             $tmpPath,
         ]);
 

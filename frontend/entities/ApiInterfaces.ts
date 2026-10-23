@@ -596,6 +596,8 @@ export interface ApiAdminVueBackupProps {
 
 export interface ApiAdminVueCustomFieldProps {
     autoAssignTypes: Record<string, string>;
+    /** Alternative tag names mapped to the known tag they are saved as. */
+    autoAssignAliases: Record<string, string>;
 }
 
 export interface ApiAdminVuePermissionsProps {
@@ -1980,7 +1982,7 @@ export type CustomField = HasAutoIncrementId & {
     name: string;
     /** The programmatic name for the field. Can be auto-generated from the full name. */
     short_name?: string;
-    /** An ID3v2 field to automatically assign to this value, if it exists in the media file. */
+    /** The media file tag this field is read from on import and written back to when the media is saved. */
     auto_assign?: string | null;
 };
 

@@ -14,6 +14,8 @@ use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
+use App\Media\Enums\MetadataTags;
+use App\Media\MetadataInterface;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
@@ -180,17 +182,27 @@ final class StationMediaRepository extends Repository
             }
         }
 
-        $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
-        $tags = $metadata->getKnownTags();
-        foreach ($customFieldsToSet as $tag => $customFieldKey) {
-            if (!empty($tags[$tag])) {
-                $customFieldRow = new StationMediaCustomField($media, $customFieldKey);
-                $customFieldRow->value = $tags[$tag];
+        $knownTags = $metadata->getKnownTags();
+        $extraTags = $metadata->getExtraTags();
 
-                $this->em->persist($customFieldRow);
+        foreach ($this->customFieldRepo->getAutoAssignableFields() as $autoAssign => $customField) {
+            $autoAssign = (string) $autoAssign;
+            $tagEnum = MetadataTags::getTag($autoAssign);
 
-                $fieldCollection->add($customFieldRow);
+            $value = $tagEnum !== null
+                ? ($knownTags[$tagEnum->value] ?? null)
+                : ($extraTags[mb_strtolower($autoAssign)] ?? null);
+
+            if ($value === null || $value === '') {
+                continue;
             }
+
+            $customFieldRow = new StationMediaCustomField($media, $customField);
+            $customFieldRow->value = $value;
+
+            $this->em->persist($customFieldRow);
+
+            $fieldCollection->add($customFieldRow);
         }
 
         $artwork = $metadata->getArtwork();
@@ -236,24 +248,28 @@ final class StationMediaRepository extends Repository
     ): bool {
         $fs = $this->getFilesystem($media);
 
-        $this->writeAlbumArt($media, $rawArtString, $fs);
-        return $this->writeToFile($media, $fs);
+        $metadata = $media->toMetadata();
+        $metadata->setArtwork($this->writeAlbumArt($media, $rawArtString, $fs));
+
+        return $this->writeMetadata($media, $metadata, $fs);
     }
 
     public function writeAlbumArt(
         StationMedia $media,
         string $rawArtString,
         ?ExtendedFilesystemInterface $fs = null
-    ): void {
+    ): string {
         $fs ??= $this->getFilesystem($media);
-
-        $media->art_updated_at = time();
-        $this->em->persist($media);
 
         $albumArtPath = StationMedia::getArtPath($media->unique_id);
         $albumArtString = AlbumArt::resize($rawArtString);
 
         $fs->write($albumArtPath, $albumArtString);
+
+        $media->art_updated_at = time();
+        $this->em->persist($media);
+
+        return $albumArtString;
     }
 
     public function removeAlbumArt(
@@ -266,10 +282,13 @@ final class StationMediaRepository extends Repository
         $fs->delete($currentAlbumArtPath);
 
         $media->art_updated_at = 0;
+
+        $metadata = $media->toMetadata();
+        $metadata->removeArtwork();
+        $this->writeMetadata($media, $metadata, $fs);
+
         $this->em->persist($media);
         $this->em->flush();
-
-        $this->writeToFile($media, $fs);
     }
 
     public function writeToFile(
@@ -282,20 +301,10 @@ final class StationMediaRepository extends Repository
 
         $artPath = StationMedia::getArtPath($media->unique_id);
         if ($fs->fileExists($artPath)) {
-            $metadata->setArtwork($fs->read($artPath));
+            $metadata->setFallbackArtwork($fs->read($artPath));
         }
 
-        // Write tags to the Media file.
-        $media->mtime = time() + 5;
-        $media->updateMetaFields();
-
-        return $fs->withLocalFile(
-            $media->path,
-            function ($path) use ($metadata) {
-                $this->metadataManager->write($metadata, $path);
-                return true;
-            }
-        );
+        return $this->writeMetadata($media, $metadata, $fs);
     }
 
     public function updateWaveform(
@@ -380,5 +389,55 @@ final class StationMediaRepository extends Repository
     {
         return $this->storageLocationRepo->getAdapter($media->storage_location)
             ->getFilesystem();
+    }
+
+    private function writeMetadata(
+        StationMedia $media,
+        MetadataInterface $metadata,
+        ExtendedFilesystemInterface $fs
+    ): bool {
+        $media->updateMetaFields();
+
+        $written = $this->writeTagsToStorage($media, $metadata, $fs);
+
+        if ($written) {
+            // Keep record newer than file so tags are not read back over it
+            $media->mtime = time() + 5;
+        }
+
+        return $written;
+    }
+
+    private function writeTagsToStorage(
+        StationMedia $media,
+        MetadataInterface $metadata,
+        ExtendedFilesystemInterface $fs
+    ): bool {
+        try {
+            return $fs->withLocalFile(
+                $media->path,
+                function (string $path) use ($media, $metadata, $fs): bool {
+                    if (!$this->metadataManager->write($metadata, $path)) {
+                        return false;
+                    }
+
+                    if (!$fs->isLocal()) {
+                        $fs->upload($path, $media->path);
+                    }
+
+                    return true;
+                }
+            ) === true;
+        } catch (FilesystemException $e) {
+            $this->logger->error(
+                'Cannot write metadata to storage.',
+                [
+                    'path' => $media->path,
+                    'exception' => $e,
+                ]
+            );
+
+            return false;
+        }
     }
 }

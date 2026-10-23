@@ -21,6 +21,13 @@ final class CustomFieldsAction implements SingleActionInterface
         return $response->withJson(
             new CustomFieldProps(
                 autoAssignTypes: MetadataTags::getNames(),
+                autoAssignAliases: array_map(
+                    static fn(MetadataTags $tag): string => $tag->value,
+                    [
+                        ...MetadataTags::getAliases(),
+                        ...MetadataTags::getVorbisCommentAliases(),
+                    ]
+                ),
             )
         );
     }

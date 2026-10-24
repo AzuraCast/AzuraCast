@@ -19,6 +19,8 @@ use App\Media\MetadataInterface;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
+use App\Utilities\Types;
+use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;
@@ -385,6 +387,45 @@ final class StationMediaRepository extends Repository
         return $affectedPlaylists;
     }
 
+    public function clearComputedAutoCue(
+        ?StorageLocation $storageLocation = null,
+        ?string $path = null
+    ): int {
+        $clearQuery = $this->createClearComputedAutoCueQuery();
+
+        if ($storageLocation !== null) {
+            $clearQuery->andWhere('sm.storage_location = :storageLocation')
+                ->setParameter('storageLocation', $storageLocation);
+        }
+
+        if ($path !== null) {
+            $clearQuery->andWhere('sm.path LIKE :path')
+                ->setParameter('path', "{$path}%");
+        }
+
+        return Types::int($clearQuery->getQuery()->execute());
+    }
+
+    /**
+     * @param string[] $paths
+     */
+    public function clearComputedAutoCueForPaths(
+        StorageLocation $storageLocation,
+        array $paths
+    ): int {
+        if ($paths === []) {
+            return 0;
+        }
+
+        $clearQuery = $this->createClearComputedAutoCueQuery()
+            ->andWhere('sm.storage_location = :storageLocation')
+            ->andWhere('sm.path IN (:paths)')
+            ->setParameter('storageLocation', $storageLocation)
+            ->setParameter('paths', $paths);
+
+        return Types::int($clearQuery->getQuery()->execute());
+    }
+
     private function getFilesystem(StationMedia $media): ExtendedFilesystemInterface
     {
         return $this->storageLocationRepo->getAdapter($media->storage_location)
@@ -439,5 +480,13 @@ final class StationMediaRepository extends Repository
 
             return false;
         }
+    }
+
+    private function createClearComputedAutoCueQuery(): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->update(StationMedia::class, 'sm')
+            ->set('sm.computed_auto_cue_raw', 'null')
+            ->where('sm.computed_auto_cue_raw IS NOT NULL');
     }
 }

@@ -490,6 +490,22 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/clear-computed-autocue':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      summary: "Clear the AutoCue values Liquidsoap computed for the media of this station."
+      operationId: adminDebugClearStationComputedAutoCue
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/admin/debug/station/{station_id}/clearqueue':
     put:
       tags:
@@ -6574,6 +6590,7 @@ components:
         - clearQueueUrl
         - getNextSongUrl
         - getNowPlayingUrl
+        - clearComputedAutoCueUrl
       properties:
         id:
           type: integer
@@ -6584,6 +6601,8 @@ components:
         getNextSongUrl:
           type: string
         getNowPlayingUrl:
+          type: string
+        clearComputedAutoCueUrl:
           type: string
       type: object
     Api_Admin_Debug_LogEntry:

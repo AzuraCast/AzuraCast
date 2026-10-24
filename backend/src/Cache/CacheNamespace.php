@@ -10,7 +10,6 @@ use Symfony\Contracts\Cache\NamespacedPoolInterface;
 
 enum CacheNamespace: string
 {
-    case AutoCue = 'autocue';
     case AzuraRelay = 'azurarelay';
     case Centrifugo = 'centrifugo';
     case DeviceDetector = 'device_detector';

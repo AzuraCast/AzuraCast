@@ -16,6 +16,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:internal:uptime-wait' => Command\Internal\UptimeWaitCommand::class,
         'azuracast:media:reprocess' => Command\Media\ReprocessCommand::class,
         'azuracast:media:clear-extra' => Command\Media\ClearExtraMetadataCommand::class,
+        'azuracast:media:clear-computed-autocue' => Command\Media\ClearComputedAutoCueCommand::class,
         'azuracast:playlist:export' => Command\Playlists\ExportCommand::class,
         'azuracast:playlist:import' => Command\Playlists\ImportCommand::class,
         'azuracast:queue:process' => Command\MessageQueue\ProcessCommand::class,

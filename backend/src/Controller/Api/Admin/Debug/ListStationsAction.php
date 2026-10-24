@@ -61,6 +61,10 @@ final readonly class ListStationsAction implements SingleActionInterface
                 $router->named(
                     'api:admin:debug:nowplaying',
                     ['station_id' => $station['id']]
+                ),
+                $router->named(
+                    'api:admin:debug:clear-computed-autocue',
+                    ['station_id' => $station['id']]
                 )
             );
         }

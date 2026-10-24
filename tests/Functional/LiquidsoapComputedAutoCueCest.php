@@ -368,6 +368,42 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function mediaBatchClearsSelectedFiles(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values for the selected files in the media manager.');
+
+        $clearedMedia = $this->uploadTestSong('cleared.mp3');
+        $keptMedia = $this->uploadTestSong('kept.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($keptMedia));
+
+        $this->sendClearBatch($I, ['cleared.mp3'], []);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($keptMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function mediaBatchClearsSelectedDirectories(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values for the selected directories in the media manager.');
+
+        $clearedMedia = $this->uploadTestSong('clear/song.mp3');
+        $keptMedia = $this->uploadTestSong('clearance/song.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($keptMedia));
+
+        $this->sendClearBatch($I, [], ['clear']);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($keptMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function debugActionClearsComputedValues(FunctionalTester $I): void
     {
         $I->wantTo('Clear stored AutoCue values for a station from the System Debugger.');
@@ -552,5 +588,25 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
         $commandTester->assertCommandIsSuccessful();
 
         return $commandTester->getDisplay();
+    }
+
+    /**
+     * @param string[] $files
+     * @param string[] $directories
+     */
+    private function sendClearBatch(FunctionalTester $I, array $files, array $directories): void
+    {
+        $station = $this->getTestStation();
+        $I->sendPut("/api/station/{$station->id}/files/batch", [
+            'do' => 'clear-computed-autocue',
+            'current_directory' => '',
+            'files' => $files,
+            'dirs' => $directories,
+        ]);
+
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseContainsJson([
+            'success' => true,
+        ]);
     }
 }

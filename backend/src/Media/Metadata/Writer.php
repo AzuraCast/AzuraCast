@@ -5,67 +5,671 @@ declare(strict_types=1);
 namespace App\Media\Metadata;
 
 use App\Event\Media\WriteMetadata;
+use App\Media\Enums\MetadataTags;
+use App\Media\MetadataInterface;
+use App\Utilities\Types;
+use JamesHeinrich\GetID3\GetID3;
+use JamesHeinrich\GetID3\Utils;
+use JamesHeinrich\GetID3\Write\ID3v2;
 use JamesHeinrich\GetID3\WriteTags;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Writes the managed tags into a media file and keeps the file's other tags where getID3 allows it.
+ * Embedded pictures stay untouched unless the metadata sets or removes the artwork.
+ * Fallback artwork is only written if none of the file's embedded pictures can be kept.
+ *
+ * Restrictions from getID3:
+ * - Existing ID3v2 frames other than text, URL, TXXX, UFID, APIC and the first COMM/WXXX are dropped
+ * - ID3v2 pictures with an identical description field are reduced to the first one
+ * - FLAC pictures can only be added, never replaced or removed
+ * - URL tags with non-ASCII text or an @ are written as TXXX frames
+ * - Text frames that only exist in ID3v2.4 are written as TXXX frames
+ * - Vorbis ReplayGain comments are rewritten from parsed numbers in dB under their REPLAYGAIN_* names
+ * - Multi-line Vorbis comments are split into one comment per line and lose their empty lines
+ * - Multi-line Vorbis lyrics are also split into one comment per line but keep their empty lines
+ *
+ * @phpstan-type AttachedPicture array{
+ *     encodingid: int,
+ *     description: string,
+ *     data: string,
+ *     picturetypeid: int,
+ *     mime: string
+ * }
+ */
 final class Writer
 {
+    private const array MANAGED_TAGS = [
+        MetadataTags::Title->value,
+        MetadataTags::Artist->value,
+        MetadataTags::Album->value,
+        MetadataTags::Genre->value,
+        MetadataTags::UnsynchronisedLyric->value,
+        MetadataTags::Isrc->value,
+    ];
+
+    private const array VORBIS_PICTURE_TAGS = [
+        'picture',
+        'coverartmime',
+    ];
+
+    private const array ID3V2_PLAIN_VALUE_TAGS = [
+        MetadataTags::Comment->value,
+        MetadataTags::UnsynchronisedLyric->value,
+    ];
+
+    private const string MIME_PATTERN = '#^[^/\x00]+/[^/\x00]+$#';
+
+    private const int PICTURE_TYPE_COVER_FRONT = 3;
+    private const int PICTURE_TYPE_MIN = 0;
+    private const int PICTURE_TYPE_MAX = 20;
+
+    private const int UFID_MAX_LENGTH = 64;
+
+    private const float REPLAYGAIN_DEFAULT_REFERENCE_LOUDNESS = 89.0;
+
     public function __invoke(WriteMetadata $event): void
     {
         $path = $event->getPath();
-
         $metadata = $event->getMetadata();
-
-        $tagwriter = new WriteTags();
-        $tagwriter->filename = $path;
-        $tagwriter->overwrite_tags = true;
-        $tagwriter->tag_encoding = 'UTF8';
-        $tagwriter->remove_other_tags = true;
 
         $pathExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         $tagFormats = match ($pathExt) {
-            'mp3', 'mp2', 'mp1', 'riff' => ['id3v1', 'id3v2.3'],
-            'mpc' => ['ape'],
+            'mp3', 'mp2' => ['id3v1', 'id3v2.3'],
             'flac' => ['metaflac'],
-            'real' => ['real'],
             'ogg' => ['vorbiscomment'],
-            default => null,
+            default => throw new RuntimeException('Cannot write tag formats based on file type.'),
         };
 
-        if (null === $tagFormats) {
-            throw new RuntimeException('Cannot write tag formats based on file type.');
+        $info = (new GetID3())->analyze($path);
+
+        if (!empty($info['error'])) {
+            throw new RuntimeException(
+                'Cannot read existing tags: ' . implode(', ', Types::array($info['error']))
+            );
         }
 
-        $tagwriter->tagformats = $tagFormats;
+        $tagData = in_array($pathExt, ['flac', 'ogg'], true)
+            ? $this->buildVorbisTagData($metadata, $info, $pathExt === 'flac')
+            : $this->buildId3v2TagData($metadata, $info);
 
-        $writeTags = $metadata->getKnownTags();
+        if ($pathExt === 'ogg') {
+            $this->writeTagsThroughTempCopy($path, $tagFormats, $tagData);
+        } else {
+            $this->writeTags($path, $tagFormats, $tagData);
+        }
+    }
 
-        if (!empty($metadata->getExtraTags())) {
-            // GetID3 requires all tags for vorbiscomment & metaflac to have string values
-            // so we explicitly need to convert the extra tags into a multiline string
-            $writeTags['text'] = !empty(array_intersect(['vorbiscomment', 'metaflac'], $tagFormats))
-                ? implode(PHP_EOL, $metadata->getExtraTags())
-                : $metadata->getExtraTags();
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return array<string, mixed>
+     */
+    private function buildId3v2TagData(MetadataInterface $metadata, array $info): array
+    {
+        $existingTags = self::getInfoSection($info, 'tags', 'id3v2');
+        $isId3v1Fallback = $existingTags === [];
+        if ($isId3v1Fallback) {
+            // Fallback for ID3v1 files that would otherwise lose their values
+            $existingTags = self::getInfoSection($info, 'tags', 'id3v1');
         }
 
-        $artContents = $metadata->getArtwork();
-        if (null !== $artContents) {
-            $writeTags['attached_picture'] = [
-                'encodingid' => 0, // ISO-8859-1; 3=UTF8 but only allowed in ID3v2.4
-                'description' => 'cover art',
-                'data' => $artContents,
-                'picturetypeid' => 0x03,
-                'mime' => 'image/jpeg',
+        $knownTags = $metadata->getKnownTags();
+
+        /** @var array<string, list<string>> $tagValues */
+        $tagValues = [];
+
+        // getID3 only rewrites text (T***) & URL (W***) frames from plain values
+        // The managed tag, TXXX & WXXX are added separately afterwards.
+        foreach ($existingTags as $key => $values) {
+            $key = (string) $key;
+            $frameName = ID3v2::ID3v2ShortFrameNameLookup(3, $key);
+
+            if (
+                in_array($key, self::MANAGED_TAGS, true)
+                || isset($knownTags[$key])
+                || in_array($frameName, ['', 'TXXX', 'WXXX'], true)
+                || !in_array($frameName[0], ['T', 'W'], true)
+            ) {
+                continue;
+            }
+
+            $strings = self::getStringValues($values);
+            if ($strings === []) {
+                continue;
+            }
+
+            // getID3 writes a frame per value but each text frame may only occur once
+            $tagValues[$key] = ($frameName[0] === 'T')
+                ? [implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $strings)]
+                : $strings;
+        }
+
+        foreach (self::getId3v24OnlyTextValues($existingTags) as $key => $value) {
+            $tagValues[$key] = [$value];
+        }
+
+        // getID3 writes these frames without description, so only those are kept
+        // ID3v1 has a single comment, getID3 still returns it as a list
+        $descriptionlessTexts = $isId3v1Fallback
+            ? ['comment' => Types::string(Types::array($existingTags['comment'] ?? [])[0] ?? null)]
+            : Id3v2Text::getDescriptionlessFrameTexts($info);
+
+        foreach ($descriptionlessTexts as $key => $text) {
+            if ($text !== '' && !isset($knownTags[$key])) {
+                $tagValues[$key] = [$text];
+            }
+        }
+
+        foreach ($knownTags as $key => $value) {
+            $tagValues[$key] = [(string) $value];
+        }
+
+        $trackNumber = self::getTrackNumberWithTotal($existingTags, $tagValues['track_number'][0] ?? null);
+        if ($trackNumber !== null) {
+            $tagValues['track_number'] = [$trackNumber];
+        }
+
+        $tagData = self::getId3v2PlainValues($tagValues);
+
+        $txxxRows = $this->buildTxxxRows($metadata, $info, self::getTxxxFallbackValues($tagValues));
+        if ($txxxRows !== []) {
+            $tagData['text'] = $txxxRows;
+        }
+
+        $ufid = Types::array(self::getInfoSection($info, 'id3v2', 'UFID')[0] ?? []);
+        if (
+            isset($ufid['ownerid'], $ufid['data'])
+            && is_string($ufid['data'])
+            && strlen($ufid['data']) <= self::UFID_MAX_LENGTH
+        ) {
+            $tagData['unique_file_identifier'] = [
+                'ownerid' => $ufid['ownerid'],
+                'data' => $ufid['data'],
             ];
         }
 
-        // All ID3 tags have to be written as ['key' => ['value']] (i.e. with "value" at position 0).
-        $tagData = array_map(function ($tagValue) {
-            return [$tagValue];
-        }, $writeTags);
+        $pictures = self::getAttachedPicturesToWrite($metadata, $info);
+        if ($pictures !== []) {
+            $tagData['attached_picture'] = $pictures;
+        }
 
+        return $tagData;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function getStringValues(mixed $values): array
+    {
+        $strings = [];
+
+        foreach (Types::array($values) as $value) {
+            if (is_scalar($value)) {
+                $strings[] = (string) $value;
+            }
+        }
+
+        return $strings;
+    }
+
+    /**
+     * These frames have no counterpart in the written ID3v2.3 tag and will move to TXXX frames
+     *
+     * @param array<array-key, mixed> $existingTags
+     *
+     * @return array<string, string>
+     */
+    private static function getId3v24OnlyTextValues(array $existingTags): array
+    {
+        $joinedValues = [];
+
+        foreach ($existingTags as $key => $values) {
+            $key = (string) $key;
+            if (
+                str_starts_with(ID3v2::ID3v2ShortFrameNameLookup(3, $key), 'T')
+                || !str_starts_with(ID3v2::ID3v2ShortFrameNameLookup(4, $key), 'T')
+            ) {
+                continue;
+            }
+
+            $strings = self::getStringValues($values);
+            if ($strings !== []) {
+                $joinedValues[$key] = implode(Id3v2Text::MULTI_VALUE_SEPARATOR, $strings);
+            }
+        }
+
+        return $joinedValues;
+    }
+
+    /**
+     * getID3 splits the track total off while reading. A track number with its own total keeps it.
+     *
+     * @param array<array-key, mixed> $existingTags
+     */
+    private static function getTrackNumberWithTotal(array $existingTags, ?string $trackNumber): ?string
+    {
+        $totalTracksValues = Types::array($existingTags['totaltracks'] ?? []);
+        $totalTracks = Types::stringOrNull($totalTracksValues[0] ?? null, true);
+
+        if (
+            $trackNumber === null
+            || $totalTracks === null
+            || str_contains($trackNumber, '/')
+        ) {
+            return $trackNumber;
+        }
+
+        return "{$trackNumber}/{$totalTracks}";
+    }
+
+    /**
+     * @param array<string, list<string>> $tagValues
+     *
+     * @return array<string, list<string>>
+     */
+    private static function getId3v2PlainValues(array $tagValues): array
+    {
+        $plainValues = [];
+
+        foreach ($tagValues as $key => $values) {
+            $values = array_values(array_filter(
+                $values,
+                static fn(string $value): bool => self::supportsId3v2PlainValue($key, $value)
+            ));
+
+            if ($values !== []) {
+                $plainValues[$key] = $values;
+            }
+        }
+
+        return $plainValues;
+    }
+
+    /**
+     * getID3 would abort the write, drop or mangle these values, so they get moved to TXXX frames.
+     * Only the first value per tag is kept since a TXXX description can only occur once.
+     *
+     * @param array<string, list<string>> $tagValues
+     *
+     * @return array<string, string>
+     */
+    private static function getTxxxFallbackValues(array $tagValues): array
+    {
+        $fallbackValues = [];
+
+        foreach ($tagValues as $key => $values) {
+            foreach ($values as $value) {
+                if (!self::supportsId3v2PlainValue($key, $value)) {
+                    $fallbackValues[$key] = $value;
+                    break;
+                }
+            }
+        }
+
+        return $fallbackValues;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     * @param array<string, string> $fallbackValues
+     *
+     * @return list<array{
+     *  encodingid: int,
+     *  description: string,
+     *  data: string
+     * }>
+     */
+    private function buildTxxxRows(MetadataInterface $metadata, array $info, array $fallbackValues): array
+    {
+        $managedDescriptions = array_map(
+            static fn(int|string $key): string => strtolower((string) $key),
+            array_keys($metadata->getExtraTags())
+        );
+
+        /** @var array<string, string> $values */
+        $values = [];
+
+        foreach (self::getInfoSection($info, 'id3v2', 'TXXX') as $frame) {
+            $frame = Types::array($frame);
+            $description = Types::string($frame['description'] ?? null);
+
+            if (
+                isset($values[$description])
+                || in_array(strtolower($description), $managedDescriptions, true)
+                || self::getWrittenKnownTag($metadata, MetadataTags::getTag($description)) !== null
+            ) {
+                continue;
+            }
+
+            $values[$description] = Id3v2Text::decode(
+                Types::string($frame['encoding'] ?? null, 'ISO-8859-1'),
+                Types::string($frame['data'] ?? null)
+            );
+        }
+
+        foreach (array_replace($this->getExtraTagValues($metadata), $fallbackValues) as $key => $value) {
+            $values[(string) $key] = $value;
+        }
+
+        $rows = [];
+        foreach ($values as $description => $data) {
+            $rows[] = self::encodeTxxxRow((string) $description, $data);
+        }
+
+        return $rows;
+    }
+
+    private static function supportsId3v2PlainValue(string $key, string $value): bool
+    {
+        if (in_array($key, self::ID3V2_PLAIN_VALUE_TAGS, true)) {
+            return true;
+        }
+
+        $frameName = ID3v2::ID3v2ShortFrameNameLookup(
+            majorversion: 3,
+            long_description: $key
+        );
+
+        if (str_starts_with($frameName, 'W')) {
+            return self::isWritableUrl($value);
+        }
+
+        return $frameName !== 'TXXX' && str_starts_with($frameName, 'T');
+    }
+
+    /**
+     * getID3 copies URL frame text verbatim and drops the frame if it contains an @
+     */
+    private static function isWritableUrl(string $value): bool
+    {
+        return ID3v2::IsValidURL($value, false) && self::isAscii($value);
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<AttachedPicture>
+     */
+    private static function getAttachedPicturesToWrite(MetadataInterface $metadata, array $info): array
+    {
+        $pictures = !$metadata->shouldRemoveArtwork()
+            ? self::buildExistingAttachedPictures($info)
+            : [];
+
+        $artwork = self::getArtworkToWrite($metadata, $pictures !== []);
+
+        return ($artwork !== null)
+            ? [self::buildAttachedPicture($artwork)]
+            : $pictures;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<AttachedPicture>
+     */
+    private static function buildExistingAttachedPictures(array $info): array
+    {
+        $rows = [];
+
+        foreach (['APIC', 'PIC'] as $frameName) {
+            foreach (self::getInfoSection($info, 'id3v2', $frameName) as $frame) {
+                $frame = Types::array($frame);
+
+                $data = Types::string($frame['data'] ?? null);
+                $mime = Types::string($frame['mime'] ?? null);
+                if (!preg_match(self::MIME_PATTERN, $mime)) {
+                    $mime = Types::string($frame['image_mime'] ?? null);
+                }
+                $pictureType = Types::int($frame['picturetypeid'] ?? null, self::PICTURE_TYPE_COVER_FRONT);
+
+                if (
+                    $data === ''
+                    || !preg_match(self::MIME_PATTERN, $mime)
+                    || $pictureType < self::PICTURE_TYPE_MIN
+                    || $pictureType > self::PICTURE_TYPE_MAX
+                ) {
+                    continue;
+                }
+
+                $description = Id3v2Text::decode(
+                    Types::string($frame['encoding'] ?? null, 'ISO-8859-1'),
+                    Types::string($frame['description'] ?? null)
+                );
+                $encodingId = self::pickEncodingId($description);
+                $description = self::encodeFrameText($encodingId, $description);
+
+                // getID3 refuses a second picture with the same description
+                if (isset($rows[$description])) {
+                    continue;
+                }
+
+                $rows[$description] = [
+                    'encodingid' => $encodingId,
+                    'description' => $description,
+                    'data' => $data,
+                    'picturetypeid' => $pictureType,
+                    'mime' => $mime,
+                ];
+            }
+        }
+
+        return array_values($rows);
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return array<string, mixed>
+     */
+    private function buildVorbisTagData(MetadataInterface $metadata, array $info, bool $isFlac): array
+    {
+        $managedTags = array_map(
+            static fn(int|string $key): string => strtolower((string) $key),
+            [
+                ...array_keys($metadata->getExtraTags()),
+                ...self::VORBIS_PICTURE_TAGS,
+            ]
+        );
+
+        /** @var array<string, list<string>> $commentNamesByKnownTag */
+        $commentNamesByKnownTag = [];
+
+        $tagData = [];
+
+        foreach (self::getInfoSection($info, 'tags', 'vorbiscomment') as $key => $values) {
+            $key = (string) $key;
+            $tag = MetadataTags::getTagByAnyName($key);
+            if (in_array(strtolower($key), $managedTags, true) || self::isManagedTag($tag)) {
+                continue;
+            }
+
+            $knownTag = self::getWrittenKnownTag($metadata, $tag);
+            if ($knownTag !== null) {
+                $commentNamesByKnownTag[$knownTag][] = $key;
+                continue;
+            }
+
+            $strings = array_values(array_filter(Types::array($values), 'is_string'));
+            if ($strings !== []) {
+                $tagData[$key] = $strings;
+            }
+        }
+
+        // getID3 parses ReplayGain comments into numbers while reading, so they have to be rebuilt
+        $replayGain = self::getInfoSection($info, 'replay_gain');
+        $trackGain = Types::array($replayGain['track'] ?? []);
+        $albumGain = Types::array($replayGain['album'] ?? []);
+
+        // getID3 fills in the default reference loudness even when the file has no such comment.
+        // Better to omit it than to force it on every file that didn't have any value set.
+        $referenceLoudness = $replayGain['reference_volume'] ?? null;
+        if (
+            is_numeric($referenceLoudness)
+            && (float) $referenceLoudness === self::REPLAYGAIN_DEFAULT_REFERENCE_LOUDNESS
+        ) {
+            $referenceLoudness = null;
+        }
+
+        $replayGainTags = [
+            'replaygain_track_gain' => [$trackGain['adjustment'] ?? null, '%.2f dB'],
+            'replaygain_track_peak' => [$trackGain['peak'] ?? null, '%.6f'],
+            'replaygain_album_gain' => [$albumGain['adjustment'] ?? null, '%.2f dB'],
+            'replaygain_album_peak' => [$albumGain['peak'] ?? null, '%.6f'],
+            'replaygain_reference_loudness' => [$referenceLoudness, '%.1f dB'],
+        ];
+
+        foreach ($replayGainTags as $key => [$value, $format]) {
+            if (is_numeric($value)) {
+                $tagData[$key] = [sprintf($format, (float) $value)];
+            }
+        }
+
+        foreach ($metadata->getKnownTags() as $knownTag => $value) {
+            $commentNames = $commentNamesByKnownTag[$knownTag]
+                ?? [MetadataTags::from($knownTag)->getVorbisCommentName()];
+
+            $commentValues = ($knownTag === MetadataTags::UnsynchronisedLyric->value)
+                ? self::getLyricsLines((string) $value)
+                : [(string) $value];
+
+            foreach ($commentNames as $key) {
+                $tagData[$key] = $commentValues;
+            }
+        }
+
+        foreach ($this->getExtraTagValues($metadata) as $key => $value) {
+            $tagData[$key] = [$value];
+        }
+
+        if (!$isFlac) {
+            $pictures = self::getVorbisPicturesToWrite($metadata, $info);
+            if ($pictures !== []) {
+                $tagData['metadata_block_picture'] = $pictures;
+            }
+        } elseif (empty(self::getInfoSection($info, 'flac')['PICTURE'])) {
+            // getID3 can only add FLAC pictures since its metaflac call doesn't remove PICTURE blocks
+            $artwork = self::getArtworkToWrite($metadata, keepsPicture: false);
+            if ($artwork !== null) {
+                $tagData['attached_picture'] = [self::buildAttachedPicture($artwork)];
+            }
+        }
+
+        return $tagData;
+    }
+
+    /**
+     * getID3 would split the lyrics into lines itself but drop the empty ones
+     *
+     * @return list<string>
+     */
+    private static function getLyricsLines(string $lyrics): array
+    {
+        return explode("\n", str_replace(["\r\n", "\r"], "\n", $lyrics));
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<string>
+     */
+    private static function getVorbisPicturesToWrite(MetadataInterface $metadata, array $info): array
+    {
+        $pictures = !$metadata->shouldRemoveArtwork()
+            ? self::buildExistingVorbisPictures($info)
+            : [];
+
+        $artwork = self::getArtworkToWrite($metadata, $pictures !== []);
+        if ($artwork === null) {
+            return $pictures;
+        }
+
+        [$width, $height] = getimagesizefromstring($artwork) ?: [0, 0];
+
+        return [
+            self::encodeFlacPictureBlock(
+                $artwork,
+                'image/jpeg',
+                'cover art',
+                self::PICTURE_TYPE_COVER_FRONT,
+                $width,
+                $height
+            ),
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return list<string>
+     */
+    private static function buildExistingVorbisPictures(array $info): array
+    {
+        $blocks = [];
+
+        foreach (self::getInfoSection($info, 'comments', 'picture') as $picture) {
+            $picture = Types::array($picture);
+
+            $data = Types::string($picture['data'] ?? null);
+            $mime = Types::string($picture['image_mime'] ?? null);
+            if ($data === '' || !preg_match(self::MIME_PATTERN, $mime)) {
+                continue;
+            }
+
+            $blocks[] = self::encodeFlacPictureBlock(
+                $data,
+                $mime,
+                Types::string($picture['description'] ?? null),
+                Types::int($picture['typeid'] ?? null, self::PICTURE_TYPE_COVER_FRONT),
+                Types::int($picture['image_width'] ?? null),
+                Types::int($picture['image_height'] ?? null),
+                Types::int($picture['color_depth'] ?? null),
+                Types::int($picture['colors_indexed'] ?? null)
+            );
+        }
+
+        return $blocks;
+    }
+
+    /**
+     * getID3 puts the file name unescaped into the vorbiscomment shell command
+     * so we need to give it a safe tmp name instead of the real one
+     *
+     * @param list<string> $tagFormats
+     * @param array<string, mixed> $tagData
+     */
+    private function writeTagsThroughTempCopy(string $path, array $tagFormats, array $tagData): void
+    {
+        $filesystem = new Filesystem();
+        $tempPath = $filesystem->tempnam(sys_get_temp_dir(), 'azuracast_tags_');
+        $replacementPath = $filesystem->tempnam(dirname($path), '.azuracast_tags_', '.tmp');
+
+        try {
+            $filesystem->copy($path, $tempPath, true);
+            $this->writeTags($tempPath, $tagFormats, $tagData);
+            $filesystem->copy($tempPath, $replacementPath, true);
+            $filesystem->rename($replacementPath, $path, true);
+        } finally {
+            $filesystem->remove([$tempPath, $replacementPath]);
+        }
+    }
+
+    /**
+     * @param list<string> $tagFormats
+     * @param array<string, mixed> $tagData
+     */
+    private function writeTags(string $path, array $tagFormats, array $tagData): void
+    {
+        $tagwriter = new WriteTags();
+        $tagwriter->filename = $path;
+        $tagwriter->tagformats = $tagFormats;
         $tagwriter->tag_data = $tagData;
+        $tagwriter->overwrite_tags = true;
+        $tagwriter->remove_other_tags = false;
+        $tagwriter->tag_encoding = 'UTF-8';
         $tagwriter->WriteTags();
 
         if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
@@ -73,5 +677,141 @@ final class Writer
 
             throw new RuntimeException(implode(', ', $messages));
         }
+    }
+
+    private static function getArtworkToWrite(MetadataInterface $metadata, bool $keepsPicture): ?string
+    {
+        $artwork = $metadata->getArtwork();
+        if ($artwork !== null || $metadata->shouldRemoveArtwork() || $keepsPicture) {
+            return $artwork;
+        }
+
+        return $metadata->getFallbackArtwork();
+    }
+
+    private static function isManagedTag(?MetadataTags $tag): bool
+    {
+        return in_array($tag?->value, self::MANAGED_TAGS, true);
+    }
+
+    private static function getWrittenKnownTag(MetadataInterface $metadata, ?MetadataTags $knownTag): ?string
+    {
+        if ($knownTag === null) {
+            return null;
+        }
+
+        if (!array_key_exists($knownTag->value, $metadata->getKnownTags())) {
+            return null;
+        }
+
+        return $knownTag->value;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getExtraTagValues(MetadataInterface $metadata): array
+    {
+        $values = [];
+
+        foreach ($metadata->getExtraTags() as $key => $value) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            $values[$key] = (string) $value;
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param array<string, mixed> $info
+     *
+     * @return array<array-key, mixed>
+     */
+    private static function getInfoSection(array $info, string ...$path): array
+    {
+        $section = $info;
+        foreach ($path as $key) {
+            $section = Types::array($section[$key] ?? []);
+        }
+
+        return $section;
+    }
+
+    /**
+     * getID3 copies TXXX & APIC strings verbatim, so they are encoded here as ISO-8859-1 for ASCII & UTF-16 otherwise
+     */
+    private static function pickEncodingId(string ...$values): int
+    {
+        return self::isAscii(...$values) ? 0 : 1;
+    }
+
+    private static function isAscii(string ...$values): bool
+    {
+        return !preg_match('/[^\x00-\x7F]/', implode('', $values));
+    }
+
+    private static function encodeFrameText(int $encodingId, string $value): string
+    {
+        return $encodingId === 0
+            ? $value
+            : "\xFF\xFE" . Utils::iconv_fallback('UTF-8', 'UTF-16LE', $value);
+    }
+
+    /**
+     * @return array{
+     *  encodingid: int,
+     *  description: string,
+     *  data: string
+     * }
+     */
+    private static function encodeTxxxRow(string $description, string $data): array
+    {
+        $encodingId = self::pickEncodingId($description, $data);
+
+        return [
+            'encodingid' => $encodingId,
+            'description' => self::encodeFrameText($encodingId, $description),
+            'data' => self::encodeFrameText($encodingId, $data),
+        ];
+    }
+
+    /**
+     * @return AttachedPicture
+     */
+    private static function buildAttachedPicture(string $artwork): array
+    {
+        return [
+            'encodingid' => 0, // ISO-8859-1; 3=UTF8 but only allowed in ID3v2.4
+            'description' => 'cover art',
+            'data' => $artwork,
+            'picturetypeid' => self::PICTURE_TYPE_COVER_FRONT,
+            'mime' => 'image/jpeg',
+        ];
+    }
+
+    /**
+     * Encodes a picture as the base64 FLAC picture block used by the METADATA_BLOCK_PICTURE comment.
+     * getID3 has a reader for it but no writer so we need to do this manually.
+     */
+    private static function encodeFlacPictureBlock(
+        string $data,
+        string $mime,
+        string $description,
+        int $pictureType,
+        int $width,
+        int $height,
+        int $colorDepth = 0,
+        int $colorsIndexed = 0
+    ): string {
+        return base64_encode(
+            pack('N', $pictureType)
+            . pack('N', strlen($mime)) . $mime
+            . pack('N', strlen($description)) . $description
+            . pack('N4', $width, $height, $colorDepth, $colorsIndexed)
+            . pack('N', strlen($data)) . $data
+        );
     }
 }

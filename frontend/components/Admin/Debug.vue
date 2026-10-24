@@ -371,9 +371,7 @@ const { showAlert } = useDialog();
 
 const doClearComputedAutoCue = async (url: string) => {
     const { value } = await showAlert({
-        title: $gettext(
-            "Clear AutoCue data for this station?",
-        ),
+        title: $gettext("Clear AutoCue data for this station?"),
         confirmButtonClass: "btn-warning",
         confirmButtonText: $gettext("Clear Computed Values"),
     });

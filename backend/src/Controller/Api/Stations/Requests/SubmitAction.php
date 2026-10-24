@@ -132,7 +132,12 @@ final class SubmitAction implements SingleActionInterface
 
         if (!$isAuthenticated) {
             // Check for any request (on any station) within the last $threshold_seconds.
-            $thresholdMins = $station->request_delay ?? 5;
+            // This is intentionally a separate setting from `request_delay`, which controls
+            // the minimum time before a submitted request becomes playable (see
+            // StationRequest::shouldPlayNow()) — the two are unrelated concerns and using
+            // the same value for both meant that raising one to prevent IP-based flooding
+            // also forced every request station-wide to wait far longer to air.
+            $thresholdMins = $station->request_delay_ip ?? 5;
             $thresholdSeconds = $thresholdMins * 60;
 
             // Always have a minimum threshold to avoid flooding.

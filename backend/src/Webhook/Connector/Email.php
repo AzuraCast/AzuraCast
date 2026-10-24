@@ -7,20 +7,20 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Service\GuzzleFactory;
 use App\Service\Mail;
 use App\Utilities\Types;
 use App\Utilities\UserUrlFilter;
-use GuzzleHttp\Client;
 use RuntimeException;
 
 final class Email extends AbstractConnector
 {
     public function __construct(
-        Client $httpClient,
+        GuzzleFactory $httpFactory,
         UserUrlFilter $userUrlFilter,
         private readonly Mail $mail
     ) {
-        parent::__construct($httpClient, $userUrlFilter);
+        parent::__construct($httpFactory, $userUrlFilter);
     }
 
     /**

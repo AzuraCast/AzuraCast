@@ -157,7 +157,6 @@ final class Discord extends AbstractConnector
             'POST',
             $webhookUrl,
             [
-                RequestOptions::ALLOW_REDIRECTS => false,
                 RequestOptions::HEADERS => [
                     'Content-Type' => 'application/json',
                 ],

@@ -7,10 +7,12 @@ namespace App\Webhook\Connector;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\StationWebhook;
+use App\Service\GuzzleFactory;
 use App\Utilities\Arrays;
 use App\Utilities\Types;
 use App\Utilities\UserUrlFilter;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -20,10 +22,15 @@ abstract class AbstractConnector implements ConnectorInterface
 
     public const string RATE_LIMIT_KEY = 'rate_limit';
 
+    protected readonly Client $httpClient;
+
     public function __construct(
-        protected readonly Client $httpClient,
+        GuzzleFactory $httpFactory,
         protected readonly UserUrlFilter $userUrlFilter
     ) {
+        $this->httpClient = $httpFactory->buildClient([
+            RequestOptions::ALLOW_REDIRECTS => false,
+        ]);
     }
 
     /**

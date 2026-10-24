@@ -8,17 +8,17 @@ use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Nginx\CustomUrls;
+use App\Service\GuzzleFactory;
 use App\Utilities\UserUrlFilter;
-use GuzzleHttp\Client;
 
 abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 {
     public function __construct(
-        Client $httpClient,
+        GuzzleFactory $httpFactory,
         UserUrlFilter $userUrlFilter,
         protected readonly ListenerRepository $listenerRepo
     ) {
-        parent::__construct($httpClient, $userUrlFilter);
+        parent::__construct($httpFactory, $userUrlFilter);
     }
 
     protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool

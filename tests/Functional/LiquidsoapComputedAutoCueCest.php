@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Functional;
 
+use App\Console\Command\Media\ClearComputedAutoCueCommand;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -20,6 +21,7 @@ use Doctrine\DBAL\Types\Types;
 use FunctionalTester;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
+use Symfony\Component\Console\Tester\CommandTester;
 
 final class LiquidsoapComputedAutoCueCest extends CestAbstract
 {
@@ -322,6 +324,85 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
         $I->assertSame(1.5, $computedAutoCue->values['cue_in']);
     }
 
+    /**
+     * @before setupComplete
+     */
+    public function clearCommandRemovesComputedValues(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values for a station from the console.');
+
+        $media = $this->uploadTestSong();
+        $this->saveComputedValues($I, $this->cacheKeyFor($media));
+
+        $display = $this->runClearCommand([
+            'station-name' => $this->getTestStation()->short_name,
+        ]);
+
+        $reloadedMedia = $this->reloadMedia($media);
+        $I->assertNull($reloadedMedia->computed_auto_cue);
+        $I->assertSame($media->mtime, $reloadedMedia->mtime);
+        $I->assertStringContainsString('for 1 record(s)', $display);
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function clearCommandOnlyClearsTheGivenPath(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values only below the given path.');
+
+        $clearedMedia = $this->uploadTestSong('clear/song.mp3');
+        $keptMedia = $this->uploadTestSong('keep/song.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($keptMedia));
+
+        $this->runClearCommand([
+            'station-name' => $this->getTestStation()->short_name,
+            'path' => 'clear/',
+        ]);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($keptMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function debugActionClearsComputedValues(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values for a station from the System Debugger.');
+
+        $media = $this->uploadTestSong();
+        $this->saveComputedValues($I, $this->cacheKeyFor($media));
+
+        $station = $this->getTestStation();
+        $I->sendPut("/api/admin/debug/station/{$station->id}/clear-computed-autocue");
+
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseContainsJson([
+            'success' => true,
+            'message' => 'Cleared computed AutoCue values for 1 media.',
+        ]);
+        $I->assertNull($this->reloadMedia($media)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function debugStationListLinksTheClearAction(FunctionalTester $I): void
+    {
+        $I->wantTo('List the clear AutoCue link for each station in the System Debugger.');
+
+        $station = $this->getTestStation();
+        $I->sendGet('/api/admin/debug/stations');
+
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseContainsJson([
+            'id' => $station->id,
+            'clearComputedAutoCueUrl' => "/api/admin/debug/station/{$station->id}/clear-computed-autocue",
+        ]);
+    }
+
     private function enableAutoCue(): void
     {
         $station = $this->getTestStation();
@@ -459,5 +540,17 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
         $this->em->flush();
 
         return $playlist;
+    }
+
+    /**
+     * @param array<string, string> $arguments
+     */
+    private function runClearCommand(array $arguments): string
+    {
+        $commandTester = new CommandTester($this->di->get(ClearComputedAutoCueCommand::class));
+        $commandTester->execute($arguments);
+        $commandTester->assertCommandIsSuccessful();
+
+        return $commandTester->getDisplay();
     }
 }

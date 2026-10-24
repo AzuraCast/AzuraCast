@@ -296,6 +296,7 @@ export interface ApiAdminDebugStation {
     clearQueueUrl: string;
     getNextSongUrl: string;
     getNowPlayingUrl: string;
+    clearComputedAutoCueUrl: string;
 }
 
 export interface ApiAdminDebugLogEntry {

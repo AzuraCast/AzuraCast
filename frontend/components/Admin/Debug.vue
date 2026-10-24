@@ -224,6 +224,19 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <h5>{{ $gettext('AutoCue') }}</h5>
+
+                                <div class="buttons">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        @click="doClearComputedAutoCue(station.clearComputedAutoCueUrl)"
+                                    >
+                                        {{ $gettext('Clear Computed Values') }}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </tab>
                 </tabs>
@@ -240,6 +253,7 @@ import { useTemplateRef } from "vue";
 import TaskOutputModal from "~/components/Admin/Debug/TaskOutputModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import Loading from "~/components/Common/Loading.vue";
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
@@ -351,6 +365,24 @@ const makeDebugCall = async (url: string) => {
     } else {
         notifySuccess(data.message);
     }
+};
+
+const { showAlert } = useDialog();
+
+const doClearComputedAutoCue = async (url: string) => {
+    const { value } = await showAlert({
+        title: $gettext(
+            "Clear AutoCue data for this station?",
+        ),
+        confirmButtonClass: "btn-warning",
+        confirmButtonText: $gettext("Clear Computed Values"),
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await makeDebugCall(url);
 };
 
 const queryClient = useQueryClient();

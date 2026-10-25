@@ -16,6 +16,8 @@ use App\Flysystem\StationFilesystems;
 use App\Sync\Task\CheckFolderPlaylistsTask;
 use DI\FactoryInterface;
 use FunctionalTester;
+use Generator;
+use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\UnableToCheckDirectoryExistence;
 use League\Flysystem\UnableToCreateDirectory;
 use Mockery;
@@ -119,15 +121,7 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
         $failingAdapter->allows('directoryExists')
             ->andThrow(UnableToCheckDirectoryExistence::forLocation('Unreachable'));
 
-        $storageLocationAdapter = Mockery::mock(StorageLocationAdapterInterface::class);
-        $storageLocationAdapter->allows('getStorageAdapter')->andReturn($failingAdapter);
-
-        $storageLocationRepo = Mockery::mock(StorageLocationRepository::class);
-        $storageLocationRepo->allows('getAdapter')->andReturn($storageLocationAdapter);
-
-        $this->em->clear();
-        $this->makeTask($storageLocationRepo)->syncPlaylistFolders($this->getTestStation());
-        $this->em->clear();
+        $this->syncPlaylistFoldersWithAdapter($failingAdapter);
 
         $I->assertSame(1, $this->countFolderLinks($playlistId));
     }
@@ -156,6 +150,43 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
         $I->assertTrue($logHandler->hasErrorThatContains('Flysystem Error for Station'));
     }
 
+    /**
+     * @before setupComplete
+     */
+    public function stopListingAtFirstVisibleRootEntry(FunctionalTester $I): void
+    {
+        $I->wantTo('Stop listing the media storage root at its first visible entry.');
+
+        $playlistId = $this->linkFolderToPlaylist('Gone');
+        $listedPastFirstVisibleEntry = false;
+
+        $adapter = Mockery::mock(ExtendedAdapterInterface::class);
+        $adapter->allows('directoryExists')->andReturn(false);
+        $adapter->allows('listContents')->andReturnUsing(
+            function () use (&$listedPastFirstVisibleEntry): Generator {
+                yield new DirectoryAttributes('.waveforms');
+                yield new DirectoryAttributes('Music');
+                $listedPastFirstVisibleEntry = true;
+                yield new DirectoryAttributes('Other');
+            }
+        );
+
+        $this->syncPlaylistFoldersWithAdapter($adapter);
+
+        $I->assertSame(0, $this->countFolderLinks($playlistId));
+        $I->assertFalse($listedPastFirstVisibleEntry);
+    }
+
+    private function syncPlaylistFoldersWithAdapter(ExtendedAdapterInterface $mediaAdapter): void
+    {
+        $this->em->clear();
+
+        $this->makeTask($this->mockStorageLocationRepo($mediaAdapter))
+            ->syncPlaylistFolders($this->getTestStation());
+
+        $this->em->clear();
+    }
+
     private function makeTask(StorageLocationRepository $storageLocationRepo): CheckFolderPlaylistsTask
     {
         $factory = $this->di->get(FactoryInterface::class);
@@ -169,6 +200,17 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
                 ),
             ]
         );
+    }
+
+    private function mockStorageLocationRepo(ExtendedAdapterInterface $mediaAdapter): StorageLocationRepository
+    {
+        $storageLocationAdapter = Mockery::mock(StorageLocationAdapterInterface::class);
+        $storageLocationAdapter->allows('getStorageAdapter')->andReturn($mediaAdapter);
+
+        $storageLocationRepo = Mockery::mock(StorageLocationRepository::class);
+        $storageLocationRepo->allows('getAdapter')->andReturn($storageLocationAdapter);
+
+        return $storageLocationRepo;
     }
 
     private function linkFolderToPlaylist(string $path): int

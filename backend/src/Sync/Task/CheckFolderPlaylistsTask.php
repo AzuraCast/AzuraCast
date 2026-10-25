@@ -15,8 +15,8 @@ use App\Entity\StorageLocation;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Message\WritePlaylistFileMessage;
+use Closure;
 use League\Flysystem\FilesystemException;
-use League\Flysystem\StorageAttributes;
 use Symfony\Component\Messenger\MessageBus;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
@@ -61,6 +61,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
         $mediaStorage = $station->media_storage_location;
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
+        $isStorageVisible = $this->createStorageVisibleCheck($fsMedia);
 
         foreach ($station->playlists as $playlist) {
             if (PlaylistSources::Songs !== $playlist->source) {
@@ -71,16 +72,46 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 fn() => $this->processPlaylist(
                     $playlist,
                     $mediaStorage,
-                    $fsMedia
+                    $fsMedia,
+                    $isStorageVisible
                 )
             );
         }
     }
 
+    /**
+     * Check will only read from the storage root on its first call
+     *
+     * @return Closure(): bool
+     */
+    private function createStorageVisibleCheck(ExtendedFilesystemInterface $fsMedia): Closure
+    {
+        $isVisible = null;
+
+        return function () use ($fsMedia, &$isVisible): bool {
+            return $isVisible ??= $this->hasVisibleRootEntry($fsMedia);
+        };
+    }
+
+    private function hasVisibleRootEntry(ExtendedFilesystemInterface $fsMedia): bool
+    {
+        foreach ($fsMedia->listContents('/', false) as $rootEntry) {
+            if (!StationFilesystems::isDotFile($rootEntry->path())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Closure(): bool $isStorageVisible
+     */
     private function processPlaylist(
         StationPlaylist $playlist,
         StorageLocation $mediaStorageLocation,
-        ExtendedFilesystemInterface $fsMedia
+        ExtendedFilesystemInterface $fsMedia,
+        Closure $isStorageVisible
     ): void {
         $folders = $playlist->folders;
         if (0 === $folders->count()) {
@@ -97,7 +128,10 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 $path
             );
 
-            if ($mediaInFolder === [] && $this->isFolderDeleted($fsMedia, $path)) {
+            if (
+                $mediaInFolder === []
+                && $this->isFolderDeleted($fsMedia, $path, $isStorageVisible)
+            ) {
                 $this->em->remove($folder);
                 $madeChanges = true;
                 continue;
@@ -162,10 +196,16 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         }
     }
 
-    private function isFolderDeleted(ExtendedFilesystemInterface $fsMedia, string $path): bool
-    {
+    /**
+     * @param Closure(): bool $isStorageVisible
+     */
+    private function isFolderDeleted(
+        ExtendedFilesystemInterface $fsMedia,
+        string $path,
+        Closure $isStorageVisible
+    ): bool {
         try {
-            return !$fsMedia->directoryExists($path) && $this->isStorageVisible($fsMedia);
+            return !$fsMedia->directoryExists($path) && $isStorageVisible();
         } catch (FilesystemException $exception) {
             $this->logger->warning(
                 "Could not check the folder \"{$path}\" in the media storage. Keeping its playlist link.",
@@ -175,14 +215,5 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             );
             return false;
         }
-    }
-
-    private function isStorageVisible(ExtendedFilesystemInterface $fsMedia): bool
-    {
-        $rootEntries = $fsMedia->listContents('/', false)->filter(
-            fn(StorageAttributes $attrs) => !StationFilesystems::isDotFile($attrs->path())
-        );
-
-        return $rootEntries->toArray() !== [];
     }
 }

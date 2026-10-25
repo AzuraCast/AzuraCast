@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Cache\CacheNamespace;
+use App\Container\LoggerAwareTrait;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
@@ -12,6 +13,8 @@ use RuntimeException;
 
 final class IpGeolocation
 {
+    use LoggerAwareTrait;
+
     private bool $isInitialized = false;
 
     private ?Reader $reader;
@@ -42,12 +45,24 @@ final class IpGeolocation
         ];
 
         foreach ($readers as $reader) {
-            if ($reader::isAvailable()) {
-                $this->reader = $reader::getReader();
-                $this->readerShortName = $reader::getReaderShortName();
-                $this->attribution = $reader::getAttribution();
-                return;
+            if (!$reader::isAvailable()) {
+                continue;
             }
+
+            $this->reader = $reader::getReader();
+            if ($this->reader === null) {
+                $this->logger->warning(
+                    sprintf(
+                        'IP Geolocation database "%s" is not a valid MaxMind DB file; skipping.',
+                        $reader::getDatabasePath()
+                    )
+                );
+                continue;
+            }
+
+            $this->readerShortName = $reader::getReaderShortName();
+            $this->attribution = $reader::getAttribution();
+            return;
         }
 
         $this->reader = null;

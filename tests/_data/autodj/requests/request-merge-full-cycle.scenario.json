@@ -1,0 +1,74 @@
+{
+  "description": "A Requests-source member with play_full_cycle inside a merged group drains all currently playable requests within one block before advancing. Once the request queue is empty, the next block skips the member without an entry.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "full-cycle-drains-request-queue",
+      "now": "2026-06-01T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mR1",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR2",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mR3",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR1",
+              "playlist_chain_refs": [
+                "grp",
+                "reqpl"
+              ],
+              "from_request": true
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR2",
+              "from_request": true
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mR3",
+              "from_request": true
+            },
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mS1",
+              "playlist_chain_refs": [
+                "grp",
+                "outro"
+              ],
+              "from_request": false
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:25:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mS1",
+              "from_request": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

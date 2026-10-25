@@ -41,6 +41,8 @@ const npEmpty: ApiNowPlaying = {
         played_at: 0,
         duration: 0,
         playlist: "default",
+        playlist_chain: null,
+        playlist_source: null,
         streamer: "",
         is_request: false,
         song: {
@@ -60,6 +62,8 @@ const npEmpty: ApiNowPlaying = {
         played_at: 0,
         duration: 0,
         playlist: "default",
+        playlist_chain: null,
+        playlist_source: null,
         is_request: false,
         song: {
             id: "",

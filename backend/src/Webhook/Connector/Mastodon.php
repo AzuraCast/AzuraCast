@@ -48,7 +48,10 @@ final class Mastodon extends AbstractSocialConnector
 
             $response = $this->httpClient->request(
                 'POST',
-                $instanceUri->withPath('/api/v1/statuses'),
+                $this->userUrlFilter->filterSensitiveUserUrl(
+                    $instanceUri->withPath('/api/v1/statuses'),
+                    'Mastodon Instance URL'
+                ),
                 [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $accessToken,

@@ -79,7 +79,8 @@ final class StationRemote implements
 
             return Utilities\Strings::truncateUrl($this->url);
         }
-        set (string|null $value) => $this->truncateNullableString($value) ?? '';
+        // Prevent newlines (as they will appear in playlists and other places)
+        set (string|null $value) => $this->truncateString(str_replace(["\r", "\n"], '', $value ?? ''));
     }
 
     #[

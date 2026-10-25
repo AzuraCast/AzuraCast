@@ -6,8 +6,12 @@ namespace App\Media\Metadata\Reader;
 
 use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
+use App\Media\Metadata\Id3v2Text;
+use App\Utilities\Strings;
 use App\Utilities\Time;
+use App\Utilities\Types;
 use JamesHeinrich\GetID3\GetID3;
 use RuntimeException;
 use Throwable;
@@ -45,9 +49,10 @@ final class PhpReader extends AbstractReader
                 );
             }
 
-            // ID3v2 should always supersede ID3v1.
-            if (isset($info['tags']['id3v2'])) {
-                unset($info['tags']['id3v1']);
+            // ID3v2 should always supersede ID3v1 and APE.
+            $hasId3v2 = isset($info['tags']['id3v2']);
+            if ($hasId3v2) {
+                unset($info['tags']['id3v1'], $info['tags']['ape']);
             }
 
             if (!empty($info['tags'])) {
@@ -58,16 +63,83 @@ final class PhpReader extends AbstractReader
                 ];
             }
 
-            $toProcess[] = $this->convertReplayGainBackIntoText($info['replay_gain'] ?? []);
+            // getID3 also puts described frames into these tags, need to read without junk descriptions
+            if (isset($toProcess['id3v2'])) {
+                $id3v2Tags = array_diff_key(
+                    Types::array($toProcess['id3v2']),
+                    Id3v2Text::DESCRIPTIONLESS_FRAMES
+                );
+
+                foreach (Id3v2Text::getDescriptionlessFrameTexts($info) as $tag => $text) {
+                    $id3v2Tags[$tag] = [$text];
+                }
+
+                // getID3 returns a TXXX frame with several values as one null-separated string
+                if (isset($id3v2Tags['text'])) {
+                    $id3v2Tags['text'] = array_map(
+                        static fn(mixed $value): array => explode(
+                            Id3v2Text::MULTI_VALUE_SEPARATOR,
+                            Types::string($value)
+                        ),
+                        Types::array($id3v2Tags['text'])
+                    );
+                }
+
+                $toProcess['id3v2'] = $id3v2Tags;
+            }
+
+            if (isset($toProcess['vorbiscomment'])) {
+                $toProcess['vorbiscomment'] = $this->renameVorbisCommentsToTags(
+                    Types::array($toProcess['vorbiscomment'])
+                );
+            }
 
             $this->aggregateMetaTags($metadata, $toProcess);
+
+            $knownTags = $metadata->getKnownTags();
+            $extraTags = $metadata->getExtraTags();
+
+            $vorbisCommentLyrics = $this->readVorbisCommentLyrics($info);
+            if ($vorbisCommentLyrics !== null) {
+                $knownTags[MetadataTags::UnsynchronisedLyric->value] = $vorbisCommentLyrics;
+            }
+
+            // getID3 skips TXXX frames whose text is "0" when building $info['tags']
+            foreach (Types::array($info['id3v2']['TXXX'] ?? []) as $frame) {
+                $frame = Types::array($frame);
+
+                $description = mb_strtolower(trim(Types::string($frame['description'] ?? null)));
+                $value = Id3v2Text::decode(
+                    Types::string($frame['encoding'] ?? null, 'ISO-8859-1'),
+                    Types::string($frame['data'] ?? null)
+                );
+
+                if ($description === '' || $value === '') {
+                    continue;
+                }
+
+                $tagEnum = MetadataTags::getTag($description);
+                if ($tagEnum !== null) {
+                    $knownTags[$tagEnum->value] ??= $value;
+                } else {
+                    $extraTags[$description] ??= $value;
+                }
+            }
+
+            // getID3 pulls ReplayGain out of Vorbis comments, in ID3v2 and APE tags it is kept
+            foreach ($this->convertReplayGainBackIntoText($info['replay_gain'] ?? []) as $key => $value) {
+                $extraTags[$key] ??= $value;
+            }
+
+            $metadata->setKnownTags($knownTags);
+            $metadata->setExtraTags($extraTags);
 
             $metadata->setMimeType($info['mime_type']);
 
             $artwork = null;
             if (!empty($info['attached_picture'][0])) {
                 $artwork = $info['attached_picture'][0]['data'];
-            } elseif (!empty($info['comments']['picture'][0])) {
+            } elseif (!$hasId3v2 && !empty($info['comments']['picture'][0])) {
                 $artwork = $info['comments']['picture'][0]['data'];
             } elseif (!empty($info['id3v2']['APIC'][0]['data'])) {
                 $artwork = $info['id3v2']['APIC'][0]['data'];
@@ -100,28 +172,69 @@ final class PhpReader extends AbstractReader
         $return = [];
 
         if (isset($row['track']['peak'])) {
-            $return['replaygain_track_peak'] = $row['track']['peak'];
+            $return['replaygain_track_peak'] = (string) $row['track']['peak'];
         }
         if (isset($row['track']['originator'])) {
-            $return['replaygain_track_originator'] = $row['track']['originator'];
+            $return['replaygain_track_originator'] = (string) $row['track']['originator'];
         }
         if (isset($row['track']['adjustment'])) {
             $return['replaygain_track_gain'] = $row['track']['adjustment'] . ' dB';
         }
         if (isset($row['album']['peak'])) {
-            $return['replaygain_album_peak'] = $row['album']['peak'];
+            $return['replaygain_album_peak'] = (string) $row['album']['peak'];
         }
         if (isset($row['album']['originator'])) {
-            $return['replaygain_album_originator'] = $row['album']['originator'];
+            $return['replaygain_album_originator'] = (string) $row['album']['originator'];
         }
         if (isset($row['album']['adjustment'])) {
             $return['replaygain_album_gain'] = $row['album']['adjustment'] . ' dB';
         }
 
         if (isset($row['reference_volume'])) {
-            $return['replaygain_reference_loudness'] = $row['reference_volume'] . ' LUFS';
+            $return['replaygain_reference_loudness'] = $row['reference_volume'] . ' dB';
         }
 
         return $return;
+    }
+
+    /**
+     * Joins several lyrics comments line by line.
+     * Uses getID3's raw comments since its tags drop the empty lines.
+     *
+     * @param array<array-key, mixed> $info
+     */
+    private function readVorbisCommentLyrics(array $info): ?string
+    {
+        $vorbisComments = Types::array($info['flac']['comments'] ?? $info['ogg']['comments'] ?? []);
+
+        foreach ($vorbisComments as $name => $values) {
+            if (MetadataTags::getTagByAnyName((string) $name) !== MetadataTags::UnsynchronisedLyric) {
+                continue;
+            }
+
+            $lyrics = implode("\n", array_filter(Types::array($values), 'is_string'));
+            if (trim($lyrics) !== '') {
+                return Strings::stringToUtf8($lyrics);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<array-key, mixed> $vorbisComments
+     *
+     * @return array<string, mixed>
+     */
+    private function renameVorbisCommentsToTags(array $vorbisComments): array
+    {
+        $renamedComments = [];
+
+        foreach ($vorbisComments as $name => $values) {
+            $name = (string) $name;
+            $renamedComments[MetadataTags::getTagByAnyName($name)->value ?? $name] = $values;
+        }
+
+        return $renamedComments;
     }
 }

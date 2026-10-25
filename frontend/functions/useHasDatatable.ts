@@ -7,6 +7,13 @@ export type DataTableRow = Record<string, any>;
 export type DataTableTemplateRef<Row extends DataTableRow = DataTableRow> =
     ComponentExposed<typeof DataTable<Row>>;
 
+export enum DataTableFilterType {
+    Select = "select",
+    Text = "text",
+}
+
+export type DataTableFilterValue = string | string[];
+
 export type DataTableFilterContext = {
     searchPhrase: string;
     currentPage: number;
@@ -14,6 +21,7 @@ export type DataTableFilterContext = {
     sortOrder: string | null;
     paginated: boolean;
     perPage: number;
+    filters: Record<string, DataTableFilterValue>;
 };
 
 export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
@@ -23,6 +31,7 @@ export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
     sortOrder: null,
     paginated: false,
     perPage: 10,
+    filters: {},
 };
 
 export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {

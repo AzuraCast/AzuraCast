@@ -64,4 +64,8 @@ onMounted(() => {
 
     selectTab(state.tabs[0].computedId);
 });
+
+defineExpose({
+    selectTab,
+});
 </script>

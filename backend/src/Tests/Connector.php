@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\AppFactory;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Http\HttpFactory;
 use Codeception\Lib\Connector\Shared\PhpSuperGlobalsConverter;
 use Slim\App;
@@ -41,6 +42,8 @@ class Connector extends AbstractBrowser
      */
     public function doRequest($request): BrowserKitResponse
     {
+        $this->app->getContainer()->get(ReloadableEntityManagerInterface::class)->clear();
+
         $_COOKIE = $request->getCookies();
         $_SERVER = $request->getServer();
         $_FILES = $this->remapFiles($request->getFiles());
@@ -63,7 +66,14 @@ class Connector extends AbstractBrowser
         $_SERVER['REQUEST_METHOD'] = strtoupper($request->getMethod());
         $_SERVER['REQUEST_URI'] = $uri;
 
-        $request = (new HttpFactory())->createServerRequestFromGlobals();
+        $content = $request->getContent();
+
+        $httpFactory = new HttpFactory();
+        $request = $httpFactory->createServerRequestFromGlobals();
+
+        if (!empty($content)) {
+            $request = $request->withBody($httpFactory->createStream($content));
+        }
 
         $slimResponse = $this->app->handle($request);
 

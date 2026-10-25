@@ -9,11 +9,11 @@ use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Http\RouterInterface;
+use App\Service\GuzzleFactory;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use App\Utilities\UserUrlFilter;
 use Carbon\CarbonImmutable;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\UriInterface;
@@ -21,12 +21,12 @@ use Psr\Http\Message\UriInterface;
 final class MatomoAnalytics extends AbstractConnector
 {
     public function __construct(
-        Client $httpClient,
+        GuzzleFactory $httpFactory,
+        UserUrlFilter $userUrlFilter,
         private readonly RouterInterface $router,
-        private readonly ListenerRepository $listenerRepo,
-        private readonly UserUrlFilter $userUrlFilter
+        private readonly ListenerRepository $listenerRepo
     ) {
-        parent::__construct($httpClient);
+        parent::__construct($httpFactory, $userUrlFilter);
     }
 
     protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool
@@ -164,7 +164,6 @@ final class MatomoAnalytics extends AbstractConnector
         }
 
         $response = $this->httpClient->post($apiUrl, [
-            RequestOptions::ALLOW_REDIRECTS => false,
             RequestOptions::JSON => $jsonBody,
         ]);
 

@@ -46,6 +46,9 @@ final readonly class SongHistoryApiGenerator
             $response->playlist = '';
         }
 
+        $response->playlist_chain = $record->playlist_chain;
+        $response->playlist_source = $record->playlist?->source;
+
         if ($record->streamer instanceof StationStreamer) {
             $response->streamer = $record->streamer->display_name;
         } else {

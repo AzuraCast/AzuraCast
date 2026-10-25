@@ -5,6 +5,13 @@ $autoloader->addClassMap([
     'Functional\CestAbstract' => __DIR__ . '/Functional/CestAbstract.php',
 ]);
 
+// Strip the "final" keyword from repository classes at test runtime so the
+// in-memory test harness can subclass them with lightweight fakes
+DG\BypassFinals::allowPaths([
+    '*/backend/src/Entity/Repository/*',
+]);
+DG\BypassFinals::enable(bypassReadOnly: false, bypassFinal: true);
+
 if (!function_exists('__')) {
     Gettext\TranslatorFunctions::register(new Gettext\Translator());
 }

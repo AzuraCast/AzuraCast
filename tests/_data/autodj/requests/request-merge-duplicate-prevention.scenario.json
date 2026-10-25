@@ -1,0 +1,65 @@
+{
+  "description": "Two pending requests for the same track cannot both queue within one merged block: the first is served, the duplicate is skipped (stays pending) and the next distinct request is served in the same pick. The skipped duplicate is also not served by later blocks while its track remains in the recent history.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "duplicate-request-skipped-within-block",
+      "now": "2026-06-01T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mA",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mA",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mB",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mA",
+              "playlist_chain_refs": [
+                "grp",
+                "reqpl"
+              ],
+              "from_request": true
+            },
+            {
+              "playlist_ref": "reqpl",
+              "media_ref": "mB",
+              "from_request": true
+            },
+            {
+              "playlist_ref": "filler",
+              "media_ref": "mS1",
+              "from_request": false
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:25:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "filler",
+              "media_ref": "mS1",
+              "from_request": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

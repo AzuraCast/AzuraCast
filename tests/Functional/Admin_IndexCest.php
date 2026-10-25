@@ -18,6 +18,7 @@ class Admin_IndexCest extends CestAbstract
 
         $I->amOnPage('/admin');
         $I->seeResponseCodeIs(200);
-        $I->seeInTitle('Administration');
+
+        $I->seeElement('#dashboard');
     }
 }

@@ -1,0 +1,184 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\Entity\Enums\PlaylistGroupAllowedRequests;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
+use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use OpenApi\Attributes as OA;
+
+#[
+    OA\Schema(
+        type: "object",
+        properties: [
+            new OA\Property(
+                property: 'name',
+                description: 'The playlist name.',
+                type: 'string',
+                example: 'My Playlist',
+                readOnly: true
+            ),
+        ]
+    ),
+    ORM\Entity,
+    ORM\Table(name: 'station_playlist_group'),
+    Attributes\Auditable
+]
+final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntityInterface
+{
+    use Traits\HasAutoIncrementId;
+
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlist_groups')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public StationPlaylist $playlist;
+
+    public int $playlist_id {
+        get => $this->playlist->id;
+    }
+
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
+    #[ORM\JoinColumn(name: 'playlist_group_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public StationPlaylist $playlist_group;
+
+    public int $playlist_group_id {
+        get => $this->playlist_group->id;
+    }
+
+    #[
+        OA\Property(example: 1),
+        ORM\Column
+    ]
+    public int $weight = 0;
+
+    #[ORM\Column]
+    public bool $is_queued = true;
+
+    #[ORM\Column]
+    public int $last_played = 0;
+
+    #[
+        OA\Property(example: 0),
+        ORM\Column
+    ]
+    public int $consecutive_plays = 0;
+
+    #[ORM\Column]
+    public int $consecutive_plays_count = 0;
+
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
+    public bool $play_full_cycle = false {
+        set (bool $value) {
+            $this->play_full_cycle = $value && $this->supportsPlayFullCycle();
+
+            if ($this->play_full_cycle) {
+                $this->consecutive_plays = 0;
+            }
+        }
+    }
+
+    #[
+        OA\Property(
+            description: "Keep the member's queue on a recursive queue reset of a parent playlist group, also keeps the queues of its nested members. If the same playlist is added to a group more than once, all of its entries share this setting.",
+            example: false
+        ),
+        ORM\Column
+    ]
+    public bool $preserve_queue_on_recursive_reset = false {
+        set => $value && $this->supportsPreserveQueueOnRecursiveReset();
+    }
+
+    #[
+        OA\Property(example: 'any'),
+        ORM\Column(type: 'string', enumType: PlaylistGroupAllowedRequests::class)
+    ]
+    public PlaylistGroupAllowedRequests $allowed_requests = PlaylistGroupAllowedRequests::Any;
+
+    public function __construct(
+        StationPlaylist $playlist,
+        StationPlaylist $playlistGroup
+    ) {
+        $this->playlist = $playlist;
+        $this->playlist_group = $playlistGroup;
+    }
+
+    public function played(
+        ?int $timestamp = null,
+        bool $forceAdvance = false,
+        bool $keepQueued = false
+    ): bool {
+        $this->last_played = $timestamp ?? time();
+
+        if ($keepQueued && !$forceAdvance) {
+            return false;
+        }
+
+        if ($this->consecutive_plays > 0) {
+            $this->consecutive_plays_count++;
+        }
+
+        if (
+            !$forceAdvance
+            && $this->consecutive_plays > 0
+            && $this->consecutive_plays_count < $this->consecutive_plays
+        ) {
+            return false;
+        }
+
+        $this->is_queued = false;
+        $this->consecutive_plays_count = 0;
+        return true;
+    }
+
+    public function supportsPlayFullCycle(): bool
+    {
+        return $this->playlist->source === PlaylistSources::Requests
+            || (
+                $this->playlist->source === PlaylistSources::Songs
+                && in_array(
+                    $this->playlist->order,
+                    [PlaylistOrders::Sequential, PlaylistOrders::Shuffle],
+                    true
+                )
+            );
+    }
+
+    public function supportsPreserveQueueOnRecursiveReset(): bool
+    {
+        return in_array(
+            $this->playlist->source,
+            [PlaylistSources::Songs, PlaylistSources::Playlists],
+            true
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->playlist->id,
+            'name' => $this->playlist->name,
+            'weight' => $this->weight,
+            'consecutive_plays' => $this->consecutive_plays,
+            'play_full_cycle' => $this->play_full_cycle,
+            'preserve_queue_on_recursive_reset' => $this->preserve_queue_on_recursive_reset,
+            'allowed_requests' => $this->allowed_requests->value,
+        ];
+    }
+
+    public function __clone()
+    {
+        $this->last_played = 0;
+        $this->is_queued = false;
+        $this->consecutive_plays_count = 0;
+    }
+}

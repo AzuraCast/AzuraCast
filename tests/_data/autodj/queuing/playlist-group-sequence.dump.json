@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "m1",
+      "path": "group-seq/rock-1.mp3",
+      "unique_id": "eeeeeeeeeeeeeeeeeeeeee1a",
+      "length": 100.0,
+      "artist": "Rock Artist",
+      "title": "Rock Song One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m2",
+      "path": "group-seq/rock-2.mp3",
+      "unique_id": "eeeeeeeeeeeeeeeeeeeeee2b",
+      "length": 100.0,
+      "artist": "Rock Artist",
+      "title": "Rock Song Two",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m3",
+      "path": "group-seq/pop.mp3",
+      "unique_id": "eeeeeeeeeeeeeeeeeeeeee3c",
+      "length": 100.0,
+      "artist": "Pop Artist",
+      "title": "Pop Song",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "grp",
+      "name": "Consecutive Plays Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "rock",
+          "weight": 1,
+          "consecutive_plays": 2,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "pop",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "rock",
+      "name": "Rock",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m2",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "pop",
+      "name": "Pop",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m3",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

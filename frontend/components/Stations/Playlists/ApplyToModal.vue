@@ -4,7 +4,7 @@
         ref="$modal"
         size="xl"
         centered
-        :loading="loading"
+        :busy="loading"
         :title="$gettext('Apply Playlist to Folders')"
         @hidden="clearContents"
     >
@@ -44,6 +44,7 @@
             <button
                 type="button"
                 class="btn btn-secondary"
+                :disabled="loading"
                 @click="hide"
             >
                 {{ $gettext('Close') }}
@@ -51,7 +52,7 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                :disabled="selectedDirs.length === 0"
+                :disabled="selectedDirs.length === 0 || loading"
                 @click="save"
             >
                 {{ $gettext('Apply to Folders') }}
@@ -171,6 +172,8 @@ const save = async () => {
         return;
     }
 
+    loading.value = true;
+
     try {
         await axios.put(applyToUrl.value, {
             ...form.value,
@@ -179,6 +182,8 @@ const save = async () => {
 
         notifySuccess($gettext("Playlist successfully applied to folders."));
     } finally {
+        loading.value = false;
+
         hide();
         emit("relist");
     }

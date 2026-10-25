@@ -1,0 +1,53 @@
+{
+  "description": "The station's duplicate_prevention_time_range comes from the dump's station.backend_config (240 minutes here instead of the default 120). A play of m1 180 minutes ago still blocks m1 by track and m2 by its shared artist X, so m3 is picked. A play 300 minutes ago is outside the window and m1 is picked again.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "history-inside-dump-window-blocks-track-and-artist",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "playlist_ref": "dp",
+            "timestamp_played": "2018-01-15T09:00:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m3",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "history-outside-dump-window-no-longer-blocks",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "playlist_ref": "dp",
+            "timestamp_played": "2018-01-15T07:00:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m1",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

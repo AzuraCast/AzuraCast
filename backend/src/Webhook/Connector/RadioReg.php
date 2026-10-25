@@ -52,7 +52,7 @@ final class RadioReg extends AbstractConnector
         }
 
         $response = $this->httpClient->post(
-            $config['webhookurl'],
+            $this->userUrlFilter->filterSensitiveUserUrl($config['webhookurl'], 'RadioReg Webhook URL'),
             [
                 'json' => $messageBody,
                 'headers' => [

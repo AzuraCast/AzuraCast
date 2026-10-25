@@ -1,0 +1,879 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "m_o1_rec",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o1_rec.mp3",
+      "unique_id": "000000000000000000000001",
+      "length": 120.0,
+      "artist": "Opener Artist rec",
+      "title": "Opener o1 rec",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_o2_rec",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o2_rec.mp3",
+      "unique_id": "000000000000000000000002",
+      "length": 120.0,
+      "artist": "Opener Artist rec",
+      "title": "Opener o2 rec",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_x_rec",
+      "path": "group-reset-queue-at-schedule-start-nested/m_x_rec.mp3",
+      "unique_id": "000000000000000000000003",
+      "length": 120.0,
+      "artist": "Leaf Artist x rec",
+      "title": "Leaf x rec",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_y_rec",
+      "path": "group-reset-queue-at-schedule-start-nested/m_y_rec.mp3",
+      "unique_id": "000000000000000000000004",
+      "length": 120.0,
+      "artist": "Leaf Artist y rec",
+      "title": "Leaf y rec",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_z_rec",
+      "path": "group-reset-queue-at-schedule-start-nested/m_z_rec.mp3",
+      "unique_id": "000000000000000000000005",
+      "length": 120.0,
+      "artist": "Leaf Artist z rec",
+      "title": "Leaf z rec",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_o1_own",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o1_own.mp3",
+      "unique_id": "000000000000000000000006",
+      "length": 120.0,
+      "artist": "Opener Artist own",
+      "title": "Opener o1 own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_o2_own",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o2_own.mp3",
+      "unique_id": "000000000000000000000007",
+      "length": 120.0,
+      "artist": "Opener Artist own",
+      "title": "Opener o2 own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_x_own",
+      "path": "group-reset-queue-at-schedule-start-nested/m_x_own.mp3",
+      "unique_id": "000000000000000000000008",
+      "length": 120.0,
+      "artist": "Leaf Artist x own",
+      "title": "Leaf x own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_y_own",
+      "path": "group-reset-queue-at-schedule-start-nested/m_y_own.mp3",
+      "unique_id": "000000000000000000000009",
+      "length": 120.0,
+      "artist": "Leaf Artist y own",
+      "title": "Leaf y own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_z_own",
+      "path": "group-reset-queue-at-schedule-start-nested/m_z_own.mp3",
+      "unique_id": "000000000000000000000010",
+      "length": 120.0,
+      "artist": "Leaf Artist z own",
+      "title": "Leaf z own",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_o1_off",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o1_off.mp3",
+      "unique_id": "000000000000000000000011",
+      "length": 120.0,
+      "artist": "Opener Artist off",
+      "title": "Opener o1 off",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_o2_off",
+      "path": "group-reset-queue-at-schedule-start-nested/m_o2_off.mp3",
+      "unique_id": "000000000000000000000012",
+      "length": 120.0,
+      "artist": "Opener Artist off",
+      "title": "Opener o2 off",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_x_off",
+      "path": "group-reset-queue-at-schedule-start-nested/m_x_off.mp3",
+      "unique_id": "000000000000000000000013",
+      "length": 120.0,
+      "artist": "Leaf Artist x off",
+      "title": "Leaf x off",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_y_off",
+      "path": "group-reset-queue-at-schedule-start-nested/m_y_off.mp3",
+      "unique_id": "000000000000000000000014",
+      "length": 120.0,
+      "artist": "Leaf Artist y off",
+      "title": "Leaf y off",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m_z_off",
+      "path": "group-reset-queue-at-schedule-start-nested/m_z_off.mp3",
+      "unique_id": "000000000000000000000015",
+      "length": 120.0,
+      "artist": "Leaf Artist z off",
+      "title": "Leaf z off",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "opener_rec",
+      "name": "Opener rec",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_o1_rec",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_o2_rec",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "x_rec",
+      "name": "Leaf x rec",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_x_rec",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "y_rec",
+      "name": "Leaf y rec",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_y_rec",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "z_rec",
+      "name": "Leaf z rec",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_z_rec",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "inner_rec",
+      "name": "Inner rec",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "x_rec",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "y_rec",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "z_rec",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "outer_rec",
+      "name": "Outer rec",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1200,
+          "end_time": 1300,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": true
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "opener_rec",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "inner_rec",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "opener_own",
+      "name": "Opener own",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_o1_own",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_o2_own",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "x_own",
+      "name": "Leaf x own",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_x_own",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "y_own",
+      "name": "Leaf y own",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_y_own",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "z_own",
+      "name": "Leaf z own",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_z_own",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "inner_own",
+      "name": "Inner own",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "x_own",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "y_own",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "z_own",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "outer_own",
+      "name": "Outer own",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1400,
+          "end_time": 1500,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "opener_own",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "inner_own",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "opener_off",
+      "name": "Opener off",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_o1_off",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m_o2_off",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "x_off",
+      "name": "Leaf x off",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_x_off",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "y_off",
+      "name": "Leaf y off",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_y_off",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "z_off",
+      "name": "Leaf z off",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m_z_off",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "inner_off",
+      "name": "Inner off",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "x_off",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "y_off",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "z_off",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "outer_off",
+      "name": "Outer off",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 1600,
+          "end_time": 1700,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": false,
+          "reset_queue_recursive": false
+        },
+        {
+          "start_time": 1800,
+          "end_time": 1900,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": false,
+          "reset_queue_recursive": true
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "opener_off",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "inner_off",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

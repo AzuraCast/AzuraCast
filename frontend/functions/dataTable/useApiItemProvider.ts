@@ -85,6 +85,12 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
             queryParams.searchPhrase = context.value.searchPhrase;
         }
 
+        Object.entries(context.value.filters).forEach(
+            ([filterKey, filterValue]) => {
+                queryParams[`filter[${filterKey}]`] = filterValue;
+            },
+        );
+
         if (null !== context.value.sortField) {
             queryParams.sort = context.value.sortField;
             queryParams.sortOrder =

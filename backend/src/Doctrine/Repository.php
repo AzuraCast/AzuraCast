@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\NotFoundException;
 use Closure;
 use DI\Attribute\Inject;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -61,6 +63,41 @@ class Repository
             throw NotFoundException::generic();
         }
         return $record;
+    }
+
+    /**
+     * Re-hydrates managed entities in the Doctrine identity map after bulk DQL
+     *
+     * @template T of IdentifiableEntityInterface
+     *
+     * @param class-string<T> $entityClass
+     * @param callable(T): bool $matcher
+     */
+    protected function resyncManagedEntities(string $entityClass, callable $matcher): void
+    {
+        $unitOfWork = $this->em->getUnitOfWork();
+
+        $staleIds = [];
+
+        /** @var T $entity */
+        foreach ($unitOfWork->getIdentityMap()[$entityClass] ?? [] as $entity) {
+            if (!$unitOfWork->isUninitializedObject($entity) && $matcher($entity)) {
+                $staleIds[] = $entity->id;
+            }
+        }
+
+        if ($staleIds === []) {
+            return;
+        }
+
+        $this->em->createQueryBuilder()
+            ->select('e')
+            ->from($entityClass, 'e')
+            ->where('e.id IN (:ids)')
+            ->setParameter('ids', $staleIds)
+            ->getQuery()
+            ->setHint(Query::HINT_REFRESH, true)
+            ->execute();
     }
 
     /**

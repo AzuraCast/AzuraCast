@@ -1,0 +1,26 @@
+{
+  "description": "Simulation over a merged playlist group: every build cues one block with a 20-minute track from each of two shuffled five-track members. Rows inside a block are spaced by track length minus the 30-second crossfade overlap, and every row of the block ages out of the 100-minute duplicate prevention window once it has played, although the merged block commits its rows before they get their expected play time.",
+  "modes": [
+    "in_memory"
+  ],
+  "cases": [
+    {
+      "name": "block-rows-spaced-and-age-out",
+      "now": "2018-01-15T00:00:00+00:00",
+      "seed": 4242,
+      "simulation": {
+        "measured_hours": 48,
+        "history_hours": 3,
+        "measure_playlists": [
+          "songs-a",
+          "songs-b"
+        ],
+        "expect": {
+          "measured_play_count": 147,
+          "min_repeat_interval_minutes": 100,
+          "max_never_played_share": 0
+        }
+      }
+    }
+  ]
+}

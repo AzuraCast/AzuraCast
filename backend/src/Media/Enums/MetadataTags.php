@@ -145,21 +145,96 @@ enum MetadataTags: string
         ];
     }
 
+    /**
+     * Also maps the names that only identify a tag inside Vorbis comments
+     */
+    public static function getTagByAnyName(string $name): ?self
+    {
+        return self::getTag($name) ?? self::getVorbisCommentAliases()[self::normalizeName($name)] ?? null;
+    }
+
+    /**
+     * Leaves out the names that only identify a tag inside Vorbis comments
+     */
     public static function getTag(string $value): ?self
     {
-        $value = str_replace('-', '_', mb_strtolower($value));
+        $value = self::normalizeName($value);
 
         $tag = self::tryFrom($value);
         if (null !== $tag) {
             return $tag;
         }
 
-        $aliases = [
+        return self::getAliases()[$value] ?? null;
+    }
+
+    /**
+     * @return array<string, self>
+     */
+    public static function getAliases(): array
+    {
+        return [
             'date' => self::Year,
-            'encoder' => self::EncodedBy,
+            'encodedby' => self::EncodedBy,
+            'encoder' => self::EncoderSettings,
             'website' => self::UrlArtist,
         ];
+    }
 
-        return $aliases[$value] ?? null;
+    /**
+     * @return array<string, self>
+     */
+    public static function getVorbisCommentAliases(): array
+    {
+        // Spellings some taggers use instead of the Vorbis comment name
+        $aliases = [
+            'album artist' => self::AlbumArtist, // foobar2000
+            'description' => self::Comment, // Vorbis spec, ffmpeg
+            'unsyncedlyrics' => self::UnsynchronisedLyric, // Mp3tag
+        ];
+
+        foreach (self::cases() as $tag) {
+            $vorbisCommentName = $tag->getVorbisCommentName();
+            if ($vorbisCommentName !== $tag->value) {
+                $aliases[$vorbisCommentName] = $tag;
+            }
+        }
+
+        return $aliases;
+    }
+
+    /**
+     * The common name for this tag in Vorbis comments so players and other taggers can read it
+     */
+    public function getVorbisCommentName(): string
+    {
+        return match ($this) {
+            self::AlbumArtist => 'albumartist',
+            self::AlbumArtistSortOrder => 'albumartistsort',
+            self::AlbumSortOrder => 'albumsort',
+            self::ComposerSortOrder => 'composersort',
+            self::ContentGroupDescription => 'grouping',
+            self::EncodedBy => 'encodedby',
+            self::EncoderSettings => 'encoder',
+            self::InitialKey => 'key',
+            self::MediaType => 'media',
+            self::OriginalReleaseTime => 'originaldate',
+            self::OriginalYear => 'originalyear',
+            self::PartOfACompilation => 'compilation',
+            self::PartOfASet => 'discnumber',
+            self::PerformerSortOrder => 'artistsort',
+            self::SetSubtitle => 'discsubtitle',
+            self::TitleSortOrder => 'titlesort',
+            self::TrackNumber => 'tracknumber',
+            self::UnsynchronisedLyric => 'lyrics',
+            self::UrlArtist => 'website',
+            self::Year => 'date',
+            default => $this->value,
+        };
+    }
+
+    private static function normalizeName(string $name): string
+    {
+        return str_replace('-', '_', mb_strtolower($name));
     }
 }

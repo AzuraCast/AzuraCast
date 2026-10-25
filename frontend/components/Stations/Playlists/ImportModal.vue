@@ -4,6 +4,7 @@
         ref="$modal"
         :title="$gettext('Import from PLS/M3U')"
         size="lg"
+        :busy="loading"
         @hidden="onHidden"
     >
         <div v-if="results">
@@ -82,12 +83,14 @@
             <button
                 type="button"
                 class="btn btn-secondary"
+                :disabled="loading"
                 @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
             <button
                 v-if="!results"
+                :disabled="playlistFile === null || loading"
                 class="btn btn-primary"
                 type="submit"
                 @click="doSubmit"
@@ -122,6 +125,7 @@ const emit = defineEmits<HasRelistEmit>();
 const importPlaylistUrl = ref<string | null>(null);
 const playlistFile = ref<File | null>(null);
 const overwritePlaylist = ref(false);
+const loading = ref<boolean>(false);
 
 const results = ref<BatchImportResult | null>(null);
 
@@ -135,6 +139,7 @@ const { show, hide } = useHasModal($modal);
 const open = (newImportPlaylistUrl: string) => {
     playlistFile.value = null;
     overwritePlaylist.value = false;
+    loading.value = false;
 
     importPlaylistUrl.value = newImportPlaylistUrl;
     show();
@@ -151,18 +156,24 @@ const doSubmit = async () => {
     const formData = new FormData();
     formData.append("playlist_file", playlistFile.value);
 
-    const { data } = await axios.post<BatchImportResult>(
-        importPlaylistUrl.value,
-        formData,
-    );
+    loading.value = true;
 
-    if (data.success) {
-        results.value = data;
+    try {
+        const { data } = await axios.post<BatchImportResult>(
+            importPlaylistUrl.value,
+            formData,
+        );
 
-        notifySuccess(data.message);
-    } else {
-        notifyError(data.message);
-        hide();
+        if (data.success) {
+            results.value = data;
+
+            notifySuccess(data.message);
+        } else {
+            notifyError(data.message);
+            hide();
+        }
+    } finally {
+        loading.value = false;
     }
 };
 

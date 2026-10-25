@@ -1,0 +1,42 @@
+{
+  "description": "A sequential playlist group spanning three member playlists yields one track from each, in weight order, across successive queue builds: A (m1), then B (m2), then C (m3).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "plays-a-then-b-then-c",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "m1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "m2",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "c",
+          "media_ref": "m3",
+          "playlist_chain_refs": [
+            "grp",
+            "c"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -18,7 +18,13 @@ final readonly class CustomFieldProps
             type: 'object',
             additionalProperties: new OA\AdditionalProperties(type: 'string')
         )]
-        public array $autoAssignTypes
+        public array $autoAssignTypes,
+        #[OA\Property(
+            description: 'Alternative tag names mapped to the known tag they are saved as.',
+            type: 'object',
+            additionalProperties: new OA\AdditionalProperties(type: 'string')
+        )]
+        public array $autoAssignAliases
     ) {
     }
 }

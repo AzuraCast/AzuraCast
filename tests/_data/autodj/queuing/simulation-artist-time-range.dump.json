@@ -1,0 +1,1080 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 240,
+      "duplicate_prevention_artist_time_range": null,
+      "autodj_queue_length": 3,
+      "crossfade": 2
+    }
+  },
+  "media": [
+    {
+      "ref": "m01",
+      "path": "artist-range/track-01.mp3",
+      "unique_id": "artistrangeaaaaaaaaa001",
+      "length": 397.0,
+      "artist": "Solo Artist 04",
+      "title": "Track 01",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m02",
+      "path": "artist-range/track-02.mp3",
+      "unique_id": "artistrangeaaaaaaaaa002",
+      "length": 434.0,
+      "artist": "Solo Artist 22",
+      "title": "Track 02",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m03",
+      "path": "artist-range/track-03.mp3",
+      "unique_id": "artistrangeaaaaaaaaa003",
+      "length": 390.0,
+      "artist": "Solo Artist 08",
+      "title": "Track 03",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m04",
+      "path": "artist-range/track-04.mp3",
+      "unique_id": "artistrangeaaaaaaaaa004",
+      "length": 427.0,
+      "artist": "Shared Artist 05",
+      "title": "Track 04",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m05",
+      "path": "artist-range/track-05.mp3",
+      "unique_id": "artistrangeaaaaaaaaa005",
+      "length": 383.0,
+      "artist": "Shared Artist 14",
+      "title": "Track 05",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m06",
+      "path": "artist-range/track-06.mp3",
+      "unique_id": "artistrangeaaaaaaaaa006",
+      "length": 420.0,
+      "artist": "Shared Artist 09",
+      "title": "Track 06",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m07",
+      "path": "artist-range/track-07.mp3",
+      "unique_id": "artistrangeaaaaaaaaa007",
+      "length": 376.0,
+      "artist": "Shared Artist 07",
+      "title": "Track 07",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m08",
+      "path": "artist-range/track-08.mp3",
+      "unique_id": "artistrangeaaaaaaaaa008",
+      "length": 413.0,
+      "artist": "Shared Artist 10",
+      "title": "Track 08",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m09",
+      "path": "artist-range/track-09.mp3",
+      "unique_id": "artistrangeaaaaaaaaa009",
+      "length": 369.0,
+      "artist": "Solo Artist 03",
+      "title": "Track 09",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m10",
+      "path": "artist-range/track-10.mp3",
+      "unique_id": "artistrangeaaaaaaaaa010",
+      "length": 406.0,
+      "artist": "Solo Artist 14",
+      "title": "Track 10",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m11",
+      "path": "artist-range/track-11.mp3",
+      "unique_id": "artistrangeaaaaaaaaa011",
+      "length": 362.0,
+      "artist": "Solo Artist 12",
+      "title": "Track 11",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m12",
+      "path": "artist-range/track-12.mp3",
+      "unique_id": "artistrangeaaaaaaaaa012",
+      "length": 399.0,
+      "artist": "Shared Artist 10",
+      "title": "Track 12",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m13",
+      "path": "artist-range/track-13.mp3",
+      "unique_id": "artistrangeaaaaaaaaa013",
+      "length": 436.0,
+      "artist": "Shared Artist 13",
+      "title": "Track 13",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m14",
+      "path": "artist-range/track-14.mp3",
+      "unique_id": "artistrangeaaaaaaaaa014",
+      "length": 392.0,
+      "artist": "Shared Artist 05",
+      "title": "Track 14",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m15",
+      "path": "artist-range/track-15.mp3",
+      "unique_id": "artistrangeaaaaaaaaa015",
+      "length": 429.0,
+      "artist": "Solo Artist 05",
+      "title": "Track 15",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m16",
+      "path": "artist-range/track-16.mp3",
+      "unique_id": "artistrangeaaaaaaaaa016",
+      "length": 385.0,
+      "artist": "Solo Artist 17",
+      "title": "Track 16",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m17",
+      "path": "artist-range/track-17.mp3",
+      "unique_id": "artistrangeaaaaaaaaa017",
+      "length": 422.0,
+      "artist": "Shared Artist 04",
+      "title": "Track 17",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m18",
+      "path": "artist-range/track-18.mp3",
+      "unique_id": "artistrangeaaaaaaaaa018",
+      "length": 378.0,
+      "artist": "Shared Artist 08",
+      "title": "Track 18",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m19",
+      "path": "artist-range/track-19.mp3",
+      "unique_id": "artistrangeaaaaaaaaa019",
+      "length": 415.0,
+      "artist": "Shared Artist 14",
+      "title": "Track 19",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m20",
+      "path": "artist-range/track-20.mp3",
+      "unique_id": "artistrangeaaaaaaaaa020",
+      "length": 371.0,
+      "artist": "Shared Artist 11",
+      "title": "Track 20",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m21",
+      "path": "artist-range/track-21.mp3",
+      "unique_id": "artistrangeaaaaaaaaa021",
+      "length": 408.0,
+      "artist": "Shared Artist 03",
+      "title": "Track 21",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m22",
+      "path": "artist-range/track-22.mp3",
+      "unique_id": "artistrangeaaaaaaaaa022",
+      "length": 364.0,
+      "artist": "Shared Artist 12",
+      "title": "Track 22",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m23",
+      "path": "artist-range/track-23.mp3",
+      "unique_id": "artistrangeaaaaaaaaa023",
+      "length": 401.0,
+      "artist": "Shared Artist 15",
+      "title": "Track 23",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m24",
+      "path": "artist-range/track-24.mp3",
+      "unique_id": "artistrangeaaaaaaaaa024",
+      "length": 438.0,
+      "artist": "Shared Artist 06",
+      "title": "Track 24",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m25",
+      "path": "artist-range/track-25.mp3",
+      "unique_id": "artistrangeaaaaaaaaa025",
+      "length": 394.0,
+      "artist": "Shared Artist 12",
+      "title": "Track 25",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m26",
+      "path": "artist-range/track-26.mp3",
+      "unique_id": "artistrangeaaaaaaaaa026",
+      "length": 431.0,
+      "artist": "Solo Artist 02",
+      "title": "Track 26",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m27",
+      "path": "artist-range/track-27.mp3",
+      "unique_id": "artistrangeaaaaaaaaa027",
+      "length": 387.0,
+      "artist": "Solo Artist 10",
+      "title": "Track 27",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m28",
+      "path": "artist-range/track-28.mp3",
+      "unique_id": "artistrangeaaaaaaaaa028",
+      "length": 424.0,
+      "artist": "Shared Artist 10",
+      "title": "Track 28",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m29",
+      "path": "artist-range/track-29.mp3",
+      "unique_id": "artistrangeaaaaaaaaa029",
+      "length": 380.0,
+      "artist": "Solo Artist 21",
+      "title": "Track 29",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m30",
+      "path": "artist-range/track-30.mp3",
+      "unique_id": "artistrangeaaaaaaaaa030",
+      "length": 417.0,
+      "artist": "Shared Artist 09",
+      "title": "Track 30",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m31",
+      "path": "artist-range/track-31.mp3",
+      "unique_id": "artistrangeaaaaaaaaa031",
+      "length": 373.0,
+      "artist": "Shared Artist 06",
+      "title": "Track 31",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m32",
+      "path": "artist-range/track-32.mp3",
+      "unique_id": "artistrangeaaaaaaaaa032",
+      "length": 410.0,
+      "artist": "Shared Artist 03",
+      "title": "Track 32",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m33",
+      "path": "artist-range/track-33.mp3",
+      "unique_id": "artistrangeaaaaaaaaa033",
+      "length": 366.0,
+      "artist": "Shared Artist 07",
+      "title": "Track 33",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m34",
+      "path": "artist-range/track-34.mp3",
+      "unique_id": "artistrangeaaaaaaaaa034",
+      "length": 403.0,
+      "artist": "Shared Artist 01",
+      "title": "Track 34",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m35",
+      "path": "artist-range/track-35.mp3",
+      "unique_id": "artistrangeaaaaaaaaa035",
+      "length": 440.0,
+      "artist": "Solo Artist 16",
+      "title": "Track 35",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m36",
+      "path": "artist-range/track-36.mp3",
+      "unique_id": "artistrangeaaaaaaaaa036",
+      "length": 396.0,
+      "artist": "Solo Artist 09",
+      "title": "Track 36",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m37",
+      "path": "artist-range/track-37.mp3",
+      "unique_id": "artistrangeaaaaaaaaa037",
+      "length": 433.0,
+      "artist": "Shared Artist 14",
+      "title": "Track 37",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m38",
+      "path": "artist-range/track-38.mp3",
+      "unique_id": "artistrangeaaaaaaaaa038",
+      "length": 389.0,
+      "artist": "Shared Artist 13",
+      "title": "Track 38",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m39",
+      "path": "artist-range/track-39.mp3",
+      "unique_id": "artistrangeaaaaaaaaa039",
+      "length": 426.0,
+      "artist": "Solo Artist 01",
+      "title": "Track 39",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m40",
+      "path": "artist-range/track-40.mp3",
+      "unique_id": "artistrangeaaaaaaaaa040",
+      "length": 382.0,
+      "artist": "Shared Artist 15",
+      "title": "Track 40",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m41",
+      "path": "artist-range/track-41.mp3",
+      "unique_id": "artistrangeaaaaaaaaa041",
+      "length": 419.0,
+      "artist": "Solo Artist 07",
+      "title": "Track 41",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m42",
+      "path": "artist-range/track-42.mp3",
+      "unique_id": "artistrangeaaaaaaaaa042",
+      "length": 375.0,
+      "artist": "Shared Artist 02",
+      "title": "Track 42",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m43",
+      "path": "artist-range/track-43.mp3",
+      "unique_id": "artistrangeaaaaaaaaa043",
+      "length": 412.0,
+      "artist": "Shared Artist 01",
+      "title": "Track 43",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m44",
+      "path": "artist-range/track-44.mp3",
+      "unique_id": "artistrangeaaaaaaaaa044",
+      "length": 368.0,
+      "artist": "Shared Artist 02",
+      "title": "Track 44",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m45",
+      "path": "artist-range/track-45.mp3",
+      "unique_id": "artistrangeaaaaaaaaa045",
+      "length": 405.0,
+      "artist": "Solo Artist 13",
+      "title": "Track 45",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m46",
+      "path": "artist-range/track-46.mp3",
+      "unique_id": "artistrangeaaaaaaaaa046",
+      "length": 361.0,
+      "artist": "Solo Artist 11",
+      "title": "Track 46",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m47",
+      "path": "artist-range/track-47.mp3",
+      "unique_id": "artistrangeaaaaaaaaa047",
+      "length": 398.0,
+      "artist": "Shared Artist 02",
+      "title": "Track 47",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m48",
+      "path": "artist-range/track-48.mp3",
+      "unique_id": "artistrangeaaaaaaaaa048",
+      "length": 435.0,
+      "artist": "Solo Artist 15",
+      "title": "Track 48",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m49",
+      "path": "artist-range/track-49.mp3",
+      "unique_id": "artistrangeaaaaaaaaa049",
+      "length": 391.0,
+      "artist": "Shared Artist 06",
+      "title": "Track 49",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m50",
+      "path": "artist-range/track-50.mp3",
+      "unique_id": "artistrangeaaaaaaaaa050",
+      "length": 428.0,
+      "artist": "Shared Artist 04",
+      "title": "Track 50",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m51",
+      "path": "artist-range/track-51.mp3",
+      "unique_id": "artistrangeaaaaaaaaa051",
+      "length": 384.0,
+      "artist": "Shared Artist 11",
+      "title": "Track 51",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m52",
+      "path": "artist-range/track-52.mp3",
+      "unique_id": "artistrangeaaaaaaaaa052",
+      "length": 421.0,
+      "artist": "Shared Artist 08",
+      "title": "Track 52",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m53",
+      "path": "artist-range/track-53.mp3",
+      "unique_id": "artistrangeaaaaaaaaa053",
+      "length": 377.0,
+      "artist": "Solo Artist 19",
+      "title": "Track 53",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m54",
+      "path": "artist-range/track-54.mp3",
+      "unique_id": "artistrangeaaaaaaaaa054",
+      "length": 414.0,
+      "artist": "Shared Artist 01",
+      "title": "Track 54",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m55",
+      "path": "artist-range/track-55.mp3",
+      "unique_id": "artistrangeaaaaaaaaa055",
+      "length": 370.0,
+      "artist": "Solo Artist 18",
+      "title": "Track 55",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m56",
+      "path": "artist-range/track-56.mp3",
+      "unique_id": "artistrangeaaaaaaaaa056",
+      "length": 407.0,
+      "artist": "Shared Artist 07",
+      "title": "Track 56",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m57",
+      "path": "artist-range/track-57.mp3",
+      "unique_id": "artistrangeaaaaaaaaa057",
+      "length": 363.0,
+      "artist": "Shared Artist 11",
+      "title": "Track 57",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m58",
+      "path": "artist-range/track-58.mp3",
+      "unique_id": "artistrangeaaaaaaaaa058",
+      "length": 400.0,
+      "artist": "Shared Artist 05",
+      "title": "Track 58",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m59",
+      "path": "artist-range/track-59.mp3",
+      "unique_id": "artistrangeaaaaaaaaa059",
+      "length": 437.0,
+      "artist": "Shared Artist 13",
+      "title": "Track 59",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m60",
+      "path": "artist-range/track-60.mp3",
+      "unique_id": "artistrangeaaaaaaaaa060",
+      "length": 393.0,
+      "artist": "Solo Artist 06",
+      "title": "Track 60",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m61",
+      "path": "artist-range/track-61.mp3",
+      "unique_id": "artistrangeaaaaaaaaa061",
+      "length": 430.0,
+      "artist": "Shared Artist 09",
+      "title": "Track 61",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m62",
+      "path": "artist-range/track-62.mp3",
+      "unique_id": "artistrangeaaaaaaaaa062",
+      "length": 386.0,
+      "artist": "Shared Artist 08",
+      "title": "Track 62",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m63",
+      "path": "artist-range/track-63.mp3",
+      "unique_id": "artistrangeaaaaaaaaa063",
+      "length": 423.0,
+      "artist": "Shared Artist 15",
+      "title": "Track 63",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m64",
+      "path": "artist-range/track-64.mp3",
+      "unique_id": "artistrangeaaaaaaaaa064",
+      "length": 379.0,
+      "artist": "Shared Artist 03",
+      "title": "Track 64",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m65",
+      "path": "artist-range/track-65.mp3",
+      "unique_id": "artistrangeaaaaaaaaa065",
+      "length": 416.0,
+      "artist": "Shared Artist 04",
+      "title": "Track 65",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m66",
+      "path": "artist-range/track-66.mp3",
+      "unique_id": "artistrangeaaaaaaaaa066",
+      "length": 372.0,
+      "artist": "Shared Artist 12",
+      "title": "Track 66",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m67",
+      "path": "artist-range/track-67.mp3",
+      "unique_id": "artistrangeaaaaaaaaa067",
+      "length": 409.0,
+      "artist": "Solo Artist 20",
+      "title": "Track 67",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "songs-a",
+      "name": "Songs A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m04",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m06",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m07",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m09",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m13",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m15",
+          "weight": 6,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m16",
+          "weight": 7,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m17",
+          "weight": 8,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m20",
+          "weight": 9,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m23",
+          "weight": 10,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m24",
+          "weight": 11,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m25",
+          "weight": 12,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m28",
+          "weight": 13,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m29",
+          "weight": 14,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m32",
+          "weight": 15,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m33",
+          "weight": 16,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m34",
+          "weight": 17,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m36",
+          "weight": 18,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m37",
+          "weight": 19,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m38",
+          "weight": 20,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m39",
+          "weight": 21,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m41",
+          "weight": 22,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m45",
+          "weight": 23,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m46",
+          "weight": 24,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m47",
+          "weight": 25,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m48",
+          "weight": 26,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m52",
+          "weight": 27,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m53",
+          "weight": 28,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m54",
+          "weight": 29,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m57",
+          "weight": 30,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m58",
+          "weight": 31,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m61",
+          "weight": 32,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m63",
+          "weight": 33,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m64",
+          "weight": 34,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "songs-b",
+      "name": "Songs B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m01",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m02",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m03",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m05",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m08",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m10",
+          "weight": 6,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m11",
+          "weight": 7,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m12",
+          "weight": 8,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m14",
+          "weight": 9,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m18",
+          "weight": 10,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m19",
+          "weight": 11,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m21",
+          "weight": 12,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m22",
+          "weight": 13,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m26",
+          "weight": 14,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m27",
+          "weight": 15,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m30",
+          "weight": 16,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m31",
+          "weight": 17,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m35",
+          "weight": 18,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m40",
+          "weight": 19,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m42",
+          "weight": 20,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m43",
+          "weight": 21,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m44",
+          "weight": 22,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m49",
+          "weight": 23,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m50",
+          "weight": 24,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m51",
+          "weight": 25,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m55",
+          "weight": 26,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m56",
+          "weight": 27,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m59",
+          "weight": 28,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m60",
+          "weight": 29,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m62",
+          "weight": 30,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m65",
+          "weight": 31,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m66",
+          "weight": 32,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m67",
+          "weight": 33,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

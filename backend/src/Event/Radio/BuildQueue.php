@@ -40,6 +40,10 @@ final class BuildQueue extends Event
         return $this->expectedCueTime;
     }
 
+    /**
+     * Can be a few seconds later than the queue row's play time when a schedule starts,
+     * since Liquidsoap can change tracks early
+     */
     public function getExpectedPlayTime(): DateTimeImmutable
     {
         return $this->expectedPlayTime;
@@ -80,6 +84,10 @@ final class BuildQueue extends Event
 
             $this->nextSongs = [$nextSongs];
         } else {
+            if (empty($nextSongs)) {
+                return false;
+            }
+
             $this->nextSongs = $nextSongs;
         }
 

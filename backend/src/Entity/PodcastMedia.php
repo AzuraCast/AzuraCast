@@ -60,6 +60,11 @@ final class PodcastMedia implements IdentifiableEntityInterface
     #[Assert\NotBlank]
     public string $mime_type = 'application/octet-stream';
 
+    /** @var int The podcast media's file size (in bytes) */
+    #[ORM\Column(type: 'bigint')]
+    #[Attributes\AuditIgnore]
+    public int $size = 0;
+
     #[ORM\Column]
     public int $modified_time = 0;
 

@@ -8,6 +8,7 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Flysystem\StationFilesystems;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Utilities\Types;
@@ -62,6 +63,10 @@ final class StationMedia implements
     #[ORM\Column(type: 'float', nullable: false)]
     public float $length = 0.0;
 
+    /** @var int The media file's size (in bytes) */
+    #[ORM\Column(type: 'bigint', nullable: false)]
+    public int $size = 0;
+
     #[ORM\Column(length: 500)]
     public string $path {
         get => $this->path;
@@ -88,6 +93,15 @@ final class StationMedia implements
                 $value
             );
         }
+    }
+
+    #[ORM\Column(name: 'computed_auto_cue', type: 'json', nullable: true)]
+    private ?array $computed_auto_cue_raw = null;
+
+    public ?StationMediaComputedAutoCue $computed_auto_cue {
+        get => $this->computed_auto_cue_raw === null
+            ? null
+            : new StationMediaComputedAutoCue($this->computed_auto_cue_raw);
     }
 
     /** @var Collection<int, StationPlaylistMedia> */
@@ -201,6 +215,7 @@ final class StationMedia implements
         $metadata = new Metadata();
         $metadata->setDuration($this->length);
 
+        /** @var array<value-of<MetadataTags>, mixed> $tags */
         $tags = array_filter(
             [
                 'title' => $this->title,
@@ -212,8 +227,45 @@ final class StationMedia implements
             ]
         );
 
+        /** @var array<string, mixed> $extraTags */
+        $extraTags = [];
+        $seenExtraKeys = [];
+
+        foreach ($this->custom_fields as $customField) {
+            $autoAssign = $customField->field->auto_assign;
+            $value = $customField->value;
+
+            if (
+                $autoAssign === null
+                || $value === null
+                || trim($value) === ''
+            ) {
+                continue;
+            }
+
+            $tagEnum = MetadataTags::getTag($autoAssign);
+            if ($tagEnum !== null) {
+                $tags[$tagEnum->value] ??= $value;
+                continue;
+            }
+
+            $lowerKey = mb_strtolower($autoAssign);
+            if (isset($seenExtraKeys[$lowerKey])) {
+                continue;
+            }
+
+            $seenExtraKeys[$lowerKey] = true;
+            $extraTags[$autoAssign] = $value;
+        }
+
+        // Sorted so reorders of custom fields don't look like metadata changed
+        ksort($tags);
+
+        $extraTags = array_replace($extraTags, $this->extra_metadata->toArray() ?? []);
+        ksort($extraTags);
+
         $metadata->setKnownTags($tags);
-        $metadata->setExtraTags($this->extra_metadata->toArray() ?? []);
+        $metadata->setExtraTags($extraTags);
 
         return $metadata;
     }

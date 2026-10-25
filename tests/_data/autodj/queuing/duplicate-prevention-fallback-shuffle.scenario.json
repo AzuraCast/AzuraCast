@@ -1,0 +1,35 @@
+{
+  "description": "Two-pass fallback (never go silent): a shuffle-order avoid_duplicates playlist from which all tracks (m1 and m2) were recently played. Pass 1 strictly avoids duplicates (including the internal reset-and-retry) and finds none, so it returns nothing; pass 2 allows duplicates and falls back to the least-recently-played track. m1 was played longer ago (11:50) than m2 (11:55), so the playlist still plays m1 rather than leaving the station silent.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "shuffle-falls-back-to-least-recently-played",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "timestamp_played": "2018-01-15T11:50:00+00:00",
+            "is_visible": true
+          },
+          {
+            "media_ref": "m2",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "shf",
+          "media_ref": "m1",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

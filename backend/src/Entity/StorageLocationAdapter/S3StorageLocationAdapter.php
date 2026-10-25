@@ -42,11 +42,14 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
 
     public function validate(): void
     {
+        $bucket = $this->storageLocation->s3Bucket;
+        assert($bucket !== null);
+
         $client = $this->getClient();
         $client->listObjectsV2(
             [
-                'Bucket' => $this->storageLocation->s3Bucket,
-                'max-keys' => 1,
+                'Bucket' => $bucket,
+                'MaxKeys' => 1,
             ]
         );
 

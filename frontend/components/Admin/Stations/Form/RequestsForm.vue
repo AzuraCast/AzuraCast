@@ -46,6 +46,14 @@
                     :label="$gettext('Request Last Played Threshold (Minutes)')"
                     :description="$gettext('This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.')"
                 />
+
+                <form-group-checkbox
+                    id="edit_form_requests_only_via_playlists"
+                    class="col-md-12"
+                    :field="r$.requests_only_via_playlists"
+                    :label="$gettext('Only play requests via Request Queue playlists')"
+                    :description="$gettext('When enabled, listener requests are only played when a Request Queue playlist is scheduled. The global automatic request playback is disabled.')"
+                />
             </div>
         </form-fieldset>
         <backend-disabled v-else />

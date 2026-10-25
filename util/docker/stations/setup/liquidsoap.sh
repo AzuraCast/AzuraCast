@@ -13,17 +13,19 @@ apt-get install -y --no-install-recommends \
 apt-get install -y --no-install-recommends ladspa-sdk
 
 # Per-architecture LS installs
-ARCHITECTURE=amd64
-if [[ "$(uname -m)" = "aarch64" ]]; then
-    ARCHITECTURE=arm64
-fi
+curl -fsSL https://repo.liquidsoap.info/setup.sh | sh -s -- --channel v2.4.6
 
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.4.5/liquidsoap_2.4.5-debian-trixie-ocaml4.14.2-2_${ARCHITECTURE}.deb"
+apt-get install -y --no-install-recommends liquidsoap
+
+# ARCHITECTURE=amd64
+# if [[ "$(uname -m)" = "aarch64" ]]; then
+#   ARCHITECTURE=arm64
+# fi
 # wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.4.x/liquidsoap-ff8dd94_2.4.3-debian-trixie-ocaml4.14.2-1_${ARCHITECTURE}.deb"
+# dpkg -i /tmp/liquidsoap.deb
+# apt-get install -y -f --no-install-recommends
+# rm -f /tmp/liquidsoap.deb
 
-dpkg -i /tmp/liquidsoap.deb
-apt-get install -y -f --no-install-recommends
-rm -f /tmp/liquidsoap.deb
 ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
 
 # Add temp directories for caching.

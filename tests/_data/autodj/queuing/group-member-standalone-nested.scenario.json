@@ -1,0 +1,47 @@
+{
+  "description": "Group precedence walks the full ancestor chain: the member (own window 11:00-13:00) belongs to an unscheduled mid group, which belongs to a top group scheduled 12:00-13:00. Inside the top window the member is suppressed and plays via the nested chain; before it the member plays standalone because the chain check recurses past the always-active unscheduled mid group to the inactive top group. The mid group itself carries no schedule and stays out of the top-level rotation.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "nested-inside-root-window-member-plays-via-chain",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_should_play": {
+        "top_grp": true,
+        "mid_grp": true,
+        "member": true
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [
+            "top_grp",
+            "mid_grp",
+            "member"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested-outside-root-window-member-plays-standalone",
+      "now": "2018-01-15T11:30:00+00:00",
+      "expect_should_play": {
+        "top_grp": false,
+        "mid_grp": true,
+        "member": true
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

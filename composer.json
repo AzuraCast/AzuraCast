@@ -28,8 +28,8 @@
     "ext-xml": "*",
     "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
-    "azuracast/doctrine-entity-normalizer": "^3.3.0",
-    "azuracast/nowplaying": "dev-main",
+    "azuracast/doctrine-entity-normalizer": "3.4.0",
+    "azuracast/nowplaying": "3.0.0",
     "beberlei/doctrineextensions": "^1.5",
     "br33f/php-ga4-mp": "^0.1.5",
     "brick/math": "^0.17",
@@ -64,7 +64,7 @@
     "php-di/php-di": "^7.1.1",
     "php-ffmpeg/php-ffmpeg": "^1.3.2",
     "phpseclib/phpseclib": "^3.0.47",
-    "potibm/phluesky": "^0.6.1",
+    "potibm/phluesky": "^0.8",
     "promphp/prometheus_client_php": "^2.14.1",
     "psr/simple-cache": "^3.0",
     "rlanvin/php-ip": "dev-master",
@@ -121,6 +121,7 @@
     "codeception/module-doctrine": "^3.2",
     "codeception/module-phpbrowser": "dev-master",
     "codeception/module-rest": "^3.4.1",
+    "dg/bypass-finals": "^1.10",
     "filp/whoops": "^2.18.4",
     "maxmind-db/reader": "^1.12.1",
     "mockery/mockery": "^1.6.12",
@@ -129,6 +130,7 @@
     "php-parallel-lint/php-parallel-lint": "^1.4",
     "phpstan/phpstan": "^2",
     "phpstan/phpstan-doctrine": "^2.0.10",
+    "phpstan/phpstan-mockery": "^2.0",
     "phpunit/phpunit": "^13",
     "psy/psysh": "^0.12.14",
     "pyrech/composer-changelogs": "^2.1",
@@ -180,15 +182,23 @@
     ],
     "cleanup-and-test": [
       "@phpcbf",
-      "@dev-test"
+      "@dev-test",
+      "codecept build",
+      "codecept run Unit"
     ],
     "cleanup-and-test-full": [
       "@phpcbf",
       "@dev-test",
       "@codeception-no-coverage"
     ],
+    "cleanup-and-test-skip-autodj": [
+      "@phpcbf",
+      "@dev-test",
+      "@codeception-skip-autodj"
+    ],
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
+    "codeception-skip-autodj": "codecept run --no-interaction --skip-group autodj",
     "dev-test": [
       "@phplint",
       "@phpstan",

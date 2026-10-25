@@ -55,12 +55,12 @@
                                     <ul>
                                         <li>
                                             {{
-                                                $gettext('For x86/64 installations, choose "x86/64 Linux Thimeo-ST plugin".')
+                                                $gettext('For x86/64 installations, choose "x86/64 Linux libStereoTool plugin".')
                                             }}
                                         </li>
                                         <li>
                                             {{
-                                                $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi Thimeo-ST plugin".')
+                                                $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi libStereoTool plugin".')
                                             }}
                                         </li>
                                     </ul>

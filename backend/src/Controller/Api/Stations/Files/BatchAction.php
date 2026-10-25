@@ -9,6 +9,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\MediaBatchResult;
 use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
@@ -80,7 +81,8 @@ final class BatchAction implements SingleActionInterface
         private readonly StationPlaylistFolderRepository $playlistFolderRepo,
         private readonly StationQueueRepository $queueRepo,
         private readonly StationFilesystems $stationFilesystems,
-        private readonly MediaListCache $mediaListCache
+        private readonly MediaListCache $mediaListCache,
+        private readonly StationMediaRepository $mediaRepo,
     ) {
     }
 
@@ -102,6 +104,7 @@ final class BatchAction implements SingleActionInterface
             'immediate' => $this->doPlayImmediately($request, $station, $storageLocation, $fsMedia),
             'reprocess' => $this->doReprocess($request, $station, $storageLocation, $fsMedia),
             'clear-extra' => $this->doClearExtra($request, $station, $storageLocation, $fsMedia),
+            'clear-computed-autocue' => $this->doClearComputedAutoCue($request, $storageLocation, $fsMedia),
             default => throw new InvalidArgumentException('Invalid batch action specified.')
         };
 
@@ -477,6 +480,22 @@ final class BatchAction implements SingleActionInterface
             $media->mtime = 0;
 
             $this->em->persist($media);
+        }
+
+        return $result;
+    }
+
+    private function doClearComputedAutoCue(
+        ServerRequest $request,
+        StorageLocation $storageLocation,
+        ExtendedFilesystemInterface $fs
+    ): MediaBatchResult {
+        $result = $this->parseRequest($request, $fs);
+
+        $this->mediaRepo->clearComputedAutoCueForPaths($storageLocation, $result->files);
+
+        foreach ($result->directories as $directory) {
+            $this->mediaRepo->clearComputedAutoCue($storageLocation, "{$directory}/");
         }
 
         return $result;

@@ -33,6 +33,7 @@ use Psr\Http\Message\ResponseInterface;
                         enum: [
                             'schedule',
                             'media',
+                            'members',
                         ]
                     ),
                 ),
@@ -76,7 +77,8 @@ final class CloneAction extends AbstractClonableAction implements SingleActionIn
             $record,
             $data['name'],
             in_array('schedule', $toClone, true),
-            in_array('media', $toClone, true)
+            in_array('media', $toClone, true),
+            in_array('members', $toClone, true)
         );
 
         $this->em->flush();

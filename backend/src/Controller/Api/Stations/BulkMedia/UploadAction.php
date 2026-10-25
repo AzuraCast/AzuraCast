@@ -20,8 +20,8 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
+use App\Utilities\Csv;
 use App\Utilities\Types;
-use League\Csv\Reader;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -142,7 +142,7 @@ final class UploadAction implements SingleActionInterface
         // Read and process CSV.
         $csvPath = $flowResponse->getUploadedPath();
 
-        $reader = Reader::from($csvPath);
+        $reader = Csv::importReader($csvPath);
         $reader->setHeaderOffset(0);
 
         $importResults = [];

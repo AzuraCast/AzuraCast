@@ -1,5 +1,6 @@
 <template>
     <tab
+        id="basic_info"
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
     >
@@ -40,7 +41,7 @@
         </div>
 
         <section
-            v-show="form.source === 'songs'"
+            v-if="form.source === 'songs'"
             class="card mb-3"
             role="region"
         >
@@ -113,6 +114,15 @@
                         stacked
                         radio
                         :label="$gettext('Song Playback Order')"
+                    />
+
+                    <form-group-checkbox
+                        v-if="form.order !== 'random'"
+                        id="form_edit_preserve_queue_on_restart"
+                        class="col-md-6"
+                        :field="r$.preserve_queue_on_restart"
+                        :label="$gettext('Keep Queue on Restart')"
+                        :description="$gettext('Enable this setting to prevent the playlists internal queue from being reset on station restarts or configuration rewrites.')"
                     />
                 </div>
 
@@ -190,7 +200,130 @@
         </section>
 
         <section
-            v-show="form.source === 'remote_url'"
+            v-if="form.source === 'playlists'"
+            class="card mb-3"
+            role="region"
+        >
+            <div class="card-header text-bg-primary">
+                <h2 class="card-title">
+                    {{ $gettext('Playlist Group Playlist') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-3">
+                    <form-group-multi-check
+                        id="edit_form_type"
+                        class="col-md-6"
+                        :field="r$.type"
+                        :options="typeOptions.filter((option) => option.value !== 'custom')"
+                        stacked
+                        radio
+                        :label="$gettext('Playlist Type')"
+                    />
+
+                    <form-group-multi-check
+                        id="edit_form_order"
+                        class="col-md-6"
+                        :field="r$.order"
+                        :options="orderOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Song Playback Order')"
+                    />
+
+                    <form-group-checkbox
+                        id="form_edit_avoid_duplicates"
+                        class="col-md-6"
+                        :field="r$.avoid_duplicates"
+                        :label="$gettext('Avoid Duplicate Artists/Titles')"
+                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles across all member playlists in this group.')"
+                    />
+
+                    <form-group-checkbox
+                        v-if="form.order !== 'random'"
+                        id="form_edit_preserve_queue_on_restart"
+                        class="col-md-6"
+                        :field="r$.preserve_queue_on_restart"
+                        :label="$gettext('Keep Queue on Restart')"
+                        :description="$gettext('Enable this setting to prevent the playlists internal queue from being reset on station restarts or configuration rewrites.')"
+                    />
+                </div>
+
+                <form-fieldset v-show="form.type === 'default'">
+                    <template #label>
+                        {{ $gettext('General Rotation') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-select
+                            id="form_edit_weight"
+                            class="col-md-12"
+                            :field="r$.weight"
+                            :options="weightOptions"
+                            :label="$gettext('Playlist Weight')"
+                            :description="$gettext('Playlists with larger number weights (i.e. 25) play more frequently than playlists with smaller number weights (i.e. 1).')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_x_songs'">
+                    <template #label>
+                        {{ $gettext('Once per x Songs') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_songs"
+                            class="col-md-12"
+                            :field="r$.play_per_songs"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '150'}"
+                            :label="$gettext('Number of Songs Between Plays')"
+                            :description="$gettext('This playlist will play every $x songs, where $x is specified here.')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_x_minutes'">
+                    <template #label>
+                        {{ $gettext('Once per x Minutes') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_minutes"
+                            class="col-md-12"
+                            :field="r$.play_per_minutes"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '360'}"
+                            :label="$gettext('Number of Minutes Between Plays')"
+                            :description="$gettext('This playlist will play every $x minutes, where $x is specified here.')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_hour'">
+                    <template #label>
+                        {{ $gettext('Once per Hour') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_hour_minute"
+                            class="col-md-12"
+                            :field="r$.play_per_hour_minute"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '59'}"
+                            :label="$gettext('Minute of Hour to Play')"
+                            :description="$gettext('Specify the minute of every hour that this playlist should play.')"
+                        />
+                    </div>
+                </form-fieldset>
+            </div>
+        </section>
+
+        <section
+            v-if="form.source === 'remote_url'"
             class="card mb-3"
             role="region"
         >
@@ -231,6 +364,24 @@
                 </div>
             </div>
         </section>
+        <section
+            v-if="form.source === 'requests'"
+            class="card mb-3"
+            role="region"
+        >
+            <div class="card-header text-bg-primary">
+                <h2 class="card-title">
+                    {{ $gettext('Request Queue Playlist') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{
+                        $gettext('This playlist will play songs that listeners have requested. When this playlist\'s slot is reached and no requests are pending, the AutoDJ will skip to the next eligible playlist.')
+                    }}
+                </p>
+            </div>
+        </section>
     </tab>
 </template>
 
@@ -245,6 +396,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import { usePlaylistOptions } from "~/components/Stations/Playlists/playlistOptions.ts";
 import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 import { useTranslate } from "~/vendor/gettext";
 
@@ -254,78 +406,7 @@ const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const { $gettext } = useTranslate();
 
-const sourceOptions = [
-    {
-        value: "songs",
-        text: $gettext("Song-Based"),
-        description: $gettext(
-            "A playlist containing media files hosted on this server.",
-        ),
-    },
-    {
-        value: "remote_url",
-        text: $gettext("Remote URL"),
-        description: $gettext(
-            "A playlist that instructs the station to play from a remote URL.",
-        ),
-    },
-];
-
-const typeOptions = [
-    {
-        value: "default",
-        text: $gettext("General Rotation"),
-        description: $gettext(
-            "Standard playlist, shuffles with other standard playlists based on weight.",
-        ),
-    },
-    {
-        value: "once_per_x_songs",
-        text: $gettext("Once per x Songs"),
-        description: $gettext("Play once every $x songs."),
-    },
-    {
-        value: "once_per_x_minutes",
-        text: $gettext("Once per x Minutes"),
-        description: $gettext("Play once every $x minutes."),
-    },
-    {
-        value: "once_per_hour",
-        text: $gettext("Once per Hour"),
-        description: $gettext("Play once per hour at the specified minute."),
-    },
-    {
-        value: "custom",
-        text: $gettext("Advanced"),
-        description: $gettext(
-            "Manually define how this playlist is used in Liquidsoap configuration.",
-        ),
-    },
-];
-
-const orderOptions = [
-    {
-        value: "shuffle",
-        text: $gettext("Shuffled"),
-        description: $gettext(
-            "The full playlist is shuffled and then played through in the shuffled order.",
-        ),
-    },
-    {
-        value: "random",
-        text: $gettext("Random"),
-        description: $gettext(
-            "A completely random track is picked for playback every time the queue is populated.",
-        ),
-    },
-    {
-        value: "sequential",
-        text: $gettext("Sequential"),
-        description: $gettext(
-            "The order of the playlist is manually specified and followed by the AutoDJ.",
-        ),
-    },
-];
+const { sourceOptions, typeOptions, orderOptions } = usePlaylistOptions();
 
 const remoteTypeOptions = [
     {

@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "t1",
+      "path": "gioxs/t1.mp3",
+      "unique_id": "gioxst100000000000000000",
+      "length": 8.0,
+      "artist": "Station",
+      "title": "Transition One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "t2",
+      "path": "gioxs/t2.mp3",
+      "unique_id": "gioxst200000000000000000",
+      "length": 8.0,
+      "artist": "Station",
+      "title": "Transition Two",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "t3",
+      "path": "gioxs/t3.mp3",
+      "unique_id": "gioxst300000000000000000",
+      "length": 8.0,
+      "artist": "Station",
+      "title": "Transition Three",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "j1",
+      "path": "gioxs/j1.mp3",
+      "unique_id": "gioxsj100000000000000000",
+      "length": 12.0,
+      "artist": "Station",
+      "title": "Jingle One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a1",
+      "path": "gioxs/a1.mp3",
+      "unique_id": "gioxsa100000000000000000",
+      "length": 120.0,
+      "artist": "Artist A",
+      "title": "Song A1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a2",
+      "path": "gioxs/a2.mp3",
+      "unique_id": "gioxsa200000000000000000",
+      "length": 120.0,
+      "artist": "Artist A",
+      "title": "Song A2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "a3",
+      "path": "gioxs/a3.mp3",
+      "unique_id": "gioxsa300000000000000000",
+      "length": 120.0,
+      "artist": "Artist A",
+      "title": "Song A3",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b1",
+      "path": "gioxs/b1.mp3",
+      "unique_id": "gioxsb100000000000000000",
+      "length": 120.0,
+      "artist": "Artist B",
+      "title": "Song B1",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b2",
+      "path": "gioxs/b2.mp3",
+      "unique_id": "gioxsb200000000000000000",
+      "length": 120.0,
+      "artist": "Artist B",
+      "title": "Song B2",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "b3",
+      "path": "gioxs/b3.mp3",
+      "unique_id": "gioxsb300000000000000000",
+      "length": 120.0,
+      "artist": "Artist B",
+      "title": "Song B3",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "interrupters",
+      "name": "Interrupters",
+      "config": {
+        "type": "once_per_x_songs",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 3,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "transitions",
+          "weight": 1,
+          "consecutive_plays": 3,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "jingles",
+          "weight": 2,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "transitions",
+      "name": "Transitions",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "t1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "t2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "t3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "jingles",
+      "name": "Jingles",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "j1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "music_a",
+      "name": "Music A",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 5,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "a1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "a3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "music_b",
+      "name": "Music B",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 1,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "b1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "b3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

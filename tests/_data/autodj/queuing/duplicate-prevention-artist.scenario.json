@@ -1,0 +1,78 @@
+{
+  "description": "Duplicate prevention matches on artist and title metadata, not just the same track: a history entry by artist \"Alpha\" blocks \"Alpha feat. Gamma\" (separator splitting), a history entry with the same title blocks regardless of artist, and history older than the duplicate-prevention time range (default 120 minutes) no longer blocks.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "blocks-matching-artist-part",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "history-artist-track",
+            "artist": "Alpha",
+            "title": "Different Song",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:55:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m2",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "blocks-matching-title",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "history-title-track",
+            "artist": "Unrelated Artist",
+            "title": "First Song",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:55:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m2",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "history-outside-time-range-does-not-block",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "history-artist-track",
+            "artist": "Alpha",
+            "title": "Different Song",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T09:00:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m1",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

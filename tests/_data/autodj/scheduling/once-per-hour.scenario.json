@@ -1,0 +1,37 @@
+{
+  "description": "Once-per-hour playlist targeting minute :50, 15-minute window.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "2359-plays",
+      "now": "2018-01-15T23:59:00+00:00",
+      "expect_should_play": {
+        "oph": true
+      }
+    },
+    {
+      "name": "1204-plays",
+      "now": "2018-01-15T12:04:00+00:00",
+      "expect_should_play": {
+        "oph": true
+      }
+    },
+    {
+      "name": "2349-does-not-play",
+      "now": "2018-01-15T23:49:00+00:00",
+      "expect_should_play": {
+        "oph": false
+      }
+    },
+    {
+      "name": "1206-does-not-play",
+      "now": "2018-01-15T12:06:00+00:00",
+      "expect_should_play": {
+        "oph": false
+      }
+    }
+  ]
+}

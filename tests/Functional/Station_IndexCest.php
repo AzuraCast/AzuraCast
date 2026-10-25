@@ -21,6 +21,7 @@ class Station_IndexCest extends CestAbstract
 
         $I->amOnPage('/station/' . $stationId);
         $I->seeResponseCodeIs(200);
-        $I->seeInTitle($testStation->name);
+
+        $I->seeElement('#dashboard');
     }
 }

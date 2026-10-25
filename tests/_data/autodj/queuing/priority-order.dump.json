@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mOph",
+      "path": "priority/oph.mp3",
+      "unique_id": "priorityaaaaaaaaaaaaaa01",
+      "length": 120.0,
+      "artist": "Hour Artist",
+      "title": "Hourly Jingle",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mOpm",
+      "path": "priority/opm.mp3",
+      "unique_id": "priorityaaaaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "Minute Artist",
+      "title": "Minute Drop",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mSched",
+      "path": "priority/sched.mp3",
+      "unique_id": "priorityaaaaaaaaaaaaaa03",
+      "length": 120.0,
+      "artist": "Daytime Artist",
+      "title": "Daytime Song",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mUnsched",
+      "path": "priority/unsched.mp3",
+      "unique_id": "priorityaaaaaaaaaaaaaa04",
+      "length": 120.0,
+      "artist": "Rotation Artist",
+      "title": "Rotation Song",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "oph",
+      "name": "Once Per Hour Jingle",
+      "config": {
+        "type": "once_per_hour",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOph",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "opm",
+      "name": "Once Per Six Hundred Minutes",
+      "config": {
+        "type": "once_per_x_minutes",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 600,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOpm",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "sched",
+      "name": "Scheduled Daytime Standard",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mSched",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [
+        {
+          "start_time": 1000,
+          "end_time": 1400,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false
+        }
+      ],
+      "members": []
+    },
+    {
+      "ref": "unsched",
+      "name": "Unscheduled Standard Rotation",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mUnsched",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

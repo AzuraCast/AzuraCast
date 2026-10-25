@@ -82,6 +82,8 @@ final class GetOrderAction implements SingleActionInterface
         return $response->withJson(
             array_map(
                 static function (array $row) use ($router, $station): array {
+                    unset($row['media']['computed_auto_cue_raw']);
+
                     $row['media']['links'] = [
                         'play' => $router->named(
                             'api:stations:files:play',

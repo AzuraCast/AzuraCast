@@ -1,0 +1,44 @@
+{
+  "description": "A random-order group with the 'merge' backend option has no rotation state, so one merged build takes a single randomized pass with exactly one pick per member: three one-track members yield a three-entry block containing each member's track exactly once, in nondeterministic order.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "random-order-block-one-pick-per-member",
+      "now": "2026-06-01T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "distinct": true,
+          "entries": [
+            {
+              "mode": "membership",
+              "media_any_of": [
+                "mRA",
+                "mRB",
+                "mRC"
+              ]
+            },
+            {
+              "mode": "membership",
+              "media_any_of": [
+                "mRA",
+                "mRB",
+                "mRC"
+              ]
+            },
+            {
+              "mode": "membership",
+              "media_any_of": [
+                "mRA",
+                "mRB",
+                "mRC"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

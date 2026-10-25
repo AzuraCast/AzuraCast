@@ -55,6 +55,9 @@ const add = () => {
         end_date: null,
         days: [],
         loop_once: false,
+        prevent_requests: false,
+        reset_queue_at_start: false,
+        reset_queue_recursive: false,
     });
 };
 

@@ -179,6 +179,16 @@
                                 {{ $gettext('Clear Extra Metadata') }}
                             </button>
                         </li>
+                        <li>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                :title="$gettext('Remove the computed AutoCue data from the selected media. Liquidsoap analyzes them again on their next play.')"
+                                @click="doClearComputedAutoCue"
+                            >
+                                {{ $gettext('Clear AutoCue Data') }}
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -340,6 +350,14 @@ const doClearExtra = () => {
         "clear-extra",
         $gettext("Extra metadata cleared for files:"),
         $gettext("Error reprocessing files:"),
+    );
+};
+
+const doClearComputedAutoCue = () => {
+    void doBatch(
+        "clear-computed-autocue",
+        $gettext("AutoCue data cleared for files:"),
+        $gettext("Error clearing AutoCue data:"),
     );
 };
 

@@ -274,6 +274,14 @@
                     </form-group-checkbox>
 
                     <form-group-checkbox
+                        id="edit_form_backend_config_reset_sequential_queues_on_restart"
+                        class="col-md-12"
+                        :field="r$.backend_config.reset_sequential_queues_on_restart"
+                        :label="$gettext('Reset Sequential Playlist Queues on Restart')"
+                        :description="$gettext('By default sequential playlists continue from their current position when the station is restarted or its configuration is rewritten. Enable this to reset their queues instead. Individual playlists can be excluded from the reset.')"
+                    />
+
+                    <form-group-checkbox
                         id="edit_form_backend_config_write_playlists_to_liquidsoap"
                         class="col-md-12"
                         :field="r$.backend_config.write_playlists_to_liquidsoap"
@@ -331,6 +339,16 @@
                         :input-attrs="{ min: '0', max: '1440' }"
                         :label="$gettext('Duplicate Prevention Time Range (Minutes)')"
                         :description="$gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.')"
+                    />
+
+                    <form-group-field
+                        id="edit_form_backend_duplicate_prevention_artist_time_range"
+                        class="col-md-6"
+                        :field="r$.backend_config.duplicate_prevention_artist_time_range"
+                        input-type="number"
+                        :input-attrs="{ min: '0', max: '1440' }"
+                        :label="$gettext('Duplicate Prevention Time Range for Artists (Minutes)')"
+                        :description="$gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm avoids repeating an artist. Stations with many tracks by the same artists can set a shorter range so those tracks keep rotating. Leave blank to use the Duplicate Prevention Time Range.')"
                     />
                 </div>
             </form-fieldset>

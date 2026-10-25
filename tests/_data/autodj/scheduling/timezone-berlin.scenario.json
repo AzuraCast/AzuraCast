@@ -1,0 +1,44 @@
+{
+  "description": "A station in Europe/Berlin with a 06:00-08:00 schedule evaluates the window in station-local time, in winter (CET, +01:00) and in summer (CEST, +02:00). A UTC-based evaluation would flip several of these cases.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "winter-0630-local-plays",
+      "now": "2018-01-15T05:30:00+00:00",
+      "expect_should_play": {
+        "morning": true
+      }
+    },
+    {
+      "name": "winter-0530-local-does-not-play",
+      "now": "2018-01-15T04:30:00+00:00",
+      "expect_should_play": {
+        "morning": false
+      }
+    },
+    {
+      "name": "winter-0830-local-does-not-play",
+      "now": "2018-01-15T07:30:00+00:00",
+      "expect_should_play": {
+        "morning": false
+      }
+    },
+    {
+      "name": "summer-0630-local-plays",
+      "now": "2018-07-16T04:30:00+00:00",
+      "expect_should_play": {
+        "morning": true
+      }
+    },
+    {
+      "name": "summer-0630-utc-is-0830-local-does-not-play",
+      "now": "2018-07-16T06:30:00+00:00",
+      "expect_should_play": {
+        "morning": false
+      }
+    }
+  ]
+}

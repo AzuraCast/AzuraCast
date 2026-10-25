@@ -1,0 +1,73 @@
+{
+  "description": "A nested once-per-3-songs group counts a play of a member two levels down as its own.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-two-levels-down-gates-the-outer-group",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "d1",
+            "playlist_ref": "deep",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:54:00+00:00"
+          },
+          {
+            "media_ref": "m1",
+            "playlist_ref": "music",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:56:00+00:00"
+          },
+          {
+            "media_ref": "m2",
+            "playlist_ref": "music",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:58:00+00:00"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "outer": false
+      }
+    },
+    {
+      "name": "outer-group-eligible-once-the-nested-member-leaves-the-window",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "d1",
+            "playlist_ref": "deep",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:50:00+00:00"
+          },
+          {
+            "media_ref": "m1",
+            "playlist_ref": "music",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:54:00+00:00"
+          },
+          {
+            "media_ref": "m2",
+            "playlist_ref": "music",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:56:00+00:00"
+          },
+          {
+            "media_ref": "m3",
+            "playlist_ref": "music",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:58:00+00:00"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "outer": true
+      }
+    }
+  ]
+}

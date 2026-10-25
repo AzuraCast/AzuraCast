@@ -9,6 +9,12 @@ div.datatable-toolbar-bottom {
   }
 }
 
+.datatable-filter-badge {
+  z-index: 2;
+  padding: .2em .45em;
+  pointer-events: none;
+}
+
 div.datatable-main {
   table {
     tr > th:first-child,

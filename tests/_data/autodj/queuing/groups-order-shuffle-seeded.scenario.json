@@ -1,0 +1,69 @@
+{
+  "description": "Group order=shuffle, seeded (in-memory only): proves the reshuffle actually randomizes member order. The first cycle plays in the initial weight order (mA, mB, mC) since no queue reset has happened yet; when the cycle is exhausted the group reshuffles via a seeded PHP shuffle(), and with seed=42 the second cycle comes out mC, mB, mA - a permutation that is not the weight/sequential order.",
+  "modes": [
+    "in_memory"
+  ],
+  "cases": [
+    {
+      "name": "seeded-reshuffle-order-differs-from-sequential",
+      "now": "2018-01-15T12:00:00+00:00",
+      "seed": 42,
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "mB",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "c",
+          "media_ref": "mC",
+          "playlist_chain_refs": [
+            "grp",
+            "c"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "c",
+          "media_ref": "mC",
+          "playlist_chain_refs": [
+            "grp",
+            "c"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "mB",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        }
+      ]
+    }
+  ]
+}

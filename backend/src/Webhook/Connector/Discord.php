@@ -10,8 +10,6 @@ use App\Entity\StationWebhook;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use App\Utilities\Urls;
-use App\Utilities\UserUrlFilter;
-use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 /*
@@ -68,13 +66,6 @@ use GuzzleHttp\RequestOptions;
 
 final class Discord extends AbstractConnector
 {
-    public function __construct(
-        Client $httpClient,
-        private readonly UserUrlFilter $userUrlFilter
-    ) {
-        parent::__construct($httpClient);
-    }
-
     /**
      * @inheritDoc
      */
@@ -166,7 +157,6 @@ final class Discord extends AbstractConnector
             'POST',
             $webhookUrl,
             [
-                RequestOptions::ALLOW_REDIRECTS => false,
                 RequestOptions::HEADERS => [
                     'Content-Type' => 'application/json',
                 ],

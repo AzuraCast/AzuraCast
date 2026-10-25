@@ -13,6 +13,7 @@ use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
 use App\Utilities\Types;
+use Carbon\FactoryImmutable;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,7 +22,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnFailureLimitListener;
-use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Worker;
 use Throwable;
@@ -46,8 +46,18 @@ final class ProcessCommand extends AbstractSyncCommand
 
     protected function configure(): void
     {
-        $this->addArgument('runtime', InputArgument::OPTIONAL)
-            ->addOption('worker-name', null, InputOption::VALUE_OPTIONAL);
+        $this->addArgument(
+            name: 'runtime',
+            mode: InputArgument::OPTIONAL,
+            description: 'Time limit for queue processing'
+        )->addOption(
+            name: 'worker-name',
+            mode: InputOption::VALUE_OPTIONAL
+        )->addOption(
+            name: 'fast',
+            mode: InputOption::VALUE_NEGATABLE,
+            description: 'Whether this process should handle "fast" queue items or slow ones.'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -56,12 +66,14 @@ final class ProcessCommand extends AbstractSyncCommand
 
         $runtime = Types::int($input->getArgument('runtime'));
         $workerName = Types::stringOrNull($input->getOption('worker-name'), true);
+        $isFast = Types::bool($input->getOption('fast'));
 
         $this->logger->notice(
             'Starting new Message Queue worker process.',
             [
                 'runtime' => $runtime,
                 'workerName' => $workerName,
+                'isFast' => $isFast,
             ]
         );
 
@@ -69,7 +81,7 @@ final class ProcessCommand extends AbstractSyncCommand
             $this->queueManager->setWorkerName($workerName);
         }
 
-        $receivers = $this->queueManager->getTransports();
+        $receivers = $this->queueManager->getTransports($isFast);
 
         $this->eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);
         $this->eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
@@ -86,15 +98,20 @@ final class ProcessCommand extends AbstractSyncCommand
             : new NullLogger();
 
         $this->eventDispatcher->addSubscriber(
-            new StopWorkerOnTimeLimitListener($runtime, $busLogger)
-        );
-        $this->eventDispatcher->addSubscriber(
             new StopWorkerOnFailureLimitListener(5, $busLogger)
         );
 
         try {
-            $worker = new Worker($receivers, $this->messageBus, $this->eventDispatcher, $busLogger);
-            $worker->run();
+            $worker = new Worker(
+                receivers: $receivers,
+                bus: $this->messageBus,
+                eventDispatcher: $this->eventDispatcher,
+                logger: $busLogger,
+                clock: new FactoryImmutable()
+            );
+            $worker->run([
+                'time_limit' => $runtime,
+            ]);
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('Message queue error: %s', $e->getMessage()),

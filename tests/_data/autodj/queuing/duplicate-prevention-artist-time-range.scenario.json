@@ -1,0 +1,82 @@
+{
+  "description": "The dump sets a 240-minute duplicate prevention time range and a 60-minute artist time range. A play of m1 blocks m1 by track for 240 minutes, but it blocks m2 (same artist X) only for 60 minutes. A title played by another artist still blocks for the full 240 minutes.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "artist-outside-artist-time-range-no-longer-blocks",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "playlist_ref": "dp",
+            "timestamp_played": "2018-01-15T10:30:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m2",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "artist-inside-artist-time-range-still-blocks",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "playlist_ref": "dp",
+            "timestamp_played": "2018-01-15T11:30:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m3",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "title-inside-time-range-still-blocks",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "playlist_ref": "dp",
+            "timestamp_played": "2018-01-15T10:30:00+00:00",
+            "is_visible": true
+          },
+          {
+            "song_id": "history-title-track",
+            "artist": "Unrelated Artist",
+            "title": "Two",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T10:30:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m3",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "description": "Schedules with start/end dates: a dated daytime event plays only within its date range; a window is valid only if it STARTS within the date range, so a single-night overnight schedule (start_date == end_date, 22:00-04:00) covers exactly one night incl. its morning tail (no earlier morning, no second evening), and a multi-night overnight schedule keeps its last morning tail past the end date.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "event-before-range-does-not-play",
+      "now": "2018-05-31T12:00:00+00:00",
+      "expect_should_play": {
+        "event": false
+      }
+    },
+    {
+      "name": "event-on-start-day-plays",
+      "now": "2018-06-01T12:00:00+00:00",
+      "expect_should_play": {
+        "event": true
+      }
+    },
+    {
+      "name": "event-within-range-plays",
+      "now": "2018-06-02T12:00:00+00:00",
+      "expect_should_play": {
+        "event": true
+      }
+    },
+    {
+      "name": "event-after-range-does-not-play",
+      "now": "2018-06-04T12:00:00+00:00",
+      "expect_should_play": {
+        "event": false
+      }
+    },
+    {
+      "name": "night-first-evening-plays",
+      "now": "2018-06-01T23:00:00+00:00",
+      "expect_should_play": {
+        "night": true
+      }
+    },
+    {
+      "name": "night-overnight-tail-next-morning-plays",
+      "now": "2018-06-02T02:00:00+00:00",
+      "expect_should_play": {
+        "night": true
+      }
+    },
+    {
+      "name": "night-evening-before-range-does-not-play",
+      "now": "2018-05-31T23:00:00+00:00",
+      "expect_should_play": {
+        "night": false
+      }
+    },
+    {
+      "name": "night-two-mornings-later-does-not-play",
+      "now": "2018-06-03T02:00:00+00:00",
+      "expect_should_play": {
+        "night": false
+      }
+    },
+    {
+      "name": "night-second-evening-does-not-play",
+      "now": "2018-06-02T23:00:00+00:00",
+      "expect_should_play": {
+        "night": false
+      }
+    },
+    {
+      "name": "night-first-morning-does-not-play",
+      "now": "2018-06-01T03:00:00+00:00",
+      "expect_should_play": {
+        "night": false
+      }
+    },
+    {
+      "name": "multi-night-second-evening-plays",
+      "now": "2018-06-02T23:00:00+00:00",
+      "expect_should_play": {
+        "multinight": true
+      }
+    },
+    {
+      "name": "multi-night-last-morning-tail-plays",
+      "now": "2018-06-04T02:00:00+00:00",
+      "expect_should_play": {
+        "multinight": true
+      }
+    },
+    {
+      "name": "multi-night-evening-after-range-does-not-play",
+      "now": "2018-06-04T23:00:00+00:00",
+      "expect_should_play": {
+        "multinight": false
+      }
+    }
+  ]
+}

@@ -7,13 +7,13 @@ namespace App\Radio\AutoDJ;
 use App\Cache\QueueLogCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Monolog\Handler\TestHandler;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -30,6 +30,7 @@ final class Queue
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
         private readonly StationQueueRepository $queueRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly Scheduler $scheduler,
         private readonly QueueLogCache $queueLogCache
     ) {
@@ -81,7 +82,8 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
-                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                if (!$this->isQueueRowStillValid($station, $queueRow, $expectedPlayTime)) {
+                    $this->restorePlaylistQueueSlot($queueRow);
                     $this->em->remove($queueRow);
                     continue;
                 }
@@ -112,14 +114,30 @@ final class Queue
                 ]
             );
 
+            $expectedPlayTimeForSchedule = $this->scheduler->applyScheduleStartTolerance(
+                $station,
+                $expectedPlayTime
+            );
+
             // Push another test handler specifically for this one queue task.
             $testHandler = new TestHandler(LogLevel::DEBUG, true);
             $this->logger->pushHandler($testHandler);
 
+            if (!$expectedPlayTimeForSchedule->equalTo($expectedPlayTime)) {
+                $toleranceSeconds = Scheduler::SCHEDULE_START_TOLERANCE_SECONDS;
+                $this->logger->debug(
+                    "Checking schedules {$toleranceSeconds}s after expected play time as a schedule starts by then.",
+                    [
+                        'expected_play_time' => (string) $expectedPlayTime,
+                        'schedule_check_time' => (string) $expectedPlayTimeForSchedule,
+                    ]
+                );
+            }
+
             $event = new BuildQueue(
                 $station,
                 $expectedCueTime,
-                $expectedPlayTime,
+                $expectedPlayTimeForSchedule,
                 $lastSongId
             );
 
@@ -247,19 +265,45 @@ final class Queue
     }
 
     private function isQueueRowStillValid(
+        Station $station,
         StationQueue $queueRow,
-        DateTimeImmutable $expectedPlayTime
+        CarbonImmutable $expectedPlayTime
     ): bool {
         $playlist = $queueRow->playlist;
         if (null === $playlist) {
             return true;
         }
 
-        return $playlist->is_enabled &&
-            $this->scheduler->isPlaylistScheduledToPlayNow(
-                $playlist,
-                $expectedPlayTime,
-                true
-            );
+        if (!$playlist->is_enabled) {
+            return false;
+        }
+
+        // Intentionally only checking the playlists own schedule, a standalone queued group member
+        // row is not removed when a group schedule window starts mid-queue.
+        return $this->scheduler->isPlaylistScheduledToPlayNow(
+            $playlist,
+            $this->scheduler->applyScheduleStartTolerance($station, $expectedPlayTime),
+            excludeSpecialRules: true
+        );
+    }
+
+    /**
+     * Re-queue the playlist media of a queue row that is dropped before it played.
+     */
+    private function restorePlaylistQueueSlot(StationQueue $queueRow): void
+    {
+        $playlist = $queueRow->playlist;
+        $media = $queueRow->media;
+
+        if ($playlist === null || $media === null) {
+            return;
+        }
+
+        $spm = $this->spmRepo->findByPlaylistAndMedia($playlist, $media);
+
+        if ($spm !== null) {
+            $spm->is_queued = true;
+            $this->em->persist($spm);
+        }
     }
 }

@@ -23,6 +23,6 @@ final class DispatchWebhookMessage extends AbstractUniqueMessage
 
     public function getQueue(): QueueNames
     {
-        return QueueNames::HighPriority;
+        return QueueNames::FastHighPriority;
     }
 }

@@ -1,0 +1,58 @@
+{
+  "description": "'reset_queue_at_start' and 'loop_once' on the same schedule entry compose: the block-start reset restarts the interrupted rotation at the first member, and because the reset is stamped one second before the window (the loop-once convention), loop_once still sees an unspent window and plays exactly one full pass before the group stops for the rest of the window.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "reset-then-one-full-pass",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp:a": {
+            "is_queued": false
+          },
+          "grp:b": {
+            "is_queued": false
+          },
+          "grp:c": {
+            "is_queued": true
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "m_a",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "m_b",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "c",
+          "media_ref": "m_c",
+          "playlist_chain_refs": [
+            "grp",
+            "c"
+          ]
+        },
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

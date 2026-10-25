@@ -6,9 +6,12 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
@@ -25,9 +28,13 @@ final class Scheduler
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
 
+    public const int SCHEDULE_START_TOLERANCE_SECONDS = 15;
+
     public function __construct(
+        private readonly StationPlaylistRepository $spRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly StationQueueRepository $queueRepo
+        private readonly StationQueueRepository $queueRepo,
+        private readonly PlaylistQueueResetter $queueResetter
     ) {
     }
 
@@ -130,6 +137,92 @@ final class Scheduler
         return null !== $scheduleItem;
     }
 
+    /**
+     * Liquidsoap can change tracks a few seconds before the expected play time.
+     */
+    public function applyScheduleStartTolerance(
+        Station $station,
+        DateTimeImmutable $expectedPlayTime
+    ): CarbonImmutable {
+        $expectedPlayTime = CarbonImmutable::instance($expectedPlayTime);
+        $toleratedPlayTime = $expectedPlayTime->addSeconds(self::SCHEDULE_START_TOLERANCE_SECONDS);
+
+        return $this->isScheduleStartingBetween($station, $expectedPlayTime, $toleratedPlayTime)
+            ? $toleratedPlayTime
+            : $expectedPlayTime;
+    }
+
+    /**
+     * Determine whether a playlist that is a member of one or more groups is covered by an
+     * ancestor-group chain whose schedule is active at the given instant. While covered, the
+     * playlist plays via its group and is suppressed from the general rotation.
+     */
+    public function isPlaylistCoveredByGroupScheduleAt(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): bool {
+        if ($playlist->playlist_groups->count() === 0) {
+            return false;
+        }
+
+        foreach ($playlist->playlist_groups as $spg) {
+            if ($this->isGroupChainActiveAt($spg->playlist_group, $now)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether an ancestor-group chain covers the entire given window, i.e. the
+     * playlist plays via its group for the whole of this schedule event. Partially
+     * covered windows report false.
+     */
+    public function isPlaylistFullyCoveredByGroupSchedule(
+        StationPlaylist $playlist,
+        DateRange $window
+    ): bool {
+        return $this->isPlaylistCoveredByGroupScheduleAt($playlist, $window->start)
+            && $this->isPlaylistCoveredByGroupScheduleAt($playlist, $window->end->subSecond());
+    }
+
+    /**
+     * Walk up one membership chain and return whether every group in it is schedule-active
+     * at the given instant. Groups without schedule items count as always active, matching
+     * isPlaylistScheduledToPlayNow.
+     *
+     * @param int[] $visitedIdsInChain
+     */
+    private function isGroupChainActiveAt(
+        StationPlaylist $group,
+        DateTimeImmutable $now,
+        array $visitedIdsInChain = []
+    ): bool {
+        if (in_array($group->id, $visitedIdsInChain, true)) {
+            return false;
+        }
+
+        $visitedIdsInChain[] = $group->id;
+
+        // Using "excludeSpecialRules" to prevent resetting queues as side effect & suppressing mid-window
+        if (!$this->isPlaylistScheduledToPlayNow($group, $now, excludeSpecialRules: true)) {
+            return false;
+        }
+
+        if ($group->playlist_groups->count() === 0) {
+            return true;
+        }
+
+        foreach ($group->playlist_groups as $spg) {
+            if ($this->isGroupChainActiveAt($spg->playlist_group, $now, $visitedIdsInChain)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function shouldPlaylistPlayNowPerHour(
         StationPlaylist $playlist,
         DateTimeImmutable $now
@@ -188,6 +281,25 @@ final class Scheduler
         return $scheduleItem instanceof StationSchedule
             ? $scheduleItem->getDuration($stationTz)
             : 0;
+    }
+
+    public function isPlaylistScheduledToLoopOnceAt(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): bool {
+        if ($playlist->schedule_items->count() === 0) {
+            return false;
+        }
+
+        // Using "excludeSpecialRules" to prevent resetting queues as side effect of this check
+        $scheduleItem = $this->getActiveScheduleFromCollection(
+            $playlist->schedule_items,
+            $playlist->station->getTimezoneObject(),
+            $now,
+            excludeSpecialRules: true
+        );
+
+        return $scheduleItem->loop_once ?? false;
     }
 
     public function canStreamerStreamNow(
@@ -265,11 +377,6 @@ final class Scheduler
             'endTime' => $endTime,
         ]);
 
-        if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $tz, $now)) {
-            $this->logger->debug('Schedule is not scheduled to play today.');
-            return false;
-        }
-
         /** @var DateRange[] $comparePeriods */
         $comparePeriods = [];
 
@@ -326,6 +433,12 @@ final class Scheduler
             return false;
         }
 
+        // Check start/end date limitations against the day this window starts.
+        if (!$this->isScheduleDateInRange($schedule, $dateRange->start)) {
+            $this->logger->debug('Schedule window start date is outside the configured date range.');
+            return false;
+        }
+
         // Check playlist special handling rules.
         $playlist = $schedule->playlist;
         if (null === $playlist) {
@@ -341,15 +454,20 @@ final class Scheduler
         if ($playlist->backendPlaySingleTrack()) {
             $playedAt = $playlist->played_at;
 
-            if (null !== $playedAt && $dateRange->start->isBefore($playedAt)) {
+            if (null !== $playedAt && $dateRange->start->lessThanOrEqualTo($playedAt)) {
                 return false;
             }
+        }
+
+        // Handle resetting before loop_once since it relies on queue state
+        if ($schedule->reset_queue_at_start) {
+            $this->resetQueueAtBlockStart($playlist, $dateRange, $schedule->reset_queue_recursive);
         }
 
         // Handle "Loop Once" schedule specification.
         if (
             $schedule->loop_once
-            && !$this->shouldPlaylistLoopNow($schedule, $dateRange)
+            && !$this->shouldPlaylistLoopNow($schedule, $dateRange, CarbonImmutable::instance($now))
         ) {
             return false;
         }
@@ -357,9 +475,45 @@ final class Scheduler
         return true;
     }
 
+    private function resetQueueAtBlockStart(
+        StationPlaylist $playlist,
+        DateRange $dateRange,
+        bool $recursive
+    ): void {
+        if (!in_array($playlist->source, [PlaylistSources::Songs, PlaylistSources::Playlists], true)) {
+            return;
+        }
+
+        // If playlist has been played in this window we shoudln't reset it again
+        if ($dateRange->contains($playlist->played_at)) {
+            return;
+        }
+
+        // One second before start so "queue_reset_at outside window" check still works after reset
+        $resetAt = $dateRange->start->subSecond();
+
+        if ($playlist->queue_reset_at !== null && $playlist->queue_reset_at >= $resetAt) {
+            return;
+        }
+
+        $this->logger->debug(
+            'Resetting playlist queue at schedule block start.',
+            ['reset_at' => $resetAt]
+        );
+
+        if ($playlist->source === PlaylistSources::Songs) {
+            $this->spmRepo->resetQueue($playlist, $resetAt);
+        } elseif ($recursive) {
+            $this->queueResetter->resetPlaylistGroupAndNestedMembers($playlist, $resetAt);
+        } else {
+            $this->spRepo->resetPlaylistGroupQueue($playlist, $resetAt);
+        }
+    }
+
     private function shouldPlaylistLoopNow(
         StationSchedule $schedule,
-        DateRange $dateRange
+        DateRange $dateRange,
+        CarbonImmutable $now
     ): bool {
         $this->logger->debug('Checking if playlist should loop now.');
 
@@ -372,26 +526,43 @@ final class Scheduler
 
         $playlistPlayedAt = $playlist->played_at;
 
-        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
+        $isQueueEmpty = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->spRepo->isPlaylistGroupQueueEmpty($playlist)
+            : $this->spmRepo->isQueueEmpty($playlist);
+
+        $hasCuedPlaylistMedia = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->queueRepo->hasCuedPlaylistGroupMedia($playlist)
+            : $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
 
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
+            $isQueueFilled = (PlaylistSources::Playlists === $playlist->source)
+                ? $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlist)
+                : $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $dateRange->start->subSecond();
+                $resetAt = $dateRange->start->subSecond();
 
-                $this->logger->debug('Resetting playlist queue with now override', [$now]);
+                $this->logger->debug('Resetting playlist queue with now override', [$resetAt]);
 
-                $this->spmRepo->resetQueue($playlist, $now);
+                if (PlaylistSources::Playlists === $playlist->source) {
+                    $this->spRepo->resetPlaylistGroupQueue($playlist, $resetAt);
+                } else {
+                    $this->spmRepo->resetQueue($playlist, $resetAt);
+                }
+
                 $isQueueEmpty = false;
             }
         } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
             $this->logger->debug('Resetting playlist queue.');
 
-            $this->spmRepo->resetQueue($playlist);
+            if (PlaylistSources::Playlists === $playlist->source) {
+                $this->spRepo->resetPlaylistGroupQueue($playlist, $now);
+            } else {
+                $this->spmRepo->resetQueue($playlist, $now);
+            }
+
             $isQueueEmpty = false;
         }
 
@@ -473,6 +644,29 @@ final class Scheduler
     }
 
     /**
+     * Given the day a schedule window starts, return whether the schedule's
+     * start/end date range (if any) permits a window starting on that day.
+     */
+    public function isScheduleDateInRange(
+        StationSchedule $schedule,
+        DateTimeImmutable $windowStart
+    ): bool {
+        $dateToCheck = $windowStart->format('Y-m-d');
+
+        $startDate = $schedule->start_date;
+        if (!empty($startDate) && $dateToCheck < $startDate) {
+            return false;
+        }
+
+        $endDate = $schedule->end_date;
+        if (!empty($endDate) && $dateToCheck > $endDate) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Given an ISO-8601 date, return if the playlist can be played on that day.
      *
      * @param StationSchedule $schedule
@@ -486,5 +680,30 @@ final class Scheduler
         $playOnceDays = $schedule->days;
         return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
+    }
+
+    private function isScheduleStartingBetween(
+        Station $station,
+        CarbonImmutable $from,
+        CarbonImmutable $until
+    ): bool {
+        $stationTz = $station->getTimezoneObject();
+
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
+                continue;
+            }
+
+            foreach ($playlist->schedule_items as $scheduleItem) {
+                if (
+                    !$this->shouldSchedulePlayNow($scheduleItem, $stationTz, $from, excludeSpecialRules: true)
+                    && $this->shouldSchedulePlayNow($scheduleItem, $stationTz, $until, excludeSpecialRules: true)
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

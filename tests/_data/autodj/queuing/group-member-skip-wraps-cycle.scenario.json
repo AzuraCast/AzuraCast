@@ -1,0 +1,91 @@
+{
+  "description": "A sequential group whose last queued member is outside its own schedule window wraps into its next cycle within the same pick, instead of handing that slot to the general rotation. The group is scheduled and 'fill' is not, so 'fill' can only be selected if the group returns nothing; it must never appear while the group still has eligible members. The wrap is the only way to reach this result: the retry pass sees the group queue as it was last committed and skips the same member again.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "skip-at-end-wraps-to-next-cycle",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "content",
+          "media_ref": "mContent1",
+          "playlist_chain_refs": [
+            "grp",
+            "content"
+          ]
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "pl3",
+          "media_ref": "mPl31",
+          "playlist_chain_refs": [
+            "grp",
+            "pl3"
+          ]
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "content",
+          "media_ref": "mContent2",
+          "playlist_chain_refs": [
+            "grp",
+            "content"
+          ]
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "pl3",
+          "media_ref": "mPl32",
+          "playlist_chain_refs": [
+            "grp",
+            "pl3"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gated-member-plays-inside-its-window",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "content",
+          "media_ref": "mContent1",
+          "playlist_chain_refs": [
+            "grp",
+            "content"
+          ]
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "pl3",
+          "media_ref": "mPl31",
+          "playlist_chain_refs": [
+            "grp",
+            "pl3"
+          ]
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "gated",
+          "media_ref": "mGated",
+          "playlist_chain_refs": [
+            "grp",
+            "gated"
+          ]
+        }
+      ]
+    }
+  ]
+}

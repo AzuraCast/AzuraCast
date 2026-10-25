@@ -874,7 +874,11 @@ rollback() {
 
   echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
   if ask "Are you ready to continue with the rollback?" Y; then
-    dc exec --user="azuracast" web azuracast_cli azuracast:setup:rollback "${AZURACAST_ROLLBACK_VERSION}"
+    if ! dc exec --user="azuracast" web azuracast_cli azuracast:setup:rollback "${AZURACAST_ROLLBACK_VERSION}"; then
+      echo "The database rollback failed. AzuraCast has not been switched to version '${AZURACAST_ROLLBACK_VERSION}'."
+      exit 1
+    fi
+
     dc down --timeout 60
 
     .env --file .env set AZURACAST_VERSION=${AZURACAST_ROLLBACK_VERSION}
@@ -901,7 +905,7 @@ rollback() {
 setup-letsencrypt() {
   echo "LetsEncrypt is now managed from within the web interface."
   echo "You can manage it via the 'Administration' panel, then 'System Settings'."
-  echo "Under 'Services' you will find the LetsEncrypt settings." 
+  echo "Under 'Services' you will find the LetsEncrypt settings."
 }
 
 letsencrypt-create() {

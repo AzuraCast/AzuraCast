@@ -128,6 +128,7 @@ const context = computed<DataTableFilterContext>(() => {
         sortOrder: null,
         paginated: props.paginated,
         perPage: perPage.value,
+        filters: {},
     };
 });
 

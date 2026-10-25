@@ -1,0 +1,117 @@
+{
+  "description": "A loop_once playlist is eligible at the start of its window, stops once its queue has been fully played within the window (also while a cued track is still pending), and becomes eligible again in the next day's window. A single_track playlist plays once per window.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "loops-at-window-start",
+      "now": "2018-01-15T06:10:00+00:00",
+      "expect_should_play": {
+        "once": true
+      }
+    },
+    {
+      "name": "does-not-loop-after-full-cycle",
+      "now": "2018-01-15T06:30:00+00:00",
+      "runtime": {
+        "playlists": {
+          "once": {
+            "played_at": "2018-01-15T06:20:00+00:00"
+          }
+        },
+        "playlist_media": {
+          "once:m1": {
+            "is_queued": false
+          },
+          "once:m2": {
+            "is_queued": false
+          }
+        }
+      },
+      "expect_should_play": {
+        "once": false
+      }
+    },
+    {
+      "name": "does-not-loop-while-cued-media-pending",
+      "now": "2018-01-15T06:30:00+00:00",
+      "runtime": {
+        "playlists": {
+          "once": {
+            "played_at": "2018-01-15T06:20:00+00:00"
+          }
+        },
+        "playlist_media": {
+          "once:m1": {
+            "is_queued": false
+          },
+          "once:m2": {
+            "is_queued": false
+          }
+        },
+        "cued_media": [
+          {
+            "playlist_ref": "once",
+            "media_ref": "m2"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "once": false
+      }
+    },
+    {
+      "name": "loops-again-next-window",
+      "now": "2018-01-16T06:05:00+00:00",
+      "runtime": {
+        "playlists": {
+          "once": {
+            "played_at": "2018-01-15T06:20:00+00:00",
+            "queue_reset_at": "2018-01-15T06:20:00+00:00"
+          }
+        },
+        "playlist_media": {
+          "once:m1": {
+            "is_queued": false
+          },
+          "once:m2": {
+            "is_queued": false
+          }
+        }
+      },
+      "expect_should_play": {
+        "once": true
+      }
+    },
+    {
+      "name": "single-track-plays-when-fresh-in-window",
+      "now": "2018-01-15T06:10:00+00:00",
+      "runtime": {
+        "playlists": {
+          "single": {
+            "played_at": "2018-01-15T05:00:00+00:00"
+          }
+        }
+      },
+      "expect_should_play": {
+        "single": true
+      }
+    },
+    {
+      "name": "single-track-gated-after-playing-in-window",
+      "now": "2018-01-15T06:30:00+00:00",
+      "runtime": {
+        "playlists": {
+          "single": {
+            "played_at": "2018-01-15T06:10:00+00:00"
+          }
+        }
+      },
+      "expect_should_play": {
+        "single": false
+      }
+    }
+  ]
+}

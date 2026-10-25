@@ -39,6 +39,9 @@ update-depot: # Update everything using Depot
 test:
 	docker compose exec --user=azuracast web composer run cleanup-and-test
 
+test-skip-autodj:
+	docker compose exec --user=azuracast web composer run cleanup-and-test-skip-autodj
+
 bash:
 	docker compose exec --user=azuracast web bash
 

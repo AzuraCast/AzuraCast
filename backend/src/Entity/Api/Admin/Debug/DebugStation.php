@@ -23,7 +23,9 @@ final readonly class DebugStation
         #[OA\Property]
         public string $getNextSongUrl,
         #[OA\Property]
-        public string $getNowPlayingUrl
+        public string $getNowPlayingUrl,
+        #[OA\Property]
+        public string $clearComputedAutoCueUrl
     ) {
     }
 }

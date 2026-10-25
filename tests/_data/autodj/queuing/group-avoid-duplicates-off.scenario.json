@@ -1,0 +1,33 @@
+{
+  "description": "Both the member and its parent group have avoid_duplicates=false. Even though m1 was recently played, no duplicate avoidance applies and the sequential member picks its lowest-weight track m1. Confirms that turning the group flag off genuinely disables avoidance for the member.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "group-flag-off-keeps-member-dedup-disabled",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m1",
+          "playlist_chain_refs": [
+            "grp",
+            "dp"
+          ]
+        }
+      ]
+    }
+  ]
+}

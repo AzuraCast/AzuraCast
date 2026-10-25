@@ -12,6 +12,7 @@
     <exclude-pattern>backend/src/Entity/([^/]+).php</exclude-pattern>
     <exclude-pattern>backend/src/Entity/Interfaces/([^/]+).php</exclude-pattern>
     <exclude-pattern>backend/src/Entity/Traits/([^/]+).php</exclude-pattern>
+    <exclude-pattern>backend/src/Service/PlaylistConfiguration/ImportSummary.php</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="extensions" value="php"/>

@@ -9,6 +9,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
+use App\Radio\AutoDJ\RecentSongHistory;
 use App\Utilities\Time;
 use DateTimeImmutable;
 use Exception as PhpException;
@@ -77,10 +78,18 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         return ($pendingRequest > 0);
     }
 
-    public function getNextPlayableRequest(
+    /**
+     * All currently playable requests in playout order.
+     *
+     * @param ?RecentSongHistory $additionalSongHistory Additional history that requests must not duplicate
+     *
+     * @return list<StationRequest>
+     */
+    public function getPlayableRequests(
         Station $station,
-        ?DateTimeImmutable $now = null
-    ): ?StationRequest {
+        ?DateTimeImmutable $now = null,
+        ?RecentSongHistory $additionalSongHistory = null
+    ): array {
         $tz = $station->getTimezoneObject();
         $now = Time::nowInTimezone($tz, $now);
 
@@ -96,11 +105,30 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         )->setParameter('station', $station)
             ->execute();
 
-        return array_find(
+        $recentlyPlayed = $this->getRecentlyPlayedTracks($station);
+        $additionalSongHistory ??= new RecentSongHistory();
+
+        return array_values(array_filter(
             $requests,
-            fn(StationRequest $request) => $request->shouldPlayNow($now)
-                && !$this->hasPlayedRecently($request->track, $station)
-        );
+            fn(StationRequest $request): bool => $request->shouldPlayNow($now)
+                && !$this->isDuplicateOfPlayedTrack($request->track, $recentlyPlayed)
+                && !$this->isDuplicateOfPlayedTrack(
+                    $request->track,
+                    $additionalSongHistory->playedTracks,
+                    $additionalSongHistory->artistPlayedTracks
+                )
+        ));
+    }
+
+    /**
+     * @param ?RecentSongHistory $additionalSongHistory Additional history that requests must not duplicate
+     */
+    public function getNextPlayableRequest(
+        Station $station,
+        ?DateTimeImmutable $now = null,
+        ?RecentSongHistory $additionalSongHistory = null
+    ): ?StationRequest {
+        return $this->getPlayableRequests($station, $now, $additionalSongHistory)[0] ?? null;
     }
 
     /**
@@ -108,15 +136,25 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function hasPlayedRecently(StationMedia $media, Station $station): bool
     {
+        return $this->isDuplicateOfPlayedTrack($media, $this->getRecentlyPlayedTracks($station));
+    }
+
+    /**
+     * Song history rows within the station's request threshold.
+     *
+     * @return mixed[]
+     */
+    private function getRecentlyPlayedTracks(Station $station): array
+    {
         $lastPlayThresholdMins = $station->request_threshold ?? 15;
 
-        if (0 === $lastPlayThresholdMins) {
-            return false;
+        if ($lastPlayThresholdMins === 0) {
+            return [];
         }
 
         $lastPlayThreshold = Time::nowUtc()->subMinutes($lastPlayThresholdMins);
 
-        $recentTracks = $this->em->createQuery(
+        return $this->em->createQuery(
             <<<'DQL'
                 SELECT sh FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
@@ -126,6 +164,20 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         )->setParameter('station', $station)
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
+    }
+
+    /**
+     * @param mixed[] $playedTracks
+     * @param ?mixed[] $artistPlayedTracks
+     */
+    private function isDuplicateOfPlayedTrack(
+        StationMedia $media,
+        array $playedTracks,
+        ?array $artistPlayedTracks = null
+    ): bool {
+        if ($playedTracks === [] && ($artistPlayedTracks ?? []) === []) {
+            return false;
+        }
 
         $eligibleTrack = new StationPlaylistQueue();
         $eligibleTrack->media_id = $media->id;
@@ -133,6 +185,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         $eligibleTrack->title = $media->title ?? '';
         $eligibleTrack->artist = $media->artist ?? '';
 
-        return (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
+        return $this->duplicatePrevention->getDistinctTrack(
+            [$eligibleTrack],
+            $playedTracks,
+            $artistPlayedTracks
+        ) === null;
     }
 }

@@ -90,6 +90,22 @@
                                 </ul>
                             </div>
 
+                            <dropdown-menu
+                                v-if="filters.length > 0"
+                                class="btn-group"
+                                role="group"
+                                :items="filterMenuItems"
+                                :title="$gettext('Filter rows')"
+                            >
+                                <span class="position-relative d-inline-flex align-items-center">
+                                    <icon-ic-filter-alt/>
+                                    <span
+                                        v-if="activeFilterCount > 0"
+                                        class="datatable-filter-badge position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary"
+                                    >{{ activeFilterCount }}</span>
+                                </span>
+                            </dropdown-menu>
+
                             <div
                                 v-if="selectFields"
                                 class="dropdown btn-group"
@@ -294,7 +310,14 @@
 import { watchDebounced } from "@vueuse/core";
 import { isString } from "es-toolkit";
 import { filter, forEach, get, isEmpty, some } from "es-toolkit/compat";
-import { computed, ref, shallowRef, toRaw, watch } from "vue";
+import { type Component, computed, ref, shallowRef, toRaw, watch } from "vue";
+import DropdownMenu from "~/components/Common/DropdownMenu/DropdownMenu.vue";
+import {
+    MenuActionItem,
+    MenuCheckboxItem,
+    MenuItem,
+    MenuItemType,
+} from "~/components/Common/DropdownMenu/useDropdownMenu.ts";
 import Pagination from "~/components/Common/Pagination.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
@@ -302,12 +325,17 @@ import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
 import {
     DATATABLE_DEFAULT_CONTEXT,
     DataTableFilterContext,
+    DataTableFilterType,
+    DataTableFilterValue,
     DataTableItemProvider,
     DataTableRow,
 } from "~/functions/useHasDatatable.ts";
 import useOptionalStorage from "~/functions/useOptionalStorage";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcArrowDropDown from "~icons/ic/baseline-arrow-drop-down";
 import IconIcArrowDropUp from "~icons/ic/baseline-arrow-drop-up";
+import IconIcClearAll from "~icons/ic/baseline-clear-all";
+import IconIcFilterAlt from "~icons/ic/baseline-filter-alt";
 import IconIcFilterList from "~icons/ic/baseline-filter-list";
 import IconIcRefresh from "~icons/ic/baseline-refresh";
 import IconIcSearch from "~icons/ic/baseline-search";
@@ -326,6 +354,29 @@ export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     sorter?(row: Row): string;
 }
 
+export interface DataTableFilterOption {
+    value: string;
+    text: string;
+    icon?: () => Component;
+}
+
+export interface DataTableSelectFilter {
+    key: string;
+    label: string;
+    type: DataTableFilterType.Select;
+    options: DataTableFilterOption[];
+    multiple?: boolean;
+}
+
+export interface DataTableTextFilter {
+    key: string;
+    label: string;
+    type: DataTableFilterType.Text;
+    placeholder?: string;
+}
+
+export type DataTableFilter = DataTableSelectFilter | DataTableTextFilter;
+
 export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     id?: string;
     fields: DataTableField<Row>[];
@@ -339,6 +390,7 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     selectable?: boolean; // Allow selecting individual rows with checkboxes at the side of each row
     detailed?: boolean; // Allow showing "Detail" panel for selected rows.
     selectFields?: boolean; // Allow selecting which columns are visible.
+    filters?: DataTableFilter[]; // Quick filters offered in the toolbar menu.
 }
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
@@ -351,6 +403,7 @@ const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     selectable: false,
     detailed: false,
     selectFields: false,
+    filters: () => [],
 });
 
 const slots = defineSlots<{
@@ -391,6 +444,159 @@ watch(selectedRows, (newRows: Row[]) => {
 
 const searchPhrase = ref<string>(DATATABLE_DEFAULT_CONTEXT.searchPhrase);
 const currentPage = ref<number>(DATATABLE_DEFAULT_CONTEXT.currentPage);
+
+const activeFilters = ref<Record<string, DataTableFilterValue>>({});
+
+const activeFilterCount = computed<number>(() => {
+    return Object.keys(activeFilters.value).length;
+});
+
+const applyFilter = (key: string, value: string) => {
+    const updatedFilters = { ...activeFilters.value };
+
+    if (value === "" || updatedFilters[key] === value) {
+        delete updatedFilters[key];
+    } else {
+        updatedFilters[key] = value;
+    }
+
+    activeFilters.value = updatedFilters;
+};
+
+const isFilterValueActive = (key: string, value: string): boolean => {
+    const currentValue = activeFilters.value[key];
+
+    if (currentValue === undefined) {
+        return false;
+    }
+
+    if (isString(currentValue)) {
+        return currentValue === value;
+    }
+
+    return currentValue.includes(value);
+};
+
+const toggleFilterValue = (filter: DataTableSelectFilter, value: string) => {
+    const currentValue = activeFilters.value[filter.key];
+    const currentValues = Array.isArray(currentValue) ? currentValue : [];
+
+    const toggledValues = currentValues.includes(value)
+        ? currentValues.filter((selectedValue) => {
+              return selectedValue !== value;
+          })
+        : [...currentValues, value];
+
+    // Kept in option order so equal selections share one query cache entry
+    const selectedValues = filter.options
+        .map((option) => {
+            return option.value;
+        })
+        .filter((optionValue) => {
+            return toggledValues.includes(optionValue);
+        });
+
+    const updatedFilters = { ...activeFilters.value };
+
+    if (selectedValues.length === 0) {
+        delete updatedFilters[filter.key];
+    } else {
+        updatedFilters[filter.key] = selectedValues;
+    }
+
+    activeFilters.value = updatedFilters;
+};
+
+const clearFilters = () => {
+    activeFilters.value = {};
+};
+
+const { $gettext } = useTranslate();
+
+const filterMenuItems = computed<MenuItem[]>(() => {
+    const items = props.filters.map((filter): MenuItem => {
+        if (filter.type === DataTableFilterType.Text) {
+            const currentValue = activeFilters.value[filter.key];
+
+            return {
+                type: MenuItemType.Submenu,
+                key: filter.key,
+                label: filter.label,
+                indicator: currentValue !== undefined,
+                items: [
+                    {
+                        type: MenuItemType.Input,
+                        key: `${filter.key}:input`,
+                        label: filter.label,
+                        placeholder: filter.placeholder,
+                        value: isString(currentValue) ? currentValue : "",
+                        onSelect: (value) => {
+                            applyFilter(filter.key, value);
+                        },
+                    },
+                ],
+            };
+        }
+
+        if (filter.multiple) {
+            return {
+                type: MenuItemType.Submenu,
+                key: filter.key,
+                label: filter.label,
+                indicator: activeFilters.value[filter.key] !== undefined,
+                items: filter.options.map((option): MenuCheckboxItem => {
+                    return {
+                        type: MenuItemType.Checkbox,
+                        key: `${filter.key}:${option.value}`,
+                        label: option.text,
+                        icon: option.icon,
+                        checked: isFilterValueActive(filter.key, option.value),
+                        onToggle: () => {
+                            toggleFilterValue(filter, option.value);
+                        },
+                    };
+                }),
+            };
+        }
+
+        return {
+            type: MenuItemType.Submenu,
+            key: filter.key,
+            label: filter.label,
+            indicator: activeFilters.value[filter.key] !== undefined,
+            items: filter.options.map((option): MenuActionItem => {
+                return {
+                    type: MenuItemType.Action,
+                    key: `${filter.key}:${option.value}`,
+                    label: option.text,
+                    icon: option.icon,
+                    checked: isFilterValueActive(filter.key, option.value),
+                    onSelect: () => {
+                        applyFilter(filter.key, option.value);
+                    },
+                };
+            }),
+        };
+    });
+
+    if (activeFilterCount.value > 0) {
+        items.push(
+            {
+                type: MenuItemType.Separator,
+                key: "separator",
+            },
+            {
+                type: MenuItemType.Action,
+                key: "clear",
+                label: $gettext("Clear Filters"),
+                icon: () => IconIcClearAll,
+                onSelect: clearFilters,
+            },
+        );
+    }
+
+    return items;
+});
 
 const sortField = ref<DataTableField<Row> | null>(null);
 const sortOrder = ref<string | null>(null);
@@ -490,6 +696,7 @@ const context = computed<DataTableFilterContext>(() => {
         sortOrder: sortOrder.value,
         paginated: props.paginated,
         perPage: perPage.value,
+        filters: activeFilters.value,
     };
 });
 
@@ -555,6 +762,7 @@ const onClickRefresh = (e: MouseEvent) => {
 
 const navigate = () => {
     searchPhrase.value = "";
+    activeFilters.value = {};
     currentPage.value = 1;
 };
 
@@ -563,6 +771,11 @@ const setFilter = (newTerm: string) => {
 };
 
 watch(perPage, () => {
+    currentPage.value = 1;
+    relist();
+});
+
+watch(activeFilters, () => {
     currentPage.value = 1;
     relist();
 });

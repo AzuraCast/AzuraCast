@@ -20,7 +20,6 @@
 // Overrides for specific third-party products
 @import 'vendors/codemirror';
 @import 'vendors/vue_datepicker';
-@import 'vendors/fullcalendar';
 @import 'vendors/nprogress';
 
 // Material design components
@@ -34,6 +33,7 @@
 @import 'overrides/card';
 @import 'overrides/components';
 @import 'overrides/dropdown';
+@import 'overrides/menu-panel';
 @import 'overrides/file-uploads';
 @import 'overrides/footer';
 @import 'overrides/forms';

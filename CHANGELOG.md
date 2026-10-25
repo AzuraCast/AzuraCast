@@ -11,6 +11,108 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.24.0 (Oct 25, 2026)
+
+## New Features/Changes
+
+- **Grouped/Nested Playlists/Clockwheels**: This highly-requested feature is now available in AzuraCast. With grouped
+  playlists, you can create a playlist that is made up of other smaller playlists configured to play consecutively
+  following certain rules. This level of fine-grained control was previously only possible with custom Liquidsoap code.
+
+- **Request Queue Playlists**: This feature introduces a new playlist source, the request queue itself, giving stations
+  more fine-tuned control of when user requests are played in their rotation.
+    - Also added a station setting to only play requests via Request Queue playlists.
+
+- **Block Requests During Schedule Blocks**: You can now indicate that listener song requests should not be submitted or
+  processed in a given schedule block.
+
+- **Playlist JSON Importer/Exporter**: You can export the entire playlist configuration of your station, or an
+  individual playlist, as a JSON data file that can be imported into other instances of AzuraCast (or other stations on
+  the same instance) for easy portability and preservation of complex playlist configurations.
+
+- **Playlist Queue Reset Controls**: You now have more control over when a playlist's internal queue is reset.
+    - Sequential playlists now continue from their current position when the station is restarted or its
+      configuration is rewritten. This is the default for new stations, existing stations keep the old behavior until
+      the "Reset Sequential Playlist Queues on Restart" setting is turned off.
+    - Playlists can be set to restart their rotation from the beginning when their scheduled block starts. Groups can
+      also reset all of their nested playlists.
+    - Individual playlists & group members can be excluded from the resets.
+
+- Added a separate duplicate prevention time range for artists so stations with many tracks by the same artist
+  can use a shorter range to keep their tracks in the rotation.
+
+- Added quick filters for "source", "type" and "playback order" to the "All Playlists" tab.
+
+- Custom fields can now be linked to any tag of media files with the new "Custom Tag Name" option and are written back
+  to the file too.
+
+- Reworked the map in the Listeners report to use a self-hosted map that ships with AzuraCast so it no longer depends
+  on an external map provider.
+
+## Code Quality/Technical Changes
+
+- Updated to Liquidsoap 2.4.6.
+
+- Separated background message queue processing into "fast" and "slow" queues to avoid slower tasks interrupting
+  immediate ones (like webhook dispatch).
+
+- Improved the security around StereoTool invocation in Liquidsoap.
+
+- Extended the internal URL filtering security mechanism implemented in previous versions to include additional webhook
+  types.
+
+- Improved the security around waveform API endpoints.
+
+- Improved the security of media API endpoints by requiring the "Manage Station Media" permission.
+
+- Improved the security of environment variables in Supervisor process configuration.
+
+- Prevented station managers without the "Manage Broadcasting" permission from setting custom Icecast, RSAS or
+  Shoutcast configuration.
+
+- Added escaping to spreadsheet formulas in CSV exports (media, song history and listeners) to prevent CSV injection
+  attacks.
+
+- Adjusted handling of stations with the public API disabled to not write static Now Playing files.
+
+- Added validation of GeoLite databases after downloading and fallback to DB-IP until a valid file is downloaded on the
+  next sync in case the GeoLite database is corrupted.
+
+- Reduced the CPU usage of the background sync runner.
+
+- Reworked the rollback mechanism from the rolling release to the stable release to ensure database migrations are
+  correctly rolled back as intended.
+
+- Reworked the handling of computed AutoCue data and moved its storage from Valkey to the database.
+    - Stored values are reused for up to 7 days and are recomputed if the file changes.
+    - Stored values can be cleared with the `azuracast:media:clear-computed-autocue` command, in the System Debugger or
+      with the new "Clear AutoCue Data" media batch action.
+    - Computed values don't override manual cue and amplify values anymore.
+    - Computed values are not applied on stations with AutoCue disabled now.
+
+## Bug Fixes
+
+- Fixed several issues when saving media metadata to files:
+    - Tags that AzuraCast doesn't manage (like ReplayGain, MusicBrainz IDs or dates) are no longer removed.
+    - Existing album art is no longer replaced on every save.
+    - Tag changes are now correctly saved for media on remote storage.
+
+- Fixed a bug (and minor security problem) where newlines in mount/remote names would appear in playlist file exports.
+
+- Fixed a bug that caused timeouts for sync tasks to not be enforced as intended.
+
+- Fixed the "Today" and "Yesterday" date range presets covering two days and adjusted "Last N Days" to correctly cover
+  N days including today.
+
+- Fixed podcast feeds listing the episode duration as the enclosure length instead of the file size.
+
+- Fixed podcasts switched to a manual source staying linked to their old playlist so that deleting that playlist won't
+  also delete the podcast anymore.
+
+- Fixed the AutoDJ briefly rejecting a playlist's tracks right at its scheduled start time.
+
+---
+
 # AzuraCast 0.23.9 (Oct 21, 2026)
 
 This release is solely intended to update our distributed Docker containers to an updated version of PHP that patches recently released high-severity security vulnerabilities.
@@ -77,16 +179,16 @@ community researchers and expanding the tools available to installation owners t
 
 # AzuraCast 0.23.6 (Apr 24, 2026)
 
-This release is solely to patch a number of reported security vulnerabilities in AzuraCast. A majority of these 
+This release is solely to patch a number of reported security vulnerabilities in AzuraCast. A majority of these
 vulnerabilities apply only to already-logged-in users, allowing them to access files or locations they normally
 shouldn't be able to access; if you're operating a multi-tenant installation of AzuraCast, updating is highly
 recommended.
 
 ## Security/Bug Fixes
 
-- Improved the security for local media uploads to prevent intentional path traversal outside the station's media 
+- Improved the security for local media uploads to prevent intentional path traversal outside the station's media
   directory. This vulnerability only affected already logged-in users with permissions and did not allow anonymous
-  users to upload media at any point. 
+  users to upload media at any point.
   [GHSA-vp2f-cqqp-478j](https://github.com/AzuraCast/AzuraCast/security/advisories/GHSA-vp2f-cqqp-478j)
 
 - Improved the protection around the Liquidsoap internal API endpoint (feedback, djon/djoff, etc).
@@ -114,7 +216,7 @@ AzuraCast stations.
 
 - Updated to Liquidsoap 2.4.4 stable, which fixes several performance issues.
 
-- Fine-tuned the indexes used on several analytics database tables, significantly improving their performance on 
+- Fine-tuned the indexes used on several analytics database tables, significantly improving their performance on
   stations with large datasets.
 
 ---
@@ -169,7 +271,7 @@ these environments.
 
 - Added a new API endpoint allowing super administrators to create an API key for any given user.
 
-- If you are mounting a filesystem that has folders or paths that are not accessible by AzuraCast, the software will 
+- If you are mounting a filesystem that has folders or paths that are not accessible by AzuraCast, the software will
   skip these directories instead of them preventing regular operation.
 
 ## Bug Fixes

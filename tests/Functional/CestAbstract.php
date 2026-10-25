@@ -27,6 +27,8 @@ use RuntimeException;
 
 abstract class CestAbstract
 {
+    protected const string TEST_SONG_PATH = '/var/azuracast/www/resources/error.mp3';
+
     protected ContainerInterface $di;
 
     protected Environment $environment;
@@ -111,8 +113,7 @@ abstract class CestAbstract
         // Create API key
         $key = SplitToken::generate();
 
-        $apiKey = new ApiKey($user, $key);
-        $apiKey->comment = 'Test Suite';
+        $apiKey = new ApiKey($user, $key, 'Test Suite');
 
         $this->em->persist($apiKey);
         $this->em->flush();
@@ -133,7 +134,7 @@ abstract class CestAbstract
             ]
         );
 
-        $stationId = $I->grabDataFromResponseByJsonPath('id');
+        $stationId = $I->grabDataFromResponseByJsonPath('$.id');
         $this->test_station = $this->em->find(Station::class, $stationId[0]);
     }
 
@@ -150,34 +151,32 @@ abstract class CestAbstract
     protected function getTestStation(): Station
     {
         if ($this->test_station instanceof Station) {
-            $testStation = $this->em->refetch($this->test_station);
-            if ($testStation instanceof Station) {
-                return $testStation;
-            }
-
-            $this->test_station = null;
+            return $this->em->refetch($this->test_station);
         }
 
         throw new RuntimeException('Test station is not established.');
     }
 
-    protected function uploadTestSong(): StationMedia
+    protected function uploadTestSong(string $destPath = 'test.mp3'): StationMedia
     {
         $testStation = $this->getTestStation();
-
-        $songSrc = '/var/azuracast/www/resources/error.mp3';
 
         $storageLocation = $testStation->media_storage_location;
 
         $storageLocationRepo = $this->di->get(StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-        $storageFs->upload($songSrc, 'test.mp3');
+        $storageFs->upload(self::TEST_SONG_PATH, $destPath);
 
         /** @var MediaProcessor $mediaProcessor */
         $mediaProcessor = $this->di->get(MediaProcessor::class);
 
-        return $mediaProcessor->process($storageLocation, 'test.mp3');
+        $media = $mediaProcessor->process($storageLocation, $destPath);
+        if ($media === null) {
+            throw new RuntimeException('Failed to process the test song.');
+        }
+
+        return $media;
     }
 
     protected function _cleanTables(): void
@@ -218,12 +217,15 @@ abstract class CestAbstract
         array $createJson = [],
         array $editJson = []
     ): void {
+        // Use JSON to send like browsers, Codeception would use form data otherwise
+        $I->haveHttpHeader('Content-Type', 'application/json');
+
         // Create new record
         $I->sendPOST($listUrl, $createJson);
 
         $I->seeResponseCodeIs(200);
 
-        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecord = $I->grabDataFromResponseByJsonPath('$.links.self');
         $newRecordSelfLink = $newRecord[0];
 
         // Get single record.

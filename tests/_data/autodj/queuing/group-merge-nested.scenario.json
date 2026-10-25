@@ -1,0 +1,61 @@
+{
+  "description": "A merged group nested inside a non-merged sequential group contributes its whole block as that slot's contribution: build one yields the inner group's two-entry block (its Advanced-type member is force-advanced mid-pass), build two advances the outer rotation by exactly one slot to the fallback member, and build three starts the cycle over with a fresh inner block.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "nested-merged-group-block-as-slot-contribution",
+      "now": "2026-06-01T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "leaf-x",
+              "media_ref": "mX",
+              "playlist_chain_refs": [
+                "outer",
+                "inner",
+                "leaf-x"
+              ]
+            },
+            {
+              "playlist_ref": "leaf-y",
+              "media_ref": "mY",
+              "playlist_chain_refs": [
+                "outer",
+                "inner",
+                "leaf-y"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:05:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "fallback",
+          "media_ref": "mF",
+          "playlist_chain_refs": [
+            "outer",
+            "fallback"
+          ]
+        },
+        {
+          "now": "2026-06-01T12:10:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "leaf-x",
+              "media_ref": "mX"
+            },
+            {
+              "playlist_ref": "leaf-y",
+              "media_ref": "mY"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

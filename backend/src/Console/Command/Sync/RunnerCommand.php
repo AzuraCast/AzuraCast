@@ -66,10 +66,9 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
     private function manageStartedEvents(): void
     {
         while ($this->processes) {
+            usleep(250000);
             $this->checkRunningProcesses();
         }
-
-        usleep(250000);
     }
 
     /**

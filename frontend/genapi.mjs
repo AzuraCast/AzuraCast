@@ -1,3 +1,4 @@
+import {execFileSync} from "node:child_process";
 import path from "node:path";
 import {generateApi} from "swagger-typescript-api";
 
@@ -14,7 +15,12 @@ const baseOptions = {
     addReadonly: true
 };
 
-void generateApi({
+await generateApi({
     ...baseOptions,
     url: specUrl
 });
+
+const outputFile = path.join(output, baseOptions.fileName);
+const biomeBin = path.resolve(__dirname, "../node_modules/.bin/biome");
+
+execFileSync(biomeBin, ["check", "--write", outputFile], {stdio: "inherit"});

@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.9
+  version: 0.24.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -480,9 +480,8 @@ paths:
               - high_priority
               - normal_priority
               - low_priority
-              - search_index
               - media
-              - podcast_media
+              - backup
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -494,7 +493,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      summary: "Clear the AutoCue values Liquidsoap computed for the media of this station."
+      summary: 'Clear the AutoCue values Liquidsoap computed for the media of this station.'
       operationId: adminDebugClearStationComputedAutoCue
       parameters:
         -
@@ -6575,9 +6574,8 @@ components:
             - high_priority
             - normal_priority
             - low_priority
-            - search_index
             - media
-            - podcast_media
+            - backup
         count:
           type: integer
         url:
@@ -6732,7 +6730,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/LoginTokenTypes'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         comment:
           type: string
           example: 'SSO Login'
@@ -7323,7 +7325,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/Api_Admin_UpdateDetails'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
       type: object
     Api_Admin_Vue_UsersProps:
       required:
@@ -7430,12 +7436,18 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_StationMedia'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
             dir:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_FileListDir'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
           type: object
     Api_FileListDir:
       properties:
@@ -7723,12 +7735,20 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         playing_next:
           oneOf:
             -
               $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         song_history:
           type: array
           items:
@@ -7788,7 +7808,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/PlaylistSources'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'The source of the playlist that the song was played from, if available.'
         streamer:
           description: 'Indicates the current streamer that was connected, if available, or empty string if not.'
@@ -7970,7 +7994,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/PlaylistSources'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'The source of the playlist that the song was played from, if available.'
         is_request:
           description: 'Indicates whether the song is a listener request.'
@@ -8187,12 +8215,18 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_Song'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
             media:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_PodcastMedia'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
             has_custom_art:
               type: boolean
             art:
@@ -8695,7 +8729,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/PlaylistRemoteTypes'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
       type: object
     Api_StationScheduleStreamerEvent:
       required:
@@ -8806,12 +8844,18 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_StationStreamer'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
             recording:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_StationStreamerBroadcastRecording'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
           type: object
     Api_StationStreamerBroadcastRecording:
       required:
@@ -9121,12 +9165,20 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/Vue_DashboardGlobals'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         user:
           oneOf:
             -
               $ref: '#/components/schemas/Vue_UserGlobals'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         notifications:
           type: array
           items:
@@ -9759,7 +9811,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/AnalyticsLevel'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'Listener Analytics Collection'
         check_for_updates:
           description: 'Check for Updates and Announcements'
@@ -9769,7 +9825,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/Api_Admin_UpdateDetails'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'Results of the latest update check.'
           example: ''
         update_last_run:
@@ -9780,7 +9840,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/SupportedThemes'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'Base Theme for Public Pages'
           example: light
         hide_album_art:
@@ -9952,7 +10016,11 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/IpSources'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
           description: 'IP Address Source'
       type: object
     SftpUser:
@@ -10267,7 +10335,10 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/HlsStreamProfiles'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
               example: aac
             bitrate:
               type: integer
@@ -10357,7 +10428,10 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/StreamFormats'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
               example: mp3
             autodj_bitrate:
               type: integer
@@ -10407,7 +10481,10 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/PlaylistRemoteTypes'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
               example: stream
             remote_buffer:
               description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
@@ -10516,7 +10593,10 @@ components:
               oneOf:
                 -
                   $ref: '#/components/schemas/StreamFormats'
-              nullable: true
+                -
+                  type: object
+                  nullable: true
+                  enum: [null]
               example: mp3
             autodj_bitrate:
               type: integer
@@ -10765,7 +10845,6 @@ components:
               nullable: true
             storageQuotaBytes:
               example: '120000'
-              nullable: true
             storageQuota:
               type: string
               example: '50 GB'
@@ -10777,7 +10856,6 @@ components:
               example: '1 GB'
             storageAvailableBytes:
               example: '120000'
-              nullable: true
             storageAvailable:
               type: string
               example: '1 GB'

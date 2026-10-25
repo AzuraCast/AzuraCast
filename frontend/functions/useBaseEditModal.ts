@@ -122,7 +122,7 @@ export function useBaseEditModal<
 
         $modal.value?.show();
 
-        void nextTick(() => {
+        void nextTick().then(() => {
             resetForm();
         });
     };

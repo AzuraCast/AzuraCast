@@ -199,7 +199,7 @@ const clear = () => {
 
 onMounted(() => {
     if (props.autofocus) {
-        void nextTick(() => {
+        void nextTick().then(() => {
             focus();
         });
     }

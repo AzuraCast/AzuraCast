@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Functional;
 
 use App\Entity\CustomField;
+use App\Entity\Repository\StorageLocationRepository;
 use FunctionalTester;
+
+use const JSON_THROW_ON_ERROR;
 
 class Api_Stations_FilesCest extends CestAbstract
 {
@@ -68,6 +71,36 @@ class Api_Stations_FilesCest extends CestAbstract
         $I->wantTo('Rewrite the media file when a custom field linked to a custom tag name changes.');
 
         $this->assertCustomFieldEditRewritesTheFile($I, 'Likes');
+    }
+
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function searchListsMediaWhoseFileIsMissing(FunctionalTester $I): void
+    {
+        $I->wantTo('List media in search results when its file is missing from the media storage.');
+
+        $station = $this->getTestStation();
+        $media = $this->uploadTestSong();
+
+        $this->di->get(StorageLocationRepository::class)
+            ->getAdapter($station->media_storage_location)
+            ->getFilesystem()
+            ->delete($media->path);
+
+        $I->sendGet(
+            "/api/station/{$station->id}/files/list",
+            ['currentDirectory' => '', 'searchPhrase' => '*', 'flushCache' => 1]
+        );
+        $I->seeResponseCodeIsSuccessful();
+
+        /** @var list<array{path: string, timestamp: int, size: ?int}> $rows */
+        $rows = json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
+
+        $I->assertSame([$media->path], array_column($rows, 'path'));
+        $I->assertSame($media->mtime, $rows[0]['timestamp']);
+        $I->assertNull($rows[0]['size']);
     }
 
     private function assertCustomFieldEditRewritesTheFile(FunctionalTester $I, string $autoAssign): void

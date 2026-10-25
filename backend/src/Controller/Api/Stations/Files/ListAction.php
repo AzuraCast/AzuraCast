@@ -17,6 +17,7 @@ use App\Entity\Enums\FileTypes;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -29,6 +30,7 @@ use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToRetrieveMetadata;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -246,8 +248,8 @@ final class ListAction implements SingleActionInterface
                     $isDir = false;
 
                     $row->path = $file;
-                    $row->timestamp = $fs->lastModified($file);
-                    $row->size = $fs->fileSize($row->path);
+                    $row->timestamp = $this->getFileTimestamp($fs, $file, $mediaInDir[$file] ?? null);
+                    $row->size = $this->getFileSize($fs, $file);
                 }
 
                 $shortname = ($isSearch)
@@ -510,6 +512,27 @@ final class ListAction implements SingleActionInterface
         }
 
         return $mediaInDir;
+    }
+
+    private function getFileTimestamp(
+        ExtendedFilesystemInterface $fs,
+        string $path,
+        ?ApiStationMedia $media
+    ): int {
+        try {
+            return $fs->lastModified($path);
+        } catch (UnableToRetrieveMetadata) {
+            return $media->mtime ?? 0;
+        }
+    }
+
+    private function getFileSize(ExtendedFilesystemInterface $fs, string $path): ?int
+    {
+        try {
+            return $fs->fileSize($path);
+        } catch (UnableToRetrieveMetadata) {
+            return null;
+        }
     }
 
     private static function sortRows(

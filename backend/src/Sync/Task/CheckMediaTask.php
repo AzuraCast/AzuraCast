@@ -76,8 +76,6 @@ final class CheckMediaTask extends AbstractTask
     public function importMusic(
         StorageLocation $storageLocation
     ): void {
-        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
@@ -90,55 +88,66 @@ final class CheckMediaTask extends AbstractTask
         ];
 
         $totalSize = BigInteger::zero();
+        $musicFiles = [];
+        $coverFiles = [];
 
         try {
+            $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
+
             $fsIterator = $fs->listContents('/', true)->filter(
                 fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isDotFile($attrs->path())
             );
-        } catch (FilesystemException $e) {
+
+            /** @var FileAttributes $file */
+            foreach ($fsIterator as $file) {
+                try {
+                    $size = $file->fileSize();
+                    $totalSize = $totalSize->plus($size);
+                } catch (UnableToRetrieveMetadata) {
+                    continue;
+                }
+
+                if ($size === 0) {
+                    continue;
+                }
+
+                if (MimeType::isPathProcessable($file->path())) {
+                    $pathHash = md5($file->path());
+                    $musicFiles[$pathHash] = [
+                        StorageAttributes::ATTRIBUTE_PATH => $file->path(),
+                        StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
+                        StorageAttributes::ATTRIBUTE_FILE_SIZE => $size,
+                    ];
+                } elseif (MimeType::isPathImage($file->path())) {
+                    $stats['cover_art']++;
+
+                    $dirHash = StationMedia::getFolderHashForPath($file->path());
+                    $coverFiles[$dirHash] = [
+                        StorageAttributes::ATTRIBUTE_PATH => $file->path(),
+                        StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
+                    ];
+                } else {
+                    $stats['not_processable']++;
+                }
+            }
+        } catch (FilesystemException $exception) {
             $this->logger->error(
                 sprintf('Flysystem Error for Storage Space %s', $storageLocation),
                 [
-                    'exception' => $e,
+                    'exception' => $exception,
                 ]
             );
             return;
         }
 
-        $musicFiles = [];
-        $coverFiles = [];
-
-        /** @var FileAttributes $file */
-        foreach ($fsIterator as $file) {
-            try {
-                $size = $file->fileSize();
-                $totalSize = $totalSize->plus($size);
-            } catch (UnableToRetrieveMetadata) {
-                continue;
-            }
-
-            if ($size === 0) {
-                continue;
-            }
-
-            if (MimeType::isPathProcessable($file->path())) {
-                $pathHash = md5($file->path());
-                $musicFiles[$pathHash] = [
-                    StorageAttributes::ATTRIBUTE_PATH => $file->path(),
-                    StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
-                    StorageAttributes::ATTRIBUTE_FILE_SIZE => $size,
-                ];
-            } elseif (MimeType::isPathImage($file->path())) {
-                $stats['cover_art']++;
-
-                $dirHash = StationMedia::getFolderHashForPath($file->path());
-                $coverFiles[$dirHash] = [
-                    StorageAttributes::ATTRIBUTE_PATH => $file->path(),
-                    StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
-                ];
-            } else {
-                $stats['not_processable']++;
-            }
+        if ($musicFiles === [] && $this->hasMedia($storageLocation)) {
+            $this->logger->warning(
+                sprintf(
+                    'Storage location %s lists no music files while media is on record. Skipping media cleanup.',
+                    $storageLocation
+                )
+            );
+            return;
         }
 
         $storageLocation->storageUsed = $totalSize;
@@ -164,6 +173,12 @@ final class CheckMediaTask extends AbstractTask
         $this->processNewFiles($storageLocation, $musicFiles, $stats);
 
         $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
+    }
+
+    private function hasMedia(StorageLocation $storageLocation): bool
+    {
+        return $this->em->getRepository(StationMedia::class)
+            ->count(['storage_location' => $storageLocation]) > 0;
     }
 
     private function processCoverArt(

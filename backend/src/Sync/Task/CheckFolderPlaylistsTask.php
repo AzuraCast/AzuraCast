@@ -15,6 +15,7 @@ use App\Entity\StorageLocation;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Message\WritePlaylistFileMessage;
+use League\Flysystem\StorageAttributes;
 use Symfony\Component\Messenger\MessageBus;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
@@ -81,17 +82,20 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         foreach ($folders as $folder) {
             $path = $folder->path;
 
-            // Verify the folder still exists.
-            if (!$fsMedia->directoryExists($path)) {
-                $this->em->remove($folder);
-                $madeChanges = true;
-                continue;
-            }
-
             $mediaInFolder = $this->folderRepo->getMediaIdsInFolder(
                 $mediaStorageLocation,
                 $path
             );
+
+            if (
+                $mediaInFolder === []
+                && !$fsMedia->directoryExists($path)
+                && $this->isStorageVisible($fsMedia)
+            ) {
+                $this->em->remove($folder);
+                $madeChanges = true;
+                continue;
+            }
 
             // Remove media from this folder that isn't in it anymore.
             $removedRecords = 0;
@@ -150,5 +154,14 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
             $this->messageBus->dispatch($message);
         }
+    }
+
+    private function isStorageVisible(ExtendedFilesystemInterface $fsMedia): bool
+    {
+        $rootEntries = $fsMedia->listContents('/', false)->filter(
+            fn(StorageAttributes $attrs) => !StationFilesystems::isDotFile($attrs->path())
+        );
+
+        return $rootEntries->toArray() !== [];
     }
 }

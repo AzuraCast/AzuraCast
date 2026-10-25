@@ -55,18 +55,9 @@ final class CheckMediaTaskCest extends CestAbstract
      */
     public function keepMediaWhenStorageListsNoFiles(FunctionalTester $I): void
     {
-        $I->wantTo('Keep media and playlist links while the media storage lists no files.');
+        $I->wantTo('Keep media and playlist links while the media storage shows no files.');
 
-        $media = $this->uploadTestSong();
-        $mediaId = $media->id;
-
-        $playlist = new StationPlaylist($this->getTestStation());
-        $playlist->name = 'Rotation';
-        $this->em->persist($playlist);
-        $this->em->flush();
-
-        $this->di->get(StationPlaylistMediaRepository::class)->addMediaToPlaylist($media, $playlist);
-        $this->em->flush();
+        $mediaId = $this->uploadTestSongToPlaylist()->id;
 
         $checkMediaTask = $this->di->get(CheckMediaTask::class);
         $checkMediaTask->importMusic($this->getTestStation()->media_storage_location);
@@ -88,6 +79,31 @@ final class CheckMediaTaskCest extends CestAbstract
         $I->assertSame(
             (string) $storageUsed,
             (string) $this->getTestStation()->media_storage_location->storageUsedBytes
+        );
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function removeMediaOfEmptyStorageWhenAllowed(FunctionalTester $I): void
+    {
+        $I->wantTo('Remove media and playlist links of an empty media storage when an empty storage is allowed.');
+
+        $mediaId = $this->uploadTestSongToPlaylist()->id;
+
+        $this->withMediaStorageUnmounted(
+            fn() => $this->di->get(CheckMediaTask::class)->importMusic(
+                $this->getTestStation()->media_storage_location,
+                allowEmptyStorage: true
+            )
+        );
+
+        $this->em->clear();
+
+        $I->assertNull($this->em->find(StationMedia::class, $mediaId));
+        $I->assertSame(
+            0,
+            $this->em->getRepository(StationPlaylistMedia::class)->count(['media' => $mediaId])
         );
     }
 
@@ -149,6 +165,21 @@ final class CheckMediaTaskCest extends CestAbstract
         $this->em->clear();
 
         $I->assertNotNull($this->em->find(StationMedia::class, $mediaId));
+    }
+
+    private function uploadTestSongToPlaylist(): StationMedia
+    {
+        $media = $this->uploadTestSong();
+
+        $playlist = new StationPlaylist($this->getTestStation());
+        $playlist->name = 'Rotation';
+        $this->em->persist($playlist);
+        $this->em->flush();
+
+        $this->di->get(StationPlaylistMediaRepository::class)->addMediaToPlaylist($media, $playlist);
+        $this->em->flush();
+
+        return $media;
     }
 
     private static function failingListing(): Generator

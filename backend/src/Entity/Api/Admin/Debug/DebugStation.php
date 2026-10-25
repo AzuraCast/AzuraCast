@@ -25,7 +25,9 @@ final readonly class DebugStation
         #[OA\Property]
         public string $getNowPlayingUrl,
         #[OA\Property]
-        public string $clearComputedAutoCueUrl
+        public string $clearComputedAutoCueUrl,
+        #[OA\Property]
+        public string $syncMediaAllowEmptyStorageUrl
     ) {
     }
 }

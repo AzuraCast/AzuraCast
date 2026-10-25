@@ -654,6 +654,26 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/sync-media-allow-empty-storage':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      summary: 'Run the media sync for this station without skipping cleanup when its storage shows no files.'
+      operationId: adminDebugSyncStationMediaAllowEmptyStorage
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/admin/debug/station/{station_id}/telnet':
     put:
       tags:
@@ -6591,6 +6611,7 @@ components:
         - getNextSongUrl
         - getNowPlayingUrl
         - clearComputedAutoCueUrl
+        - syncMediaAllowEmptyStorageUrl
       properties:
         id:
           type: integer
@@ -6603,6 +6624,8 @@ components:
         getNowPlayingUrl:
           type: string
         clearComputedAutoCueUrl:
+          type: string
+        syncMediaAllowEmptyStorageUrl:
           type: string
       type: object
     Api_Admin_Debug_LogEntry:

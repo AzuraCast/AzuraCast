@@ -30,6 +30,18 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
 
+/**
+ * @phpstan-type MediaSyncStats array{
+ *  total_size: string,
+ *  total_files: int,
+ *  unchanged: int,
+ *  updated: int,
+ *  created: int,
+ *  deleted: int,
+ *  cover_art: int,
+ *  not_processable: int,
+ * }
+ */
 final class CheckMediaTask extends AbstractTask
 {
     public function __construct(
@@ -73,9 +85,13 @@ final class CheckMediaTask extends AbstractTask
         }
     }
 
+    /**
+     * @return MediaSyncStats
+     */
     public function importMusic(
-        StorageLocation $storageLocation
-    ): void {
+        StorageLocation $storageLocation,
+        bool $allowEmptyStorage = false
+    ): array {
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
@@ -137,17 +153,30 @@ final class CheckMediaTask extends AbstractTask
                     'exception' => $exception,
                 ]
             );
-            return;
+            return $stats;
         }
 
         if ($musicFiles === [] && $this->hasMedia($storageLocation)) {
-            $this->logger->warning(
+            if (!$allowEmptyStorage) {
+                $this->logger->warning(
+                    sprintf(
+                        <<<'TEXT'
+                        Storage location "%s" shows no music files while media is still in DB. Skipping media cleanup.
+                        Check that the storage is mounted and reachable.
+                        If it was emptied on purpose, run "Sync Media (Allow Empty Storage)" in the System Debugger.
+                        TEXT,
+                        $storageLocation
+                    )
+                );
+                return $stats;
+            }
+
+            $this->logger->notice(
                 sprintf(
-                    'Storage location %s lists no music files while media is on record. Skipping media cleanup.',
+                    'Storage location "%s" shows no music files. Removing its media because an empty storage is allowed.',
                     $storageLocation
                 )
             );
-            return;
         }
 
         $storageLocation->storageUsed = $totalSize;
@@ -173,6 +202,8 @@ final class CheckMediaTask extends AbstractTask
         $this->processNewFiles($storageLocation, $musicFiles, $stats);
 
         $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
+
+        return $stats;
     }
 
     private function hasMedia(StorageLocation $storageLocation): bool
@@ -211,6 +242,9 @@ final class CheckMediaTask extends AbstractTask
         }
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processExistingMediaRows(
         StorageLocation $storageLocation,
         array &$musicFiles,
@@ -276,6 +310,9 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processUnprocessableMediaRows(
         StorageLocation $storageLocation,
         array &$musicFiles,
@@ -319,6 +356,9 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processNewFiles(
         StorageLocation $storageLocation,
         array $musicFiles,

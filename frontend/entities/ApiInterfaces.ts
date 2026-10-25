@@ -297,6 +297,7 @@ export interface ApiAdminDebugStation {
     getNextSongUrl: string;
     getNowPlayingUrl: string;
     clearComputedAutoCueUrl: string;
+    syncMediaAllowEmptyStorageUrl: string;
 }
 
 export interface ApiAdminDebugLogEntry {

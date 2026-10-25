@@ -5,13 +5,22 @@ declare(strict_types=1);
 namespace Functional;
 
 use App\Entity\Repository\StationPlaylistFolderRepository;
+use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
+use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
+use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Sync\Task\CheckFolderPlaylistsTask;
+use DI\FactoryInterface;
 use FunctionalTester;
+use League\Flysystem\UnableToCheckDirectoryExistence;
+use League\Flysystem\UnableToCreateDirectory;
+use Mockery;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 final class CheckFolderPlaylistsTaskCest extends CestAbstract
 {
@@ -95,6 +104,73 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
         $I->assertSame(1, $this->countFolderLinks($playlistId));
     }
 
+    /**
+     * @before setupComplete
+     */
+    public function keepFolderWhenItsCheckFails(FunctionalTester $I): void
+    {
+        $I->wantTo('Keep the playlist link of an empty folder when checking the folder fails.');
+
+        $playlistId = $this->linkFolderToPlaylist('Unreachable');
+
+        $I->assertSame(1, $this->countFolderLinks($playlistId));
+
+        $failingAdapter = Mockery::mock(ExtendedAdapterInterface::class);
+        $failingAdapter->allows('directoryExists')
+            ->andThrow(UnableToCheckDirectoryExistence::forLocation('Unreachable'));
+
+        $storageLocationAdapter = Mockery::mock(StorageLocationAdapterInterface::class);
+        $storageLocationAdapter->allows('getStorageAdapter')->andReturn($failingAdapter);
+
+        $storageLocationRepo = Mockery::mock(StorageLocationRepository::class);
+        $storageLocationRepo->allows('getAdapter')->andReturn($storageLocationAdapter);
+
+        $this->em->clear();
+        $this->makeTask($storageLocationRepo)->syncPlaylistFolders($this->getTestStation());
+        $this->em->clear();
+
+        $I->assertSame(1, $this->countFolderLinks($playlistId));
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function skipStationWhenItsMediaStorageFails(FunctionalTester $I): void
+    {
+        $I->wantTo('Skip a station without stopping the folder sync when its media storage fails.');
+
+        $storageLocationRepo = Mockery::mock(StorageLocationRepository::class);
+        $storageLocationRepo->allows('getAdapter')
+            ->andThrow(UnableToCreateDirectory::atLocation('/', 'Transport endpoint is not connected'));
+
+        $logHandler = new TestHandler();
+        $logger = $this->di->get(Logger::class);
+        $logger->pushHandler($logHandler);
+
+        try {
+            $this->makeTask($storageLocationRepo)->run();
+        } finally {
+            $logger->popHandler();
+        }
+
+        $I->assertTrue($logHandler->hasErrorThatContains('Flysystem Error for Station'));
+    }
+
+    private function makeTask(StorageLocationRepository $storageLocationRepo): CheckFolderPlaylistsTask
+    {
+        $factory = $this->di->get(FactoryInterface::class);
+
+        return $factory->make(
+            CheckFolderPlaylistsTask::class,
+            [
+                'stationFilesystems' => $factory->make(
+                    StationFilesystems::class,
+                    ['storageLocationRepo' => $storageLocationRepo]
+                ),
+            ]
+        );
+    }
+
     private function linkFolderToPlaylist(string $path): int
     {
         $playlist = new StationPlaylist($this->getTestStation());
@@ -120,11 +196,17 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
         $this->em->clear();
     }
 
+    /**
+     * @phpstan-impure
+     */
     private function countFolderLinks(int $playlistId): int
     {
         return $this->em->getRepository(StationPlaylistFolder::class)->count(['playlist' => $playlistId]);
     }
 
+    /**
+     * @phpstan-impure
+     */
     private function countPlaylistSongs(int $playlistId): int
     {
         return $this->em->getRepository(StationPlaylistMedia::class)->count(['playlist' => $playlistId]);

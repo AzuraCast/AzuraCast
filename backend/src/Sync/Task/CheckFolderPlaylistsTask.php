@@ -15,6 +15,7 @@ use App\Entity\StorageLocation;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Message\WritePlaylistFileMessage;
+use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -36,7 +37,16 @@ final class CheckFolderPlaylistsTask extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            $this->syncPlaylistFolders($station);
+            try {
+                $this->syncPlaylistFolders($station);
+            } catch (FilesystemException $exception) {
+                $this->logger->error(
+                    "Flysystem Error for Station {$station->name}",
+                    [
+                        'exception' => $exception,
+                    ]
+                );
+            }
         }
     }
 
@@ -87,11 +97,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 $path
             );
 
-            if (
-                $mediaInFolder === []
-                && !$fsMedia->directoryExists($path)
-                && $this->isStorageVisible($fsMedia)
-            ) {
+            if ($mediaInFolder === [] && $this->isFolderDeleted($fsMedia, $path)) {
                 $this->em->remove($folder);
                 $madeChanges = true;
                 continue;
@@ -153,6 +159,21 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             $message->playlist_id = $playlist->id;
 
             $this->messageBus->dispatch($message);
+        }
+    }
+
+    private function isFolderDeleted(ExtendedFilesystemInterface $fsMedia, string $path): bool
+    {
+        try {
+            return !$fsMedia->directoryExists($path) && $this->isStorageVisible($fsMedia);
+        } catch (FilesystemException $exception) {
+            $this->logger->warning(
+                "Could not check the folder \"{$path}\" in the media storage. Keeping its playlist link.",
+                [
+                    'exception' => $exception,
+                ]
+            );
+            return false;
         }
     }
 

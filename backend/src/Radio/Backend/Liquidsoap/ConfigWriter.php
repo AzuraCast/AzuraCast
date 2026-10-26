@@ -80,8 +80,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $station = $event->getStation();
 
-        $configDir = $station->getRadioConfigDir();
-        $pidfile = $configDir . '/liquidsoap.pid';
         $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
         $stationTz = self::toRawString($station->timezone);
@@ -132,7 +130,6 @@ final class ConfigWriter implements EventSubscriberInterface
             %include "{$commonLibPath}"
 
             log.level := {$logLevel}
-            init.daemon.pidfile.path := "{$pidfile}"
 
             settings.init.compact_before_start := true
 
@@ -192,7 +189,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
-        $genPlaylistWeights = [];
         $genPlaylistVars = [];
 
         $specialPlaylists = [
@@ -324,21 +320,27 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $genPlaylistWeights[] = $playlist->weight;
-                        $genPlaylistVars[] = $playlistVarName;
+                        $genPlaylistVars[] = sprintf(
+                            '%s.{weight = %d}',
+                            $playlistVarName,
+                            $playlist->weight
+                        );
                     }
                     break;
 
                 case PlaylistTypes::OncePerXSongs:
                 case PlaylistTypes::OncePerXMinutes:
                     if (PlaylistTypes::OncePerXSongs === $playlist->type) {
-                        $playlistScheduleVar = 'rotate(weights=[1,'
-                            . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
+                        $playlistScheduleVar = sprintf(
+                            'rotate([%s.{weight = %d}, radio])',
+                            $playlistVarName,
+                            $playlist->play_per_songs
+                        );
                     } else {
                         $delaySeconds = $playlist->play_per_minutes * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
-                        $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
+                        $playlistScheduleVar = 'fallback([delay(' . $delaySeconds . '., ' . $playlistVarName . ').{track_sensitive = ' . $delayTrackSensitive . '}, radio])';
                     }
 
                     if ($scheduleItems->count() > 0) {
@@ -401,8 +403,7 @@ final class ConfigWriter implements EventSubscriberInterface
             [
                 '# Standard Playlists',
                 sprintf(
-                    'radio = random(id="standard_playlists", weights=[%s], [%s])',
-                    implode(', ', $genPlaylistWeights),
+                    'radio = random(id="standard_playlists", [%s])',
                     implode(', ', $genPlaylistVars)
                 ),
             ]
@@ -418,7 +419,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $event->appendLines(
                     [
                         sprintf(
-                            'radio = switch(id="schedule_switch", track_sensitive=true, [ %s ])',
+                            'radio = switch(id="schedule_switch", [ %s ])',
                             implode(', ', $scheduleSwitchesChunk)
                         ),
                     ]
@@ -442,7 +443,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $event->appendLines(
                     [
                         sprintf(
-                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            'radio = switch(id="schedule_switch", [ %s ])',
                             implode(', ', $scheduleSwitchesChunk)
                         ),
                     ]
@@ -463,7 +464,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<< LIQ
                 remote_url = {$fallbackRemoteUrl}
-                radio = fallback(id="fallback_remote_url", track_sensitive = false, [remote_url, radio])
+                radio = fallback(id="fallback_remote_url", [remote_url, radio])
                 LIQ
             );
         }
@@ -474,10 +475,10 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<< LIQ
             requests = request.queue(id="{$requestsQueueName}", timeout=settings.azuracast.request_timeout())
-            radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
+            radio = fallback(id="requests_fallback", [requests, radio])
 
             interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout=settings.azuracast.request_timeout())
-            radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
+            radio = fallback(id="interrupting_fallback", [interrupting_queue, radio])
             LIQ
         );
 
@@ -489,7 +490,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $event->appendLines(
                     [
                         sprintf(
-                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            'radio = switch(id="schedule_switch", [ %s ])',
                             implode(', ', $scheduleSwitchesChunk)
                         ),
                     ]
@@ -605,18 +606,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
             radio = fallback(
                 id="live_fallback",
-                track_sensitive=true,
-                replay_metadata=true,
-                transitions=[
-                    fun (_, s) -> begin
+                [
+                    live.{ on_select = fun ({ending=_, starting=s, replay_metadata=_}) -> begin
                         log("executing transition to live")
                         s
-                    end,
-                    fun (_, s) -> begin
+                    end }, radio.{ on_select = fun ({ending=_, starting=s, replay_metadata=_}) -> begin
                         s
-                    end
-                ],
-                [live, radio]
+                    end }
+                ]
             )
 
             # Skip non-live track when live DJ goes live.

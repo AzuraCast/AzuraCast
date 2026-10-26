@@ -59,7 +59,7 @@ const stop = () => {
 const play = () => {
     if (isPlaying.value) {
         stop();
-        void nextTick(() => {
+        void nextTick().then(() => {
             play();
         });
         return;
@@ -67,7 +67,7 @@ const play = () => {
 
     isPlaying.value = true;
 
-    void nextTick(() => {
+    void nextTick().then(() => {
         if (!$audio.value) {
             return;
         }

@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.24.0 (Oct 25, 2026)
+
+## New Features/Changes
+
 - **Grouped/Nested Playlists/Clockwheels**: This highly-requested feature is now available in AzuraCast. With grouped
   playlists, you can create a playlist that is made up of other smaller playlists configured to play consecutively
   following certain rules. This level of fine-grained control was previously only possible with custom Liquidsoap code.

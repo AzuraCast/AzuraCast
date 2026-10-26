@@ -61,7 +61,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
         $mediaStorage = $station->media_storage_location;
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
-        $isStorageVisible = $this->createStorageVisibleCheck($fsMedia);
+        $isFolderDeleted = $this->createFolderDeletedCheck($fsMedia);
 
         foreach ($station->playlists as $playlist) {
             if (PlaylistSources::Songs !== $playlist->source) {
@@ -72,24 +72,48 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 fn() => $this->processPlaylist(
                     $playlist,
                     $mediaStorage,
-                    $fsMedia,
-                    $isStorageVisible
+                    $isFolderDeleted
                 )
             );
         }
     }
 
     /**
-     * Check will only read from the storage root on its first call
+     * Check reads the storage root at most once and stops using the storage after its first error
      *
-     * @return Closure(): bool
+     * @return Closure(string): bool
      */
-    private function createStorageVisibleCheck(ExtendedFilesystemInterface $fsMedia): Closure
+    private function createFolderDeletedCheck(ExtendedFilesystemInterface $fsMedia): Closure
     {
-        $isVisible = null;
+        $isStorageVisible = null;
+        $isStorageUnavailable = false;
 
-        return function () use ($fsMedia, &$isVisible): bool {
-            return $isVisible ??= $this->hasVisibleRootEntry($fsMedia);
+        return function (string $path) use (
+            $fsMedia,
+            &$isStorageVisible,
+            &$isStorageUnavailable
+        ): bool {
+            if ($isStorageUnavailable) {
+                return false;
+            }
+
+            try {
+                return !$fsMedia->directoryExists($path)
+                    && ($isStorageVisible ??= $this->hasVisibleRootEntry($fsMedia));
+            } catch (FilesystemException $exception) {
+                $isStorageUnavailable = true;
+
+                $this->logger->warning(
+                    <<<TEXT
+                    Could not check the folder "{$path}" in the media storage.
+                    Skipping the folder checks of this station until the next run.
+                    TEXT,
+                    [
+                        'exception' => $exception,
+                    ]
+                );
+                return false;
+            }
         };
     }
 
@@ -105,13 +129,12 @@ final class CheckFolderPlaylistsTask extends AbstractTask
     }
 
     /**
-     * @param Closure(): bool $isStorageVisible
+     * @param Closure(string): bool $isFolderDeleted
      */
     private function processPlaylist(
         StationPlaylist $playlist,
         StorageLocation $mediaStorageLocation,
-        ExtendedFilesystemInterface $fsMedia,
-        Closure $isStorageVisible
+        Closure $isFolderDeleted
     ): void {
         $folders = $playlist->folders;
         if (0 === $folders->count()) {
@@ -128,10 +151,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 $path
             );
 
-            if (
-                $mediaInFolder === []
-                && $this->isFolderDeleted($fsMedia, $path, $isStorageVisible)
-            ) {
+            if ($mediaInFolder === [] && $isFolderDeleted($path)) {
                 $this->em->remove($folder);
                 $madeChanges = true;
                 continue;
@@ -193,27 +213,6 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             $message->playlist_id = $playlist->id;
 
             $this->messageBus->dispatch($message);
-        }
-    }
-
-    /**
-     * @param Closure(): bool $isStorageVisible
-     */
-    private function isFolderDeleted(
-        ExtendedFilesystemInterface $fsMedia,
-        string $path,
-        Closure $isStorageVisible
-    ): bool {
-        try {
-            return !$fsMedia->directoryExists($path) && $isStorageVisible();
-        } catch (FilesystemException $exception) {
-            $this->logger->warning(
-                "Could not check the folder \"{$path}\" in the media storage. Keeping its playlist link.",
-                [
-                    'exception' => $exception,
-                ]
-            );
-            return false;
         }
     }
 }

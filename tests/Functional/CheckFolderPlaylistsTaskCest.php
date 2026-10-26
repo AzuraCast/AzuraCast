@@ -111,19 +111,29 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
      */
     public function keepFolderWhenItsCheckFails(FunctionalTester $I): void
     {
-        $I->wantTo('Keep the playlist link of an empty folder when checking the folder fails.');
+        $I->wantTo('Keep empty folder playlist links and stop checking the storage after its first failure.');
 
-        $playlistId = $this->linkFolderToPlaylist('Unreachable');
+        $firstPlaylistId = $this->linkFolderToPlaylist('Unreachable');
+        $secondPlaylistId = $this->linkFolderToPlaylist('Also Unreachable');
 
-        $I->assertSame(1, $this->countFolderLinks($playlistId));
+        $I->assertSame(1, $this->countFolderLinks($firstPlaylistId));
+        $I->assertSame(1, $this->countFolderLinks($secondPlaylistId));
+
+        $storageChecks = 0;
 
         $failingAdapter = Mockery::mock(ExtendedAdapterInterface::class);
-        $failingAdapter->allows('directoryExists')
-            ->andThrow(UnableToCheckDirectoryExistence::forLocation('Unreachable'));
+        $failingAdapter->allows('directoryExists')->andReturnUsing(
+            static function (string $path) use (&$storageChecks): never {
+                $storageChecks++;
+                throw UnableToCheckDirectoryExistence::forLocation($path);
+            }
+        );
 
         $this->syncPlaylistFoldersWithAdapter($failingAdapter);
 
-        $I->assertSame(1, $this->countFolderLinks($playlistId));
+        $I->assertSame(1, $this->countFolderLinks($firstPlaylistId));
+        $I->assertSame(1, $this->countFolderLinks($secondPlaylistId));
+        $I->assertSame(1, $storageChecks);
     }
 
     /**

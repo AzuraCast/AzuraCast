@@ -9,6 +9,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed the media search & filters failing when a file is missing from the media storage.
+
+- Fixed the media sync removing all media & playlist links when a media storage is unmounted or unreachable:
+    - Media is no longer removed should the storage show no music files since this is most likely a failed storage.
+    - Added "Sync Media (Allow Empty Storage)" in the System Debugger and `azuracast:media:sync` CLI command with the
+      `--allow-empty-storage` option to allow emptying in case this is explicitly needed.
+    - Folder links of playlists are no longer removed while their media is still on record or the storage shows no
+      files.
+    - A failing media storage no longer stops the media and folder sync for other stations.
+
 ---
 
 # AzuraCast 0.24.0 (Oct 25, 2026)

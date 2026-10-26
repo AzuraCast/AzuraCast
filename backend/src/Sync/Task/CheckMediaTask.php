@@ -30,6 +30,18 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
 
+/**
+ * @phpstan-type MediaSyncStats array{
+ *  total_size: string,
+ *  total_files: int,
+ *  unchanged: int,
+ *  updated: int,
+ *  created: int,
+ *  deleted: int,
+ *  cover_art: int,
+ *  not_processable: int,
+ * }
+ */
 final class CheckMediaTask extends AbstractTask
 {
     public function __construct(
@@ -73,11 +85,13 @@ final class CheckMediaTask extends AbstractTask
         }
     }
 
+    /**
+     * @return ?MediaSyncStats Null when the listing failed or the media cleanup was skipped
+     */
     public function importMusic(
-        StorageLocation $storageLocation
-    ): void {
-        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-
+        StorageLocation $storageLocation,
+        bool $allowEmptyStorage = false
+    ): ?array {
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
@@ -90,55 +104,83 @@ final class CheckMediaTask extends AbstractTask
         ];
 
         $totalSize = BigInteger::zero();
-
-        try {
-            $fsIterator = $fs->listContents('/', true)->filter(
-                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isDotFile($attrs->path())
-            );
-        } catch (FilesystemException $e) {
-            $this->logger->error(
-                sprintf('Flysystem Error for Storage Space %s', $storageLocation),
-                [
-                    'exception' => $e,
-                ]
-            );
-            return;
-        }
-
         $musicFiles = [];
         $coverFiles = [];
 
-        /** @var FileAttributes $file */
-        foreach ($fsIterator as $file) {
-            try {
-                $size = $file->fileSize();
-                $totalSize = $totalSize->plus($size);
-            } catch (UnableToRetrieveMetadata) {
-                continue;
+        try {
+            $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
+
+            $fsIterator = $fs->listContents('/', true)->filter(
+                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isDotFile($attrs->path())
+            );
+
+            /** @var FileAttributes $file */
+            foreach ($fsIterator as $file) {
+                try {
+                    $size = $file->fileSize();
+                    $totalSize = $totalSize->plus($size);
+                } catch (UnableToRetrieveMetadata) {
+                    continue;
+                }
+
+                if ($size === 0) {
+                    continue;
+                }
+
+                if (MimeType::isPathProcessable($file->path())) {
+                    $pathHash = md5($file->path());
+                    $musicFiles[$pathHash] = [
+                        StorageAttributes::ATTRIBUTE_PATH => $file->path(),
+                        StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
+                        StorageAttributes::ATTRIBUTE_FILE_SIZE => $size,
+                    ];
+                } elseif (MimeType::isPathImage($file->path())) {
+                    $stats['cover_art']++;
+
+                    $dirHash = StationMedia::getFolderHashForPath($file->path());
+                    $coverFiles[$dirHash] = [
+                        StorageAttributes::ATTRIBUTE_PATH => $file->path(),
+                        StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
+                    ];
+                } else {
+                    $stats['not_processable']++;
+                }
+            }
+        } catch (FilesystemException $exception) {
+            $this->logger->error(
+                sprintf('Flysystem Error for Storage Space %s', $storageLocation),
+                [
+                    'exception' => $exception,
+                ]
+            );
+            return null;
+        }
+
+        if ($musicFiles === [] && $this->hasMedia($storageLocation)) {
+            if (!$allowEmptyStorage) {
+                $this->logger->warning(
+                    sprintf(
+                        <<<'TEXT'
+                        Storage location "%s" shows no music files while media is still in DB. Skipping media cleanup.
+                        Check that the storage is mounted and reachable.
+                        If it was emptied on purpose, run "Sync Media (Allow Empty Storage)" in the System Debugger.
+                        Or run "azuracast:media:sync <station> --allow-empty-storage" on the command line.
+                        TEXT,
+                        $storageLocation
+                    )
+                );
+                return null;
             }
 
-            if ($size === 0) {
-                continue;
-            }
-
-            if (MimeType::isPathProcessable($file->path())) {
-                $pathHash = md5($file->path());
-                $musicFiles[$pathHash] = [
-                    StorageAttributes::ATTRIBUTE_PATH => $file->path(),
-                    StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
-                    StorageAttributes::ATTRIBUTE_FILE_SIZE => $size,
-                ];
-            } elseif (MimeType::isPathImage($file->path())) {
-                $stats['cover_art']++;
-
-                $dirHash = StationMedia::getFolderHashForPath($file->path());
-                $coverFiles[$dirHash] = [
-                    StorageAttributes::ATTRIBUTE_PATH => $file->path(),
-                    StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
-                ];
-            } else {
-                $stats['not_processable']++;
-            }
+            $this->logger->notice(
+                sprintf(
+                    <<<'TEXT'
+                    Storage location "%s" shows no music files.
+                    Removing its media because an empty storage is allowed.
+                    TEXT,
+                    $storageLocation
+                )
+            );
         }
 
         $storageLocation->storageUsed = $totalSize;
@@ -164,6 +206,14 @@ final class CheckMediaTask extends AbstractTask
         $this->processNewFiles($storageLocation, $musicFiles, $stats);
 
         $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
+
+        return $stats;
+    }
+
+    private function hasMedia(StorageLocation $storageLocation): bool
+    {
+        return $this->em->getRepository(StationMedia::class)
+            ->count(['storage_location' => $storageLocation]) > 0;
     }
 
     private function processCoverArt(
@@ -196,6 +246,9 @@ final class CheckMediaTask extends AbstractTask
         }
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processExistingMediaRows(
         StorageLocation $storageLocation,
         array &$musicFiles,
@@ -261,6 +314,9 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processUnprocessableMediaRows(
         StorageLocation $storageLocation,
         array &$musicFiles,
@@ -304,6 +360,9 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
+    /**
+     * @param MediaSyncStats $stats
+     */
     private function processNewFiles(
         StorageLocation $storageLocation,
         array $musicFiles,

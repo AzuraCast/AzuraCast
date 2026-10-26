@@ -190,7 +190,7 @@
                     >
                         <h3>{{ station.name }}</h3>
 
-                        <div class="row">
+                        <div class="row gy-3">
                             <div class="col-md-4">
                                 <h5>{{ $gettext('AutoDJ Queue') }}</h5>
 
@@ -235,6 +235,22 @@
                                     >
                                         {{ $gettext('Clear Computed Values') }}
                                     </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>{{ $gettext('Media') }}</h5>
+
+                                <div class="buttons">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-danger"
+                                        @click="doSyncMediaAllowEmptyStorage(station.syncMediaAllowEmptyStorageUrl)"
+                                    >
+                                        {{ $gettext('Sync Media (Allow Empty Storage)') }}
+                                    </button>
+                                </div>
+                                <div class="form-text">
+                                    {{ $gettext('Runs the media sync for this station without skipping cleanup should its storage show no files. This affects every station that uses this media storage.') }}
                                 </div>
                             </div>
                         </div>
@@ -367,13 +383,26 @@ const makeDebugCall = async (url: string) => {
     }
 };
 
-const { showAlert } = useDialog();
+const { showAlert, confirmDelete } = useDialog();
 
 const doClearComputedAutoCue = async (url: string) => {
     const { value } = await showAlert({
         title: $gettext("Clear AutoCue data for this station?"),
         confirmButtonClass: "btn-warning",
         confirmButtonText: $gettext("Clear Computed Values"),
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await makeDebugCall(url);
+};
+
+const doSyncMediaAllowEmptyStorage = async (url: string) => {
+    const { value } = await confirmDelete({
+        title: $gettext("Remove media even if the storage shows no files?"),
+        confirmButtonText: $gettext("Sync Media"),
     });
 
     if (!value) {

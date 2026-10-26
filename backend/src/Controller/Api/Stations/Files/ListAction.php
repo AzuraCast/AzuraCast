@@ -17,6 +17,7 @@ use App\Entity\Enums\FileTypes;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -29,6 +30,7 @@ use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToRetrieveMetadata;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -245,9 +247,11 @@ final class ListAction implements SingleActionInterface
                 } else {
                     $isDir = false;
 
+                    $media = $mediaInDir[$file] ?? null;
+
                     $row->path = $file;
-                    $row->timestamp = $fs->lastModified($file);
-                    $row->size = $fs->fileSize($row->path);
+                    $row->timestamp = $this->getFileTimestamp($fs, $file, $media);
+                    $row->size = $this->getFileSize($fs, $file, $media);
                 }
 
                 $shortname = ($isSearch)
@@ -422,6 +426,7 @@ final class ListAction implements SingleActionInterface
             'sm.unique_id',
             'sm.song_id',
             'sm.path',
+            'sm.size',
             'sm.artist',
             'sm.title',
             'sm.album',
@@ -438,6 +443,7 @@ final class ListAction implements SingleActionInterface
          *     unique_id: string,
          *     song_id: string,
          *     path: string,
+         *     size: int,
          *     artist: string | null,
          *     title: string | null,
          *     album: string | null,
@@ -510,6 +516,37 @@ final class ListAction implements SingleActionInterface
         }
 
         return $mediaInDir;
+    }
+
+    private function getFileTimestamp(
+        ExtendedFilesystemInterface $fs,
+        string $path,
+        ?ApiStationMedia $media
+    ): int {
+        try {
+            return $fs->lastModified($path);
+        } catch (UnableToRetrieveMetadata) {
+            return $media->mtime ?? 0;
+        }
+    }
+
+    /**
+     * @param ?ApiStationMedia $media Data from entity will be used if given
+     */
+    private function getFileSize(
+        ExtendedFilesystemInterface $fs,
+        string $path,
+        ?ApiStationMedia $media
+    ): ?int {
+        if ($media !== null) {
+            return $media->size;
+        }
+
+        try {
+            return $fs->fileSize($path);
+        } catch (UnableToRetrieveMetadata) {
+            return null;
+        }
     }
 
     private static function sortRows(

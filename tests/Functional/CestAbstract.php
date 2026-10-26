@@ -24,6 +24,7 @@ use App\Tests\Module;
 use FunctionalTester;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
 abstract class CestAbstract
 {
@@ -177,6 +178,22 @@ abstract class CestAbstract
         }
 
         return $media;
+    }
+
+    protected function withMediaStorageUnmounted(callable $callback): void
+    {
+        $mediaPath = $this->getTestStation()->media_storage_location->getFilteredPath();
+        $unmountedPath = "{$mediaPath}.unmounted";
+
+        $filesystem = new Filesystem();
+        $filesystem->rename($mediaPath, $unmountedPath);
+
+        try {
+            $callback();
+        } finally {
+            $filesystem->remove($mediaPath);
+            $filesystem->rename($unmountedPath, $mediaPath);
+        }
     }
 
     protected function _cleanTables(): void

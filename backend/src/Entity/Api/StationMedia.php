@@ -52,6 +52,12 @@ class StationMedia
     public string $path;
 
     #[OA\Property(
+        description: "The size of the media file in bytes.",
+        example: 4194304
+    )]
+    public int $size = 0;
+
+    #[OA\Property(
         description: "The UNIX timestamp when the database was last modified.",
         example: OpenApi::SAMPLE_TIMESTAMP
     )]
@@ -111,6 +117,7 @@ class StationMedia
         $media->id = $row['id'];
         $media->unique_id = $row['unique_id'];
         $media->path = $row['path'];
+        $media->size = Types::int($row['size'] ?? 0);
 
         $media->song_id = $row['song_id'];
         $media->title = $row['title'];

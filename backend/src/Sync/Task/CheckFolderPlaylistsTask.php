@@ -60,8 +60,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         );
 
         $mediaStorage = $station->media_storage_location;
-        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
-        $isFolderDeleted = $this->createFolderDeletedCheck($fsMedia);
+        $isFolderDeleted = $this->createFolderDeletedCheck($station);
 
         foreach ($station->playlists as $playlist) {
             if (PlaylistSources::Songs !== $playlist->source) {
@@ -83,12 +82,14 @@ final class CheckFolderPlaylistsTask extends AbstractTask
      *
      * @return Closure(string): bool
      */
-    private function createFolderDeletedCheck(ExtendedFilesystemInterface $fsMedia): Closure
+    private function createFolderDeletedCheck(Station $station): Closure
     {
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
         $isStorageVisible = null;
         $isStorageUnavailable = false;
 
         return function (string $path) use (
+            $station,
             $fsMedia,
             &$isStorageVisible,
             &$isStorageUnavailable
@@ -109,6 +110,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                     Skipping the folder checks of this station until the next run.
                     TEXT,
                     [
+                        'station' => $station->name,
                         'exception' => $exception,
                     ]
                 );

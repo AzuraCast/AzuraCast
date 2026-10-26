@@ -53,6 +53,30 @@ final class CheckMediaTaskCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function removeMediaOfDeletedFile(FunctionalTester $I): void
+    {
+        $I->wantTo('Remove the media of a deleted file while other music files remain.');
+
+        $keptMediaId = $this->uploadTestSong('kept.mp3')->id;
+        $deletedMedia = $this->uploadTestSong('deleted.mp3');
+        $deletedMediaId = $deletedMedia->id;
+
+        $this->di->get(StorageLocationRepository::class)
+            ->getAdapter($this->getTestStation()->media_storage_location)
+            ->getFilesystem()
+            ->delete($deletedMedia->path);
+
+        $this->di->get(CheckMediaTask::class)->importMusic($this->getTestStation()->media_storage_location);
+
+        $this->em->clear();
+
+        $I->assertNotNull($this->em->find(StationMedia::class, $keptMediaId));
+        $I->assertNull($this->em->find(StationMedia::class, $deletedMediaId));
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function keepMediaWhenStorageListsNoFiles(FunctionalTester $I): void
     {
         $I->wantTo('Keep media and playlist links while the media storage shows no files.');

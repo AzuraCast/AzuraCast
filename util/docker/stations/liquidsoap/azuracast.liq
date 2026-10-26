@@ -3,6 +3,8 @@ AzuraCast Common Runtime
 ----->#
 
 # Default Settings for AzuraCast Instances
+init.daemon := false
+
 log.stdout := true
 log.file := false
 
@@ -440,6 +442,7 @@ def azuracast.enable_autodj(s) =
 
     dynamic_startup = fallback(
         id = "dynamic_startup",
+        track_sensitive = false,
         [
             dynamic,
             source.available(
@@ -449,7 +452,7 @@ def azuracast.enable_autodj(s) =
         ]
     )
 
-    s = fallback(id="autodj_fallback", [dynamic_startup, s])
+    s = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, s])
 
     ref_dynamic = ref(dynamic);
     thread.run.recurrent(delay=0.25, { azuracast.wait_for_next_song(ref_dynamic()) })
@@ -668,7 +671,7 @@ def azuracast.add_fallback(s) =
     end
     error_file = metadata.map(tag_error_file, error_file)
 
-    s = fallback(id="safe_fallback", [s, error_file])
+    s = fallback(id="safe_fallback", track_sensitive = false, [s, error_file])
     s
 end
 

@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^8.4",
+    "php": "^8.5",
     "ext-PDO": "*",
     "ext-ctype": "*",
     "ext-curl": "*",
@@ -32,7 +32,7 @@
     "azuracast/nowplaying": "3.0.0",
     "beberlei/doctrineextensions": "^1.5",
     "br33f/php-ga4-mp": "^0.1.5",
-    "brick/math": "^0.17",
+    "brick/math": "^1",
     "composer/ca-bundle": "^1.5.8",
     "doctrine/data-fixtures": "^2.2",
     "doctrine/dbal": "^4.3.4",

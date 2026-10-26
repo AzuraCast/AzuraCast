@@ -247,9 +247,11 @@ final class ListAction implements SingleActionInterface
                 } else {
                     $isDir = false;
 
+                    $media = $mediaInDir[$file] ?? null;
+
                     $row->path = $file;
-                    $row->timestamp = $this->getFileTimestamp($fs, $file, $mediaInDir[$file] ?? null);
-                    $row->size = $this->getFileSize($fs, $file);
+                    $row->timestamp = $this->getFileTimestamp($fs, $file, $media);
+                    $row->size = $this->getFileSize($fs, $file, $media);
                 }
 
                 $shortname = ($isSearch)
@@ -424,6 +426,7 @@ final class ListAction implements SingleActionInterface
             'sm.unique_id',
             'sm.song_id',
             'sm.path',
+            'sm.size',
             'sm.artist',
             'sm.title',
             'sm.album',
@@ -440,6 +443,7 @@ final class ListAction implements SingleActionInterface
          *     unique_id: string,
          *     song_id: string,
          *     path: string,
+         *     size: int,
          *     artist: string | null,
          *     title: string | null,
          *     album: string | null,
@@ -526,8 +530,18 @@ final class ListAction implements SingleActionInterface
         }
     }
 
-    private function getFileSize(ExtendedFilesystemInterface $fs, string $path): ?int
-    {
+    /**
+     * @param ?ApiStationMedia $media Data from entity will be used if given
+     */
+    private function getFileSize(
+        ExtendedFilesystemInterface $fs,
+        string $path,
+        ?ApiStationMedia $media
+    ): ?int {
+        if ($media !== null) {
+            return $media->size;
+        }
+
         try {
             return $fs->fileSize($path);
         } catch (UnableToRetrieveMetadata) {

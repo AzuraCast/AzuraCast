@@ -98,9 +98,43 @@ class Api_Stations_FilesCest extends CestAbstract
         /** @var list<array{path: string, timestamp: int, size: ?int}> $rows */
         $rows = json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
 
+        $I->assertGreaterThan(0, $media->size);
         $I->assertSame([$media->path], array_column($rows, 'path'));
         $I->assertSame($media->mtime, $rows[0]['timestamp']);
-        $I->assertNull($rows[0]['size']);
+        $I->assertSame($media->size, $rows[0]['size']);
+    }
+
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function searchShowsTheStoredMediaSize(FunctionalTester $I): void
+    {
+        $I->wantTo('Show the stored media size in search results instead of reading it from the media storage.');
+
+        $station = $this->getTestStation();
+        $media = $this->uploadTestSong();
+
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationMedia sm
+                SET sm.size = 1234
+                WHERE sm.id = :id
+            DQL
+        )->setParameter('id', $media->id)
+            ->execute();
+
+        $I->sendGet(
+            "/api/station/{$station->id}/files/list",
+            ['currentDirectory' => '', 'searchPhrase' => '*', 'flushCache' => 1]
+        );
+        $I->seeResponseCodeIsSuccessful();
+
+        /** @var list<array{size: ?int, media: array{size: int}}> $rows */
+        $rows = json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
+
+        $I->assertSame(1234, $rows[0]['size']);
+        $I->assertSame(1234, $rows[0]['media']['size']);
     }
 
     private function assertCustomFieldEditRewritesTheFile(FunctionalTester $I, string $autoAssign): void

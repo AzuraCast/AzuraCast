@@ -8332,6 +8332,10 @@ components:
               description: 'The relative path of the media file.'
               type: string
               example: test.mp3
+            size:
+              description: 'The size of the media file in bytes.'
+              type: integer
+              example: 4194304
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer

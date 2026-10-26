@@ -1226,6 +1226,11 @@ export type ApiStationMedia = ApiHasSongFields &
          */
         path?: string;
         /**
+         * The size of the media file in bytes.
+         * @example 4194304
+         */
+        size?: number;
+        /**
          * The UNIX timestamp when the database was last modified.
          * @example 1609480800
          */

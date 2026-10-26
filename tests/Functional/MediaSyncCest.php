@@ -23,12 +23,15 @@ final class MediaSyncCest extends CestAbstract
         $station = $this->getTestStation();
 
         $this->withMediaStorageUnmounted(function () use ($I, $mediaId, $station): void {
-            $this->runSyncCommand(['station' => (string) $station->id]);
+            $I->assertSame(Command::FAILURE, $this->runSyncCommand(['station' => (string) $station->id]));
             $this->em->clear();
 
             $I->assertNotNull($this->em->find(StationMedia::class, $mediaId));
 
-            $this->runSyncCommand(['station' => $station->short_name, '--allow-empty-storage' => true]);
+            $I->assertSame(
+                Command::SUCCESS,
+                $this->runSyncCommand(['station' => $station->short_name, '--allow-empty-storage' => true])
+            );
             $this->em->clear();
 
             $I->assertNull($this->em->find(StationMedia::class, $mediaId));
@@ -39,10 +42,7 @@ final class MediaSyncCest extends CestAbstract
     {
         $I->wantTo('Fail the media sync command for an unknown station.');
 
-        $commandTester = new CommandTester($this->di->get(SyncCommand::class));
-        $commandTester->execute(['station' => 'no_such_station']);
-
-        $I->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $I->assertSame(Command::FAILURE, $this->runSyncCommand(['station' => 'no_such_station']));
     }
 
     /**
@@ -87,10 +87,10 @@ final class MediaSyncCest extends CestAbstract
     /**
      * @param array<string, string|bool> $arguments
      */
-    private function runSyncCommand(array $arguments): void
+    private function runSyncCommand(array $arguments): int
     {
         $commandTester = new CommandTester($this->di->get(SyncCommand::class));
-        $commandTester->execute($arguments);
-        $commandTester->assertCommandIsSuccessful();
+
+        return $commandTester->execute($arguments);
     }
 }

@@ -60,6 +60,10 @@ final class SyncCommand extends CommandAbstract
         $io->note('This affects every station that uses this media storage.');
 
         $stats = $this->checkMediaTask->importMusic($station->media_storage_location, $allowEmptyStorage);
+        if ($stats === null) {
+            $io->error('The media sync was skipped. See the log above for the reason.');
+            return self::FAILURE;
+        }
 
         $io->horizontalTable(
             array_keys($stats),

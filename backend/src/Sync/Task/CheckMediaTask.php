@@ -86,12 +86,12 @@ final class CheckMediaTask extends AbstractTask
     }
 
     /**
-     * @return MediaSyncStats
+     * @return ?MediaSyncStats Null when the listing failed or the media cleanup was skipped
      */
     public function importMusic(
         StorageLocation $storageLocation,
         bool $allowEmptyStorage = false
-    ): array {
+    ): ?array {
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
@@ -153,7 +153,7 @@ final class CheckMediaTask extends AbstractTask
                     'exception' => $exception,
                 ]
             );
-            return $stats;
+            return null;
         }
 
         if ($musicFiles === [] && $this->hasMedia($storageLocation)) {
@@ -164,16 +164,20 @@ final class CheckMediaTask extends AbstractTask
                         Storage location "%s" shows no music files while media is still in DB. Skipping media cleanup.
                         Check that the storage is mounted and reachable.
                         If it was emptied on purpose, run "Sync Media (Allow Empty Storage)" in the System Debugger.
+                        Or run "azuracast:media:sync <station> --allow-empty-storage" on the command line.
                         TEXT,
                         $storageLocation
                     )
                 );
-                return $stats;
+                return null;
             }
 
             $this->logger->notice(
                 sprintf(
-                    'Storage location "%s" shows no music files. Removing its media because an empty storage is allowed.',
+                    <<<'TEXT'
+                    Storage location "%s" shows no music files.
+                    Removing its media because an empty storage is allowed.
+                    TEXT,
                     $storageLocation
                 )
             );

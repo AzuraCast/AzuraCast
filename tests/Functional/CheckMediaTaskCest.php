@@ -184,7 +184,7 @@ final class CheckMediaTaskCest extends CestAbstract
             CheckMediaTask::class,
             ['storageLocationRepo' => $storageLocationRepo]
         );
-        $checkMediaTask->importMusic($this->getTestStation()->media_storage_location);
+        $I->assertNull($checkMediaTask->importMusic($this->getTestStation()->media_storage_location));
 
         $this->em->clear();
 

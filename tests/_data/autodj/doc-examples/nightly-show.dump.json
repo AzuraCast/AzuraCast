@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "exported_at": "2026-10-31T00:00:00+00:00",
+  "station": {
+    "name": "Demo Radio",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 120,
+      "duplicate_prevention_artist_time_range": null,
+      "autodj_queue_length": 3,
+      "crossfade": 2
+    }
+  },
+  "media": [
+    {
+      "ref": "daytime1",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-01.mp3",
+      "unique_id": "docexmp05000000000000001",
+      "length": 210.0,
+      "artist": "Daytime Artist 1",
+      "title": "Daytime Song 1",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "daytime2",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-02.mp3",
+      "unique_id": "docexmp05000000000000002",
+      "length": 210.0,
+      "artist": "Daytime Artist 2",
+      "title": "Daytime Song 2",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "daytime3",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-03.mp3",
+      "unique_id": "docexmp05000000000000003",
+      "length": 210.0,
+      "artist": "Daytime Artist 3",
+      "title": "Daytime Song 3",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "daytime4",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-04.mp3",
+      "unique_id": "docexmp05000000000000004",
+      "length": 210.0,
+      "artist": "Daytime Artist 4",
+      "title": "Daytime Song 4",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "daytime5",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-05.mp3",
+      "unique_id": "docexmp05000000000000005",
+      "length": 210.0,
+      "artist": "Daytime Artist 5",
+      "title": "Daytime Song 5",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "daytime6",
+      "path": "doc-examples/nightly-show/daytime-music/daytime-music-06.mp3",
+      "unique_id": "docexmp05000000000000006",
+      "length": 210.0,
+      "artist": "Daytime Artist 6",
+      "title": "Daytime Song 6",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "opener1",
+      "path": "doc-examples/nightly-show/show-opener/show-opener-01.mp3",
+      "unique_id": "docexmp05000000000000007",
+      "length": 30.0,
+      "artist": "Night Show",
+      "title": "Show Opener",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill1",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-01.mp3",
+      "unique_id": "docexmp05000000000000008",
+      "length": 240.0,
+      "artist": "Chill Artist 1",
+      "title": "Chill Song 1",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill2",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-02.mp3",
+      "unique_id": "docexmp05000000000000009",
+      "length": 240.0,
+      "artist": "Chill Artist 2",
+      "title": "Chill Song 2",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill3",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-03.mp3",
+      "unique_id": "docexmp05000000000000010",
+      "length": 240.0,
+      "artist": "Chill Artist 3",
+      "title": "Chill Song 3",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill4",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-04.mp3",
+      "unique_id": "docexmp05000000000000011",
+      "length": 240.0,
+      "artist": "Chill Artist 4",
+      "title": "Chill Song 4",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill5",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-05.mp3",
+      "unique_id": "docexmp05000000000000012",
+      "length": 240.0,
+      "artist": "Chill Artist 5",
+      "title": "Chill Song 5",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "chill6",
+      "path": "doc-examples/nightly-show/chill-set/chill-set-06.mp3",
+      "unique_id": "docexmp05000000000000013",
+      "length": 240.0,
+      "artist": "Chill Artist 6",
+      "title": "Chill Song 6",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "story1",
+      "path": "doc-examples/nightly-show/story-time/story-time-01.mp3",
+      "unique_id": "docexmp05000000000000014",
+      "length": 600.0,
+      "artist": "Night Show",
+      "title": "Story Episode 1",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "story2",
+      "path": "doc-examples/nightly-show/story-time/story-time-02.mp3",
+      "unique_id": "docexmp05000000000000015",
+      "length": 600.0,
+      "artist": "Night Show",
+      "title": "Story Episode 2",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "story3",
+      "path": "doc-examples/nightly-show/story-time/story-time-03.mp3",
+      "unique_id": "docexmp05000000000000016",
+      "length": 600.0,
+      "artist": "Night Show",
+      "title": "Story Episode 3",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    },
+    {
+      "ref": "story4",
+      "path": "doc-examples/nightly-show/story-time/story-time-04.mp3",
+      "unique_id": "docexmp05000000000000017",
+      "length": 600.0,
+      "artist": "Night Show",
+      "title": "Story Episode 4",
+      "album": "Doc Example: Nightly Show",
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "daytime",
+      "name": "Daytime Music",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Plays whenever the Night Show is not on air."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "daytime1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "daytime2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "daytime3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "daytime4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "daytime5",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "daytime6",
+          "weight": 6,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "opener",
+      "name": "Show Opener",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Plays at the start of every Night Show cycle."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "opener1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "chill",
+      "name": "Chill Set",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Fixed running order. Restarts from the top every night."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "chill1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "chill2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "chill3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "chill4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "chill5",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "chill6",
+          "weight": 6,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "story",
+      "name": "Story Time",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "One episode per cycle. Continues where it left off the night before."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "story1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "story2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "story3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "story4",
+          "weight": 4,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "show",
+      "name": "Night Show",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Nightly 22:00-02:00. Restarts its rotation at every show start."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 2200,
+          "end_time": 200,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": true,
+          "reset_queue_recursive": true
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "opener",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "chill",
+          "weight": 2,
+          "consecutive_plays": 3,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "story",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": true,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

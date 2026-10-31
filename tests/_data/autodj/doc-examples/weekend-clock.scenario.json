@@ -1,0 +1,159 @@
+{
+  "description": "Doc example 'Weekend clock': an unscheduled Main Clock is the default rotation and a Weekend Clock scheduled Saturday and Sunday takes over on weekends because scheduled playlists win over unscheduled ones of the same type. Both clocks share member playlists. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "weekend-clock-overrides-main-clock",
+      "now": "2026-11-06T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-11-06T12:00:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "current1",
+            "current2",
+            "current3",
+            "current4",
+            "current5"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "current"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "recurrent1",
+            "recurrent2",
+            "recurrent3"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "recurrent"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "current1",
+            "current2",
+            "current3",
+            "current4",
+            "current5"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "current"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "ids1",
+            "ids2"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "ids"
+          ]
+        },
+        {
+          "now": "2026-11-07T12:00:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "weekend",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "weekend",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "current1",
+            "current2",
+            "current3",
+            "current4",
+            "current5"
+          ],
+          "playlist_chain_refs": [
+            "weekend",
+            "current"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "ids1",
+            "ids2"
+          ],
+          "playlist_chain_refs": [
+            "weekend",
+            "ids"
+          ]
+        },
+        {
+          "now": "2026-11-09T12:00:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "current1",
+            "current2",
+            "current3",
+            "current4",
+            "current5"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "current"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "recurrent1",
+            "recurrent2",
+            "recurrent3"
+          ],
+          "playlist_chain_refs": [
+            "main",
+            "recurrent"
+          ]
+        }
+      ]
+    }
+  ]
+}

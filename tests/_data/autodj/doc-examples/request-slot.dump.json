@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "exported_at": "2026-10-31T00:00:00+00:00",
+  "station": {
+    "name": "Demo Radio",
+    "timezone": "UTC",
+    "requests_only_via_playlists": true,
+    "backend_config": {
+      "duplicate_prevention_time_range": 120,
+      "duplicate_prevention_artist_time_range": null,
+      "autodj_queue_length": 3,
+      "crossfade": 2
+    }
+  },
+  "media": [
+    {
+      "ref": "music1",
+      "path": "doc-examples/request-slot/music/music-01.mp3",
+      "unique_id": "docexmp06000000000000001",
+      "length": 210.0,
+      "artist": "Music Artist 1",
+      "title": "Music Song 1",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "music2",
+      "path": "doc-examples/request-slot/music/music-02.mp3",
+      "unique_id": "docexmp06000000000000002",
+      "length": 210.0,
+      "artist": "Music Artist 2",
+      "title": "Music Song 2",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "music3",
+      "path": "doc-examples/request-slot/music/music-03.mp3",
+      "unique_id": "docexmp06000000000000003",
+      "length": 210.0,
+      "artist": "Music Artist 3",
+      "title": "Music Song 3",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "music4",
+      "path": "doc-examples/request-slot/music/music-04.mp3",
+      "unique_id": "docexmp06000000000000004",
+      "length": 210.0,
+      "artist": "Music Artist 4",
+      "title": "Music Song 4",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "music5",
+      "path": "doc-examples/request-slot/music/music-05.mp3",
+      "unique_id": "docexmp06000000000000005",
+      "length": 210.0,
+      "artist": "Music Artist 5",
+      "title": "Music Song 5",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "music6",
+      "path": "doc-examples/request-slot/music/music-06.mp3",
+      "unique_id": "docexmp06000000000000006",
+      "length": 210.0,
+      "artist": "Music Artist 6",
+      "title": "Music Song 6",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "ids1",
+      "path": "doc-examples/request-slot/station-ids/station-ids-01.mp3",
+      "unique_id": "docexmp06000000000000007",
+      "length": 8.0,
+      "artist": "Demo Radio",
+      "title": "Station ID 1",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    },
+    {
+      "ref": "ids2",
+      "path": "doc-examples/request-slot/station-ids/station-ids-02.mp3",
+      "unique_id": "docexmp06000000000000008",
+      "length": 8.0,
+      "artist": "Demo Radio",
+      "title": "Station ID 2",
+      "album": "Doc Example: Request Slot",
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "music",
+      "name": "Music",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Requestable music library. Plays through the Main Clock only."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "music1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music5",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music6",
+          "weight": 6,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "requests",
+      "name": "Listener Requests",
+      "config": {
+        "type": "default",
+        "source": "requests",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Plays all pending listener requests at its slot in the clock."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "ids",
+      "name": "Station IDs",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Short station IDs, hidden from listeners."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "ids1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "ids2",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "clock",
+      "name": "Main Clock",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Two songs, then any pending requests, then a station ID."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "music",
+          "weight": 1,
+          "consecutive_plays": 2,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "requests",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "play_full_cycle": true,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "ids",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

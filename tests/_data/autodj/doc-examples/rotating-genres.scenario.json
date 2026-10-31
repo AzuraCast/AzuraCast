@@ -1,0 +1,171 @@
+{
+  "description": "Doc example 'Rotating genres': a Genre Mix group nested in the Main Clock moves on to the next genre every time it is picked, so the clock's two music slots rotate through Pop, Rock and Dance across cycles. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "nested-genre-rotation-continues-across-cycles",
+      "now": "2026-11-02T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "pop1",
+            "pop2",
+            "pop3",
+            "pop4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "pop"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "rock1",
+            "rock2",
+            "rock3",
+            "rock4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "rock"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "ids1",
+            "ids2"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "ids"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "dance1",
+            "dance2",
+            "dance3",
+            "dance4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "dance"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "pop1",
+            "pop2",
+            "pop3",
+            "pop4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "pop"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "ids1",
+            "ids2"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "ids"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "rock1",
+            "rock2",
+            "rock3",
+            "rock4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "rock"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "dance1",
+            "dance2",
+            "dance3",
+            "dance4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "genres",
+            "dance"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "gold1",
+            "gold2",
+            "gold3",
+            "gold4"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "gold"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "ids1",
+            "ids2"
+          ],
+          "playlist_chain_refs": [
+            "clock",
+            "ids"
+          ]
+        }
+      ]
+    }
+  ]
+}

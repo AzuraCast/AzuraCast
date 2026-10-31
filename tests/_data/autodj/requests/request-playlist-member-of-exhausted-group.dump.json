@@ -127,8 +127,8 @@
       "members": []
     },
     {
-      "ref": "loopClock",
-      "name": "Loop Once Clock",
+      "ref": "loopA",
+      "name": "Loop Once Clock A",
       "config": {
         "type": "default",
         "source": "playlists",
@@ -176,8 +176,8 @@
       ]
     },
     {
-      "ref": "singleClock",
-      "name": "Single Track Clock",
+      "ref": "loopB",
+      "name": "Loop Once Clock B",
       "config": {
         "type": "default",
         "source": "playlists",
@@ -192,9 +192,7 @@
         "play_per_songs": 0,
         "play_per_minutes": 0,
         "play_per_hour_minute": 0,
-        "backend_options": [
-          "single_track"
-        ],
+        "backend_options": [],
         "remote_url": null,
         "remote_type": "stream",
         "remote_buffer": 0,
@@ -209,7 +207,7 @@
           "days": [],
           "start_date": null,
           "end_date": null,
-          "loop_once": false,
+          "loop_once": true,
           "prevent_requests": false,
           "reset_queue_at_start": false,
           "reset_queue_recursive": false

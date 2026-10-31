@@ -272,7 +272,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
         - The chain ends early at a group with its own schedule that its parent doesn't cover, since that group plays on its own
         - A member of several groups only needs one of them to be able to play
         - A member of a disabled group, or of a group outside its schedule window, leaves the global queue running
-          - The same goes for a group whose window is used up by `loop_once` or `single_track`
+          - The same goes for a `loop_once` group that has already looped within its window
         - A member of a group between its interval plays (once per X songs / minutes / hour) still controls the request queue
           - Requests then wait for the group's next play, so the group paces them
           - `Requests`-source playlists are always Standard type, so a parent group is the only place an interval can apply to them

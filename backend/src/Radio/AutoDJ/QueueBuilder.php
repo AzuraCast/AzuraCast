@@ -1268,7 +1268,10 @@ final class QueueBuilder implements EventSubscriberInterface
      * It's reachable if one of these is true:
      * - is a top-level playlist
      * - is scheduled on its own
-     * - is a member of an enabled active group that is reachable itself
+     * - is a member of an enabled group inside its schedule window that is reachable itself
+     *
+     * A group between its interval plays (once per X songs / minutes / hour) still counts,
+     * so requests wait for the group's next play instead of going through the global queue.
      *
      * @param int[] $visitedIds
      */
@@ -1297,7 +1300,7 @@ final class QueueBuilder implements EventSubscriberInterface
             if (
                 in_array($group->id, $visitedIds, true)
                 || !$group->is_enabled
-                || !$this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime)
+                || !$this->scheduler->isPlaylistScheduledToPlayNow($group, $expectedPlayTime)
             ) {
                 continue;
             }

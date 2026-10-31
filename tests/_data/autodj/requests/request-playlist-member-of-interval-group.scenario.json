@@ -1,0 +1,46 @@
+{
+  "description": "A Requests-source playlist that is only a member of an unscheduled Once-Per-30-Minutes group keeps pausing the global request queue while the group is between plays, so the group paces the requests. The pending request waits while regular music plays, then is served via the group once it is due again.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "interval-group-holds-request-until-due",
+      "now": "2026-11-02T12:10:00+00:00",
+      "runtime": {
+        "playlists": {
+          "pacer": {
+            "played_at": "2026-11-02T12:00:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T12:35:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "pacer",
+            "requests"
+          ]
+        }
+      ]
+    }
+  ]
+}

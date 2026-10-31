@@ -270,6 +270,9 @@ Unless noted, every item below behaves identically in-memory and in integration.
       - When `false` a due `Requests`-source playlist still preempts the global queue, with the global queue as the fallback outside that playlist's schedule
         - A `Requests`-source playlist only preempts while it can actually play: on its own like any top-level playlist, or as a group member through a chain of enabled groups that may all play now
         - A member of a disabled group, or of a group outside its schedule window, leaves the global queue running
+          - The same goes for a group whose window is used up by `loop_once` or `single_track`
+        - A member of a group between its interval plays (once per X songs / minutes / hour) still controls the request queue
+          - Requests then wait for the group's next play, so the group paces them
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing

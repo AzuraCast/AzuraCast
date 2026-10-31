@@ -1262,6 +1262,54 @@ final class QueueBuilder implements EventSubscriberInterface
         return false;
     }
 
+    /**
+     * Walk up from a playlist through its group memberships to check it can actually play now.
+     *
+     * It's reachable if one of these is true:
+     * - is a top-level playlist
+     * - is scheduled on its own
+     * - is a member of an enabled active group that is reachable itself
+     *
+     * @param int[] $visitedIds
+     */
+    private function isPlaylistReachableInHierarchy(
+        StationPlaylist $playlist,
+        DateTimeImmutable $expectedPlayTime,
+        array $visitedIds = []
+    ): bool {
+        if ($playlist->playlist_groups->count() === 0) {
+            return true;
+        }
+
+        // Scheduled members play on their own while no ancestor group's schedule covers them
+        if (
+            $playlist->schedule_items->count() > 0
+            && !$this->scheduler->isPlaylistCoveredByGroupScheduleAt($playlist, $expectedPlayTime)
+        ) {
+            return true;
+        }
+
+        $visitedIds[] = $playlist->id;
+
+        foreach ($playlist->playlist_groups as $membership) {
+            $group = $membership->playlist_group;
+
+            if (
+                in_array($group->id, $visitedIds, true)
+                || !$group->is_enabled
+                || !$this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime)
+            ) {
+                continue;
+            }
+
+            if ($this->isPlaylistReachableInHierarchy($group, $expectedPlayTime, $visitedIds)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getNextSongFromRequests(BuildQueue $event): void
     {
         // Don't use this to cue requests.
@@ -1311,6 +1359,14 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             if (PlaylistSources::Requests === $playlist->source) {
+                if (!$this->isPlaylistReachableInHierarchy($playlist, $expectedPlayTime)) {
+                    $this->logger->debug(sprintf(
+                        'Playlist "%s" cannot play through its playlist groups now; not controlling request queue.',
+                        $playlist->name
+                    ));
+                    continue;
+                }
+
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is controlling request queue and due now; skipping regular request queue.',
                     $playlist->name

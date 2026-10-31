@@ -268,6 +268,8 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - The `station.requests_only_via_playlists` routes between the two:
       - When `true` the global queue is disabled and only a due `Requests`-source playlist serves requests
       - When `false` a due `Requests`-source playlist still preempts the global queue, with the global queue as the fallback outside that playlist's schedule
+        - A `Requests`-source playlist only preempts while it can actually play: on its own like any top-level playlist, or as a group member through a chain of enabled groups that may all play now
+        - A member of a disabled group, or of a group outside its schedule window, leaves the global queue running
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing

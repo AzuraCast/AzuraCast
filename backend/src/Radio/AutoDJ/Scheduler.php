@@ -154,7 +154,7 @@ final class Scheduler
 
     /**
      * Determine whether a playlist that is a member of one or more groups is covered by an
-     * ancestor-group chain whose schedule is active at the given instant. While covered, the
+     * enabled ancestor-group chain whose schedule is active at the given instant. While covered, the
      * playlist plays via its group and is suppressed from the general rotation.
      */
     public function isPlaylistCoveredByGroupScheduleAt(
@@ -188,9 +188,9 @@ final class Scheduler
     }
 
     /**
-     * Walk up one membership chain and return whether every group in it is schedule-active
-     * at the given instant. Groups without schedule items count as always active, matching
-     * isPlaylistScheduledToPlayNow.
+     * Walk up one membership chain and return whether every group in it is enabled and
+     * schedule-active at the given instant. Groups without schedule items count as always
+     * active, matching isPlaylistScheduledToPlayNow.
      *
      * @param int[] $visitedIdsInChain
      */
@@ -199,7 +199,7 @@ final class Scheduler
         DateTimeImmutable $now,
         array $visitedIdsInChain = []
     ): bool {
-        if (in_array($group->id, $visitedIdsInChain, true)) {
+        if (!$group->is_enabled || in_array($group->id, $visitedIdsInChain, true)) {
             return false;
         }
 

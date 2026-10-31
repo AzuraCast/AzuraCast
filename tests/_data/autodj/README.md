@@ -235,6 +235,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - Members with their own schedule also play standalone via the top-level rotation:
     - only while no ancestor-group chain is scheduled (the group takes precedence)
     - a group without schedule items is as always active
+    - a disabled group anywhere in the chain doesn't take precedence, so the member plays standalone
     - members without their own schedule are only reachable through their groups
 - **History-based gating**
   - Built rows get their expected play time, visibility and played state the way the AutoDJ `Queue` assigns them:

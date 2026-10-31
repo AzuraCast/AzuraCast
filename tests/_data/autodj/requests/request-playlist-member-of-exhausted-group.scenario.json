@@ -1,5 +1,5 @@
 {
-  "description": "A Requests-source playlist that is only a member of a scheduled group stops pausing the global request queue once the group has used up its window: a loop_once group that has looped, or a single_track group that has played. The global request queue then plays the pending request (no playlist attached); while the window is still open the member serves it via the group.",
+  "description": "A Requests-source playlist that is only a member of scheduled groups stops pausing the global request queue once the group has used up its window: a loop_once group that has looped, or a single_track group that has played. The global request queue then plays the pending request (no playlist attached); while the window is still open the member serves it via the group. With both groups enabled and only one of them used up, the member still serves the request via the other group, whichever of the two is checked first.",
   "modes": [
     "in_memory",
     "integration"
@@ -86,6 +86,65 @@
           "playlist_enabled_by_ref": {
             "singleClock": false
           }
+        }
+      ]
+    },
+    {
+      "name": "loop-once-group-used-up-single-track-group-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "loopClock": {
+            "played_at": "2026-11-02T18:30:00+00:00",
+            "queue_reset_at": "2026-11-02T18:10:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "singleClock",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single-track-group-used-up-loop-once-group-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "singleClock": {
+            "played_at": "2026-11-02T18:30:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "loopClock",
+            "requests"
+          ]
         }
       ]
     }

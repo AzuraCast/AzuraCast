@@ -280,6 +280,8 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - A group slot with `allowed_requests: none` stops a `Requests`-source playlist below it from serving requests while the root group is scheduled and on air
     - The rule doesn't apply while the group holding the slot, or any group above it, is disabled
     - With several parents, one enabled chain up to a root that is on air is enough to block
+  - A scheduled group on air also checks its members' `allowed_requests` before the global queue plays a request
+    - Sequential and shuffle groups check their next member, random groups check every enabled member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing

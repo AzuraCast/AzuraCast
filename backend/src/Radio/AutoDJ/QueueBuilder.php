@@ -1158,7 +1158,9 @@ final class QueueBuilder implements EventSubscriberInterface
     ): bool {
         // Reset a fully played queue first so the next cycle's first member is checked
         $members = ($group->order === PlaylistOrders::Random)
-            ? $group->playlists->toArray()
+            ? $group->playlists->filter(
+                static fn(StationPlaylistGroup $member): bool => $member->playlist->is_enabled
+            )->toArray()
             : array_slice($this->getPlaylistGroupQueueForOrder($group), 0, 1);
 
         foreach ($members as $member) {

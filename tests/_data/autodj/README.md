@@ -285,6 +285,8 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - A scheduled group that can play also checks its members' `allowed_requests` before the global queue plays a request
     - Sequential and shuffle groups check the next member they would play, random groups check every enabled member that can play now
     - Members a group pass skips for their own schedule or interval rules don't count
+    - Once every queued member is skipped, the next member comes from a new cycle, unless the group loops once
+      - A new shuffled cycle can start with any member, so all of them are checked
     - A permitted request takes the place of that next member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back

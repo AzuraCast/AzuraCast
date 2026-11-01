@@ -1157,14 +1157,7 @@ final class QueueBuilder implements EventSubscriberInterface
         ?StationMedia $requestedMedia,
         DateTimeImmutable $expectedPlayTime
     ): bool {
-        $members = ($group->order === PlaylistOrders::Random)
-            ? $group->playlists->filter(
-                fn(StationPlaylistGroup $member): bool => $member->playlist->is_enabled
-                    && $this->scheduler->shouldPlaylistPlayNow($member->playlist, $expectedPlayTime)
-            )->toArray()
-            : array_filter([$this->getNextPlayableGroupMember($group, $expectedPlayTime)]);
-
-        foreach ($members as $member) {
+        foreach ($this->getPossibleNextGroupMembers($group, $expectedPlayTime) as $member) {
             if ($member->allowed_requests === PlaylistGroupAllowedRequests::None) {
                 $this->logger->debug(sprintf(
                     'Playlist group member "%s" blocks requests (allowed_requests=none).',
@@ -1208,7 +1201,9 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $slot = $this->getNextPlayableGroupMember($group, $expectedPlayTime);
+        $slot = $this->getNextPlayableGroupMember($group, $expectedPlayTime)
+            ?? $this->getNextPlayableGroupMemberOfNewCycle($group, $expectedPlayTime);
+
         if ($slot === null) {
             return;
         }
@@ -1243,6 +1238,75 @@ final class QueueBuilder implements EventSubscriberInterface
                 $expectedPlayTime
             )
         );
+    }
+
+    /**
+     * Start a new cycle once every queued member is skipped and get its first member that can play now.
+     *
+     * Groups that loop once or are already on a fresh cycle don't start another one.
+     */
+    private function getNextPlayableGroupMemberOfNewCycle(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime
+    ): ?StationPlaylistGroup {
+        if (
+            $this->scheduler->isPlaylistScheduledToLoopOnceAt($group, $expectedPlayTime)
+            || $this->spRepo->isPlaylistGroupQueueCompletelyFilled($group)
+        ) {
+            return null;
+        }
+
+        $this->spRepo->resetPlaylistGroupQueue($group);
+
+        return $this->getNextPlayableGroupMember($group, $expectedPlayTime);
+    }
+
+    /**
+     * Get the members a group could play next, without changing its queue.
+     *
+     * Members that can't play now are skipped. Once every queued member is skipped, a new cycle
+     * starts unless the group loops once. Random groups and new shuffled cycles may start with
+     * any member, so all of them are returned.
+     *
+     * @return StationPlaylistGroup[]
+     */
+    private function getPossibleNextGroupMembers(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime
+    ): array {
+        if ($group->order === PlaylistOrders::Random) {
+            return $this->getPlayableGroupMembers($group, $expectedPlayTime);
+        }
+
+        $nextMember = $this->getNextPlayableGroupMember($group, $expectedPlayTime);
+        if ($nextMember !== null) {
+            return [$nextMember];
+        }
+
+        if ($this->scheduler->isPlaylistScheduledToLoopOnceAt($group, $expectedPlayTime)) {
+            return [];
+        }
+
+        $playableMembers = $this->getPlayableGroupMembers($group, $expectedPlayTime);
+
+        return ($group->order === PlaylistOrders::Sequential)
+            ? array_slice($playableMembers, 0, 1)
+            : $playableMembers;
+    }
+
+    /**
+     * Get the enabled members of a group that can play now.
+     *
+     * @return StationPlaylistGroup[]
+     */
+    private function getPlayableGroupMembers(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime
+    ): array {
+        return $group->playlists->filter(
+            fn(StationPlaylistGroup $member): bool => $member->playlist->is_enabled
+                && $this->scheduler->shouldPlaylistPlayNow($member->playlist, $expectedPlayTime)
+        )->getValues();
     }
 
     /**

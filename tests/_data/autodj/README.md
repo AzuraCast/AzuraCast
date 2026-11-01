@@ -279,10 +279,13 @@ Unless noted, every item below behaves identically in-memory and in integration.
           - `Requests`-source playlists are always Standard type, so a parent group is the only place an interval can apply to them
   - A group slot with `allowed_requests: none` stops a `Requests`-source playlist below it from serving requests while the group holding the slot can play
     - It can play on its own when it has a schedule that no parent covers, or through a scheduled root that can play
+    - It can't play while its own schedule or interval rules make groups skip it, even if a parent plays
     - The rule doesn't apply while the group holding the slot, or any group above it, is disabled
     - With several parents, one enabled chain up to a root that can play is enough to block
   - A scheduled group that can play also checks its members' `allowed_requests` before the global queue plays a request
-    - Sequential and shuffle groups check their next member, random groups check every enabled member
+    - Sequential and shuffle groups check the next member they would play, random groups check every enabled member that can play now
+    - Members a group pass skips for their own schedule or interval rules don't count
+    - A permitted request takes the place of that next member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing

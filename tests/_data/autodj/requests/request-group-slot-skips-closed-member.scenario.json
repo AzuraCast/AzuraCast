@@ -1,0 +1,39 @@
+{
+  "description": "A scheduled sequential group's next queued member has its own schedule and its window is closed, so a group pass skips it. A global request is checked against, and takes the place of, the member the pass would actually play (Member Y), not the skipped one. The next build then skips the closed member again and plays Member Z.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "request-takes-slot-of-first-playable-member",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "z",
+          "media_ref": "mZ",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "grp",
+            "z"
+          ]
+        }
+      ]
+    }
+  ]
+}

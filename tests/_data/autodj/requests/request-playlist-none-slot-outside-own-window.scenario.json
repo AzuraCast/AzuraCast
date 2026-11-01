@@ -1,0 +1,80 @@
+{
+  "description": "A Requests-source playlist sits in an inner group with its own schedule (10:00-14:00) on a slot with allowed_requests=none. The inner group is inside an unscheduled mid group, inside an evening group scheduled 18:00-22:00, and the Requests playlist is also on an any slot of an unscheduled Once-Per-30-Minutes alt group. While the evening group plays, the inner group's own window is closed, so groups skip it and its none slot doesn't block: the global request queue plays the pending request (no playlist attached), or with the alt group enabled the member serves it via the alt group. Inside the inner window (11:00) the none slot still blocks and the request is held while regular music plays.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "parent-plays-inner-window-closed-global-queue-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "alt": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "parent-plays-inner-window-closed-member-plays-request-via-alt",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "alt",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "control-inner-window-open-none-holds-request",
+      "now": "2026-11-02T11:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "alt": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1154,14 +1154,15 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function isRequestBlockedInHierarchy(
         StationPlaylist $group,
-        ?StationMedia $requestedMedia
+        ?StationMedia $requestedMedia,
+        DateTimeImmutable $expectedPlayTime
     ): bool {
-        // Reset a fully played queue first so the next cycle's first member is checked
         $members = ($group->order === PlaylistOrders::Random)
             ? $group->playlists->filter(
-                static fn(StationPlaylistGroup $member): bool => $member->playlist->is_enabled
+                fn(StationPlaylistGroup $member): bool => $member->playlist->is_enabled
+                    && $this->scheduler->shouldPlaylistPlayNow($member->playlist, $expectedPlayTime)
             )->toArray()
-            : array_slice($this->getPlaylistGroupQueueForOrder($group), 0, 1);
+            : array_filter([$this->getNextPlayableGroupMember($group, $expectedPlayTime)]);
 
         foreach ($members as $member) {
             if ($member->allowed_requests === PlaylistGroupAllowedRequests::None) {
@@ -1185,7 +1186,7 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             if ($member->playlist->source === PlaylistSources::Playlists) {
-                if ($this->isRequestBlockedInHierarchy($member->playlist, $requestedMedia)) {
+                if ($this->isRequestBlockedInHierarchy($member->playlist, $requestedMedia, $expectedPlayTime)) {
                     return true;
                 }
             }
@@ -1207,7 +1208,7 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $slot = $this->spRepo->getPlaylistGroupQueue($group)[0] ?? null;
+        $slot = $this->getNextPlayableGroupMember($group, $expectedPlayTime);
         if ($slot === null) {
             return;
         }
@@ -1224,6 +1225,24 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $group->played_at = $expectedPlayTime;
         $this->em->persist($group);
+    }
+
+    /**
+     * Get the queued member a group pass plays next, skipping members that can't play now.
+     *
+     * Resets a fully played queue first so the next cycle's first member is returned.
+     */
+    private function getNextPlayableGroupMember(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime
+    ): ?StationPlaylistGroup {
+        return array_find(
+            $this->getPlaylistGroupQueueForOrder($group),
+            fn(StationPlaylistGroup $member): bool => $this->scheduler->shouldPlaylistPlayNow(
+                $member->playlist,
+                $expectedPlayTime
+            )
+        );
     }
 
     /**
@@ -1274,12 +1293,17 @@ final class QueueBuilder implements EventSubscriberInterface
             return false;
         }
 
+        // Parents skip a group that can't play now, so it doesn't play through them either
+        if (!$this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime)) {
+            return false;
+        }
+
         // Scheduled groups play on their own while no parent's schedule covers them, same as roots
         if (
             $group->schedule_items->count() > 0
             && !$this->scheduler->isPlaylistCoveredByGroupScheduleAt($group, $expectedPlayTime)
         ) {
-            return $this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime);
+            return true;
         }
 
         $visitedIds[] = $group->id;
@@ -1438,7 +1462,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            if ($this->isRequestBlockedInHierarchy($playlist, $request->track)) {
+            if ($this->isRequestBlockedInHierarchy($playlist, $request->track, $expectedPlayTime)) {
                 return;
             }
 

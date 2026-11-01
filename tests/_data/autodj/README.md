@@ -277,10 +277,11 @@ Unless noted, every item below behaves identically in-memory and in integration.
         - A member of a group between its interval plays (once per X songs / minutes / hour) still controls the request queue
           - Requests then wait for the group's next play, so the group paces them
           - `Requests`-source playlists are always Standard type, so a parent group is the only place an interval can apply to them
-  - A group slot with `allowed_requests: none` stops a `Requests`-source playlist below it from serving requests while the root group is scheduled and on air
+  - A group slot with `allowed_requests: none` stops a `Requests`-source playlist below it from serving requests while the group holding the slot can play
+    - It can play on its own when it has a schedule that no parent covers, or through a scheduled root that can play
     - The rule doesn't apply while the group holding the slot, or any group above it, is disabled
-    - With several parents, one enabled chain up to a root that is on air is enough to block
-  - A scheduled group on air also checks its members' `allowed_requests` before the global queue plays a request
+    - With several parents, one enabled chain up to a root that can play is enough to block
+  - A scheduled group that can play also checks its members' `allowed_requests` before the global queue plays a request
     - Sequential and shuffle groups check their next member, random groups check every enabled member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back

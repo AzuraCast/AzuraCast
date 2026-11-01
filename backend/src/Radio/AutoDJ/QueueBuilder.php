@@ -1229,9 +1229,11 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Walk up from a playlist through its group memberships, to check allowed_requests.
      *
-     * A none slot only blocks when one of its chains up to a root group:
-     * - has every group enabled
-     * - ends in a root that is scheduled and active, so an unscheduled playlist can't block the whole station
+     * A none slot only blocks while its group is enabled and can play now:
+     * - on its own, with a schedule that no parent covers
+     * - through enabled groups up to a scheduled root that is active
+     *
+     * Unscheduled roots don't count, so an unscheduled playlist can't block the whole station.
      */
     private function areRequestsBlockedByAncestors(
         StationPlaylist $playlist,
@@ -1240,7 +1242,7 @@ final class QueueBuilder implements EventSubscriberInterface
         foreach ($playlist->playlist_groups as $membership) {
             if (
                 $membership->allowed_requests === PlaylistGroupAllowedRequests::None
-                && $this->isRootChainActiveAt($membership->playlist_group, $expectedPlayTime)
+                && $this->canGroupPlayNow($membership->playlist_group, $expectedPlayTime)
             ) {
                 $this->logger->debug(sprintf(
                     'Requests blocked for "%s", ancestor group membership has allowed_requests=none.',
@@ -1258,12 +1260,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Walk up every parent chain of a group and return whether one of them is enabled all the
-     * way up to a scheduled root that is active now.
+     * Walk up from a group and return whether it can play now, on its own or through a chain of
+     * enabled parents up to a scheduled root.
      *
      * @param int[] $visitedIds
      */
-    private function isRootChainActiveAt(
+    private function canGroupPlayNow(
         StationPlaylist $group,
         DateTimeImmutable $expectedPlayTime,
         array $visitedIds = []
@@ -1272,15 +1274,18 @@ final class QueueBuilder implements EventSubscriberInterface
             return false;
         }
 
-        if ($group->playlist_groups->count() === 0) {
-            return $group->schedule_items->count() > 0
-                && $this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime);
+        // Scheduled groups play on their own while no parent's schedule covers them, same as roots
+        if (
+            $group->schedule_items->count() > 0
+            && !$this->scheduler->isPlaylistCoveredByGroupScheduleAt($group, $expectedPlayTime)
+        ) {
+            return $this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime);
         }
 
         $visitedIds[] = $group->id;
 
         foreach ($group->playlist_groups as $parentMembership) {
-            if ($this->isRootChainActiveAt($parentMembership->playlist_group, $expectedPlayTime, $visitedIds)) {
+            if ($this->canGroupPlayNow($parentMembership->playlist_group, $expectedPlayTime, $visitedIds)) {
                 return true;
             }
         }

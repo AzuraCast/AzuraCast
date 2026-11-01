@@ -1227,38 +1227,58 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Walk up from a playlist through its group memberships, to check allowed_requests.
      *
-     * A none slot only blocks when:
-     * - every group from the slot up to the root is enabled
-     * - the root is scheduled and active, so an unscheduled playlist can't block requests on the whole station
+     * A none slot only blocks when one of its chains up to a root group:
+     * - has every group enabled
+     * - ends in a root that is scheduled and active, so an unscheduled playlist can't block the whole station
      */
     private function areRequestsBlockedByAncestors(
         StationPlaylist $playlist,
         DateTimeImmutable $expectedPlayTime
     ): bool {
         foreach ($playlist->playlist_groups as $membership) {
-            if ($membership->allowed_requests === PlaylistGroupAllowedRequests::None) {
-                $root = $membership->playlist_group;
-                $isChainEnabled = $root->is_enabled;
-                while (($parentMembership = $root->playlist_groups->first()) !== false) {
-                    /** @var StationPlaylistGroup $parentMembership */
-                    $root = $parentMembership->playlist_group;
-                    $isChainEnabled = $isChainEnabled && $root->is_enabled;
-                }
-
-                if (
-                    $isChainEnabled
-                    && $root->schedule_items->count() > 0
-                    && $this->scheduler->shouldPlaylistPlayNow($root, $expectedPlayTime)
-                ) {
-                    $this->logger->debug(sprintf(
-                        'Requests blocked for "%s", ancestor group membership has allowed_requests=none.',
-                        $playlist->name
-                    ));
-                    return true;
-                }
+            if (
+                $membership->allowed_requests === PlaylistGroupAllowedRequests::None
+                && $this->isRootChainActiveAt($membership->playlist_group, $expectedPlayTime)
+            ) {
+                $this->logger->debug(sprintf(
+                    'Requests blocked for "%s", ancestor group membership has allowed_requests=none.',
+                    $playlist->name
+                ));
+                return true;
             }
 
             if ($this->areRequestsBlockedByAncestors($membership->playlist_group, $expectedPlayTime)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Walk up every parent chain of a group and return whether one of them is enabled all the
+     * way up to a scheduled root that is active now.
+     *
+     * @param int[] $visitedIds
+     */
+    private function isRootChainActiveAt(
+        StationPlaylist $group,
+        DateTimeImmutable $expectedPlayTime,
+        array $visitedIds = []
+    ): bool {
+        if (!$group->is_enabled || in_array($group->id, $visitedIds, true)) {
+            return false;
+        }
+
+        if ($group->playlist_groups->count() === 0) {
+            return $group->schedule_items->count() > 0
+                && $this->scheduler->shouldPlaylistPlayNow($group, $expectedPlayTime);
+        }
+
+        $visitedIds[] = $group->id;
+
+        foreach ($group->playlist_groups as $parentMembership) {
+            if ($this->isRootChainActiveAt($parentMembership->playlist_group, $expectedPlayTime, $visitedIds)) {
                 return true;
             }
         }

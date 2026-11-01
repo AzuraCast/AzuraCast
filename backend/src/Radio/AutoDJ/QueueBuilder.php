@@ -1227,8 +1227,9 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Walk up from a playlist through its group memberships, to check allowed_requests.
      *
-     * Only blocks when the root ancestor is scheduled and active to prevent an unscheduled
-     * playlist from always blocking requests on the whole station.
+     * A none slot only blocks when:
+     * - every group from the slot up to the root is enabled
+     * - the root is scheduled and active, so an unscheduled playlist can't block requests on the whole station
      */
     private function areRequestsBlockedByAncestors(
         StationPlaylist $playlist,
@@ -1237,13 +1238,16 @@ final class QueueBuilder implements EventSubscriberInterface
         foreach ($playlist->playlist_groups as $membership) {
             if ($membership->allowed_requests === PlaylistGroupAllowedRequests::None) {
                 $root = $membership->playlist_group;
+                $isChainEnabled = $root->is_enabled;
                 while (($parentMembership = $root->playlist_groups->first()) !== false) {
                     /** @var StationPlaylistGroup $parentMembership */
                     $root = $parentMembership->playlist_group;
+                    $isChainEnabled = $isChainEnabled && $root->is_enabled;
                 }
 
                 if (
-                    $root->schedule_items->count() > 0
+                    $isChainEnabled
+                    && $root->schedule_items->count() > 0
                     && $this->scheduler->shouldPlaylistPlayNow($root, $expectedPlayTime)
                 ) {
                     $this->logger->debug(sprintf(

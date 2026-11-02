@@ -1262,11 +1262,12 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Get the members a group could play next, without changing its queue.
+     * Get the members a group could play next.
      *
-     * Members that can't play now are skipped. Once every queued member is skipped, a new cycle
-     * starts unless the group loops once. Random groups and new shuffled cycles may start with
-     * any member, so all of them are returned.
+     * Members that can't play now are skipped. Once every queued member is skipped, the next one
+     * comes from a new cycle, unless the group loops once. That cycle isn't started here, so the
+     * queue is only reset when it's already empty. Random groups and new shuffled cycles may
+     * start with any member, so all of them are returned.
      *
      * @return StationPlaylistGroup[]
      */

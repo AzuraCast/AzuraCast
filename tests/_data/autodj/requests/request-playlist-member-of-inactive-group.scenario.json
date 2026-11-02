@@ -1,0 +1,76 @@
+{
+  "description": "A Requests-source playlist that is only a member of a playlist group can only serve requests through that group, so it must only pause the global request queue while it is eligible to play through the group. With the group disabled, or outside its schedule window, the global request queue plays the pending request (no playlist attached); inside the window the member serves it via the group.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "disabled-group-global-queue-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "clock": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "group-outside-window-global-queue-plays-request",
+      "now": "2026-11-02T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "control-group-inside-window-member-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "clock",
+            "requests"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "description": "A scheduled sequential group's next queued member (Afternoon Member) has its own schedule (13:00-14:00) and its window is still closed at 12:58, so a group pass skips it. A global request is checked against, and takes the place of, the member the pass would actually play (Member Y), and the skipped Afternoon Member is marked played the way a pass skips it. So at 13:01, with its window open, it doesn't come back ahead of Member Z.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "request-takes-slot-of-first-playable-member",
+      "now": "2026-11-02T12:58:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T13:01:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "z",
+          "media_ref": "mZ",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "grp",
+            "z"
+          ]
+        }
+      ]
+    }
+  ]
+}

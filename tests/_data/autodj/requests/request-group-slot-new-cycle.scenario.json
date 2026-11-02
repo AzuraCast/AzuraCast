@@ -1,0 +1,241 @@
+{
+  "description": "Scheduled sequential groups each hold an Evening Member (any, own schedule 18:00-19:00) first in their queue. Once the members after it have played this cycle, only the Evening Member is left and its window is closed, so playback starts a new cycle and plays Member Y (none). The global request check follows that: Member Y's none slot holds the request, as it does on a fresh cycle. A loop_once group doesn't start a new cycle within its window, so the request plays from the global queue (no playlist attached). When the new cycle starts with an any member (Member A), the request plays from the global queue and takes Member A's slot, so the next build skips the Evening Member and plays Member Y. A merged group starts its new cycle in the same build as well, so it behaves the same: Member Y's none slot holds the request, and a request takes Member A's slot so the next build plays Member B.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "fresh-cycle-none-member-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "y",
+          "media_ref": "mY",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "grp",
+            "y"
+          ],
+          "playlist_enabled_by_ref": {
+            "loopGrp": false,
+            "anyGrp": false,
+            "mergedGrp": false,
+            "mergedAnyGrp": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "remaining-members-skipped-new-cycle-none-member-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp:y": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "y",
+          "media_ref": "mY",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "grp",
+            "y"
+          ],
+          "playlist_enabled_by_ref": {
+            "loopGrp": false,
+            "anyGrp": false,
+            "mergedGrp": false,
+            "mergedAnyGrp": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "loop-once-remaining-members-skipped-global-queue-plays-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "playlists": {
+          "loopGrp": {
+            "played_at": "2026-11-02T12:10:00+00:00",
+            "queue_reset_at": "2026-11-02T11:00:00+00:00"
+          }
+        },
+        "group_members": {
+          "loopGrp:y": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "grp": false,
+            "anyGrp": false,
+            "mergedGrp": false,
+            "mergedAnyGrp": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "remaining-members-skipped-request-takes-new-cycle-slot",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "anyGrp:a": {
+            "is_queued": false,
+            "last_played": 1793622600
+          },
+          "anyGrp:y": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "grp": false,
+            "loopGrp": false,
+            "mergedGrp": false,
+            "mergedAnyGrp": false
+          }
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "y",
+          "media_ref": "mY",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "anyGrp",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "merged-remaining-members-skipped-new-cycle-none-member-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "mergedGrp:y": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "y",
+          "media_ref": "mY",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "mergedGrp",
+            "y"
+          ],
+          "playlist_enabled_by_ref": {
+            "grp": false,
+            "loopGrp": false,
+            "anyGrp": false,
+            "mergedAnyGrp": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "merged-remaining-members-skipped-request-takes-new-cycle-slot",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "mergedAnyGrp:a": {
+            "is_queued": false,
+            "last_played": 1793622600
+          },
+          "mergedAnyGrp:b": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "grp": false,
+            "loopGrp": false,
+            "anyGrp": false,
+            "mergedGrp": false
+          }
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "mB",
+          "from_request": false,
+          "playlist_chain_refs": [
+            "mergedAnyGrp",
+            "b"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -235,6 +235,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - Members with their own schedule also play standalone via the top-level rotation:
     - only while no ancestor-group chain is scheduled (the group takes precedence)
     - a group without schedule items is as always active
+    - a disabled group anywhere in the chain doesn't take precedence, so the member plays standalone
     - members without their own schedule are only reachable through their groups
 - **History-based gating**
   - Built rows get their expected play time, visibility and played state the way the AutoDJ `Queue` assigns them:
@@ -268,6 +269,27 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - The `station.requests_only_via_playlists` routes between the two:
       - When `true` the global queue is disabled and only a due `Requests`-source playlist serves requests
       - When `false` a due `Requests`-source playlist still preempts the global queue, with the global queue as the fallback outside that playlist's schedule
+        - A `Requests`-source playlist only preempts while it can actually play: on its own like any top-level playlist, or as a group member through a chain of enabled groups inside their schedule windows
+        - The chain ends early at a group with its own schedule that its parent doesn't cover, since that group plays on its own
+        - A member of several groups only needs one of them to be able to play
+        - A member of a disabled group, or of a group outside its schedule window, leaves the global queue running
+          - The same goes for a `loop_once` group that has already looped within its window
+        - A member of a group between its interval plays (once per X songs / minutes / hour) still controls the request queue
+          - Requests then wait for the group's next play, so the group paces them
+          - `Requests`-source playlists are always Standard type, so a parent group is the only place an interval can apply to them
+  - A group slot with `allowed_requests: none` stops a `Requests`-source playlist below it from serving requests while the group holding the slot can play
+    - It can play on its own when it has a schedule that no parent covers, or through a scheduled root that can play
+    - It can't play while its own schedule or interval rules make groups skip it, even if a parent plays
+    - The rule doesn't apply while the group holding the slot, or any group above it, is disabled
+    - With several parents, one enabled chain up to a root that can play is enough to block
+  - A scheduled group that can play also checks its members' `allowed_requests` before the global queue plays a request
+    - Sequential and shuffle groups check the next member they would play, random groups check every enabled member that can play now
+    - Members a group pass skips for their own schedule or interval rules don't count
+    - Once every queued member is skipped, the next member comes from a new cycle, unless the group loops once
+      - A new shuffled cycle can start with any member, so all of them are checked
+      - Merged groups start it in the same build too
+    - A permitted request takes the place of that next member
+      - Members a pass would skip before it are marked played as well, so they don't come back later in the cycle
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing
@@ -301,6 +323,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - The `merge` on a playlist group cues one full rotation pass as a single block per build
     - Sequential/shuffle groups keep picking until the rotation queue empties once (a `consecutive_plays` slot contributes that many tracks, a `play_full_cycle` member its whole remaining cycle; for a `Requests`-source member that cycle is the currently playable request queue)
     - Random groups take one randomized pass with one pick per eligible member (a `play_full_cycle` `Requests`-source member therefore serves only one request per random pass)
+    - When every member left in the queue is skipped, the block starts a new cycle right away, like a regular group pass, with the same duplicate prevention
     - Assert blocks with the step-level `entries` list
 - **Remote stream playlists are excluded from queueing**
   - A playlist may set `config.source: "remote_url"` with `config.remote_type`

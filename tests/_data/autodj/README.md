@@ -287,6 +287,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - Members a group pass skips for their own schedule or interval rules don't count
     - Once every queued member is skipped, the next member comes from a new cycle, unless the group loops once
       - A new shuffled cycle can start with any member, so all of them are checked
+      - A merged group starts it when rotation retries the group in the same build, so it counts the same
     - A permitted request takes the place of that next member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back

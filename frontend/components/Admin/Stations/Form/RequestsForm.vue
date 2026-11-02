@@ -34,7 +34,7 @@
                     input-type="number"
                     :input-attrs="{ min: '0', max: '1440' }"
                     :label="$gettext('Request Minimum Delay (Minutes)')"
-                    :description="$gettext('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.')"
+                    :description="$gettext('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played, randomized up to twice this value. It also limits how often a listener can submit requests, with a minimum of 15 seconds to prevent request floods.')"
                 />
 
                 <form-group-field

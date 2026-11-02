@@ -190,7 +190,7 @@ final class Scheduler
     /**
      * Walk up one membership chain and return whether every group in it is enabled and
      * schedule-active at the given instant. Groups without schedule items count as always
-     * active, matching isPlaylistScheduledToPlayNow.
+     * active, the same as any playlist without a schedule.
      *
      * @param int[] $visitedIdsInChain
      */

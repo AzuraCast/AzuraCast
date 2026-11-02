@@ -287,7 +287,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
     - Members a group pass skips for their own schedule or interval rules don't count
     - Once every queued member is skipped, the next member comes from a new cycle, unless the group loops once
       - A new shuffled cycle can start with any member, so all of them are checked
-      - A merged group starts it when rotation retries the group in the same build, so it counts the same
+      - Merged groups start it in the same build too
     - A permitted request takes the place of that next member
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
@@ -322,6 +322,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
   - The `merge` on a playlist group cues one full rotation pass as a single block per build
     - Sequential/shuffle groups keep picking until the rotation queue empties once (a `consecutive_plays` slot contributes that many tracks, a `play_full_cycle` member its whole remaining cycle; for a `Requests`-source member that cycle is the currently playable request queue)
     - Random groups take one randomized pass with one pick per eligible member (a `play_full_cycle` `Requests`-source member therefore serves only one request per random pass)
+    - When every member left in the queue is skipped, the block starts a new cycle right away, like a regular group pass, with the same duplicate prevention
     - Assert blocks with the step-level `entries` list
 - **Remote stream playlists are excluded from queueing**
   - A playlist may set `config.source: "remote_url"` with `config.remote_type`

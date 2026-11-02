@@ -276,8 +276,29 @@ final class QueueBuilder implements EventSubscriberInterface
     ): array {
         $memberAvoidsDuplicates = $ancestorAvoidsDuplicates || $playlistGroup->avoid_duplicates;
 
-        if ($playlistGroup->backendMerge()) {
-            $blockEntries = $this->playBlockFromPlaylistGroup(
+        $entries = $this->playQueueOfPlaylistGroup(
+            $event,
+            $playlistGroup,
+            $recentSongHistory,
+            $allowDuplicates,
+            $memberAvoidsDuplicates,
+            $playlistChain
+        );
+
+        if (!empty($entries)) {
+            return $entries;
+        }
+
+        $isScheduledToLoopOnce = $this->scheduler->isPlaylistScheduledToLoopOnceAt(
+            $playlistGroup,
+            $event->getExpectedPlayTime()
+        );
+
+        // Start a new cycle so a cycle ending in schedule skip does not hand this slot to general rotation
+        if ($entries === null && !$isScheduledToLoopOnce) {
+            $this->spRepo->resetPlaylistGroupQueue($playlistGroup);
+
+            $entries = $this->playQueueOfPlaylistGroup(
                 $event,
                 $playlistGroup,
                 $recentSongHistory,
@@ -286,44 +307,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $playlistChain
             );
 
-            if ($blockEntries !== []) {
-                return $blockEntries;
-            }
-        } else {
-            $passEntries = $this->playPassOfPlaylistGroup(
-                $event,
-                $playlistGroup,
-                $recentSongHistory,
-                $allowDuplicates,
-                $memberAvoidsDuplicates,
-                $playlistChain
-            );
-
-            if (!empty($passEntries)) {
-                return $passEntries;
-            }
-
-            $isScheduledToLoopOnce = $this->scheduler->isPlaylistScheduledToLoopOnceAt(
-                $playlistGroup,
-                $event->getExpectedPlayTime()
-            );
-
-            // Do another pass so a cycle ending in schedule skip does not hand this slot to general rotation
-            if ($passEntries === null && !$isScheduledToLoopOnce) {
-                $this->spRepo->resetPlaylistGroupQueue($playlistGroup);
-
-                $passEntries = $this->playPassOfPlaylistGroup(
-                    $event,
-                    $playlistGroup,
-                    $recentSongHistory,
-                    $allowDuplicates,
-                    $memberAvoidsDuplicates,
-                    $playlistChain
-                );
-
-                if (!empty($passEntries)) {
-                    return $passEntries;
-                }
+            if (!empty($entries)) {
+                return $entries;
             }
         }
 
@@ -337,6 +322,43 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         return [];
+    }
+
+    /**
+     * Play from the group's remaining member queue.
+     *
+     * Merged groups play every remaining member as one block, other groups only the next member
+     * that returns a track.
+     *
+     * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
+     *
+     * @return ?list<StationQueue> Null if skipped by its own schedule, empty if no track was found
+     */
+    private function playQueueOfPlaylistGroup(
+        BuildQueue $event,
+        StationPlaylist $playlistGroup,
+        RecentSongHistory $recentSongHistory,
+        bool $allowDuplicates,
+        bool $memberAvoidsDuplicates,
+        array $playlistChain
+    ): ?array {
+        return $playlistGroup->backendMerge()
+            ? $this->playBlockFromPlaylistGroup(
+                $event,
+                $playlistGroup,
+                $recentSongHistory,
+                $allowDuplicates,
+                $memberAvoidsDuplicates,
+                $playlistChain
+            )
+            : $this->playPassOfPlaylistGroup(
+                $event,
+                $playlistGroup,
+                $recentSongHistory,
+                $allowDuplicates,
+                $memberAvoidsDuplicates,
+                $playlistChain
+            );
     }
 
     /**
@@ -355,8 +377,8 @@ final class QueueBuilder implements EventSubscriberInterface
         array $playlistChain
     ): ?array {
         $groupQueue = $this->getPlaylistGroupQueueForOrder($playlistGroup);
-        $isFreshCycle = $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlistGroup);
-        $sawScheduleSkip = false;
+        $isNewCycle = $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlistGroup);
+        $wasMemberSkippedBySchedule = false;
 
         foreach ($groupQueue as $selectedStationPlaylistGroup) {
             $memberEntries = $this->playGroupMember(
@@ -370,7 +392,7 @@ final class QueueBuilder implements EventSubscriberInterface
             );
 
             if (null === $memberEntries) {
-                $sawScheduleSkip = true;
+                $wasMemberSkippedBySchedule = true;
                 continue;
             }
 
@@ -379,7 +401,7 @@ final class QueueBuilder implements EventSubscriberInterface
             }
         }
 
-        return ($sawScheduleSkip && !$isFreshCycle) ? null : [];
+        return ($wasMemberSkippedBySchedule && !$isNewCycle) ? null : [];
     }
 
     /**
@@ -494,7 +516,7 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
-     * @return list<StationQueue>
+     * @return ?list<StationQueue> Null if skipped by its own schedule, empty if no track was found
      */
     private function playBlockFromPlaylistGroup(
         BuildQueue $event,
@@ -503,7 +525,7 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $allowDuplicates,
         bool $memberAvoidsDuplicates,
         array $playlistChain
-    ): array {
+    ): ?array {
         $blockEntries = [];
         $blockHistory = $recentSongHistory;
 
@@ -513,6 +535,8 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         $slotQueue = $this->getPlaylistGroupQueueForOrder($playlistGroup);
+        $isNewCycle = $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlistGroup);
+        $wasMemberSkippedBySchedule = false;
 
         while ($slotQueue !== []) {
             $selectedStationPlaylistGroup = $slotQueue[0];
@@ -526,6 +550,10 @@ final class QueueBuilder implements EventSubscriberInterface
                 $memberAvoidsDuplicates,
                 $playlistChain
             );
+
+            if ($memberEntries === null) {
+                $wasMemberSkippedBySchedule = true;
+            }
 
             if (!empty($memberEntries)) {
                 $blockEntries = [
@@ -566,7 +594,9 @@ final class QueueBuilder implements EventSubscriberInterface
                 : $slotQueue = $this->spRepo->getPlaylistGroupQueue($playlistGroup);
         }
 
-        return $blockEntries;
+        return ($blockEntries === [] && $wasMemberSkippedBySchedule && !$isNewCycle)
+            ? null
+            : $blockEntries;
     }
 
     /**
@@ -1243,7 +1273,7 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Start a new cycle once every queued member is skipped and get its first member that can play now.
      *
-     * Groups that loop once or are already on a fresh cycle don't start another one.
+     * Groups that loop once or are already on a new cycle don't start another one.
      */
     private function getNextPlayableGroupMemberOfNewCycle(
         StationPlaylist $group,

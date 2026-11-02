@@ -1238,6 +1238,8 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
+        $this->skipGroupMembersBefore($group, $slot, $expectedPlayTime);
+
         if ($slot->playlist->source === PlaylistSources::Playlists) {
             $this->consumeRequestSlotInHierarchy($slot->playlist, $expectedPlayTime);
         }
@@ -1250,6 +1252,26 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $group->played_at = $expectedPlayTime;
         $this->em->persist($group);
+    }
+
+    /**
+     * Mark the members queued before a slot as played, the way a group pass skips members that can't play now.
+     *
+     * Otherwise they stay queued and can still play later in the same cycle.
+     */
+    private function skipGroupMembersBefore(
+        StationPlaylist $group,
+        StationPlaylistGroup $slot,
+        DateTimeImmutable $expectedPlayTime
+    ): void {
+        foreach ($this->spRepo->getPlaylistGroupQueue($group) as $member) {
+            if ($member === $slot) {
+                return;
+            }
+
+            $member->played($expectedPlayTime->getTimestamp(), forceAdvance: true);
+            $this->em->persist($member);
+        }
     }
 
     /**

@@ -151,7 +151,7 @@
     },
     {
       "ref": "closed",
-      "name": "Evening Member",
+      "name": "Afternoon Member",
       "config": {
         "type": "default",
         "source": "songs",
@@ -182,8 +182,8 @@
       ],
       "schedules": [
         {
-          "start_time": 1800,
-          "end_time": 1900,
+          "start_time": 1300,
+          "end_time": 1400,
           "days": [],
           "start_date": null,
           "end_date": null,

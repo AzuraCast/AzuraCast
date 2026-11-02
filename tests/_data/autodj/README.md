@@ -289,6 +289,7 @@ Unless noted, every item below behaves identically in-memory and in integration.
       - A new shuffled cycle can start with any member, so all of them are checked
       - Merged groups start it in the same build too
     - A permitted request takes the place of that next member
+      - Members a pass would skip before it are marked played as well, so they don't come back later in the cycle
   - A `Requests`-source member inside a merged group serves multiple requests per block:
     - A `consecutive_plays: N` member serves up to N requests back to back
     - A `play_full_cycle` member drains all currently playable requests before advancing

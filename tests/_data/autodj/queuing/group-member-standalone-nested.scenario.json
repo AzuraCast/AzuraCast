@@ -1,5 +1,5 @@
 {
-  "description": "Group precedence walks the full ancestor chain: the member (own window 11:00-13:00) belongs to an unscheduled mid group, which belongs to a top group scheduled 12:00-13:00. Inside the top window the member is suppressed and plays via the nested chain; before it the member plays standalone because the chain check recurses past the always-active unscheduled mid group to the inactive top group. The mid group itself carries no schedule and stays out of the top-level rotation.",
+  "description": "Group precedence walks the full ancestor chain: the member (own window 11:00-13:00) belongs to an unscheduled mid group, which belongs to a top group scheduled 12:00-13:00. Inside the top window the member is suppressed and plays via the nested chain; before it the member plays standalone because the chain check recurses past the always-active unscheduled mid group to the inactive top group. The mid group itself carries no schedule and stays out of the top-level rotation. A disabled group anywhere in the chain doesn't cover the member, so it plays standalone inside the top window too.",
   "modes": [
     "in_memory",
     "integration"
@@ -40,6 +40,36 @@
           "playlist_ref": "member",
           "media_ref": "mMember",
           "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "nested-top-group-disabled-member-plays-standalone",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "top_grp": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "nested-mid-group-disabled-member-plays-standalone",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member",
+          "media_ref": "mMember",
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "mid_grp": false
+          }
         }
       ]
     }

@@ -1,0 +1,53 @@
+{
+  "description": "A Requests-source playlist inside an inner group that has its own schedule (10:00-14:00) and is itself a member of an outer group scheduled 18:00-22:00. Inside its own window and not covered by the outer group, the inner group plays standalone, so the member serves the pending request via the inner group alone. Outside the inner window the outer group cannot play the inner group either, so the global request queue plays the request (no playlist attached).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "inner-own-window-not-covered-member-plays-request",
+      "now": "2026-11-02T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "inner",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inner-outside-own-window-global-queue-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

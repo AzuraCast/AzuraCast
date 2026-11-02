@@ -1,0 +1,77 @@
+{
+  "description": "A Requests-source playlist nested two levels deep (outer group scheduled 18:00-22:00 -> unscheduled inner group -> requests) only pauses the global request queue while the whole group chain can play: outside the outer window, and with the inner group disabled, the global request queue plays the pending request (no playlist attached); inside the window with the chain enabled the member serves it via outer -> inner.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "outer-outside-window-global-queue-plays-request",
+      "now": "2026-11-02T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "chain-active-member-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "outer",
+            "inner",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inner-disabled-global-queue-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "inner": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "description": "A Requests-source playlist that is only a member of loop_once groups stops pausing the global request queue once its group has looped within its window. The global request queue then plays the pending request (no playlist attached); while the window is still open the member serves it via the group. With both groups enabled and only one of them used up, the member still serves the request via the other group, whichever of the two is checked first.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "loop-once-group-used-up-global-queue-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "loopA": {
+            "played_at": "2026-11-02T18:30:00+00:00",
+            "queue_reset_at": "2026-11-02T18:10:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "loopB": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "control-loop-once-group-open-member-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "loopA",
+            "requests"
+          ],
+          "playlist_enabled_by_ref": {
+            "loopB": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "first-group-used-up-second-group-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "loopA": {
+            "played_at": "2026-11-02T18:30:00+00:00",
+            "queue_reset_at": "2026-11-02T18:10:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "loopB",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "second-group-used-up-first-group-plays-request",
+      "now": "2026-11-02T19:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "loopB": {
+            "played_at": "2026-11-02T18:30:00+00:00",
+            "queue_reset_at": "2026-11-02T18:10:00+00:00"
+          }
+        },
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "loopA",
+            "requests"
+          ]
+        }
+      ]
+    }
+  ]
+}

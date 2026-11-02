@@ -1,0 +1,133 @@
+{
+  "description": "A Requests-source playlist inside an inner group with its own schedule (10:00-14:00), which sits in an unscheduled mid group with allowed_requests=none on that slot. The mid group has two parents scheduled 12:00-13:00, parked (listed first) and outer. While at least one parent chain is enabled, the none slot blocks the member during the parent window and the pending request is held while regular music plays, whichever parent comes first. With both parents or the mid group disabled, no enabled chain can play that slot, so its none rule doesn't apply: the inner group plays on its own and the member serves the request.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "parents-disabled-member-plays-request-via-inner",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "inner",
+            "requests"
+          ],
+          "playlist_enabled_by_ref": {
+            "parked": false,
+            "outer": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "mid-disabled-member-plays-request-via-inner",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "inner",
+            "requests"
+          ],
+          "playlist_enabled_by_ref": {
+            "mid": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "control-chain-enabled-none-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "first-parent-disabled-none-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "parked": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "second-parent-disabled-none-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "outer": false
+          }
+        }
+      ]
+    }
+  ]
+}

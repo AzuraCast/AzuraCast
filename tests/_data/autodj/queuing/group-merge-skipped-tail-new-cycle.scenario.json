@@ -1,0 +1,43 @@
+{
+  "description": "A merged sequential group (avoid_duplicates) has only its Evening Member (own schedule 18:00-19:00) left in the queue and that window is closed. Like a regular group pass, the merged block then starts a new cycle in the same build, still with duplicate prevention: the Evening Member is skipped again, Member A's only track was just played so it has nothing to offer, and the block starts with Member B.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "skipped-tail-starts-new-cycle-with-duplicate-prevention",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "group_members": {
+          "grp:a": {
+            "is_queued": false,
+            "last_played": 1793622600
+          },
+          "grp:b": {
+            "is_queued": false,
+            "last_played": 1793622600
+          }
+        },
+        "queue_history": [
+          {
+            "media_ref": "mA",
+            "timestamp_played": "2026-11-02T12:25:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "mB",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        }
+      ]
+    }
+  ]
+}

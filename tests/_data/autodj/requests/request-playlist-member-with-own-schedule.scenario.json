@@ -1,0 +1,74 @@
+{
+  "description": "A Requests-source playlist with its own schedule (08:00-10:00) that is also a member of a group scheduled 09:30-22:00 stays eligible on its own: before the group window it serves the pending request standalone (no playlist chain), while the group window covers it, it serves it via the group, and outside its own window the global request queue plays the request although the group is active, since the member is gated by its own schedule inside the group as well.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "own-window-not-covered-plays-standalone",
+      "now": "2026-11-02T09:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "own-window-covered-by-group-plays-via-group",
+      "now": "2026-11-02T09:45:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "requests",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": [
+            "clock",
+            "requests"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "outside-own-window-global-queue-plays-request",
+      "now": "2026-11-02T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "m4",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "m4",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

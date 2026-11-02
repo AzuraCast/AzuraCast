@@ -1,5 +1,5 @@
 {
-  "description": "Doc example 'A request slot in the clock': with 'Only play requests via Request Queue playlists' enabled, a Request Queue member with 'Play all available requests before advancing' plays every pending request at its slot in the clock and is skipped when none are pending. Backs the matching example on the Playlist Group Examples docs page.",
+  "description": "Doc example 'A request slot in the clock': a Request Queue member with 'Play all available requests before advancing' can always play through the unscheduled Main Clock, so it handles all listener requests and pauses the global request queue without any station setting. Every pending request plays at its slot in the clock, and the slot is skipped when none are pending. Backs the matching example on the Playlist Group Examples docs page.",
   "modes": [
     "in_memory",
     "integration"

@@ -5,7 +5,7 @@
   "station": {
     "name": "Demo Radio",
     "timezone": "UTC",
-    "requests_only_via_playlists": true,
+    "requests_only_via_playlists": false,
     "backend_config": {
       "duplicate_prevention_time_range": 120,
       "duplicate_prevention_artist_time_range": null,

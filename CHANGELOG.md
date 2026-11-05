@@ -11,6 +11,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - Ensure users can only set playlists that belong to the station they're currently managing.
 
+- Users are required to have the "Manage Broadcasting" permission to edit parts of the station profile that control
+  broadcasting (backend, frontend, DJs and HLS tabs).
+
 ## Bug Fixes
 
 - Fixed the media search & filters failing when a file is missing from the media storage.

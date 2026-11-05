@@ -17,20 +17,26 @@
                 />
 
                 <admin-stations-frontend-form
+                    v-if="showBroadcastingTabs"
                     :is-rsas-installed="isRsasInstalled"
                     :is-shoutcast-installed="isShoutcastInstalled"
                     :countries="countries"
                 />
 
                 <admin-stations-backend-form
+                    v-if="showBroadcastingTabs"
                     :is-stereo-tool-installed="isStereoToolInstalled"
                 />
 
-                <admin-stations-hls-form/>
+                <admin-stations-hls-form
+                    v-if="showBroadcastingTabs"
+                />
 
                 <admin-stations-requests-form/>
 
-                <admin-stations-streamers-form/>
+                <admin-stations-streamers-form
+                    v-if="showBroadcastingTabs"
+                />
 
                 <admin-stations-admin-form
                     v-if="showAdminTab"
@@ -72,9 +78,11 @@ import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import {
     ApiAdminVueStationsFormProps,
     GlobalPermissions,
+    StationPermissions,
 } from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting";
 import { useUserAllowed } from "~/functions/useUserAllowed.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
 import { getErrorAsString, useAxios } from "~/vendor/axios";
 
 defineOptions({
@@ -104,6 +112,11 @@ const emit = defineEmits<{
 
 const { userAllowed } = useUserAllowed();
 const showAdminTab = userAllowed(GlobalPermissions.Stations);
+
+const { userAllowedForStation } = useUserAllowedForStation();
+const showBroadcastingTabs = userAllowedForStation(
+    StationPermissions.Broadcasting,
+);
 
 const formStore = useAdminStationsForm();
 const { form, r$ } = storeToRefs(formStore);

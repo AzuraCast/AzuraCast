@@ -10,6 +10,8 @@ interface EntityGroupsInterface
 
     public const string GROUP_GENERAL = 'general';
 
+    public const string GROUP_BROADCAST_MANAGER = 'broadcast_manager';
+
     public const string GROUP_ADMIN = 'admin';
 
     public const string GROUP_ALL = 'all';

@@ -7,7 +7,6 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Admin\StationsController;
 use App\Entity\Api\Status;
 use App\Entity\Interfaces\EntityGroupsInterface;
-use App\Entity\StationBackendConfiguration;
 use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use App\Http\Response;
@@ -72,20 +71,10 @@ final class ProfileEditController extends StationsController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $station = $request->getStation();
-
         // Explicitly filter out some configuration sections if the user cannot modify them.
         $requestBody = (array)$request->getParsedBody();
 
-        if (!$request->getAcl()->isAllowed(StationPermissions::Broadcasting, $station)) {
-            foreach (StationBackendConfiguration::getCustomConfigurationSections() as $key) {
-                unset($requestBody['backend_config'][$key]);
-            }
-
-            unset($requestBody['frontend_config']['custom_config']);
-        }
-
-        $this->editRecord($requestBody, $station, $this->getContext($request));
+        $this->editRecord($requestBody, $request->getStation(), $this->getContext($request));
 
         return $response->withJson(Status::updated());
     }
@@ -99,7 +88,19 @@ final class ProfileEditController extends StationsController
             ],
         ];
 
-        if ($request->getAcl()->isAllowed(GlobalPermissions::Stations)) {
+        $acl = $request->getAcl();
+        $station = $request->getStation();
+
+        if (
+            $acl->isAllowed(
+                StationPermissions::Broadcasting,
+                $station
+            )
+        ) {
+            $context[AbstractNormalizer::GROUPS][] = EntityGroupsInterface::GROUP_BROADCAST_MANAGER;
+        }
+
+        if ($acl->isAllowed(GlobalPermissions::Stations)) {
             $context[AbstractNormalizer::GROUPS][] = EntityGroupsInterface::GROUP_ALL;
         }
 

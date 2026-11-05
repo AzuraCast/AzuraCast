@@ -1419,7 +1419,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $strVal = mb_convert_encoding($strVal, 'UTF-8');
 
-        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $strVal);
+        return str_replace(['\\', '"', "\n", "\t", "\r"], ['\\\\', '\"', '', '', ''], $strVal);
     }
 
     /**

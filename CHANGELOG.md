@@ -7,6 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Improved security around annotated values sent to Liquidsoap.
+
 ## Bug Fixes
 
 - Fixed the media search & filters failing when a file is missing from the media storage.
@@ -18,6 +20,9 @@ release channel, you can take advantage of these new features and fixes.
     - Folder links of playlists are no longer removed while their media is still on record or the storage shows no
       files.
     - A failing media storage no longer stops the media and folder sync for other stations.
+
+- The "unassigned" special media query will now only show media assigned to no playlist on the current station, not any
+  station.
 
 ---
 

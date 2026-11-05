@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Improved security around annotated values sent to Liquidsoap.
 
+- Ensure users can only set playlists that belong to the station they're currently managing.
+
 ## Bug Fixes
 
 - Fixed the media search & filters failing when a file is missing from the media storage.

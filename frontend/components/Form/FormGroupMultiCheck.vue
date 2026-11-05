@@ -67,13 +67,20 @@
 </template>
 
 <script setup lang="ts" generic="T extends ModelFormField">
-import {useSlots} from "vue";
+import { useSlots } from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import FormLabel, {FormLabelParentProps,} from "~/components/Form/FormLabel.vue";
+import FormLabel, {
+    FormLabelParentProps,
+} from "~/components/Form/FormLabel.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField,} from "~/components/Form/useFormField";
+import {
+    FormFieldEmits,
+    FormFieldProps,
+    ModelFormField,
+    useFormField,
+} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 
 type FormGroupMultiCheckProps = FormFieldProps<T> &

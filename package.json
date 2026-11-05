@@ -69,7 +69,7 @@
     "@vitejs/plugin-vue": "^6",
     "@vue/eslint-config-typescript": "^14",
     "del": "^9",
-    "glob": "^13",
+    "glob": "^14",
     "jsdom": "^30",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",

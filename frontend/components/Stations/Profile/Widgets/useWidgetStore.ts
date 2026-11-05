@@ -1,7 +1,7 @@
-import {defineStore} from "pinia";
-import {ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
-import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
+import { defineStore } from "pinia";
+import { ApiWidgetCustomization } from "~/entities/ApiInterfaces.ts";
+import { defaultWidgetSettings } from "~/entities/PublicPlayer.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
 
 type WidgetType =
     | "player"

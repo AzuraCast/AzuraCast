@@ -1,4 +1,4 @@
-import {ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
+import { ApiWidgetCustomization } from "~/entities/ApiInterfaces.ts";
 
 export const defaultWidgetSettings: Required<ApiWidgetCustomization> = {
     showAlbumArt: true,

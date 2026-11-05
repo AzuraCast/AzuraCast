@@ -70,7 +70,7 @@
     "@vue/eslint-config-typescript": "^14",
     "del": "^9",
     "glob": "^14",
-    "jsdom": "^30",
+    "jsdom": "^31",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.2.18",

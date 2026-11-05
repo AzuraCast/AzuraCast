@@ -61,6 +61,7 @@ import mergeExisting from "~/functions/mergeExisting.ts";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,
+    ModalFormTemplateRef,
     useBaseEditModal,
 } from "~/functions/useBaseEditModal";
 import { useTranslate } from "~/vendor/gettext";
@@ -73,7 +74,7 @@ const props = defineProps<
 >();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef("$modal");
+const $modal = useTemplateRef<ModalFormTemplateRef | null>("$modal");
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);

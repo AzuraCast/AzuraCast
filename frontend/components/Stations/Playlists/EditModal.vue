@@ -63,6 +63,7 @@ import { useApiRouter } from "~/functions/useApiRouter.ts";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,
+    ModalFormTemplateRef,
     useBaseEditModal,
 } from "~/functions/useBaseEditModal";
 import { useTranslate } from "~/vendor/gettext";
@@ -72,7 +73,7 @@ const props = defineProps<BaseEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits & ((e: "needs-restart") => void)>();
 
-const $modal = useTemplateRef("$modal");
+const $modal = useTemplateRef<ModalFormTemplateRef | null>("$modal");
 
 const { notifySuccess } = useNotify();
 

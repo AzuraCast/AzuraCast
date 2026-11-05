@@ -75,6 +75,7 @@ import mergeExisting from "~/functions/mergeExisting.ts";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,
+    ModalFormTemplateRef,
     useBaseEditModal,
 } from "~/functions/useBaseEditModal";
 import { useTranslate } from "~/vendor/gettext";
@@ -84,7 +85,7 @@ const props = defineProps<BaseEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef("$modal");
+const $modal = useTemplateRef<ModalFormTemplateRef | null>("$modal");
 
 type SftpUsersRecord = Required<Omit<SftpUser, "id">>;
 

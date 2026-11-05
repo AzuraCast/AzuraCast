@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { ApiWidgetCustomization } from "~/entities/ApiInterfaces.ts";
-import { defaultWidgetSettings } from "~/entities/PublicPlayer.ts";
-import { useResettableRef } from "~/functions/useResettableRef.ts";
+import {defineStore} from "pinia";
+import {ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
+import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
 
 type WidgetType =
     | "player"
@@ -18,7 +18,7 @@ export type WidgetTemplate = {
     theme: WidgetTheme;
     width: string | number;
     height: number;
-    customization: ApiWidgetCustomization;
+    customization: Required<ApiWidgetCustomization>;
 };
 
 export const useWidgetStore = defineStore(
@@ -31,7 +31,7 @@ export const useWidgetStore = defineStore(
             useResettableRef<WidgetTheme>("browser");
 
         const { record: customization, reset: resetCustomization } =
-            useResettableRef<ApiWidgetCustomization>({
+            useResettableRef<Required<ApiWidgetCustomization>>({
                 ...defaultWidgetSettings,
                 primaryColor: "#2196F3",
                 backgroundColor: "#ffffff",

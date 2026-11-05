@@ -78,29 +78,12 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
-import {
-    computed,
-    nextTick,
-    onMounted,
-    Reactive,
-    reactive,
-    useTemplateRef,
-    WritableComputedRef,
-} from "vue";
+<script setup lang="ts" generic="T extends string | number | null">
+import {computed, nextTick, onMounted, Reactive, reactive, useTemplateRef, WritableComputedRef,} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import FormLabel, {
-    FormLabelParentProps,
-} from "~/components/Form/FormLabel.vue";
-import {
-    FormFieldEmits,
-    FormFieldProps,
-    useFormField,
-    ValidatedField,
-} from "~/components/Form/useFormField";
+import FormLabel, {FormLabelParentProps,} from "~/components/Form/FormLabel.vue";
+import {FormFieldEmits, FormFieldProps, useFormField, ValidatedField,} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
-
-type T = string | number | null;
 
 type FormGroupFieldProps = FormFieldProps<T> &
     FormLabelParentProps & {
@@ -167,13 +150,16 @@ const model = computed({
     },
     set(newValue) {
         if ((isNumeric.value || props.inputEmptyIsNull) && "" === newValue) {
+            // @ts-expect-error
             parentModel.value = null;
         } else {
             if (props.inputTrim && null !== newValue) {
+                // @ts-expect-error
                 newValue = String(newValue).replace(/^\s+|\s+$/gm, "");
             }
 
             if (isNumeric.value) {
+                // @ts-expect-error
                 newValue = Number(newValue);
             }
 
@@ -194,6 +180,7 @@ const focus = () => {
 };
 
 const clear = () => {
+    // @ts-expect-error
     model.value = "";
 };
 

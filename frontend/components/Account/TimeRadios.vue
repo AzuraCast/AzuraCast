@@ -11,15 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {
-    FormFieldEmits,
-    FormFieldProps,
-    useFormField,
-} from "~/components/Form/useFormField.ts";
-import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
-import { useTranslate } from "~/vendor/gettext.ts";
+import {FormFieldEmits, FormFieldProps, useFormField,} from "~/components/Form/useFormField.ts";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {useTranslate} from "~/vendor/gettext.ts";
 
 type T = boolean | null;
 

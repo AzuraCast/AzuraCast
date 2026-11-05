@@ -51,21 +51,13 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
-import { useSlots } from "vue";
+<script setup lang="ts" generic="T extends boolean | null">
+import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import FormLabel, {
-    FormLabelParentProps,
-} from "~/components/Form/FormLabel.vue";
-import {
-    FormFieldEmits,
-    FormFieldProps,
-    useFormField,
-} from "~/components/Form/useFormField";
+import FormLabel, {FormLabelParentProps,} from "~/components/Form/FormLabel.vue";
+import {FormFieldEmits, FormFieldProps, useFormField,} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
-
-type T = boolean | null;
 
 type FormGroupCheckboxProps = FormFieldProps<T> &
     FormLabelParentProps & {

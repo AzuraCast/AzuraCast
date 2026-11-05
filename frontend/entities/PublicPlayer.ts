@@ -1,6 +1,6 @@
-import { ApiWidgetCustomization } from "~/entities/ApiInterfaces.ts";
+import {ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
 
-export const defaultWidgetSettings: ApiWidgetCustomization = {
+export const defaultWidgetSettings: Required<ApiWidgetCustomization> = {
     showAlbumArt: true,
     roundedCorners: false,
     autoplay: false,
@@ -9,12 +9,13 @@ export const defaultWidgetSettings: ApiWidgetCustomization = {
     showStreamSelection: true,
     showHistoryButton: true,
     showRequestButton: true,
+    showPlaylistButton: true,
     initialVolume: 75,
     layout: "horizontal",
     enablePopupPlayer: false,
     continuousPlay: false,
     customCss: "",
-    primaryColor: undefined,
-    backgroundColor: undefined,
-    textColor: undefined,
+    primaryColor: null,
+    backgroundColor: null,
+    textColor: null,
 };

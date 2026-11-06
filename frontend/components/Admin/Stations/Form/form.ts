@@ -103,6 +103,7 @@ export const useAdminStationsForm = defineStore("form-admin-stations", () => {
         enable_hls: false,
         enable_requests: false,
         request_delay: 5,
+        request_delay_ip: 5,
         request_threshold: 15,
         requests_only_via_playlists: false,
         enable_streamers: false,
@@ -125,6 +126,7 @@ export const useAdminStationsForm = defineStore("form-admin-stations", () => {
             frontend_type: { required },
             backend_type: { required },
             request_delay: { numeric },
+            request_delay_ip: { numeric },
             request_threshold: { numeric },
             backend_config: {
                 dj_buffer: { numeric },
@@ -198,6 +200,7 @@ export const useAdminStationsForm = defineStore("form-admin-stations", () => {
                 requestsTab: [
                     fields.enable_requests,
                     fields.request_delay,
+                    fields.request_delay_ip,
                     fields.request_threshold,
                     fields.requests_only_via_playlists,
                 ],

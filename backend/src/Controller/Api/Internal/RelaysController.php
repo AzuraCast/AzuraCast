@@ -7,6 +7,7 @@ namespace App\Controller\Api\Internal;
 use App\Cache\AzuraRelayCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Entity\Api\Admin\Relay as ApiRelay;
+use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Relay;
 use App\Entity\Station;
@@ -90,39 +91,18 @@ final class RelaysController
         return $response->withJson($return);
     }
 
-    /**
-     * @param ServerRequest $request
-     *
-     * @return Station[]
-     */
-    private function getManageableStations(ServerRequest $request): array
-    {
-        $allStations = $this->em->createQuery(
-            <<<'DQL'
-                SELECT s, sm
-                FROM App\Entity\Station s
-                JOIN s.mounts sm
-                WHERE s.is_enabled = 1
-                AND s.frontend_type != :remote_frontend
-            DQL
-        )->setParameter('remote_frontend', FrontendAdapters::Remote->value)
-            ->execute();
-
-        $acl = $request->getAcl();
-
-        return array_filter(
-            $allStations,
-            static function (Station $station) use ($acl) {
-                return $acl->isAllowed(StationPermissions::Broadcasting, $station->id);
-            }
-        );
-    }
-
     public function updateAction(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $relayRepo = $this->em->getRepository(Relay::class);
+        // Immediately deny requests from users who can manage nothing.
+        $manageableStations = $this->getManageableStations($request);
+
+        if (empty($manageableStations)) {
+            return $response->withStatus(403)->withJson(
+                new Error(403, 'Permission Denied')
+            );
+        }
 
         $body = (array)$request->getParsedBody();
 
@@ -135,6 +115,7 @@ final class RelaysController
 
         $currentUser = $request->getUser();
 
+        $relayRepo = $this->em->getRepository(Relay::class);
         $relay = $relayRepo->findOneBy([
             'base_url' => $baseUrl,
             'creator' => $currentUser,
@@ -163,7 +144,7 @@ final class RelaysController
         }
 
         // Iterate through all remotes that *should* exist.
-        foreach ($this->getManageableStations($request) as $station) {
+        foreach ($manageableStations as $station) {
             $stationId = $station->id;
 
             foreach ($station->mounts as $mount) {
@@ -204,5 +185,33 @@ final class RelaysController
         $this->azuraRelayCache->setForRelay($relay, (array)$body['nowplaying']);
 
         return $response->withJson(Status::success());
+    }
+
+    /**
+     * @param ServerRequest $request
+     *
+     * @return Station[]
+     */
+    private function getManageableStations(ServerRequest $request): array
+    {
+        $allStations = $this->em->createQuery(
+            <<<'DQL'
+                SELECT s, sm
+                FROM App\Entity\Station s
+                JOIN s.mounts sm
+                WHERE s.is_enabled = 1
+                AND s.frontend_type != :remote_frontend
+            DQL
+        )->setParameter('remote_frontend', FrontendAdapters::Remote->value)
+            ->execute();
+
+        $acl = $request->getAcl();
+
+        return array_filter(
+            $allStations,
+            static function (Station $station) use ($acl) {
+                return $acl->isAllowed(StationPermissions::Broadcasting, $station->id);
+            }
+        );
     }
 }

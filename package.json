@@ -71,7 +71,7 @@
     "del": "^9",
     "glob": "^14",
     "jsdom": "^31",
-    "sass": "^1.39.2",
+    "sass": "^1.108.0",
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.2.18",
     "unplugin-icons": "^24",

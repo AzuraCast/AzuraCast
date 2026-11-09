@@ -14,6 +14,8 @@ release channel, you can take advantage of these new features and fixes.
 - Users are required to have the "Manage Broadcasting" permission to edit parts of the station profile that control
   broadcasting (backend, frontend, DJs and HLS tabs).
 
+- Logged in users can now only see stations that are public or that they have direct access to in public data sets.
+
 ## Bug Fixes
 
 - Fixed the media search & filters failing when a file is missing from the media storage.

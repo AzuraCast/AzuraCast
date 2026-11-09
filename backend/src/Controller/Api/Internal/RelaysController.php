@@ -133,9 +133,18 @@ final class RelaysController
             $baseUrl = 'http://' . $request->getSettings()->getIp($request);
         }
 
-        $relay = $relayRepo->findOneBy(['base_url' => $baseUrl]);
+        $currentUser = $request->getUser();
+
+        $relay = $relayRepo->findOneBy([
+            'base_url' => $baseUrl,
+            'creator' => $currentUser,
+        ]);
+
         if (!$relay instanceof Relay) {
-            $relay = new Relay($baseUrl);
+            $relay = new Relay(
+                baseUrl: $baseUrl,
+                creator: $currentUser
+            );
         }
 
         $relay->name = $body['name'] ?? 'Relay';

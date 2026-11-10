@@ -13,7 +13,7 @@ apt-get install -y --no-install-recommends \
 apt-get install -y --no-install-recommends ladspa-sdk
 
 # Per-architecture LS installs
-curl -fsSL https://repo.liquidsoap.info/setup.sh | sh -s -- --channel v2.4.6
+curl -fsSL https://repo.liquidsoap.info/setup.sh | sh -s -- --channel v2.5.0-rc1
 
 apt-get install -y --no-install-recommends liquidsoap
 

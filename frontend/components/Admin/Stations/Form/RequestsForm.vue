@@ -34,7 +34,17 @@
                     input-type="number"
                     :input-attrs="{ min: '0', max: '1440' }"
                     :label="$gettext('Request Minimum Delay (Minutes)')"
-                    :description="$gettext('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.')"
+                    :description="$gettext('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played.')"
+                />
+
+                <form-group-field
+                    id="edit_form_request_delay_ip"
+                    class="col-md-6"
+                    :field="r$.request_delay_ip"
+                    input-type="number"
+                    :input-attrs="{ min: '0', max: '1440' }"
+                    :label="$gettext('Request Cooldown Per Listener (Minutes)')"
+                    :description="$gettext('This specifies the minimum time (in minutes) a single listener (by IP address) must wait between submitting two separate requests. If set to zero, a minor delay of 15 seconds is applied to prevent request floods. This is independent of the minimum delay above.')"
                 />
 
                 <form-group-field

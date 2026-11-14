@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="row g-3">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel :station-name="stationName" />
+                    <settings-panel :station-name="props.stationName" :base-uri="props.baseUri"/>
                 </div>
 
                 <div class="col-md-8">
@@ -23,11 +23,11 @@
                     </div>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6 mb-sm-4">
-                            <playlist-panel id="playlist_1" />
+                            <playlist-panel side="left"/>
                         </div>
 
                         <div class="col-md-6">
-                            <playlist-panel id="playlist_2" />
+                            <playlist-panel side="right"/>
                         </div>
                     </div>
                 </div>
@@ -41,25 +41,14 @@ import MicrophonePanel from "~/components/Public/WebDJ/MicrophonePanel.vue";
 import MixerPanel from "~/components/Public/WebDJ/MixerPanel.vue";
 import PlaylistPanel from "~/components/Public/WebDJ/PlaylistPanel.vue";
 import SettingsPanel from "~/components/Public/WebDJ/SettingsPanel.vue";
-import { useProvideMixer } from "~/components/Public/WebDJ/useMixerValue";
-import { useProvidePassthroughSync } from "~/components/Public/WebDJ/usePassthroughSync";
-import {
-    useProvideWebcaster,
-    WebcasterProps,
-} from "~/components/Public/WebDJ/useWebcaster";
-import { useProvideWebDjNode } from "~/components/Public/WebDJ/useWebDjNode";
+import { useProvideWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 
-interface WebDjProps extends WebcasterProps {
+type WebDjProps = {
     stationName: string | null;
-}
+    baseUri: string;
+};
 
 const props = defineProps<WebDjProps>();
 
-const webcaster = useProvideWebcaster(props);
-
-useProvideWebDjNode(webcaster);
-
-useProvideMixer(1.0);
-
-useProvidePassthroughSync("");
+const mixer = useProvideWebcasterMixer();
 </script>

@@ -59,7 +59,7 @@
                 </p>
                 <p class="card-text">
                     {{
-                        $gettext('To use this feature, a secure (HTTPS) connection is required. Firefox is recommended to avoid static when broadcasting.')
+                        $gettext('To use this feature, a secure (HTTPS) connection is required.')
                     }}
                 </p>
             </div>
@@ -208,8 +208,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
+import { computed, ref, watch } from "vue";
+import {
+    useInjectWebcasterMixer,
+    WebcasterMetadata,
+} from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<{
@@ -224,9 +227,10 @@ const {
     isIdle,
     stopStream,
     startStream,
-    sendMetadata,
     toggleGlobalCue,
     isGlobalCued,
+    currentMetadata,
+    sendMetadata,
 } = useInjectWebcasterMixer();
 
 const bitrate = ref<number>(128);
@@ -252,10 +256,12 @@ const langStreamButton = computed(() => {
         : $gettext("Start Streaming");
 });
 
-const shownMetadata = ref({
+const shownMetadata = ref<WebcasterMetadata>({
     artist: "",
     title: "",
 });
+
+watch(currentMetadata, (newMeta) => (shownMetadata.value = newMeta));
 
 const updateMetadata = () => {
     sendMetadata(shownMetadata.value);

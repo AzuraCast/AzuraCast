@@ -1,7 +1,7 @@
 import { useDevicesList, useEventListener, useRafFn } from "@vueuse/core";
 
 import { Microphone } from "@webcast.js/webcaster";
-import { computed, ref, watch } from "vue";
+import { computed, ref, shallowRef, watch } from "vue";
 import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
@@ -11,14 +11,14 @@ export const [useProvideWebcasterMicrophone, useInjectWebcasterMicrophone] =
 
         const microphone = new Microphone(mixer);
 
-        const gain = ref<number>(100);
+        const gain = shallowRef<number>(100);
 
         watch(gain, (newGain) => {
             microphone.setGain(newGain / 100);
         });
 
-        const leftLevel = ref<number>(0);
-        const rightLevel = ref<number>(0);
+        const leftLevel = shallowRef<number>(0);
+        const rightLevel = shallowRef<number>(0);
 
         useRafFn(
             () => {
@@ -31,7 +31,7 @@ export const [useProvideWebcasterMicrophone, useInjectWebcasterMicrophone] =
             },
             {
                 immediate: true,
-                fpsLimit: () => 10,
+                fpsLimit: () => 30,
             },
         );
 
@@ -67,7 +67,7 @@ export const [useProvideWebcasterMicrophone, useInjectWebcasterMicrophone] =
         const start = () => {
             void microphone.start({
                 deviceId: device.value || undefined,
-                // lineIn: lineIn.checked
+                lineIn: false,
             });
         };
 

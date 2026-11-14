@@ -5,6 +5,17 @@ import { computed, ref, shallowRef, watch } from "vue";
 import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
+export type TaglibData = {
+    metadata?: { title?: string; artist?: string };
+    audio?: { length?: number };
+};
+
+declare global {
+    interface File {
+        readTaglibMetadata?: (callback: (data: TaglibData) => void) => void;
+    }
+}
+
 export type FileRow = {
     index: number;
     isCurrent: boolean;
@@ -15,7 +26,7 @@ export type FileRow = {
 
 export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
     createRequiredInjectionState((side: Side) => {
-        const { mixer, cued } = useInjectWebcasterMixer();
+        const { mixer, cued, sendMetadata } = useInjectWebcasterMixer();
 
         // taglib.js never calls back on files it cannot parse: those tracks keep their file name.
         const readTags: TagReader = (file) =>
@@ -31,14 +42,14 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
 
         const deck = new Deck(mixer, side, readTags);
 
-        const gain = ref<number>(100);
+        const gain = shallowRef<number>(100);
 
         watch(gain, (newGain) => {
             deck.setGain(newGain / 100);
         });
 
-        const leftLevel = ref<number>(0);
-        const rightLevel = ref<number>(0);
+        const leftLevel = shallowRef<number>(0);
+        const rightLevel = shallowRef<number>(0);
 
         useRafFn(
             () => {
@@ -51,7 +62,26 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             },
             {
                 immediate: true,
-                fpsLimit: () => 10,
+                fpsLimit: () => 30,
+            },
+        );
+
+        const duration = ref<number>(0);
+        const position = ref<number>(0);
+        const time = ref<string>("--:-- / --:--");
+
+        useRafFn(
+            () => {
+                duration.value = deck.duration;
+                position.value = deck.position;
+
+                time.value = deck.loaded
+                    ? `${formatTime(deck.position)} / ${formatTime(deck.duration)}`
+                    : "--:-- / --:--";
+            },
+            {
+                immediate: true,
+                fpsLimit: () => 5,
             },
         );
 
@@ -67,23 +97,14 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             deck.loop = newLoop;
         });
 
-        const isPlaying = ref<boolean>(false);
-        const isLoaded = ref<boolean>(false);
-
-        const duration = ref<number>(0);
-        const position = ref<number>(0);
-        const time = ref<string>("--:-- / --:--");
+        const isPlaying = shallowRef<boolean>(false);
+        const isLoaded = shallowRef<boolean>(false);
+        const currentIndex = shallowRef<number>(-1);
 
         useEventListener(deck, "change", () => {
             isPlaying.value = deck.playing;
             isLoaded.value = deck.loaded;
-
-            duration.value = deck.duration;
-            position.value = deck.position;
-
-            time.value = deck.loaded
-                ? `${formatTime(deck.position)} / ${formatTime(deck.duration)}`
-                : "--:-- / --:--";
+            currentIndex.value = deck.index;
         });
 
         const toggleCue = () => {
@@ -128,6 +149,21 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
                     duration: formatTime(track.duration),
                 };
             });
+        });
+
+        // Detect track changes.
+        watch(currentIndex, (newIndex, oldIndex) => {
+            if (newIndex === oldIndex || newIndex === -1) {
+                return;
+            }
+
+            const newFile = files.value.find((row) => row.index === newIndex);
+            if (newFile) {
+                sendMetadata({
+                    artist: newFile.artist,
+                    title: newFile.title,
+                });
+            }
         });
 
         const playFile = (index: number) => {

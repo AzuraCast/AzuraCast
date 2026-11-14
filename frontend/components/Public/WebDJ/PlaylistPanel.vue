@@ -74,8 +74,8 @@
             </div>
 
             <div
-                v-if="isPlaying"
-                class="mt-3"
+                v-if="isLoaded"
+                class="my-3"
             >
                 <div class="d-flex flex-row mb-2">
                     <div class="flex-shrink-0 pt-1 pe-2">
@@ -88,7 +88,7 @@
                             min="0"
                             max="100"
                             step="0.1"
-                            class="form-range slider"
+                            class="form-range w-100 slider"
                             @mousedown="isSeeking = true"
                             @mouseup="isSeeking = false"
                         >
@@ -98,34 +98,11 @@
                     </div>
                 </div>
 
-                <div class="progress">
-                    <div
-                        class="progress-bar"
-                        :style="{ width: leftLevel+'%' }"
-                    />
-                </div>
+                <meter class="level w-100" min="-60" max="0" low="-18" high="-6" optimum="-60"
+                       :value="leftLevel"/>
             </div>
 
-            <div class="form-group mt-2">
-                <div class="custom-file">
-                    <input
-                        :id="id + '_files'"
-                        type="file"
-                        class="custom-file-input files"
-                        accept="audio/*"
-                        multiple
-                        @change="onFileSelected"
-                    >
-                    <label
-                        :for="id + '_files'"
-                        class="custom-file-label"
-                    >
-                        {{ $gettext('Add Files to Playlist') }}
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group mb-0">
+            <div class="form-group my-2">
                 <div class="controls">
                     <div class="custom-control custom-checkbox custom-control-inline">
                         <input
@@ -155,6 +132,25 @@
                             {{ $gettext('Repeat') }}
                         </label>
                     </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-2">
+                <div class="custom-file">
+                    <label
+                        :for="id + '_files'"
+                        class="form-label"
+                    >
+                        {{ $gettext('Add Files to Playlist') }}
+                    </label>
+                    <input
+                        :id="id + '_files'"
+                        type="file"
+                        class="form-control form-control-sm files"
+                        accept="audio/*"
+                        multiple
+                        @change="onFileSelected"
+                    >
                 </div>
             </div>
         </div>
@@ -222,6 +218,7 @@ const {
     loop,
     toggleCue,
     isCued,
+    isLoaded,
     isPlaying,
     togglePause,
     previous,
@@ -246,7 +243,7 @@ const seekingPosition = computed({
             return;
         }
 
-        seek(val / 100);
+        seek((val / 100) * Number(duration.value));
     },
 });
 
@@ -263,5 +260,7 @@ const onFileSelected = (e: Event) => {
     if (eventTarget.files) {
         addFiles(eventTarget.files);
     }
+
+    eventTarget.value = "";
 };
 </script>

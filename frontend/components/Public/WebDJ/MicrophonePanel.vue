@@ -20,9 +20,9 @@
                         <div class="btn-group btn-group-sm">
                             <button
                                 type="button"
-                                class="btn btn-danger"
-                                :class="{ active: isActive }"
-                                @click="isActive ? start() : stop()"
+                                class="btn btn-secondary"
+                                :class="{ 'btn-danger': isActive }"
+                                @click="isActive ? stop() : start()"
                                 :title="(isActive) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
                                 :aria-label="(isActive) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
                             >
@@ -70,12 +70,8 @@
                 v-if="isActive"
                 class="mt-3"
             >
-                <div class="progress mb-2">
-                    <div
-                        class="progress-bar"
-                        :style="{ width: leftLevel+'%' }"
-                    />
-                </div>
+                <meter class="level w-100" min="-60" max="0" low="-18" high="-6" optimum="-60"
+                       :value="leftLevel"/>
             </div>
         </div>
     </div>

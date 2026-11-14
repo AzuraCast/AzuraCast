@@ -6,35 +6,37 @@ import {
     StreamState,
 } from "@webcast.js/webcaster";
 import { computed, shallowRef } from "vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { FlashLevels } from "~/entities/ApiInterfaces.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-export type TaglibData = {
-    metadata?: { title?: string; artist?: string };
-    audio?: { length?: number };
+export type WebcasterMetadata = {
+    artist: string;
+    title: string;
 };
-
-declare global {
-    interface File {
-        readTaglibMetadata?: (callback: (data: TaglibData) => void) => void;
-    }
-}
 
 export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
     createRequiredInjectionState(() => {
         const mixer = new Mixer();
 
-        const state = shallowRef<StreamState>();
+        const state = shallowRef<StreamState>("idle");
         const message = shallowRef<string>();
         const cued = shallowRef<Cueable | null>(null);
 
-        const isIdle = computed(() => state.value !== "idle");
+        const isIdle = computed(() => state.value === "idle");
 
         useEventListener(mixer, "change", () => {
             cued.value = mixer.cued;
             state.value = mixer.state;
         });
 
+        const { notify } = useNotify();
+
         useEventListener(mixer, "status", () => {
+            notify(mixer.message, {
+                variant: FlashLevels.Info,
+            });
+
             message.value = mixer.message;
         });
 
@@ -50,10 +52,6 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
             mixer.startStream(options);
         };
 
-        const sendMetadata = (metadata: Record<string, string>) => {
-            mixer.sendMetadata(metadata);
-        };
-
         const setCrossfade = (position: number) => {
             mixer.setCrossfade(position);
         };
@@ -64,6 +62,16 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
 
         const isGlobalCued = computed(() => cued.value === mixer);
 
+        const currentMetadata = shallowRef<WebcasterMetadata>({
+            artist: "",
+            title: "",
+        });
+
+        const sendMetadata = (newMetadata: WebcasterMetadata) => {
+            mixer.sendMetadata(newMetadata);
+            currentMetadata.value = newMetadata;
+        };
+
         return {
             mixer,
             state,
@@ -72,9 +80,10 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
             isIdle,
             stopStream,
             startStream,
-            sendMetadata,
             setCrossfade,
             toggleGlobalCue,
             isGlobalCued,
+            currentMetadata,
+            sendMetadata,
         };
     });

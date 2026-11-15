@@ -2,12 +2,17 @@ import { useDevicesList, useEventListener, useRafFn } from "@vueuse/core";
 
 import { Microphone } from "@webcast.js/webcaster";
 import { computed, ref, shallowRef, watch } from "vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 export const [useProvideWebcasterMicrophone, useInjectWebcasterMicrophone] =
     createRequiredInjectionState(() => {
         const { mixer, cued } = useInjectWebcasterMixer();
+
+        const { notifyError } = useNotify();
+        const { $gettext } = useTranslate();
 
         const microphone = new Microphone(mixer);
 
@@ -65,10 +70,16 @@ export const [useProvideWebcasterMicrophone, useInjectWebcasterMicrophone] =
         });
 
         const start = () => {
-            void microphone.start({
-                deviceId: device.value || undefined,
-                lineIn: false,
-            });
+            microphone
+                .start({
+                    deviceId: device.value || undefined,
+                    lineIn: false,
+                })
+                .catch(() => {
+                    notifyError(
+                        $gettext("The microphone could not be enabled."),
+                    );
+                });
         };
 
         watch(device, () => {

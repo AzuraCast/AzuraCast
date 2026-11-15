@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Updated WebDJ**: We've updated to a new version of the library we use for our WebDJ feature. This feature lets you
+  run a simple radio broadcast directly from your browser. The new WebDJ offers substantial performance improvements and
+  runs without issue in all modern browsers.
+
 ## Code Quality/Technical Changes
 
 - Improved security around annotated values sent to Liquidsoap.

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
+use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationPlaylistRepository;
@@ -20,7 +21,7 @@ use Symfony\Component\Messenger\MessageBus;
 #[OA\Put(
     path: '/station/{station_id}/playlist/{id}/reshuffle',
     operationId: 'putReshufflePlaylist',
-    summary: 'Re-shuffle a playlist whose playback order is "shuffled".',
+    summary: 'Re-shuffle a shuffled playlist or restart a sequential playlist from the top.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -71,7 +72,9 @@ final readonly class ReshuffleAction implements SingleActionInterface
         return $response->withJson(
             new Status(
                 true,
-                __('Playlist reshuffled.')
+                (PlaylistOrders::Sequential === $record->order)
+                    ? __('Playlist restarted.')
+                    : __('Playlist reshuffled.')
             )
         );
     }

@@ -99,12 +99,20 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
 
         const isPlaying = shallowRef<boolean>(false);
         const isLoaded = shallowRef<boolean>(false);
-        const currentIndex = shallowRef<number>(-1);
 
         useEventListener(deck, "change", () => {
+            if (deck.loaded && !isLoaded.value) {
+                const track = deck.tracks[deck.index];
+                if (track) {
+                    sendMetadata({
+                        artist: track.artist,
+                        title: track.title,
+                    });
+                }
+            }
+
             isPlaying.value = deck.playing;
             isLoaded.value = deck.loaded;
-            currentIndex.value = deck.index;
         });
 
         const toggleCue = () => {
@@ -149,21 +157,6 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
                     duration: formatTime(track.duration),
                 };
             });
-        });
-
-        // Detect track changes.
-        watch(currentIndex, (newIndex, oldIndex) => {
-            if (newIndex === oldIndex || newIndex === -1) {
-                return;
-            }
-
-            const newFile = files.value.find((row) => row.index === newIndex);
-            if (newFile) {
-                sendMetadata({
-                    artist: newFile.artist,
-                    title: newFile.title,
-                });
-            }
         });
 
         const playFile = (index: number) => {

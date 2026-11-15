@@ -1,4 +1,4 @@
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, useTimeoutFn } from "@vueuse/core";
 import {
     type Cueable,
     Mixer,
@@ -40,23 +40,43 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
         let isStopping = false;
         let previousState: StreamState = "idle";
 
+        // LS checks credentials after socket opens so we get no direct rejections for them
+        const {
+            start: startAuthWindow,
+            stop: stopAuthWindow,
+            isPending: isAwaitingAuth,
+        } = useTimeoutFn(
+            () => {
+                if (mixer.state === "live") {
+                    notifySuccess($gettext("Web DJ connected!"));
+                }
+            },
+            1000,
+            { immediate: false },
+        );
+
         useEventListener(mixer, "status", () => {
             switch (mixer.state) {
                 case "live":
-                    notifySuccess($gettext("Web DJ connected!"));
+                    startAuthWindow();
                     break;
 
                 case "idle":
                     if (!isStopping) {
                         notifyError(
-                            previousState === "live"
-                                ? $gettext("The Web DJ was disconnected.")
-                                : $gettext(
-                                      "The Web DJ could not start streaming.",
-                                  ),
+                            isAwaitingAuth.value
+                                ? $gettext(
+                                      "The Web DJ could not start streaming. Check that the username & password are correct.",
+                                  )
+                                : previousState === "live"
+                                  ? $gettext("The Web DJ was disconnected.")
+                                  : $gettext(
+                                        "The Web DJ could not start streaming.",
+                                    ),
                         );
                     }
 
+                    stopAuthWindow();
                     isStopping = false;
                     break;
             }

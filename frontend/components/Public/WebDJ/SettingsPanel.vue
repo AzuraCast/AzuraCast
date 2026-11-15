@@ -7,53 +7,7 @@
                 <small>{{ props.stationName }}</small>
             </h5>
         </div>
-        <template v-if="!isIdle">
-            <div class="card-body">
-                <div class="form-group">
-                    <label
-                        for="metadata_title"
-                        class="mb-2"
-                    >
-                        {{ $gettext('Title') }}
-                    </label>
-                    <div class="controls">
-                        <input
-                            id="metadata_title"
-                            v-model="shownMetadata.title"
-                            class="form-control"
-                            type="text"
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label
-                        for="metadata_artist"
-                        class="mb-2"
-                    >
-                        {{ $gettext('Artist') }}
-                    </label>
-                    <div class="controls">
-                        <input
-                            id="metadata_artist"
-                            v-model="shownMetadata.artist"
-                            class="form-control"
-                            type="text"
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        :disabled="isEmptyMetadata(shownMetadata)"
-                        @click="updateMetadata"
-                    >
-                        {{ $gettext('Update Metadata') }}
-                    </button>
-                </div>
-            </div>
-        </template>
-        <template v-else>
+        <template v-if="isIdle">
             <div class="card-body alert-info">
                 <p class="card-text">
                     {{ $gettext('The WebDJ lets you broadcast live to your station using just your web browser.') }}
@@ -180,6 +134,54 @@
         </template>
 
         <div class="card-body">
+            <div class="form-group">
+                <label
+                    for="metadata_title"
+                    class="mb-2"
+                >
+                    {{ $gettext('Title') }}
+                </label>
+                <div class="controls">
+                    <input
+                        id="metadata_title"
+                        v-model="shownMetadata.title"
+                        class="form-control"
+                        type="text"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label
+                    for="metadata_artist"
+                    class="mb-2"
+                >
+                    {{ $gettext('Artist') }}
+                </label>
+                <div class="controls">
+                    <input
+                        id="metadata_artist"
+                        v-model="shownMetadata.artist"
+                        class="form-control"
+                        type="text"
+                    >
+                </div>
+            </div>
+            <div
+                v-if="!isIdle"
+                class="form-group"
+            >
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    :disabled="isEmptyMetadata(shownMetadata)"
+                    @click="updateMetadata"
+                >
+                    {{ $gettext('Update Metadata') }}
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
             <button
                 v-if="isIdle"
                 type="button"
@@ -238,6 +240,8 @@ const {
 const bitrate = ref<number>(128);
 
 const startStreamButton = () => {
+    currentMetadata.value = { ...shownMetadata.value };
+
     const url = new URL(props.baseUri);
     url.username = encodeURIComponent(djUsername.value ?? "");
     url.password = encodeURIComponent(djPassword.value ?? "");

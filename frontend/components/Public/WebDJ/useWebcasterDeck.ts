@@ -105,17 +105,32 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             sendMetadata(sentMetadata);
         };
 
+        const isInMix = () => deck.gain * mixer.mixFor(side) > 0;
+
+        let announcedTrack: Track | null = null;
+
+        const announceIfInMix = () => {
+            if (!deck.loaded || !isInMix()) {
+                announcedTrack = null;
+                return;
+            }
+
+            const track = deck.tracks[deck.index];
+            if (!deck.playing || !track || track === announcedTrack) {
+                return;
+            }
+
+            announcedTrack = track;
+            sendTrackMetadata(track);
+        };
+
+        useEventListener(deck, "change", announceIfInMix);
+        useEventListener(mixer, "change", announceIfInMix);
+
         const isPlaying = shallowRef<boolean>(false);
         const isLoaded = shallowRef<boolean>(false);
 
         useEventListener(deck, "change", () => {
-            if (deck.loaded && !isLoaded.value) {
-                const track = deck.tracks[deck.index];
-                if (track) {
-                    sendTrackMetadata(track);
-                }
-            }
-
             isPlaying.value = deck.playing;
             isLoaded.value = deck.loaded;
         });
@@ -168,8 +183,8 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             const track = deck.tracks[deck.index];
 
             if (
-                !deck.loaded ||
                 !track ||
+                track !== announcedTrack ||
                 currentMetadata.value !== sentMetadata
             ) {
                 return;

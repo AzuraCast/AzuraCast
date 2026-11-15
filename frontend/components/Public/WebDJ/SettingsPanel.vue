@@ -45,6 +45,7 @@
                     <button
                         type="button"
                         class="btn btn-primary"
+                        :disabled="isEmptyMetadata(shownMetadata)"
                         @click="updateMetadata"
                     >
                         {{ $gettext('Update Metadata') }}
@@ -210,6 +211,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import {
+    isEmptyMetadata,
     useInjectWebcasterMixer,
     WebcasterMetadata,
 } from "~/components/Public/WebDJ/useWebcasterMixer.ts";

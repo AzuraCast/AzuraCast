@@ -15,6 +15,9 @@ export type WebcasterMetadata = {
     title: string;
 };
 
+export const isEmptyMetadata = (metadata: WebcasterMetadata): boolean =>
+    metadata.artist.trim() === "" && metadata.title.trim() === "";
+
 export type WebcasterLevels = readonly [left: number, right: number];
 
 // Webcaster floors levels at -60 dBFS
@@ -111,6 +114,10 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
         });
 
         const sendMetadata = (newMetadata: WebcasterMetadata) => {
+            if (isEmptyMetadata(newMetadata)) {
+                return;
+            }
+
             mixer.sendMetadata(newMetadata);
             currentMetadata.value = newMetadata;
         };

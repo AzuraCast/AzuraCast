@@ -89,8 +89,7 @@
                             max="100"
                             step="0.1"
                             class="form-range w-100 slider"
-                            @mousedown="isSeeking = true"
-                            @mouseup="isSeeking = false"
+                            :disabled="!canSeek"
                         >
                     </div>
                     <div class="flex-shrink-0 pt-1 ps-2">
@@ -98,8 +97,10 @@
                     </div>
                 </div>
 
-                <meter class="level w-100" min="-60" max="0" low="-18" high="-6" optimum="-60"
-                       :value="leftLevel"/>
+                <level-meter
+                    :levels="levels"
+                    :source="langHeader"
+                />
             </div>
 
             <div class="form-group my-2">
@@ -169,25 +170,25 @@
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                            rowFile.title ?? $gettext('Unknown Title')
+                            rowFile.title || $gettext('Unknown Title')
                     }}</h5>
                     <small class="pt-1">{{ rowFile.duration }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile.artist ?? $gettext('Unknown Artist') }}</p>
+                <p class="mb-0">{{ rowFile.artist || $gettext('Unknown Artist') }}</p>
             </a>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { Side } from "@webcast.js/webcaster";
-import { computed, ref } from "vue";
+import { formatTime, Side } from "@webcast.js/webcaster";
+import { computed } from "vue";
+import LevelMeter from "~/components/Public/WebDJ/LevelMeter.vue";
 import {
     useInjectWebcasterDeck,
     useProvideWebcasterDeck,
 } from "~/components/Public/WebDJ/useWebcasterDeck.ts";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
-import formatTime from "~/functions/formatTime";
 import { useTranslate } from "~/vendor/gettext";
 import IconIcFastForward from "~icons/ic/baseline-fast-forward";
 import IconIcFastRewind from "~icons/ic/baseline-fast-rewind";
@@ -211,7 +212,7 @@ useProvideWebcasterDeck(props.side);
 
 const {
     gain,
-    leftLevel,
+    levels,
     position,
     duration,
     playThrough,
@@ -230,20 +231,20 @@ const {
     playFile,
 } = useInjectWebcasterDeck();
 
-const isSeeking = ref(false);
+const canSeek = computed(() => {
+    return Number.isFinite(duration.value) && duration.value > 0;
+});
 
 const seekingPosition = computed({
     get: () => {
-        return position.value !== null
-            ? 100.0 * (position.value / Number(duration.value))
-            : 0;
+        return canSeek.value ? 100.0 * (position.value / duration.value) : 0;
     },
     set: (val) => {
-        if (!isSeeking.value) {
+        if (!canSeek.value) {
             return;
         }
 
-        seek((val / 100) * Number(duration.value));
+        seek((val / 100) * duration.value);
     },
 });
 

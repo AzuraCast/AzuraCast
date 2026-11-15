@@ -1,4 +1,4 @@
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, useTimeoutFn } from "@vueuse/core";
 import {
     type Cueable,
     Mixer,
@@ -7,20 +7,24 @@ import {
 } from "@webcast.js/webcaster";
 import { computed, shallowRef, watch } from "vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
-import { FlashLevels } from "~/entities/ApiInterfaces.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 export type WebcasterMetadata = {
     artist: string;
     title: string;
 };
 
+export type WebcasterLevels = readonly [left: number, right: number];
+
+// Webcaster floors levels at -60 dBFS
+export const silentLevels: WebcasterLevels = [-60, -60];
+
 export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
     createRequiredInjectionState(() => {
         const mixer = new Mixer();
 
         const state = shallowRef<StreamState>("idle");
-        const message = shallowRef<string>();
         const cued = shallowRef<Cueable | null>(null);
 
         const isIdle = computed(() => state.value === "idle");
@@ -30,25 +34,64 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
             state.value = mixer.state;
         });
 
-        const { notify } = useNotify();
+        const { notifySuccess, notifyError } = useNotify();
+        const { $gettext } = useTranslate();
+
+        let isStopping = false;
+        let previousState: StreamState = "idle";
+
+        // LS checks credentials after socket opens so we get no direct rejections for them
+        const {
+            start: startAuthWindow,
+            stop: stopAuthWindow,
+            isPending: isAwaitingAuth,
+        } = useTimeoutFn(
+            () => {
+                if (mixer.state === "live") {
+                    notifySuccess($gettext("Web DJ connected!"));
+                }
+            },
+            1000,
+            { immediate: false },
+        );
 
         useEventListener(mixer, "status", () => {
-            notify(mixer.message, {
-                variant: FlashLevels.Info,
-            });
+            switch (mixer.state) {
+                case "live":
+                    startAuthWindow();
+                    break;
 
-            message.value = mixer.message;
+                case "idle":
+                    if (!isStopping) {
+                        notifyError(
+                            isAwaitingAuth.value
+                                ? $gettext(
+                                      "The Web DJ could not start streaming. Check that the username & password are correct.",
+                                  )
+                                : previousState === "live"
+                                  ? $gettext("The Web DJ was disconnected.")
+                                  : $gettext(
+                                        "The Web DJ could not start streaming.",
+                                    ),
+                        );
+                    }
+
+                    stopAuthWindow();
+                    isStopping = false;
+                    break;
+            }
+
+            previousState = mixer.state;
         });
 
         const stopStream = () => {
             if (!isIdle.value) {
+                isStopping = true;
                 mixer.stopStream();
             }
         };
 
         const startStream = (options: StreamOptions) => {
-            stopStream();
-
             mixer.startStream(options);
         };
 
@@ -81,8 +124,6 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
 
         return {
             mixer,
-            state,
-            message,
             cued,
             isIdle,
             stopStream,

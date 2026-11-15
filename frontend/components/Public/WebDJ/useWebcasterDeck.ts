@@ -1,8 +1,19 @@
 import { useEventListener, useRafFn } from "@vueuse/core";
 
-import { Deck, formatTime, Side, TagReader } from "@webcast.js/webcaster";
+import {
+    Deck,
+    formatTime,
+    Side,
+    TagReader,
+    Track,
+} from "@webcast.js/webcaster";
 import { computed, ref, shallowRef, watch } from "vue";
-import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
+import {
+    silentLevels,
+    useInjectWebcasterMixer,
+    WebcasterLevels,
+    WebcasterMetadata,
+} from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export type TaglibData = {
@@ -26,7 +37,8 @@ export type FileRow = {
 
 export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
     createRequiredInjectionState((side: Side) => {
-        const { mixer, cued, sendMetadata } = useInjectWebcasterMixer();
+        const { mixer, cued, currentMetadata, sendMetadata } =
+            useInjectWebcasterMixer();
 
         // taglib.js never calls back on files it cannot parse: those tracks keep their file name.
         const readTags: TagReader = (file) =>
@@ -48,17 +60,11 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             deck.setGain(newGain / 100);
         });
 
-        const leftLevel = shallowRef<number>(0);
-        const rightLevel = shallowRef<number>(0);
+        const levels = shallowRef<WebcasterLevels>(silentLevels);
 
         useRafFn(
             () => {
-                const levels = deck.levels();
-
-                if (levels) {
-                    leftLevel.value = levels[0] ?? 0;
-                    rightLevel.value = levels[1] ?? 0;
-                }
+                levels.value = deck.levels() ?? silentLevels;
             },
             {
                 immediate: true,
@@ -68,16 +74,11 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
 
         const duration = ref<number>(0);
         const position = ref<number>(0);
-        const time = ref<string>("--:-- / --:--");
 
         useRafFn(
             () => {
                 duration.value = deck.duration;
                 position.value = deck.position;
-
-                time.value = deck.loaded
-                    ? `${formatTime(deck.position)} / ${formatTime(deck.duration)}`
-                    : "--:-- / --:--";
             },
             {
                 immediate: true,
@@ -97,14 +98,26 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             deck.loop = newLoop;
         });
 
+        let sentMetadata: WebcasterMetadata | null = null;
+
+        const sendTrackMetadata = (track: Track) => {
+            sentMetadata = { artist: track.artist, title: track.title };
+            sendMetadata(sentMetadata);
+        };
+
         const isPlaying = shallowRef<boolean>(false);
         const isLoaded = shallowRef<boolean>(false);
-        const currentIndex = shallowRef<number>(-1);
 
         useEventListener(deck, "change", () => {
+            if (deck.loaded && !isLoaded.value) {
+                const track = deck.tracks[deck.index];
+                if (track) {
+                    sendTrackMetadata(track);
+                }
+            }
+
             isPlaying.value = deck.playing;
             isLoaded.value = deck.loaded;
-            currentIndex.value = deck.index;
         });
 
         const toggleCue = () => {
@@ -151,18 +164,22 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             });
         });
 
-        // Detect track changes.
-        watch(currentIndex, (newIndex, oldIndex) => {
-            if (newIndex === oldIndex || newIndex === -1) {
+        useEventListener(deck, "tracks", () => {
+            const track = deck.tracks[deck.index];
+
+            if (
+                !deck.loaded ||
+                !track ||
+                currentMetadata.value !== sentMetadata
+            ) {
                 return;
             }
 
-            const newFile = files.value.find((row) => row.index === newIndex);
-            if (newFile) {
-                sendMetadata({
-                    artist: newFile.artist,
-                    title: newFile.title,
-                });
+            if (
+                track.title !== sentMetadata.title ||
+                track.artist !== sentMetadata.artist
+            ) {
+                sendTrackMetadata(track);
             }
         });
 
@@ -173,15 +190,13 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
         return {
             deck,
             gain,
-            leftLevel,
-            rightLevel,
+            levels,
             playThrough,
             loop,
             isPlaying,
             isLoaded,
             duration,
             position,
-            time,
             toggleCue,
             isCued,
             togglePause,

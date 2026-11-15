@@ -261,7 +261,7 @@ const shownMetadata = ref<WebcasterMetadata>({
     title: "",
 });
 
-watch(currentMetadata, (newMeta) => (shownMetadata.value = newMeta));
+watch(currentMetadata, (newMeta) => (shownMetadata.value = { ...newMeta }));
 
 const updateMetadata = () => {
     sendMetadata(shownMetadata.value);

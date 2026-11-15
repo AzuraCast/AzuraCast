@@ -70,14 +70,17 @@
                 v-if="isActive"
                 class="mt-3"
             >
-                <meter class="level w-100" min="-60" max="0" low="-18" high="-6" optimum="-60"
-                       :value="leftLevel"/>
+                <level-meter
+                    :levels="levels"
+                    :source="$gettext('Microphone')"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import LevelMeter from "~/components/Public/WebDJ/LevelMeter.vue";
 import {
     useInjectWebcasterMicrophone,
     useProvideWebcasterMicrophone,
@@ -89,7 +92,7 @@ useProvideWebcasterMicrophone();
 
 const {
     gain,
-    leftLevel,
+    levels,
     toggleCue,
     isActive,
     isCued,

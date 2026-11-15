@@ -15,12 +15,16 @@ export type WebcasterMetadata = {
     title: string;
 };
 
+export type WebcasterLevels = readonly [left: number, right: number];
+
+// Webcaster floors levels at -60 dBFS
+export const silentLevels: WebcasterLevels = [-60, -60];
+
 export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
     createRequiredInjectionState(() => {
         const mixer = new Mixer();
 
         const state = shallowRef<StreamState>("idle");
-        const message = shallowRef<string>();
         const cued = shallowRef<Cueable | null>(null);
 
         const isIdle = computed(() => state.value === "idle");
@@ -33,13 +37,10 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
         const { notifySuccess, notifyError } = useNotify();
         const { $gettext } = useTranslate();
 
-
         let isStopping = false;
         let previousState: StreamState = "idle";
 
         useEventListener(mixer, "status", () => {
-            message.value = mixer.message;
-
             switch (mixer.state) {
                 case "live":
                     notifySuccess($gettext("Web DJ connected!"));
@@ -103,8 +104,6 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
 
         return {
             mixer,
-            state,
-            message,
             cued,
             isIdle,
             stopStream,

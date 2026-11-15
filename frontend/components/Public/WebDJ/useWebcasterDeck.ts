@@ -9,7 +9,9 @@ import {
 } from "@webcast.js/webcaster";
 import { computed, ref, shallowRef, watch } from "vue";
 import {
+    silentLevels,
     useInjectWebcasterMixer,
+    WebcasterLevels,
     WebcasterMetadata,
 } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
@@ -58,17 +60,11 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             deck.setGain(newGain / 100);
         });
 
-        const leftLevel = shallowRef<number>(0);
-        const rightLevel = shallowRef<number>(0);
+        const levels = shallowRef<WebcasterLevels>(silentLevels);
 
         useRafFn(
             () => {
-                const levels = deck.levels();
-
-                if (levels) {
-                    leftLevel.value = levels[0] ?? 0;
-                    rightLevel.value = levels[1] ?? 0;
-                }
+                levels.value = deck.levels() ?? silentLevels;
             },
             {
                 immediate: true,
@@ -78,16 +74,11 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
 
         const duration = ref<number>(0);
         const position = ref<number>(0);
-        const time = ref<string>("--:-- / --:--");
 
         useRafFn(
             () => {
                 duration.value = deck.duration;
                 position.value = deck.position;
-
-                time.value = deck.loaded
-                    ? `${formatTime(deck.position)} / ${formatTime(deck.duration)}`
-                    : "--:-- / --:--";
             },
             {
                 immediate: true,
@@ -199,15 +190,13 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
         return {
             deck,
             gain,
-            leftLevel,
-            rightLevel,
+            levels,
             playThrough,
             loop,
             isPlaying,
             isLoaded,
             duration,
             position,
-            time,
             toggleCue,
             isCued,
             togglePause,

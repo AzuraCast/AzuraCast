@@ -97,8 +97,7 @@
                     </div>
                 </div>
 
-                <meter class="level w-100" min="-60" max="0" low="-18" high="-6" optimum="-60"
-                       :value="leftLevel"/>
+                <level-meter :levels="levels"/>
             </div>
 
             <div class="form-group my-2">
@@ -181,6 +180,7 @@
 <script setup lang="ts">
 import { formatTime, Side } from "@webcast.js/webcaster";
 import { computed } from "vue";
+import LevelMeter from "~/components/Public/WebDJ/LevelMeter.vue";
 import {
     useInjectWebcasterDeck,
     useProvideWebcasterDeck,
@@ -209,7 +209,7 @@ useProvideWebcasterDeck(props.side);
 
 const {
     gain,
-    leftLevel,
+    levels,
     position,
     duration,
     playThrough,
@@ -234,9 +234,7 @@ const canSeek = computed(() => {
 
 const seekingPosition = computed({
     get: () => {
-        return canSeek.value
-            ? 100.0 * (position.value / duration.value)
-            : 0;
+        return canSeek.value ? 100.0 * (position.value / duration.value) : 0;
     },
     set: (val) => {
         if (!canSeek.value) {

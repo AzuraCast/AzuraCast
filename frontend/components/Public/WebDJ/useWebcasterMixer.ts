@@ -7,8 +7,8 @@ import {
 } from "@webcast.js/webcaster";
 import { computed, shallowRef, watch } from "vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
-import { FlashLevels } from "~/entities/ApiInterfaces.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 export type WebcasterMetadata = {
     artist: string;
@@ -30,18 +30,42 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
             state.value = mixer.state;
         });
 
-        const { notify } = useNotify();
+        const { notifySuccess, notifyError } = useNotify();
+        const { $gettext } = useTranslate();
+
+
+        let isStopping = false;
+        let previousState: StreamState = "idle";
 
         useEventListener(mixer, "status", () => {
-            notify(mixer.message, {
-                variant: FlashLevels.Info,
-            });
-
             message.value = mixer.message;
+
+            switch (mixer.state) {
+                case "live":
+                    notifySuccess($gettext("Web DJ connected!"));
+                    break;
+
+                case "idle":
+                    if (!isStopping) {
+                        notifyError(
+                            previousState === "live"
+                                ? $gettext("The Web DJ was disconnected.")
+                                : $gettext(
+                                      "The Web DJ could not start streaming.",
+                                  ),
+                        );
+                    }
+
+                    isStopping = false;
+                    break;
+            }
+
+            previousState = mixer.state;
         });
 
         const stopStream = () => {
             if (!isIdle.value) {
+                isStopping = true;
                 mixer.stopStream();
             }
         };

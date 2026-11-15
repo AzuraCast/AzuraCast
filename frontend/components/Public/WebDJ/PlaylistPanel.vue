@@ -169,11 +169,11 @@
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                            rowFile.title ?? $gettext('Unknown Title')
+                            rowFile.title || $gettext('Unknown Title')
                     }}</h5>
                     <small class="pt-1">{{ rowFile.duration }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile.artist ?? $gettext('Unknown Artist') }}</p>
+                <p class="mb-0">{{ rowFile.artist || $gettext('Unknown Artist') }}</p>
             </a>
         </div>
     </div>

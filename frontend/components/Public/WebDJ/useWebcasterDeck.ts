@@ -1,8 +1,17 @@
 import { useEventListener, useRafFn } from "@vueuse/core";
 
-import { Deck, formatTime, Side, TagReader } from "@webcast.js/webcaster";
+import {
+    Deck,
+    formatTime,
+    Side,
+    TagReader,
+    Track,
+} from "@webcast.js/webcaster";
 import { computed, ref, shallowRef, watch } from "vue";
-import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
+import {
+    useInjectWebcasterMixer,
+    WebcasterMetadata,
+} from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export type TaglibData = {
@@ -26,7 +35,8 @@ export type FileRow = {
 
 export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
     createRequiredInjectionState((side: Side) => {
-        const { mixer, cued, sendMetadata } = useInjectWebcasterMixer();
+        const { mixer, cued, currentMetadata, sendMetadata } =
+            useInjectWebcasterMixer();
 
         // taglib.js never calls back on files it cannot parse: those tracks keep their file name.
         const readTags: TagReader = (file) =>
@@ -97,6 +107,13 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             deck.loop = newLoop;
         });
 
+        let sentMetadata: WebcasterMetadata | null = null;
+
+        const sendTrackMetadata = (track: Track) => {
+            sentMetadata = { artist: track.artist, title: track.title };
+            sendMetadata(sentMetadata);
+        };
+
         const isPlaying = shallowRef<boolean>(false);
         const isLoaded = shallowRef<boolean>(false);
 
@@ -104,10 +121,7 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             if (deck.loaded && !isLoaded.value) {
                 const track = deck.tracks[deck.index];
                 if (track) {
-                    sendMetadata({
-                        artist: track.artist,
-                        title: track.title,
-                    });
+                    sendTrackMetadata(track);
                 }
             }
 
@@ -157,6 +171,25 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
                     duration: formatTime(track.duration),
                 };
             });
+        });
+
+        useEventListener(deck, "tracks", () => {
+            const track = deck.tracks[deck.index];
+
+            if (
+                !deck.loaded ||
+                !track ||
+                currentMetadata.value !== sentMetadata
+            ) {
+                return;
+            }
+
+            if (
+                track.title !== sentMetadata.title ||
+                track.artist !== sentMetadata.artist
+            ) {
+                sendTrackMetadata(track);
+            }
         });
 
         const playFile = (index: number) => {

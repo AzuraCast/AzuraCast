@@ -237,8 +237,8 @@ const bitrate = ref<number>(128);
 
 const startStreamButton = () => {
     const url = new URL(props.baseUri);
-    url.username = djUsername.value ?? "";
-    url.password = djPassword.value ?? "";
+    url.username = encodeURIComponent(djUsername.value ?? "");
+    url.password = encodeURIComponent(djPassword.value ?? "");
 
     startStream({
         url: url.toString(),

@@ -71,8 +71,6 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
         };
 
         const startStream = (options: StreamOptions) => {
-            stopStream();
-
             mixer.startStream(options);
         };
 

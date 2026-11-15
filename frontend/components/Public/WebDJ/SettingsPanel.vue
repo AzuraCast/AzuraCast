@@ -240,7 +240,13 @@ const {
 const bitrate = ref<number>(128);
 
 const startStreamButton = () => {
-    currentMetadata.value = { ...shownMetadata.value };
+    const { title, artist } = shownMetadata.value;
+    if (
+        title !== currentMetadata.value.title ||
+        artist !== currentMetadata.value.artist
+    ) {
+        currentMetadata.value = { artist, title };
+    }
 
     const url = new URL(props.baseUri);
     url.username = encodeURIComponent(djUsername.value ?? "");

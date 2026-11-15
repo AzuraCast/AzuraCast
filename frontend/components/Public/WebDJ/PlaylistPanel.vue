@@ -89,8 +89,7 @@
                             max="100"
                             step="0.1"
                             class="form-range w-100 slider"
-                            @mousedown="isSeeking = true"
-                            @mouseup="isSeeking = false"
+                            :disabled="!canSeek"
                         >
                     </div>
                     <div class="flex-shrink-0 pt-1 ps-2">
@@ -180,14 +179,13 @@
 </template>
 
 <script setup lang="ts">
-import { Side } from "@webcast.js/webcaster";
-import { computed, ref } from "vue";
+import { formatTime, Side } from "@webcast.js/webcaster";
+import { computed } from "vue";
 import {
     useInjectWebcasterDeck,
     useProvideWebcasterDeck,
 } from "~/components/Public/WebDJ/useWebcasterDeck.ts";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
-import formatTime from "~/functions/formatTime";
 import { useTranslate } from "~/vendor/gettext";
 import IconIcFastForward from "~icons/ic/baseline-fast-forward";
 import IconIcFastRewind from "~icons/ic/baseline-fast-rewind";
@@ -230,20 +228,22 @@ const {
     playFile,
 } = useInjectWebcasterDeck();
 
-const isSeeking = ref(false);
+const canSeek = computed(() => {
+    return Number.isFinite(duration.value) && duration.value > 0;
+});
 
 const seekingPosition = computed({
     get: () => {
-        return position.value !== null
-            ? 100.0 * (position.value / Number(duration.value))
+        return canSeek.value
+            ? 100.0 * (position.value / duration.value)
             : 0;
     },
     set: (val) => {
-        if (!isSeeking.value) {
+        if (!canSeek.value) {
             return;
         }
 
-        seek((val / 100) * Number(duration.value));
+        seek((val / 100) * duration.value);
     },
 });
 

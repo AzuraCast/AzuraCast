@@ -50,5 +50,5 @@ type WebDjProps = {
 
 const props = defineProps<WebDjProps>();
 
-const mixer = useProvideWebcasterMixer();
+useProvideWebcasterMixer();
 </script>

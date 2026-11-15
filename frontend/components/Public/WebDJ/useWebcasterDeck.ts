@@ -85,7 +85,7 @@ export const [useProvideWebcasterDeck, useInjectWebcasterDeck] =
             },
         );
 
-        const playThrough = ref<boolean>(false);
+        const playThrough = ref<boolean>(true);
 
         watch(playThrough, (newPlayThrough) => {
             deck.playThrough = newPlayThrough;

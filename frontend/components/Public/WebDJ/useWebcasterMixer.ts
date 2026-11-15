@@ -5,7 +5,7 @@ import {
     StreamOptions,
     StreamState,
 } from "@webcast.js/webcaster";
-import { computed, shallowRef } from "vue";
+import { computed, shallowRef, watch } from "vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import { FlashLevels } from "~/entities/ApiInterfaces.ts";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
@@ -71,6 +71,13 @@ export const [useProvideWebcasterMixer, useInjectWebcasterMixer] =
             mixer.sendMetadata(newMetadata);
             currentMetadata.value = newMetadata;
         };
+
+        watch(state, (newState, oldState) => {
+            if (newState === "live" && newState !== oldState) {
+                // Stream just went live; send metadata.
+                sendMetadata(currentMetadata.value);
+            }
+        });
 
         return {
             mixer,

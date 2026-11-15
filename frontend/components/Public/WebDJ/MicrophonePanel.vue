@@ -70,7 +70,10 @@
                 v-if="isActive"
                 class="mt-3"
             >
-                <level-meter :levels="levels"/>
+                <level-meter
+                    :levels="levels"
+                    :source="$gettext('Microphone')"
+                />
             </div>
         </div>
     </div>

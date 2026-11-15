@@ -97,7 +97,10 @@
                     </div>
                 </div>
 
-                <level-meter :levels="levels"/>
+                <level-meter
+                    :levels="levels"
+                    :source="langHeader"
+                />
             </div>
 
             <div class="form-group my-2">

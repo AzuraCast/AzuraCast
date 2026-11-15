@@ -10,6 +10,9 @@
             high="-6"
             optimum="-60"
             :value="level"
+            :aria-label="channel === 0
+                ? $gettext('%{source}: Left Channel', {source: props.source})
+                : $gettext('%{source}: Right Channel', {source: props.source})"
         />
     </div>
 </template>
@@ -19,5 +22,6 @@ import { WebcasterLevels } from "~/components/Public/WebDJ/useWebcasterMixer.ts"
 
 const props = defineProps<{
     levels: WebcasterLevels;
+    source: string;
 }>();
 </script>

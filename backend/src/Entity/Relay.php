@@ -30,6 +30,10 @@ final class Relay implements IdentifiableEntityInterface
     ]
     public readonly string $base_url;
 
+    #[ORM\ManyToOne(inversedBy: 'relays')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public readonly User $creator;
+
     #[
         OA\Property(example: "Relay"),
         ORM\Column(length: 100, nullable: true)
@@ -68,9 +72,12 @@ final class Relay implements IdentifiableEntityInterface
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
     public private(set) Collection $remotes;
 
-    public function __construct(string $baseUrl)
-    {
+    public function __construct(
+        string $baseUrl,
+        User $creator
+    ) {
         $this->base_url = $this->truncateString($baseUrl);
+        $this->creator = $creator;
 
         $now = Time::nowUtc();
         $this->created_at = $now;

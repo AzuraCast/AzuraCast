@@ -119,7 +119,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             example: "icecast"
         ),
         ORM\Column(type: 'string', length: 100, enumType: FrontendAdapters::class),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public FrontendAdapters $frontend_type;
 
@@ -131,7 +131,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(description: "An array containing station-specific broadcasting software (frontend) configuration"),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public StationFrontendConfiguration $frontend_config {
         get => new StationFrontendConfiguration((array)$this->frontend_config_raw);
@@ -154,7 +154,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             example: "liquidsoap"
         ),
         ORM\Column(type: 'string', length: 100, enumType: BackendAdapters::class),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public BackendAdapters $backend_type;
 
@@ -166,7 +166,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(description: "An array containing station-specific AutoDJ (backend) configuration"),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public StationBackendConfiguration $backend_config {
         get => new StationBackendConfiguration((array)$this->backend_config_raw);
@@ -321,7 +321,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(example: 0),
         ORM\Column(nullable: true, options: ['default' => 0]),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public ?int $disconnect_deactivate_streamer = 0;
 
@@ -331,7 +331,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             example: false
         ),
         ORM\Column,
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public bool $enable_streamers = false {
         set {
@@ -409,7 +409,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             example: true
         ),
         ORM\Column,
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_BROADCAST_MANAGER, EntityGroupsInterface::GROUP_ALL])
     ]
     public bool $enable_hls = false;
 

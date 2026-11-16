@@ -28,7 +28,8 @@ final class StationPlaylistMediaRepository extends Repository
     protected string $entityClass = StationPlaylistMedia::class;
 
     public function __construct(
-        private readonly StationQueueRepository $queueRepo
+        private readonly StationQueueRepository $queueRepo,
+        private readonly StationPlaylistRepository $playlistRepo
     ) {
     }
 
@@ -66,9 +67,11 @@ final class StationPlaylistMediaRepository extends Repository
         }
 
         $added = [];
-
         foreach ($playlists as $playlistId => $weight) {
-            $playlist = $this->em->find(StationPlaylist::class, $playlistId);
+            $playlist = $this->playlistRepo->findForStation(
+                $playlistId,
+                $station
+            );
             if (!($playlist instanceof StationPlaylist)) {
                 continue;
             }

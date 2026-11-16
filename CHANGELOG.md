@@ -5,7 +5,20 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Updated WebDJ**: We've updated to a new version of the library we use for our WebDJ feature. This feature lets you
+  run a simple radio broadcast directly from your browser. The new WebDJ offers substantial performance improvements and
+  runs without issue in all modern browsers.
+
 ## Code Quality/Technical Changes
+
+- Improved security around annotated values sent to Liquidsoap.
+
+- Ensure users can only set playlists that belong to the station they're currently managing.
+
+- Users are required to have the "Manage Broadcasting" permission to edit parts of the station profile that control
+  broadcasting (backend, frontend, DJs and HLS tabs).
+
+- Logged in users can now only see stations that are public or that they have direct access to in public data sets.
 
 ## Bug Fixes
 
@@ -18,6 +31,9 @@ release channel, you can take advantage of these new features and fixes.
     - Folder links of playlists are no longer removed while their media is still on record or the storage shows no
       files.
     - A failing media storage no longer stops the media and folder sync for other stations.
+
+- The "unassigned" special media query will now only show media assigned to no playlist on the current station, not any
+  station.
 
 ---
 

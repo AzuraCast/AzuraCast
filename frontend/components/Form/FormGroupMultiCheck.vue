@@ -66,7 +66,7 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T = ModelFormField">
+<script setup lang="ts" generic="T extends ModelFormField">
 import { useSlots } from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {

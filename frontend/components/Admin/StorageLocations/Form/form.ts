@@ -8,7 +8,18 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import { useAppRegle } from "~/vendor/regle.ts";
 
-export type StorageLocationRecord = Omit<StorageLocation, "id">;
+export type StorageLocationRecord = Required<
+    Omit<
+        StorageLocation,
+        | "id"
+        | "type"
+        | "storageQuotaBytes"
+        | "storageUsed"
+        | "storageUsedBytes"
+        | "storageAvailable"
+        | "storageAvailableBytes"
+    >
+>;
 
 export const useAdminStorageLocationsForm = defineStore(
     "form-admin-storage-locations",

@@ -4,62 +4,17 @@
             <h5 class="card-title">
                 {{ $gettext('Web DJ') }}
                 <br>
-                <small>{{ stationName }}</small>
+                <small>{{ props.stationName }}</small>
             </h5>
         </div>
-        <template v-if="isConnected">
-            <div class="card-body">
-                <div class="form-group">
-                    <label
-                        for="metadata_title"
-                        class="mb-2"
-                    >
-                        {{ $gettext('Title') }}
-                    </label>
-                    <div class="controls">
-                        <input
-                            id="metadata_title"
-                            v-model="shownMetadata.title"
-                            class="form-control"
-                            type="text"
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label
-                        for="metadata_artist"
-                        class="mb-2"
-                    >
-                        {{ $gettext('Artist') }}
-                    </label>
-                    <div class="controls">
-                        <input
-                            id="metadata_artist"
-                            v-model="shownMetadata.artist"
-                            class="form-control"
-                            type="text"
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="updateMetadata"
-                    >
-                        {{ $gettext('Update Metadata') }}
-                    </button>
-                </div>
-            </div>
-        </template>
-        <template v-else>
+        <template v-if="isIdle">
             <div class="card-body alert-info">
                 <p class="card-text">
                     {{ $gettext('The WebDJ lets you broadcast live to your station using just your web browser.') }}
                 </p>
                 <p class="card-text">
                     {{
-                        $gettext('To use this feature, a secure (HTTPS) connection is required. Firefox is recommended to avoid static when broadcasting.')
+                        $gettext('To use this feature, a secure (HTTPS) connection is required.')
                     }}
                 </p>
             </div>
@@ -99,51 +54,6 @@
                                     type="password"
                                     class="form-control"
                                 >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label
-                                for="select_samplerate"
-                                class="mb-2"
-                            >
-                                {{ $gettext('Sample Rate') }}
-                            </label>
-                            <div class="controls">
-                                <select
-                                    id="select_samplerate"
-                                    v-model.number="sampleRate"
-                                    class="form-control"
-                                >
-                                    <option value="8000">
-                                        8 kHz
-                                    </option>
-                                    <option value="11025">
-                                        11.025 kHz
-                                    </option>
-                                    <option value="12000">
-                                        12 kHz
-                                    </option>
-                                    <option value="16000">
-                                        16 kHz
-                                    </option>
-                                    <option value="22050">
-                                        22.05 kHz
-                                    </option>
-                                    <option value="24000">
-                                        24 kHz
-                                    </option>
-                                    <option value="32000">
-                                        32 kHz
-                                    </option>
-                                    <option value="44100">
-                                        44.1 kHz
-                                    </option>
-                                    <option value="48000">
-                                        48 kHz
-                                    </option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -224,16 +134,64 @@
         </template>
 
         <div class="card-body">
+            <div class="form-group">
+                <label
+                    for="metadata_title"
+                    class="mb-2"
+                >
+                    {{ $gettext('Title') }}
+                </label>
+                <div class="controls">
+                    <input
+                        id="metadata_title"
+                        v-model="shownMetadata.title"
+                        class="form-control"
+                        type="text"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label
+                    for="metadata_artist"
+                    class="mb-2"
+                >
+                    {{ $gettext('Artist') }}
+                </label>
+                <div class="controls">
+                    <input
+                        id="metadata_artist"
+                        v-model="shownMetadata.artist"
+                        class="form-control"
+                        type="text"
+                    >
+                </div>
+            </div>
+            <div
+                v-if="!isIdle"
+                class="form-group"
+            >
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    :disabled="isEmptyMetadata(shownMetadata)"
+                    @click="updateMetadata"
+                >
+                    {{ $gettext('Update Metadata') }}
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
             <button
-                v-if="!isConnected"
+                v-if="isIdle"
                 type="button"
                 class="btn btn-success"
-                @click="startStream(djUsername, djPassword)"
+                @click="startStreamButton"
             >
                 {{ langStreamButton }}
             </button>
             <button
-                v-if="isConnected"
+                v-if="!isIdle"
                 type="button"
                 class="btn btn-danger"
                 @click="stopStream"
@@ -243,8 +201,8 @@
             <button
                 type="button"
                 class="btn"
-                :class="{ 'btn-primary': doPassThrough }"
-                @click="doPassThrough = !doPassThrough"
+                :class="{ 'btn-primary': isGlobalCued }"
+                @click="toggleGlobalCue"
             >
                 {{ $gettext('Cue') }}
             </button>
@@ -254,32 +212,58 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { usePassthroughSync } from "~/components/Public/WebDJ/usePassthroughSync";
 import {
-    useInjectWebcaster,
+    isEmptyMetadata,
+    useInjectWebcasterMixer,
     WebcasterMetadata,
-} from "~/components/Public/WebDJ/useWebcaster";
-import { useInjectWebDjNode } from "~/components/Public/WebDJ/useWebDjNode";
+} from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 import { useTranslate } from "~/vendor/gettext";
 
-defineProps<{
+const props = defineProps<{
     stationName: string | null;
+    baseUri: string;
 }>();
 
 const djUsername = ref<string | null>(null);
 const djPassword = ref<string | null>(null);
 
-const { doPassThrough, bitrate, sampleRate, startStream, stopStream } =
-    useInjectWebDjNode();
+const {
+    isIdle,
+    stopStream,
+    startStream,
+    toggleGlobalCue,
+    isGlobalCued,
+    currentMetadata,
+    sendMetadata,
+} = useInjectWebcasterMixer();
 
-const { metadata, sendMetadata, isConnected } = useInjectWebcaster();
+const bitrate = ref<number>(128);
 
-usePassthroughSync(doPassThrough, "global");
+const startStreamButton = () => {
+    const { title, artist } = shownMetadata.value;
+    if (
+        title !== currentMetadata.value.title ||
+        artist !== currentMetadata.value.artist
+    ) {
+        currentMetadata.value = { artist, title };
+    }
+
+    const url = new URL(props.baseUri);
+    url.username = encodeURIComponent(djUsername.value ?? "");
+    url.password = encodeURIComponent(djPassword.value ?? "");
+
+    startStream({
+        url: url.toString(),
+        mimeType: "audio/webm;codecs=opus",
+        channels: 2,
+        audioBitrate: bitrate.value,
+    });
+};
 
 const { $gettext } = useTranslate();
 
 const langStreamButton = computed(() => {
-    return isConnected.value
+    return !isIdle.value
         ? $gettext("Stop Streaming")
         : $gettext("Start Streaming");
 });
@@ -289,16 +273,7 @@ const shownMetadata = ref<WebcasterMetadata>({
     title: "",
 });
 
-watch(metadata, (newMeta: WebcasterMetadata | null) => {
-    if (newMeta === null) {
-        newMeta = {
-            artist: "",
-            title: "",
-        };
-    }
-
-    shownMetadata.value = newMeta;
-});
+watch(currentMetadata, (newMeta) => (shownMetadata.value = { ...newMeta }));
 
 const updateMetadata = () => {
     sendMetadata(shownMetadata.value);

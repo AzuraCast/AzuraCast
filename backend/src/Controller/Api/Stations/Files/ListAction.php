@@ -178,8 +178,11 @@ final class ListAction implements SingleActionInterface
                         );
                     } elseif ('unassigned' === $special) {
                         $mediaQueryBuilder->andWhere(
-                            'sm.id NOT IN (SELECT IDENTITY(spm2.media) FROM App\Entity\StationPlaylistMedia spm2)'
-                        );
+                            'sm.id NOT IN (
+                                SELECT IDENTITY(spm2.media) FROM App\Entity\StationPlaylistMedia spm2
+                                JOIN spm2.playlist sp2 WHERE sp2.station = :station
+                            )'
+                        )->setParameter('station', $station);
                     } elseif (null !== $playlist) {
                         $mediaQueryBuilder->andWhere(
                             'sm.id IN (SELECT IDENTITY(spm2.media) FROM App\Entity\StationPlaylistMedia spm2 '

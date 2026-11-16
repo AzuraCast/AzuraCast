@@ -122,22 +122,10 @@ final class StationMount implements
 
     public function getRelayUrlAsUri(): ?UriInterface
     {
-        $relayUri = Urls::tryParseUserUrl(
+        return Urls::tryParseUserUrl(
             $this->relay_url,
             'Mount Point ' . $this->__toString() . ' Relay URL'
         );
-
-        if (null !== $relayUri) {
-            // Relays need port explicitly provided.
-            $port = $relayUri->getPort();
-            if ($port === null && '' !== $relayUri->getScheme()) {
-                $relayUri = $relayUri->withPort(
-                    ('https' === $relayUri->getScheme()) ? 443 : 80
-                );
-            }
-        }
-
-        return $relayUri;
     }
 
     #[

@@ -19,7 +19,8 @@ use const JSON_THROW_ON_ERROR;
  * The dump is a playlist configuration created by the "PlaylistConfigurationExporter"
  * and the scenario contains the frozen "now", runtime overrides and expectations for the test.
  *
- * Class is used as a PHPUnit data provider source to yield one row per scenario case.
+ * Class is used as a PHPUnit data provider source to yield one row per scenario case,
+ * and to load a single dump for tests that build their harness directly.
  *
  * @phpstan-import-type PlaylistConfigurationDump from PlaylistConfigurationSchema
  *
@@ -65,6 +66,17 @@ final class DumpLoader
         }
 
         return $rows;
+    }
+
+    /**
+     * Load a single dump file, given its path relative to "tests/_data/autodj/"
+     * without the ".dump.json" suffix (e.g. "scheduling/overnight-window").
+     *
+     * @return array<string, mixed>
+     */
+    public static function loadDump(string $name): array
+    {
+        return self::decodeFile(self::dataDir() . '/' . $name . '.dump.json');
     }
 
     /**

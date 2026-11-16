@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Unit\AutoDJ;
 
+use App\Tests\AutoDJ\DumpLoader;
 use App\Tests\AutoDJ\InMemoryAutoDjHarness;
 use App\Tests\AutoDJ\InMemoryAutoDjHarnessFactory;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Codeception\Test\Unit;
-use RuntimeException;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test for Scheduler::isPlaylistFullyCoveredByGroupSchedule() and
@@ -24,17 +22,10 @@ final class PlaylistGroupScheduleCoverageTest extends Unit
 {
     private function createHarness(): InMemoryAutoDjHarness
     {
-        $path = codecept_data_dir('autodj/scheduling/group-schedule-coverage.dump.json');
-
-        $contents = file_get_contents($path);
-        if ($contents === false) {
-            throw new RuntimeException(sprintf('Could not read fixture file "%s".', $path));
-        }
-
-        /** @var array<string, mixed> $dump */
-        $dump = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
-
-        return (new InMemoryAutoDjHarnessFactory())->create($dump, ScenarioRuntime::fromArray([]));
+        return (new InMemoryAutoDjHarnessFactory())->create(
+            DumpLoader::loadDump('scheduling/group-schedule-coverage'),
+            ScenarioRuntime::fromArray([])
+        );
     }
 
     private function createWindow(string $start, string $end): DateRange

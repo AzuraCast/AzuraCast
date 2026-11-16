@@ -211,9 +211,15 @@ final class Rsas extends Icecast
 
             $mountRelayUri = $mountRow->getRelayUrlAsUri();
             if (null !== $mountRelayUri) {
+                // Relays need port explicitly provided.
+                $relayPort = $mountRelayUri->getPort();
+                if ($relayPort === null && '' !== $mountRelayUri->getScheme()) {
+                    $relayPort = ('https' === $mountRelayUri->getScheme()) ? 443 : 80;
+                }
+
                 $config['relay'][] = array_filter([
                     'server' => $mountRelayUri->getHost(),
-                    'port' => $mountRelayUri->getPort(),
+                    'port' => $relayPort,
                     'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mountRow->name,
                 ]);

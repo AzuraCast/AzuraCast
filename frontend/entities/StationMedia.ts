@@ -26,6 +26,7 @@ export type StationMediaRecord = Required<
         | "links"
         | "unique_id"
         | "song_id"
+        | "size"
         | "mtime"
         | "uploaded_at"
         | "art"

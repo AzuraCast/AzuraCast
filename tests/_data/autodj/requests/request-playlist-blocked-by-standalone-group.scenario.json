@@ -1,0 +1,71 @@
+{
+  "description": "A Requests-source playlist sits in an inner group with its own schedule (10:00-14:00) on a slot with allowed_requests=none. The inner group is inside an unscheduled mid group, inside an outer group scheduled 12:00-13:00. The none slot blocks the member while the inner group can play, whether on its own (11:00, before the outer window) or through the outer group (12:30), so the pending request is held while regular music plays. Outside the inner window the slot can't play, so the global request queue plays the request (no playlist attached).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "inner-on-its-own-none-holds-request",
+      "now": "2026-11-02T11:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "inner-via-outer-none-holds-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "music",
+          "media_ref": "m1",
+          "from_request": false,
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "inner-off-air-global-queue-plays-request",
+      "now": "2026-11-02T15:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

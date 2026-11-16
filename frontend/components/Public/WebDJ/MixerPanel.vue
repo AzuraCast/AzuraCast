@@ -14,14 +14,14 @@
                         </div>
                         <div class="flex-fill px-2">
                             <input
-                                v-model.number="mixer"
+                                v-model.number="crossfadeValue"
                                 type="range"
                                 min="0"
-                                max="2"
-                                step="0.05"
+                                max="100"
+                                step="1"
                                 class="form-range slider"
                                 style="width: 200px; height: 10px;"
-                                @click.right.prevent="mixer = 1.0"
+                                @click.right.prevent="crossfadeValue = 50"
                             >
                         </div>
                         <div class="flex-shrink-0">
@@ -35,7 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { useInjectMixer } from "~/components/Public/WebDJ/useMixerValue";
+import { ref, watch } from "vue";
+import { useInjectWebcasterMixer } from "~/components/Public/WebDJ/useWebcasterMixer.ts";
 
-const { mixer } = useInjectMixer();
+const { setCrossfade } = useInjectWebcasterMixer();
+
+const crossfadeValue = ref<number>(50);
+
+watch(crossfadeValue, (newValue) => {
+    setCrossfade(newValue / 100);
+});
 </script>

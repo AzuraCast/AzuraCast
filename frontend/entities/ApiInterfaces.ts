@@ -297,6 +297,7 @@ export interface ApiAdminDebugStation {
     getNextSongUrl: string;
     getNowPlayingUrl: string;
     clearComputedAutoCueUrl: string;
+    syncMediaAllowEmptyStorageUrl: string;
 }
 
 export interface ApiAdminDebugLogEntry {
@@ -1224,6 +1225,11 @@ export type ApiStationMedia = ApiHasSongFields &
          * @example "test.mp3"
          */
         path?: string;
+        /**
+         * The size of the media file in bytes.
+         * @example 4194304
+         */
+        size?: number;
         /**
          * The UNIX timestamp when the database was last modified.
          * @example 1609480800

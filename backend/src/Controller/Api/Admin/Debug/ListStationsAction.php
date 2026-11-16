@@ -65,6 +65,10 @@ final readonly class ListStationsAction implements SingleActionInterface
                 $router->named(
                     'api:admin:debug:clear-computed-autocue',
                     ['station_id' => $station['id']]
+                ),
+                $router->named(
+                    'api:admin:debug:sync-media-allow-empty-storage',
+                    ['station_id' => $station['id']]
                 )
             );
         }

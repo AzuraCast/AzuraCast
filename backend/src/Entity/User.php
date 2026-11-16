@@ -187,7 +187,7 @@ class User implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, Relay> */
     #[
-        ORM\OneToMany(targetEntity: Relay::class, mappedBy: 'user'),
+        ORM\OneToMany(targetEntity: Relay::class, mappedBy: 'creator'),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]

@@ -61,7 +61,7 @@ const updateLogs = async () => {
         if (data.contents !== "") {
             logs.value = `${logs.value + data.contents}\n`;
             if (scrollToBottom.value && $textarea.value) {
-                void nextTick(() => {
+                void nextTick().then(() => {
                     $textarea.value!.scrollTop =
                         $textarea.value?.scrollHeight ?? 0;
                 });

@@ -283,9 +283,8 @@ export interface ApiAdminDebugQueue {
         | "high_priority"
         | "normal_priority"
         | "low_priority"
-        | "search_index"
         | "media"
-        | "podcast_media";
+        | "backup";
     count: number;
     url: string;
 }
@@ -297,6 +296,7 @@ export interface ApiAdminDebugStation {
     getNextSongUrl: string;
     getNowPlayingUrl: string;
     clearComputedAutoCueUrl: string;
+    syncMediaAllowEmptyStorageUrl: string;
 }
 
 export interface ApiAdminDebugLogEntry {
@@ -1224,6 +1224,11 @@ export type ApiStationMedia = ApiHasSongFields &
          * @example "test.mp3"
          */
         path?: string;
+        /**
+         * The size of the media file in bytes.
+         * @example 4194304
+         */
+        size?: number;
         /**
          * The UNIX timestamp when the database was last modified.
          * @example 1609480800
@@ -2903,7 +2908,7 @@ export type StorageLocation = HasAutoIncrementId & {
     /** The private key pass phrase for SFTP adapters */
     sftpPrivateKeyPassPhrase?: string | null;
     /** @example "120000" */
-    storageQuotaBytes?: any | null;
+    storageQuotaBytes?: any;
     /** @example "50 GB" */
     storageQuota?: string | null;
     /** @example "60000" */
@@ -2911,7 +2916,7 @@ export type StorageLocation = HasAutoIncrementId & {
     /** @example "1 GB" */
     storageUsed?: string;
     /** @example "120000" */
-    storageAvailableBytes?: any | null;
+    storageAvailableBytes?: any;
     /** @example "1 GB" */
     storageAvailable?: string;
 };

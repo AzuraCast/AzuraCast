@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.24.0
+  version: 0.24.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -642,6 +642,26 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/sync-media-allow-empty-storage':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      summary: 'Run the media sync for this station without skipping cleanup when its storage shows no files.'
+      operationId: adminDebugSyncStationMediaAllowEmptyStorage
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -6589,6 +6609,7 @@ components:
         - getNextSongUrl
         - getNowPlayingUrl
         - clearComputedAutoCueUrl
+        - syncMediaAllowEmptyStorageUrl
       properties:
         id:
           type: integer
@@ -6601,6 +6622,8 @@ components:
         getNowPlayingUrl:
           type: string
         clearComputedAutoCueUrl:
+          type: string
+        syncMediaAllowEmptyStorageUrl:
           type: string
       type: object
     Api_Admin_Debug_LogEntry:
@@ -6633,12 +6656,10 @@ components:
           type: string
         context:
           type: array
-          items:
-            type: '{}'
+          items: {}
         extra:
           type: array
-          items:
-            type: '{}'
+          items: {}
         formatted:
           type: '{}'
       type: object
@@ -7405,8 +7426,7 @@ components:
         extra_data:
           description: 'Stack traces and other supplemental data.'
           type: array
-          items:
-            type: any
+          items: {}
         success:
           description: 'Used for API calls that expect an \Entity\Api\Status type response.'
           type: boolean
@@ -7622,8 +7642,7 @@ components:
                 type: string
             responseRecord:
               type: array
-              items:
-                type: any
+              items: {}
               nullable: true
           type: object
     Api_Notification:
@@ -8309,6 +8328,10 @@ components:
               description: 'The relative path of the media file.'
               type: string
               example: test.mp3
+            size:
+              description: 'The size of the media file in bytes.'
+              type: integer
+              example: 4194304
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
@@ -8479,8 +8502,7 @@ components:
             log:
               description: 'Log entries on how the specific queue item was picked by the AutoDJ.'
               type: array
-              items:
-                type: any
+              items: {}
               nullable: true
           type: object
     Api_StationQuota:
@@ -9185,8 +9207,7 @@ components:
             $ref: '#/components/schemas/Api_ToastNotification'
         componentProps:
           type: array
-          items:
-            type: '{}'
+          items: {}
           nullable: true
       type: object
     Vue_DashboardGlobals:

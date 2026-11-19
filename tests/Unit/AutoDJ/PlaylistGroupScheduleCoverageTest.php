@@ -135,4 +135,32 @@ final class PlaylistGroupScheduleCoverageTest extends Unit
             )
         );
     }
+
+    public function testMemberOfDisabledGroupDoesNotPlayViaGroup(): void
+    {
+        $harness = $this->createHarness();
+        $harness->entities->playlistForRef('grp')->is_enabled = false;
+        $playlist = $harness->entities->playlistForRef('inside');
+
+        self::assertFalse(
+            $harness->scheduler->isPlaylistFullyCoveredByGroupSchedule(
+                $playlist,
+                $this->createWindow('2018-01-15T12:15:00+00:00', '2018-01-15T12:45:00+00:00')
+            )
+        );
+    }
+
+    public function testMemberBelowDisabledAncestorIsNotCoveredAtInstant(): void
+    {
+        $harness = $this->createHarness();
+        $harness->entities->playlistForRef('top_grp')->is_enabled = false;
+        $playlist = $harness->entities->playlistForRef('deep_member');
+
+        self::assertFalse(
+            $harness->scheduler->isPlaylistCoveredByGroupScheduleAt(
+                $playlist,
+                CarbonImmutable::parse('2018-01-15T12:30:00+00:00')
+            )
+        );
+    }
 }

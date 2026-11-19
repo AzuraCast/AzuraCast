@@ -27,7 +27,7 @@ final class StationQueue implements
 
     public const int DAYS_TO_KEEP = 7;
 
-    #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 

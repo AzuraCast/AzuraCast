@@ -11,6 +11,46 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.24.1 (Nov 19, 2026)
+
+## New Features/Changes
+
+- **Updated WebDJ**: We've updated to a new version of the library we use for our WebDJ feature. This feature lets you
+  run a simple radio broadcast directly from your browser. The new WebDJ offers substantial performance improvements and
+  runs without issue in all modern browsers.
+
+## Code Quality/Technical Changes
+
+- Updated the nginx webserver to 1.31.9, fixing several vulnerabilities.
+
+- Updated PHP to 8.5.13, fixing several vulnerabilities.
+
+- Improved security around annotated values sent to Liquidsoap.
+
+- Ensure users can only set playlists that belong to the station they're currently managing.
+
+- Users are required to have the "Manage Broadcasting" permission to edit parts of the station profile that control
+  broadcasting (backend, frontend, DJs and HLS tabs).
+
+- Logged in users can now only see stations that are public or that they have direct access to in public data sets.
+
+## Bug Fixes
+
+- Fixed the media search & filters failing when a file is missing from the media storage.
+
+- Fixed the media sync removing all media & playlist links when a media storage is unmounted or unreachable:
+    - Media is no longer removed should the storage show no music files since this is most likely a failed storage.
+    - Added "Sync Media (Allow Empty Storage)" in the System Debugger and `azuracast:media:sync` CLI command with the
+      `--allow-empty-storage` option to allow emptying in case this is explicitly needed.
+    - Folder links of playlists are no longer removed while their media is still on record or the storage shows no
+      files.
+    - A failing media storage no longer stops the media and folder sync for other stations.
+
+- The "unassigned" special media query will now only show media assigned to no playlist on the current station, not any
+  station.
+
+---
+
 # AzuraCast 0.24.0 (Oct 25, 2026)
 
 ## New Features/Changes

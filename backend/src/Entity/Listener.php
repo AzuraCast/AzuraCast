@@ -24,7 +24,7 @@ final class Listener implements
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 

@@ -342,7 +342,7 @@ if (null !== urlParamVolume) {
 
 if (props.widgetCustomization?.autoplay) {
     const cleanupEvent = useEventListener(document, "now-playing", () => {
-        void nextTick(() => {
+        void nextTick().then(() => {
             toggle(activeStream.value);
             cleanupEvent();
         });

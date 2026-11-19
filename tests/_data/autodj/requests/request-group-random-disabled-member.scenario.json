@@ -1,0 +1,54 @@
+{
+  "description": "A scheduled, active random-order group checks every member's allowed_requests for the global request queue, since any of them could play next. A disabled member can never play, so its allowed_requests=none no longer blocks: the global request queue plays the pending request (no playlist attached). With that member enabled, it blocks the request and the group plays one of its members.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "disabled-none-member-global-queue-plays-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true,
+          "playlist_chain_refs": [],
+          "playlist_enabled_by_ref": {
+            "a": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "control-enabled-none-member-blocks-request",
+      "now": "2026-11-02T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mA",
+            "mB"
+          ],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

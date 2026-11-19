@@ -103,7 +103,7 @@ const onHidden = () => {
 const $field = useTemplateRef("$field");
 
 const onShown = () => {
-    void nextTick(() => {
+    void nextTick().then(() => {
         $field.value?.focus();
     });
 };

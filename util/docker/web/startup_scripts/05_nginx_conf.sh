@@ -26,7 +26,9 @@ fi
 
 # Copy the nginx template to its destination.
 dockerize -template "/etc/nginx/nginx.conf.tmpl:/etc/nginx/nginx.conf" \
-    -template "/etc/nginx/azuracast.conf.tmpl:/etc/nginx/conf.d/default.conf"
+    -template "/etc/nginx/azuracast.conf.tmpl:/etc/nginx/sites-available/default.vhost"
+
+ln -s /etc/nginx/sites-available/default.vhost /etc/nginx/sites-enabled/default.vhost
 
 # Install the nginx blocker if environment variables are set.
 NGINX_BLOCK_BOTS=${NGINX_BLOCK_BOTS:-false}

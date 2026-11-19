@@ -3,8 +3,7 @@ set -e
 set -x
 
 # Configure and install official ngixn from repository
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
- | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
 
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
 https://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" \
@@ -24,7 +23,10 @@ cp /bd_build/web/nginx/azuracast.conf.tmpl /etc/nginx/azuracast.conf.tmpl
 # Change M3U8 MIME type to "application/x-mpegurl" for broader compatibility.
 sed -i 's#application/vnd.apple.mpegurl#application/x-mpegurl#' /etc/nginx/mime.types
 
-mkdir -p /etc/nginx/azuracast.conf.d/
+mkdir -p /etc/nginx/modules-enabled/ \
+  /etc/nginx/sites-available/ \
+  /etc/nginx/sites-enabled/ \
+  /etc/nginx/azuracast.conf.d/
 
 rm -rf /etc/nginx/conf.d/default.conf
 

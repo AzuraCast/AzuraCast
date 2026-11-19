@@ -44,6 +44,9 @@ server {
         fastcgi_param IS_INTERNAL true;
         include fastcgi_params;
 
+        # Pass the resolved host instead of the raw, client-controlled Host header
+        fastcgi_param HTTP_HOST $host$is_request_port$request_port;
+
         fastcgi_read_timeout 600;
         fastcgi_buffering off;
 
@@ -157,6 +160,9 @@ server {
 
     location ~ ^/index\.php(/|$) {
         include fastcgi_params;
+
+        # Pass the resolved host instead of the raw, client-controlled Host header
+        fastcgi_param HTTP_HOST $host$is_request_port$request_port;
 
         fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
 

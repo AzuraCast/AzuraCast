@@ -5,8 +5,6 @@ worker_rlimit_nofile 65000;
 error_log /dev/stderr {{if eq .Env.APPLICATION_ENV "development"}}info{{else}}warn{{end}};
 pid /var/run/nginx.pid;
 
-include /etc/nginx/modules-enabled/*.conf;
-
 events {
     worker_connections 65000;
     multi_accept on;

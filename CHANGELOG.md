@@ -11,6 +11,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Updated the nginx webserver to 1.31.9, fixing several vulnerabilities.
+
+- Updated PHP to 8.5.13, fixing several vulnerabilities.
+
 - Improved security around annotated values sent to Liquidsoap.
 
 - Ensure users can only set playlists that belong to the station they're currently managing.

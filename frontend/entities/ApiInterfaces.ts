@@ -283,9 +283,8 @@ export interface ApiAdminDebugQueue {
         | "high_priority"
         | "normal_priority"
         | "low_priority"
-        | "search_index"
         | "media"
-        | "podcast_media";
+        | "backup";
     count: number;
     url: string;
 }
@@ -2909,7 +2908,7 @@ export type StorageLocation = HasAutoIncrementId & {
     /** The private key pass phrase for SFTP adapters */
     sftpPrivateKeyPassPhrase?: string | null;
     /** @example "120000" */
-    storageQuotaBytes?: any | null;
+    storageQuotaBytes?: any;
     /** @example "50 GB" */
     storageQuota?: string | null;
     /** @example "60000" */
@@ -2917,7 +2916,7 @@ export type StorageLocation = HasAutoIncrementId & {
     /** @example "1 GB" */
     storageUsed?: string;
     /** @example "120000" */
-    storageAvailableBytes?: any | null;
+    storageAvailableBytes?: any;
     /** @example "1 GB" */
     storageAvailable?: string;
 };

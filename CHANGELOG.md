@@ -5,11 +5,25 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.24.1 (Nov 19, 2026)
+
+## New Features/Changes
+
 - **Updated WebDJ**: We've updated to a new version of the library we use for our WebDJ feature. This feature lets you
   run a simple radio broadcast directly from your browser. The new WebDJ offers substantial performance improvements and
   runs without issue in all modern browsers.
 
 ## Code Quality/Technical Changes
+
+- Updated the nginx webserver to 1.31.9, fixing several vulnerabilities.
+
+- Updated PHP to 8.5.13, fixing several vulnerabilities.
 
 - Improved security around annotated values sent to Liquidsoap.
 

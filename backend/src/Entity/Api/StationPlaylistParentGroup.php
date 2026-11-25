@@ -24,4 +24,10 @@ final class StationPlaylistParentGroup
         example: 'My Group'
     )]
     public string $name;
+
+    #[OA\Property(
+        description: 'Whether this group or any group it is nested in has "Avoid Duplicate Artists/Titles" enabled.',
+        example: true
+    )]
+    public bool $avoids_duplicates;
 }

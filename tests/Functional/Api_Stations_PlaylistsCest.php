@@ -329,6 +329,119 @@ class Api_Stations_PlaylistsCest extends CestAbstract
     }
 
     /**
+     * @before setupComplete
+     * @before login
+     */
+    public function flagParentGroupsThatAvoidDuplicates(FunctionalTester $I): void
+    {
+        $I->wantTo('Flag the parent groups of a playlist that force duplicate avoidance on it via API.');
+
+        $station = $this->getTestStation();
+        $listUrl = "/api/station/{$station->id}/playlists";
+
+        $this->clearPlaylists($I, $listUrl);
+
+        $songs = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Greetings',
+            'source' => PlaylistSources::Songs->value,
+            'avoid_duplicates' => false,
+        ]);
+
+        $innerGroup = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Inner Group',
+            'source' => PlaylistSources::Playlists->value,
+            'avoid_duplicates' => false,
+        ]);
+
+        $middleGroup = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Middle Group',
+            'source' => PlaylistSources::Playlists->value,
+            'avoid_duplicates' => true,
+        ]);
+
+        $topGroupAvoiding = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Top Group Avoiding Duplicates',
+            'source' => PlaylistSources::Playlists->value,
+            'avoid_duplicates' => true,
+        ]);
+
+        $topGroupAllowing = $this->createPlaylist($I, $listUrl, [
+            'name' => 'Top Group Allowing Duplicates',
+            'source' => PlaylistSources::Playlists->value,
+            'avoid_duplicates' => false,
+        ]);
+
+        $this->putMembers($I, $innerGroup, [$songs]);
+        $this->putMembers($I, $middleGroup, [$innerGroup]);
+        $this->putMembers($I, $topGroupAvoiding, [$middleGroup]);
+        $this->putMembers($I, $topGroupAllowing, [$middleGroup]);
+
+        // Inner Group has the setting disabled, but Middle Group above it enables it
+        $I->assertSame(
+            ['Inner Group' => true],
+            $this->grabParentGroupsAvoidingDuplicates($I, $songs)
+        );
+        $I->assertSame(
+            ['Middle Group' => true],
+            $this->grabParentGroupsAvoidingDuplicates($I, $innerGroup)
+        );
+        $I->assertSame(
+            [
+                'Top Group Allowing Duplicates' => false,
+                'Top Group Avoiding Duplicates' => true,
+            ],
+            $this->grabParentGroupsAvoidingDuplicates($I, $middleGroup)
+        );
+        $I->assertSame([], $this->grabParentGroupsAvoidingDuplicates($I, $topGroupAvoiding));
+    }
+
+    /**
+     * @param array<array-key, mixed> $group
+     * @param list<array<array-key, mixed>> $members
+     */
+    private function putMembers(FunctionalTester $I, array $group, array $members): void
+    {
+        $memberRows = [];
+        foreach ($members as $index => $member) {
+            $memberRows[] = [
+                'id' => Types::int($member['id'] ?? null),
+                'weight' => $index + 1,
+            ];
+        }
+
+        $groupLinks = Types::array($group['links'] ?? null);
+
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPut(Types::string($groupLinks['members'] ?? null), ['members' => $memberRows]);
+        $I->seeResponseCodeIs(200);
+    }
+
+    /**
+     * @param array<array-key, mixed> $playlist
+     *
+     * @return array<string, bool> Whether each parent group avoids duplicates, keyed and sorted by group name
+     */
+    private function grabParentGroupsAvoidingDuplicates(FunctionalTester $I, array $playlist): array
+    {
+        $links = Types::array($playlist['links'] ?? null);
+
+        $I->sendGet(Types::string($links['self'] ?? null));
+        $I->seeResponseCodeIs(200);
+
+        $body = Types::array(json_decode($I->grabResponse(), true, 512, JSON_THROW_ON_ERROR));
+
+        $avoidsDuplicatesByName = [];
+        foreach (Types::array($body['playlist_groups'] ?? null) as $parentGroup) {
+            $parentGroup = Types::array($parentGroup);
+            $avoidsDuplicatesByName[Types::string($parentGroup['name'] ?? null)] =
+                Types::bool($parentGroup['avoids_duplicates'] ?? null);
+        }
+        ksort($avoidsDuplicatesByName);
+
+        return $avoidsDuplicatesByName;
+    }
+
+    /**
      * @param array<string, mixed> $json
      * @param array<string, mixed>|null $expectedJson
      * @return array<array-key, mixed>

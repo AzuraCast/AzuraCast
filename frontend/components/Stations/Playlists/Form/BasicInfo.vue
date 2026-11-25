@@ -57,8 +57,19 @@
                         class="col-md-6"
                         :field="r$.avoid_duplicates"
                         :label="$gettext('Avoid Duplicate Artists/Titles')"
-                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
-                    />
+                    >
+                        <template #description>
+                            {{
+                                $gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')
+                            }}
+                            <template v-if="langAvoidDuplicatesGroupHint">
+                                <br>
+                                <span class="text-warning-emphasis">
+                                    {{ langAvoidDuplicatesGroupHint }}
+                                </span>
+                            </template>
+                        </template>
+                    </form-group-checkbox>
 
                     <form-group-checkbox
                         id="form_edit_include_in_on_demand"
@@ -236,8 +247,19 @@
                         class="col-md-6"
                         :field="r$.avoid_duplicates"
                         :label="$gettext('Avoid Duplicate Artists/Titles')"
-                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles across all member playlists in this group.')"
-                    />
+                    >
+                        <template #description>
+                            {{
+                                $gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles across all member playlists in this group.')
+                            }}
+                            <template v-if="langAvoidDuplicatesGroupHint">
+                                <br>
+                                <span class="text-warning-emphasis">
+                                    {{ langAvoidDuplicatesGroupHint }}
+                                </span>
+                            </template>
+                        </template>
+                    </form-group-checkbox>
 
                     <form-group-checkbox
                         v-if="form.order !== 'random'"
@@ -400,6 +422,15 @@ import { usePlaylistOptions } from "~/components/Stations/Playlists/playlistOpti
 import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 import { useTranslate } from "~/vendor/gettext";
 
+const props = withDefaults(
+    defineProps<{
+        avoidsDuplicatesThroughGroups?: boolean;
+    }>(),
+    {
+        avoidsDuplicatesThroughGroups: false,
+    },
+);
+
 const { r$, form } = storeToRefs(useStationsPlaylistsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
@@ -407,6 +438,20 @@ const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 const { $gettext } = useTranslate();
 
 const { sourceOptions, typeOptions, orderOptions } = usePlaylistOptions();
+
+const langAvoidDuplicatesGroupHint = computed(() => {
+    if (form.value.avoid_duplicates || !props.avoidsDuplicatesThroughGroups) {
+        return null;
+    }
+
+    return $gettext(
+        'Duplicates are still avoided when this playlist plays through a group marked "%{badge}" on the "%{tab}" tab.',
+        {
+            badge: $gettext("Avoids Duplicates"),
+            tab: $gettext("Memberships"),
+        },
+    );
+});
 
 const remoteTypeOptions = [
     {

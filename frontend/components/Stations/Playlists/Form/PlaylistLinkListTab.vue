@@ -26,10 +26,16 @@
                 >
                     <a
                         href="#"
-                        class="playlist-link-item d-block w-100 p-3"
+                        class="playlist-link-item d-flex align-items-start gap-3 w-100 p-3"
                         @click.prevent="emit('navigate', item)"
                     >
-                        {{ item.name }}
+                        <span class="flex-grow-1 text-break">{{ item.name }}</span>
+                        <span
+                            v-if="item.avoids_duplicates"
+                            class="badge text-bg-warning flex-shrink-0"
+                        >
+                            {{ $gettext('Avoids Duplicates') }}
+                        </span>
                     </a>
                 </li>
             </ul>
@@ -42,6 +48,10 @@ import Tab from "~/components/Common/Tab.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import { PlaylistBreadcrumb } from "~/entities/StationPlaylist.ts";
 
+type PlaylistLinkItem = PlaylistBreadcrumb & {
+    avoids_duplicates?: boolean;
+};
+
 defineProps<{
     tabId?: string;
     label: string;
@@ -49,7 +59,7 @@ defineProps<{
     emptyId: string;
     emptyLabel: string;
     emptyText: string;
-    items: PlaylistBreadcrumb[];
+    items: PlaylistLinkItem[];
 }>();
 
 const emit = defineEmits<(e: "navigate", item: PlaylistBreadcrumb) => void>();

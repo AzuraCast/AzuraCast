@@ -1,0 +1,67 @@
+{
+  "description": "A random-order member of a sequential group whose tracks all share one artist and were all played recently, below a parent group with avoid_duplicates=true that forces duplicate avoidance on every nested member. No track avoids the duplicate, but the member keeps its turn in the rotation and plays its least recently played track instead of the turn passing on to the sweeper, the next member that can play without a duplicate.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-keeps-turn-with-least-recently-played",
+      "now": "2026-06-01T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "mG1",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:40:00+00:00",
+            "is_visible": true
+          },
+          {
+            "media_ref": "mG2",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:50:00+00:00",
+            "is_visible": true
+          },
+          {
+            "media_ref": "mG3",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ"
+        },
+        {
+          "now": "2026-06-01T12:01:00+00:00",
+          "playlist_ref": "greetings",
+          "media_ref": "mG1",
+          "playlist_chain_refs": [
+            "parent",
+            "rotation",
+            "greetings"
+          ]
+        },
+        {
+          "now": "2026-06-01T12:02:00+00:00",
+          "playlist_ref": "sweeper",
+          "media_ref": "mS"
+        },
+        {
+          "now": "2026-06-01T12:03:00+00:00",
+          "playlist_ref": "jingle",
+          "media_ref": "mJ"
+        },
+        {
+          "now": "2026-06-01T12:04:00+00:00",
+          "playlist_ref": "greetings",
+          "media_ref": "mG2"
+        }
+      ]
+    }
+  ]
+}

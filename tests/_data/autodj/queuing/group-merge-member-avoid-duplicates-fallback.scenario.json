@@ -1,0 +1,136 @@
+{
+  "description": "A shuffled member of a merged group whose tracks all share one artist, below a parent group with avoid_duplicates=true that forces duplicate avoidance on every nested member. Once a greeting is in the artist window, no track avoids the duplicate artist. The member still keeps its slot in the block and falls back to its least recently played track, like a sequential member does, instead of the block shrinking to the two jingles.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-keeps-slot-in-every-block",
+      "now": "2026-06-01T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "intro",
+              "media_ref": "mIntro",
+              "playlist_chain_refs": [
+                "parent",
+                "block",
+                "intro"
+              ]
+            },
+            {
+              "mode": "membership",
+              "playlist_ref": "greetings",
+              "media_any_of": [
+                "mG1",
+                "mG2",
+                "mG3"
+              ],
+              "playlist_chain_refs": [
+                "parent",
+                "block",
+                "greetings"
+              ]
+            },
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mOutro"
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:01:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "intro",
+              "media_ref": "mIntro"
+            },
+            {
+              "mode": "membership",
+              "playlist_ref": "greetings",
+              "media_any_of": [
+                "mG1",
+                "mG2",
+                "mG3"
+              ]
+            },
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mOutro"
+            }
+          ]
+        },
+        {
+          "now": "2026-06-01T12:02:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "intro",
+              "media_ref": "mIntro"
+            },
+            {
+              "mode": "membership",
+              "playlist_ref": "greetings",
+              "media_any_of": [
+                "mG1",
+                "mG2",
+                "mG3"
+              ]
+            },
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mOutro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "member-falls-back-to-least-recently-played",
+      "now": "2026-06-01T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "mG1",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:50:00+00:00",
+            "is_visible": true
+          },
+          {
+            "media_ref": "mG2",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:55:00+00:00",
+            "is_visible": true
+          },
+          {
+            "media_ref": "mG3",
+            "playlist_ref": "greetings",
+            "timestamp_played": "2026-06-01T11:40:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "now": "2026-06-01T12:00:00+00:00",
+          "entries": [
+            {
+              "playlist_ref": "intro",
+              "media_ref": "mIntro"
+            },
+            {
+              "playlist_ref": "greetings",
+              "media_ref": "mG3"
+            },
+            {
+              "playlist_ref": "outro",
+              "media_ref": "mOutro"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

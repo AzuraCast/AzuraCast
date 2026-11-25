@@ -414,6 +414,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $parentGroups[$group->id] = [
                 'id' => $group->id,
                 'name' => $group->name,
+                'avoids_duplicates' => $this->avoidsDuplicatesThroughGroup($group),
             ];
         }
         $return['playlist_groups'] = array_values($parentGroups);
@@ -505,6 +506,31 @@ final class PlaylistsController extends AbstractScheduledEntityController
         }
 
         return $return;
+    }
+
+    private function avoidsDuplicatesThroughGroup(StationPlaylist $group): bool
+    {
+        $visitedGroupIds = [$group->id => true];
+        $pendingGroups = [$group];
+
+        while ($pendingGroups !== []) {
+            $current = array_shift($pendingGroups);
+            if ($current->avoid_duplicates) {
+                return true;
+            }
+
+            foreach ($current->playlist_groups as $spg) {
+                $parentGroup = $spg->playlist_group;
+                if (isset($visitedGroupIds[$parentGroup->id])) {
+                    continue;
+                }
+
+                $visitedGroupIds[$parentGroup->id] = true;
+                $pendingGroups[] = $parentGroup;
+            }
+        }
+
+        return false;
     }
 
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object

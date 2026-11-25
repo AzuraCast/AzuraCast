@@ -459,6 +459,32 @@ final class QueueBuilder implements EventSubscriberInterface
             $playlistChain
         );
 
+        // Keep the member's turn in the group even if it can't avoid duplicates
+        if (
+            $selectedTracks === null
+            && $this->canRetrySongsMemberWithDuplicates($selectedPlaylist, $allowDuplicates, $memberAvoidsDuplicates)
+        ) {
+            $this->logger->info(
+                sprintf(
+                    'Member playlist "%s" cannot avoid duplicates; allowing them so it keeps its turn in the group.',
+                    $selectedPlaylist->name
+                ),
+                [
+                    'playlist_id' => $selectedPlaylist->id,
+                    'playlist_group_id' => $playlistGroup->id,
+                ]
+            );
+
+            $selectedTracks = $this->selectTracksFromPlaylist(
+                $event,
+                $selectedPlaylist,
+                $recentSongHistory,
+                allowDuplicates: true,
+                ancestorAvoidsDuplicates: $memberAvoidsDuplicates,
+                ancestorChain: $playlistChain
+            );
+        }
+
         if ($selectedTracks instanceof StationQueue) {
             // Apply safety last-played check that setNextSongs uses
             $selectedTracks = ($event->getLastPlayedSongId() === $selectedTracks->song_id)
@@ -505,6 +531,20 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->em->persist($selectedStationPlaylistGroup);
 
         return [];
+    }
+
+    /**
+     * Whether a member avoided duplicates to determine if allowing them could still return a track.
+     */
+    private function canRetrySongsMemberWithDuplicates(
+        StationPlaylist $member,
+        bool $allowDuplicates,
+        bool $memberAvoidsDuplicates
+    ): bool {
+        return !$allowDuplicates
+            && $member->source === PlaylistSources::Songs
+            && !$member->backendMerge()
+            && ($memberAvoidsDuplicates || $member->avoid_duplicates);
     }
 
     /**

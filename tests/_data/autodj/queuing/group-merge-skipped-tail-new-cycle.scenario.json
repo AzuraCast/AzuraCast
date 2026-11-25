@@ -1,5 +1,5 @@
 {
-  "description": "A merged sequential group (avoid_duplicates) has only its Evening Member (own schedule 18:00-19:00) left in the queue and that window is closed. Like a regular group pass, the merged block then starts a new cycle in the same build, still with duplicate prevention: the Evening Member is skipped again, Member A's only track was just played so it has nothing to offer, and the block starts with Member B.",
+  "description": "A merged sequential group (avoid_duplicates) has only its Evening Member (own schedule 18:00-19:00) left in the queue and that window is closed. Like a regular group pass, the merged block then starts a new cycle in the same build, still with duplicate prevention: the Evening Member is skipped again, and Member A's only track was just played, so it can't avoid the duplicate and falls back to that track instead of losing its turn, followed by Member B.",
   "modes": [
     "in_memory",
     "integration"
@@ -29,12 +29,23 @@
       },
       "expect_sequence": [
         {
-          "mode": "exact",
-          "playlist_ref": "b",
-          "media_ref": "mB",
-          "playlist_chain_refs": [
-            "grp",
-            "b"
+          "entries": [
+            {
+              "playlist_ref": "a",
+              "media_ref": "mA",
+              "playlist_chain_refs": [
+                "grp",
+                "a"
+              ]
+            },
+            {
+              "playlist_ref": "b",
+              "media_ref": "mB",
+              "playlist_chain_refs": [
+                "grp",
+                "b"
+              ]
+            }
           ]
         }
       ]

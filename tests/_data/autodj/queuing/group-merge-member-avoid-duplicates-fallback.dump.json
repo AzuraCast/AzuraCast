@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mIntro",
+      "path": "gmadf/intro.mp3",
+      "unique_id": "gmergeadf000000000000001",
+      "length": 5.0,
+      "artist": "Jingle",
+      "title": "Intro",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mOutro",
+      "path": "gmadf/outro.mp3",
+      "unique_id": "gmergeadf000000000000002",
+      "length": 5.0,
+      "artist": "Jingle",
+      "title": "Outro",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mG1",
+      "path": "gmadf/greeting-1.mp3",
+      "unique_id": "gmergeadf000000000000011",
+      "length": 10.0,
+      "artist": "Greeter",
+      "title": "Greeting One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mG2",
+      "path": "gmadf/greeting-2.mp3",
+      "unique_id": "gmergeadf000000000000012",
+      "length": 10.0,
+      "artist": "Greeter",
+      "title": "Greeting Two",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mG3",
+      "path": "gmadf/greeting-3.mp3",
+      "unique_id": "gmergeadf000000000000013",
+      "length": 10.0,
+      "artist": "Greeter",
+      "title": "Greeting Three",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "parent",
+      "name": "Parent Group",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "block",
+          "weight": 1,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "block",
+      "name": "Merged Greeting Block",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [
+          "merge"
+        ],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "intro",
+          "weight": 1,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "greetings",
+          "weight": 2,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "outro",
+          "weight": 3,
+          "consecutive_plays": 1,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "intro",
+      "name": "Intro Jingle",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mIntro",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "greetings",
+      "name": "Greetings",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mG1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "mG2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "mG3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "outro",
+      "name": "Outro Jingle",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOutro",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

@@ -7,6 +7,8 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
+use App\Utilities\Types;
+use Doctrine\ORM\AbstractQuery;
 use Generator;
 
 /**
@@ -29,6 +31,28 @@ final class UnprocessableMediaRepository extends Repository
         );
 
         return $record;
+    }
+
+    /**
+     * @return array<array-key, int> The modification time of each unprocessable path in the storage location,
+     *                               keyed by path (numeric paths become integer keys).
+     */
+    public function getMtimesByPath(StorageLocation $storageLocation): array
+    {
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT upm.path, upm.mtime
+                FROM App\Entity\UnprocessableMedia upm
+                WHERE upm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $storageLocation);
+
+        $mtimes = [];
+        foreach ($query->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $row) {
+            $mtimes[(string)$row['path']] = Types::int($row['mtime']);
+        }
+
+        return $mtimes;
     }
 
     public function iteratePaths(array $paths, StorageLocation $storageLocation): Generator

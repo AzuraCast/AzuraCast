@@ -97,6 +97,7 @@ final class MediaProcessor
                     $path,
                     file_get_contents($localPath) ?: ''
                 );
+                $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
                 return null;
             }
 
@@ -155,6 +156,7 @@ final class MediaProcessor
                     $storageLocation,
                     $path
                 );
+                $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
                 return null;
             }
 

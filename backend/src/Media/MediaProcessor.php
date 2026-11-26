@@ -51,7 +51,7 @@ final class MediaProcessor
             }
         } catch (CannotProcessMediaException $e) {
             $this->logger->error(
-                $e->getMessage(),
+                $e->getMessageWithPath(),
                 [
                     'exception' => $e,
                 ]

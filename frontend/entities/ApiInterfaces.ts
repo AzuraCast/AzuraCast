@@ -1318,6 +1318,11 @@ export interface ApiStationPlaylistParentGroup {
      * @example "My Group"
      */
     name: string;
+    /**
+     * Whether this group or any group it is nested in has "Avoid Duplicate Artists/Titles" enabled.
+     * @example true
+     */
+    avoids_duplicates: boolean;
 }
 
 export interface ApiStationPlaylistQueue {

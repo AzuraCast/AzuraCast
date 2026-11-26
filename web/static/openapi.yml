@@ -8429,6 +8429,7 @@ components:
       required:
         - id
         - name
+        - avoids_duplicates
       properties:
         id:
           description: 'The unique identifier of the parent group.'
@@ -8438,6 +8439,10 @@ components:
           description: 'The name of the parent group.'
           type: string
           example: 'My Group'
+        avoids_duplicates:
+          description: 'Whether this group or any group it is nested in has "Avoid Duplicate Artists/Titles" enabled.'
+          type: boolean
+          example: true
       type: object
     Api_StationPlaylistQueue:
       properties:

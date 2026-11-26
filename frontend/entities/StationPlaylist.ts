@@ -7,7 +7,9 @@ import {
     StationPlaylistGroup,
 } from "~/entities/ApiInterfaces.ts";
 
-export type PlaylistBreadcrumb = ApiStationPlaylistParentGroup;
+export type PlaylistParentGroup = ApiStationPlaylistParentGroup;
+
+export type PlaylistBreadcrumb = Pick<PlaylistParentGroup, "id" | "name">;
 
 // Playlist as returned by the list API including runtime-computed fields.
 export type StationPlaylistEnriched = Required<
@@ -17,7 +19,7 @@ export type StationPlaylistEnriched = Required<
     Required<ApiStationPlaylistComputedFields> & {
         // Tightened generated computed fields for template ergonomics.
         num_songs: number;
-        playlist_groups: PlaylistBreadcrumb[];
+        playlist_groups: PlaylistParentGroup[];
         // Enriched relations with no generated equivalent.
         playlists: StationPlaylistGroupMemberEnriched[];
         schedule_items: ApiStationSchedule[];

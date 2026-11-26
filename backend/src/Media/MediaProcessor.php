@@ -16,6 +16,7 @@ use App\Exception\CannotProcessMediaException;
 use App\Message\AddNewMediaMessage;
 use App\Message\ProcessCoverArtMessage;
 use App\Message\ReprocessMediaMessage;
+use Intervention\Image\Exceptions\ImageException;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class MediaProcessor
@@ -233,10 +234,17 @@ final class MediaProcessor
         $folderHash = StationMedia::getFolderHashForPath($path);
         $destPath = StationMedia::getFolderArtPath($folderHash);
 
-        $fs->write(
-            $destPath,
-            AlbumArt::resize($contents)
-        );
+        try {
+            $fs->write(
+                $destPath,
+                AlbumArt::resize($contents)
+            );
+        } catch (ImageException $e) {
+            throw CannotProcessMediaException::forPath(
+                $path,
+                sprintf('Cover art could not be decoded: %s', $e->getMessage())
+            );
+        }
 
         $this->mediaListCache->clearCache($storageLocation);
     }

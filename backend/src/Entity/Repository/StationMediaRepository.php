@@ -223,7 +223,9 @@ final class StationMediaRepository extends Repository
                         $filePath,
                         $exception->getMessage()
                     ),
-                    $exception->getTrace()
+                    [
+                        'exception' => $exception,
+                    ]
                 );
             }
         }

@@ -11,6 +11,7 @@ use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
+use App\Utilities\File;
 use FunctionalTester;
 
 final class Api_Stations_FilesFolderLinksCest extends CestAbstract
@@ -218,6 +219,43 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
 
         $I->assertSame(['Music/Pop', 'Music/pop'], $this->getFolderLinkPaths());
         $I->assertSame(['Music/pop/test.mp3'], $this->getPlaylistMediaPaths($playlistId));
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function uploadAddsFileOnlyToPlaylistsOfItsFolders(FunctionalTester $I): void
+    {
+        $I->wantTo('Add an uploaded file to the playlists of its folder and parents, not of similarly named folders.');
+
+        $parentPlaylistId = $this->linkFolderToNewPlaylist('Music/pop');
+        $differingParentPlaylistId = $this->linkFolderToNewPlaylist('Music/Pop');
+        $differingFolderPlaylistId = $this->linkFolderToNewPlaylist('Music/pop/sub');
+
+        $songPath = File::generateTempPath('test.mp3');
+        copy(self::TEST_SONG_PATH, $songPath);
+
+        $I->sendPost(
+            '/api/station/' . $this->getTestStation()->id . '/files/upload',
+            ['currentDirectory' => 'Music/pop/Sub'],
+            [
+                'file' => [
+                    'name' => 'test.mp3',
+                    'type' => 'audio/mpeg',
+                    'error' => UPLOAD_ERR_OK,
+                    'size' => filesize($songPath),
+                    'tmp_name' => $songPath,
+                ],
+            ]
+        );
+        $I->seeResponseCodeIsSuccessful();
+
+        $this->em->clear();
+
+        $I->assertSame(['Music/pop/Sub/test.mp3'], $this->getPlaylistMediaPaths($parentPlaylistId));
+        $I->assertSame([], $this->getPlaylistMediaPaths($differingParentPlaylistId));
+        $I->assertSame([], $this->getPlaylistMediaPaths($differingFolderPlaylistId));
     }
 
     /**

@@ -143,11 +143,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     ): array {
         $path = self::filterPath($path);
 
-        /** @var StationPlaylistFolder[] $folders */
-        $folders = $this->repository->findBy([
-            'path' => $path,
-            'station' => $station,
-        ]);
+        $folders = $this->findFoldersByPath($station, $path);
 
         if (!$includeParents) {
             return $folders;
@@ -158,10 +154,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
             $folders = array_merge(
                 $folders,
-                $this->repository->findBy([
-                    'path' => self::filterPath($pathToSearch),
-                    'station' => $station,
-                ])
+                $this->findFoldersByPath($station, self::filterPath($pathToSearch))
             );
         }
 
@@ -190,6 +183,22 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
         }
 
         return $uniqueFolders;
+    }
+
+    /**
+     * @return StationPlaylistFolder[]
+     */
+    private function findFoldersByPath(Station $station, string $path): array
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf
+                FROM App\Entity\StationPlaylistFolder spf
+                WHERE spf.station = :station AND spf.path = COLLATE(:path, utf8mb4_bin)
+            DQL
+        )->setParameter('station', $station)
+            ->setParameter('path', $path)
+            ->getResult();
     }
 
     /**

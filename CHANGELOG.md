@@ -13,6 +13,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed deleting, renaming or moving a media folder also changing folders with similar names and their playlist links.
+
 ---
 
 # AzuraCast 0.24.1 (Nov 19, 2026)

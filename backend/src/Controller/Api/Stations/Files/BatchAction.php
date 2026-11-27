@@ -541,11 +541,18 @@ final class BatchAction implements SingleActionInterface
      */
     private function normalizePaths(array $paths): array
     {
-        return array_values(
-            array_map(
-                fn(mixed $path) => $this->pathNormalizer->normalizePath(Types::string($path)),
-                $paths
-            )
-        );
+        $normalizedPaths = [];
+
+        foreach ($paths as $path) {
+            $normalizedPath = $this->pathNormalizer->normalizePath(Types::string($path));
+
+            if ($normalizedPath === '') {
+                throw new InvalidArgumentException('Batch actions cannot be applied to the base directory.');
+            }
+
+            $normalizedPaths[] = $normalizedPath;
+        }
+
+        return $normalizedPaths;
     }
 }

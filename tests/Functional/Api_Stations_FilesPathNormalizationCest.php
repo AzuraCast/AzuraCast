@@ -87,6 +87,35 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
      * @before login
      * @before clearTestFolders
      */
+    public function batchRejectsPathsPointingToBaseDirectory(FunctionalTester $I): void
+    {
+        $I->wantTo('Reject batch actions on paths that point to the base directory without deleting anything.');
+
+        $this->uploadTestSong('Music/test.mp3');
+        $this->linkFolderToNewPlaylist('Music');
+
+        foreach (['', '/', '.', './/'] as $basePath) {
+            foreach (['dirs', 'files'] as $param) {
+                $body = ['do' => 'delete', 'files' => [], 'dirs' => []];
+                $body[$param] = [$basePath];
+
+                $I->haveHttpHeader('Content-Type', 'application/json');
+                $I->sendPut('/api/station/' . $this->getTestStation()->id . '/files/batch', $body);
+                $I->dontSeeResponseContainsJson(['success' => true]);
+
+                $this->em->clear();
+
+                $I->assertTrue($this->getMediaFilesystem()->fileExists('Music/test.mp3'));
+                $I->assertSame(['Music/test.mp3'], $this->getMediaPaths());
+                $I->assertSame(['Music'], $this->getFolderLinkPaths());
+            }
+        }
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
     public function uploadStoresNormalizedPath(FunctionalTester $I): void
     {
         $I->wantTo('Store a normalized path for a file uploaded into a directory given with extra slashes.');

@@ -497,7 +497,7 @@ final class BatchAction implements SingleActionInterface
         $this->mediaRepo->clearComputedAutoCueForPaths($storageLocation, $result->files);
 
         foreach ($result->directories as $directory) {
-            $this->mediaRepo->clearComputedAutoCue($storageLocation, "{$directory}/");
+            $this->mediaRepo->clearComputedAutoCueInDirectory($storageLocation, $directory);
         }
 
         return $result;

@@ -428,6 +428,21 @@ final class StationMediaRepository extends Repository
         return Types::int($clearQuery->getQuery()->execute());
     }
 
+    public function clearComputedAutoCueInDirectory(
+        StorageLocation $storageLocation,
+        string $dir
+    ): int {
+        // First LIKE uses the index, second matches case
+        $clearQuery = $this->createClearComputedAutoCueQuery()
+            ->andWhere('sm.storage_location = :storageLocation')
+            ->andWhere('sm.path LIKE :dirContents')
+            ->andWhere('sm.path LIKE COLLATE(:dirContents, utf8mb4_bin)')
+            ->setParameter('storageLocation', $storageLocation)
+            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
+
+        return Types::int($clearQuery->getQuery()->execute());
+    }
+
     private function getFilesystem(StationMedia $media): ExtendedFilesystemInterface
     {
         return $this->storageLocationRepo->getAdapter($media->storage_location)

@@ -404,6 +404,27 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function mediaBatchKeepsDirectoriesMatchingWildcardsOrDifferingInCase(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values of a directory, not of directories matching its wildcards or case.');
+
+        $clearedMedia = $this->uploadTestSong('Show_A/song.mp3');
+        $wildcardMedia = $this->uploadTestSong('Show-A/song.mp3');
+        $caseMedia = $this->uploadTestSong('show_a/other.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($wildcardMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($caseMedia));
+
+        $this->sendClearBatch($I, [], ['Show_A']);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($wildcardMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($caseMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function debugActionClearsComputedValues(FunctionalTester $I): void
     {
         $I->wantTo('Clear stored AutoCue values for a station from the System Debugger.');

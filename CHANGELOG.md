@@ -23,6 +23,8 @@ release channel, you can take advantage of these new features and fixes.
 - Fixed uploading a file into a media folder also adding it to the playlists of folders whose names differ only in
   capitalization.
 
+- Fixed clearing the computed AutoCue values of a media folder also clearing those of folders with similar names.
+
 - Fixed a batch delete through the API removing a station's whole media folder when given an empty path or "/".
 
 ---

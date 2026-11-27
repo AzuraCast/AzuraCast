@@ -157,15 +157,17 @@ final class BatchUtilities
      */
     public function iterateMediaInDirectory(StorageLocation $storageLocation, string $dir): iterable
     {
+        // First LIKE uses the index, second matches case
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path
+                AND sm.path LIKE :dirContents
+                AND sm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('path', $dir . '/%');
+            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
@@ -199,15 +201,17 @@ final class BatchUtilities
         StorageLocation $storageLocation,
         string $dir
     ): iterable {
+        // First LIKE uses the index, second matches case
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT upm
                 FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
-                AND upm.path LIKE :path
+                AND upm.path LIKE :dirContents
+                AND upm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('path', $dir . '/%');
+            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
@@ -227,15 +231,26 @@ final class BatchUtilities
                 SELECT spf
                 FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station IN (
-                  SELECT s FROM App\Entity\Station s
-                  WHERE s.media_storage_location = :storageLocation
+                    SELECT s FROM App\Entity\Station s
+                    WHERE s.media_storage_location = :storageLocation
                 )
-                AND spf.path LIKE :path
+                AND (
+                    spf.path = COLLATE(:dir, utf8mb4_bin)
+                    OR spf.path LIKE COLLATE(:dirContents, utf8mb4_bin)
+                )
             DQL
         )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('path', $dir . '%');
+            ->setParameter('dir', $dir)
+            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
+    }
+
+    private function escapeLikePattern(string $path): string
+    {
+        return $this->em->getConnection()
+            ->getDatabasePlatform()
+            ->escapeStringForLike($path, '\\');
     }
 
     /**

@@ -113,9 +113,14 @@ final class File
 
         if (0 === stripos($path, $fromDir)) {
             $newBasePath = ltrim(substr($path, strlen($fromDir)), '/');
+            if ('' === $newBasePath) {
+                return $toDir;
+            }
+
             if ('' !== $toDir) {
                 return $toDir . '/' . $newBasePath;
             }
+
             return $newBasePath;
         }
 

@@ -32,7 +32,17 @@ If the two harnesses disagree on a case, that is a fake-vs-reality drift bug to 
 
 ## Directory layout
 
-The `scheduling/`, `queuing/`, and `requests/` sub directories are organisational only, both harnesses run every fixture.
+The `scheduling/`, `queuing/`, `requests/` and `doc-examples/` sub directories are organisational only, both harnesses run every fixture.
+
+### Doc examples
+
+The `doc-examples/` fixtures back the examples on the "Playlist Group Examples" page of the user guide ([azuracast.com](https://github.com/AzuraCast/azuracast.com)).
+
+- Each example's `expect_sequence` asserts the play-out the docs describe ("What you'll hear")
+- Each `<example>.dump.json` is also offered as a download on that page
+  - The docs repo keeps a byte-identical copy at `public/downloads/playlist-examples/<example>.json`
+  - Changes to a dump must be mirrored there, and changes to a sequence in the docs text
+- Dumps only contain generic data (station "Demo Radio", `Current Artist 1 - Current Song 1` style tracks) since users import them and the docs screenshots are taken from them
 
 Fixtures must be placed exactly one directory deep under `tests/_data/autodj/`.
 

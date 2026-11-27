@@ -13,7 +13,6 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Exception;
 use App\Flysystem\StationFilesystems;
 use App\Message;
 use App\Radio\Backend\Liquidsoap;
@@ -69,7 +68,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
         try {
             $this->liquidsoap->command($station, $playlistVarName . '.reload');
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 'Could not reload playlist with AutoDJ.',
                 [

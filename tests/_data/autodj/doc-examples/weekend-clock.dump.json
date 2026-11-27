@@ -1,0 +1,483 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "exported_at": "2026-10-31T00:00:00+00:00",
+  "station": {
+    "name": "Demo Radio",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 120,
+      "duplicate_prevention_artist_time_range": null,
+      "autodj_queue_length": 3,
+      "crossfade": 2
+    }
+  },
+  "media": [
+    {
+      "ref": "current1",
+      "path": "doc-examples/weekend-clock/current-hits/current-hits-01.mp3",
+      "unique_id": "docexmp07000000000000001",
+      "length": 210.0,
+      "artist": "Current Artist 1",
+      "title": "Current Song 1",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "current2",
+      "path": "doc-examples/weekend-clock/current-hits/current-hits-02.mp3",
+      "unique_id": "docexmp07000000000000002",
+      "length": 210.0,
+      "artist": "Current Artist 2",
+      "title": "Current Song 2",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "current3",
+      "path": "doc-examples/weekend-clock/current-hits/current-hits-03.mp3",
+      "unique_id": "docexmp07000000000000003",
+      "length": 210.0,
+      "artist": "Current Artist 3",
+      "title": "Current Song 3",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "current4",
+      "path": "doc-examples/weekend-clock/current-hits/current-hits-04.mp3",
+      "unique_id": "docexmp07000000000000004",
+      "length": 210.0,
+      "artist": "Current Artist 4",
+      "title": "Current Song 4",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "current5",
+      "path": "doc-examples/weekend-clock/current-hits/current-hits-05.mp3",
+      "unique_id": "docexmp07000000000000005",
+      "length": 210.0,
+      "artist": "Current Artist 5",
+      "title": "Current Song 5",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "recurrent1",
+      "path": "doc-examples/weekend-clock/recurrents/recurrents-01.mp3",
+      "unique_id": "docexmp07000000000000006",
+      "length": 220.0,
+      "artist": "Recurrent Artist 1",
+      "title": "Recurrent Song 1",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "recurrent2",
+      "path": "doc-examples/weekend-clock/recurrents/recurrents-02.mp3",
+      "unique_id": "docexmp07000000000000007",
+      "length": 220.0,
+      "artist": "Recurrent Artist 2",
+      "title": "Recurrent Song 2",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "recurrent3",
+      "path": "doc-examples/weekend-clock/recurrents/recurrents-03.mp3",
+      "unique_id": "docexmp07000000000000008",
+      "length": 220.0,
+      "artist": "Recurrent Artist 3",
+      "title": "Recurrent Song 3",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "gold1",
+      "path": "doc-examples/weekend-clock/gold/gold-01.mp3",
+      "unique_id": "docexmp07000000000000009",
+      "length": 230.0,
+      "artist": "Gold Artist 1",
+      "title": "Gold Song 1",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "gold2",
+      "path": "doc-examples/weekend-clock/gold/gold-02.mp3",
+      "unique_id": "docexmp07000000000000010",
+      "length": 230.0,
+      "artist": "Gold Artist 2",
+      "title": "Gold Song 2",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "gold3",
+      "path": "doc-examples/weekend-clock/gold/gold-03.mp3",
+      "unique_id": "docexmp07000000000000011",
+      "length": 230.0,
+      "artist": "Gold Artist 3",
+      "title": "Gold Song 3",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "gold4",
+      "path": "doc-examples/weekend-clock/gold/gold-04.mp3",
+      "unique_id": "docexmp07000000000000012",
+      "length": 230.0,
+      "artist": "Gold Artist 4",
+      "title": "Gold Song 4",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "ids1",
+      "path": "doc-examples/weekend-clock/station-ids/station-ids-01.mp3",
+      "unique_id": "docexmp07000000000000013",
+      "length": 8.0,
+      "artist": "Demo Radio",
+      "title": "Station ID 1",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    },
+    {
+      "ref": "ids2",
+      "path": "doc-examples/weekend-clock/station-ids/station-ids-02.mp3",
+      "unique_id": "docexmp07000000000000014",
+      "length": 8.0,
+      "artist": "Demo Radio",
+      "title": "Station ID 2",
+      "album": "Doc Example: Weekend Clock",
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "current",
+      "name": "Current Hits",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Shared by both clocks."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "current1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "current2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "current3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "current4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "current5",
+          "weight": 5,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "recurrent",
+      "name": "Recurrents",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Main Clock only."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "recurrent1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "recurrent2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "recurrent3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "gold",
+      "name": "Gold",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Shared by both clocks."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "gold1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "gold2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "gold3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "gold4",
+          "weight": 4,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "ids",
+      "name": "Station IDs",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Short station IDs, hidden from listeners."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "ids1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "ids2",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "main",
+      "name": "Main Clock",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Default clock. Plays whenever no scheduled clock is active."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "current",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "recurrent",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "current",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "gold",
+          "weight": 4,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "ids",
+          "weight": 5,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "weekend",
+      "name": "Weekend Clock",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Saturday and Sunday. More Gold, no Recurrents."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [
+        {
+          "start_time": 0,
+          "end_time": 2359,
+          "days": [
+            6,
+            7
+          ],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false,
+          "reset_queue_at_start": false,
+          "reset_queue_recursive": false
+        }
+      ],
+      "members": [
+        {
+          "playlist_ref": "gold",
+          "weight": 1,
+          "consecutive_plays": 2,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "current",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "ids",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

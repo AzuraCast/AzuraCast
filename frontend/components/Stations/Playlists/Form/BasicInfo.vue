@@ -109,7 +109,7 @@
                     >
                         <template #description>
                             <a
-                                href="/docs/user-guide/playlists/#advanced-playlists"
+                                href="/docs/user-guide/playlists/advanced/"
                                 target="_blank"
                             >
                                 {{ $gettext('Learn about Advanced Playlists') }}

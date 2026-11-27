@@ -1,0 +1,110 @@
+{
+  "description": "Doc example 'Top of the hour': a Once per Hour (minute 0) group with Merge plays a station ID and the news as one block at the first song change after :00, once per hour; Music plays in between. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "block-at-top-of-each-hour",
+      "now": "2026-11-02T11:57:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-11-02T11:57:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T12:00:00+00:00",
+          "entries": [
+            {
+              "mode": "membership",
+              "media_any_of": [
+                "ids1",
+                "ids2"
+              ],
+              "playlist_chain_refs": [
+                "hour",
+                "ids"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "news",
+              "media_ref": "news1",
+              "playlist_chain_refs": [
+                "hour",
+                "news"
+              ]
+            }
+          ]
+        },
+        {
+          "now": "2026-11-02T12:05:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T12:59:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T13:00:00+00:00",
+          "entries": [
+            {
+              "mode": "membership",
+              "media_any_of": [
+                "ids1",
+                "ids2"
+              ],
+              "playlist_chain_refs": [
+                "hour",
+                "ids"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "news",
+              "media_ref": "news1",
+              "playlist_chain_refs": [
+                "hour",
+                "news"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

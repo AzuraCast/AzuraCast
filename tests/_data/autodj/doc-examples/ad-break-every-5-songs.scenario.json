@@ -1,0 +1,179 @@
+{
+  "description": "Doc example 'Ad break every 5 songs': a Once per 5 Songs group with Merge plays an intro, two commercials and an outro back to back as one block, then the Music playlist plays five songs before the next break. The sequential Commercials playlist rotates the spots evenly across breaks (1+2, then 3+1). Replaces the former Liquidsoap side-by-side case study. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "break-block-every-five-songs",
+      "now": "2026-11-02T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "entries": [
+            {
+              "mode": "exact",
+              "playlist_ref": "intro",
+              "media_ref": "intro1",
+              "playlist_chain_refs": [
+                "break",
+                "intro"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "commercials",
+              "media_ref": "commercials1",
+              "playlist_chain_refs": [
+                "break",
+                "commercials"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "commercials",
+              "media_ref": "commercials2",
+              "playlist_chain_refs": [
+                "break",
+                "commercials"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "outro",
+              "media_ref": "outro1",
+              "playlist_chain_refs": [
+                "break",
+                "outro"
+              ]
+            }
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "entries": [
+            {
+              "mode": "exact",
+              "playlist_ref": "intro",
+              "media_ref": "intro1",
+              "playlist_chain_refs": [
+                "break",
+                "intro"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "commercials",
+              "media_ref": "commercials3",
+              "playlist_chain_refs": [
+                "break",
+                "commercials"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "commercials",
+              "media_ref": "commercials1",
+              "playlist_chain_refs": [
+                "break",
+                "commercials"
+              ]
+            },
+            {
+              "mode": "exact",
+              "playlist_ref": "outro",
+              "media_ref": "outro1",
+              "playlist_chain_refs": [
+                "break",
+                "outro"
+              ]
+            }
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6",
+            "music7",
+            "music8"
+          ],
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

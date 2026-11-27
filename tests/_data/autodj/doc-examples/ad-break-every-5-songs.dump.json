@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "exported_at": "2026-10-31T00:00:00+00:00",
+  "station": {
+    "name": "Demo Radio",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false,
+    "backend_config": {
+      "duplicate_prevention_time_range": 120,
+      "duplicate_prevention_artist_time_range": null,
+      "autodj_queue_length": 3,
+      "crossfade": 2
+    }
+  },
+  "media": [
+    {
+      "ref": "music1",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-01.mp3",
+      "unique_id": "docexmp03000000000000001",
+      "length": 210.0,
+      "artist": "Music Artist 1",
+      "title": "Music Song 1",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music2",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-02.mp3",
+      "unique_id": "docexmp03000000000000002",
+      "length": 210.0,
+      "artist": "Music Artist 2",
+      "title": "Music Song 2",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music3",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-03.mp3",
+      "unique_id": "docexmp03000000000000003",
+      "length": 210.0,
+      "artist": "Music Artist 3",
+      "title": "Music Song 3",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music4",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-04.mp3",
+      "unique_id": "docexmp03000000000000004",
+      "length": 210.0,
+      "artist": "Music Artist 4",
+      "title": "Music Song 4",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music5",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-05.mp3",
+      "unique_id": "docexmp03000000000000005",
+      "length": 210.0,
+      "artist": "Music Artist 5",
+      "title": "Music Song 5",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music6",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-06.mp3",
+      "unique_id": "docexmp03000000000000006",
+      "length": 210.0,
+      "artist": "Music Artist 6",
+      "title": "Music Song 6",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music7",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-07.mp3",
+      "unique_id": "docexmp03000000000000007",
+      "length": 210.0,
+      "artist": "Music Artist 7",
+      "title": "Music Song 7",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "music8",
+      "path": "doc-examples/ad-break-every-5-songs/music/music-08.mp3",
+      "unique_id": "docexmp03000000000000008",
+      "length": 210.0,
+      "artist": "Music Artist 8",
+      "title": "Music Song 8",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "intro1",
+      "path": "doc-examples/ad-break-every-5-songs/break-intro/break-intro-01.mp3",
+      "unique_id": "docexmp03000000000000009",
+      "length": 5.0,
+      "artist": "Demo Radio",
+      "title": "Ad Break Intro",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "commercials1",
+      "path": "doc-examples/ad-break-every-5-songs/commercials/commercials-01.mp3",
+      "unique_id": "docexmp03000000000000010",
+      "length": 30.0,
+      "artist": "Sponsor 1",
+      "title": "Commercial 1",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "commercials2",
+      "path": "doc-examples/ad-break-every-5-songs/commercials/commercials-02.mp3",
+      "unique_id": "docexmp03000000000000011",
+      "length": 30.0,
+      "artist": "Sponsor 2",
+      "title": "Commercial 2",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "commercials3",
+      "path": "doc-examples/ad-break-every-5-songs/commercials/commercials-03.mp3",
+      "unique_id": "docexmp03000000000000012",
+      "length": 30.0,
+      "artist": "Sponsor 3",
+      "title": "Commercial 3",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    },
+    {
+      "ref": "outro1",
+      "path": "doc-examples/ad-break-every-5-songs/break-outro/break-outro-01.mp3",
+      "unique_id": "docexmp03000000000000013",
+      "length": 5.0,
+      "artist": "Demo Radio",
+      "title": "Ad Break Outro",
+      "album": "Doc Example: Ad Break Every 5 Songs",
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "music",
+      "name": "Music",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "shuffle",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": true,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Main music library in General Rotation."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "music1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music3",
+          "weight": 3,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music4",
+          "weight": 4,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music5",
+          "weight": 5,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music6",
+          "weight": 6,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music7",
+          "weight": 7,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "music8",
+          "weight": 8,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "intro",
+      "name": "Break Intro",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Hidden from listeners. Plays through Ad Break only."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "intro1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "commercials",
+      "name": "Commercials",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Ad spots in a fixed rotation, hidden from listeners. Plays through Ad Break only."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "commercials1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "commercials2",
+          "weight": 2,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "commercials3",
+          "weight": 3,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "outro",
+      "name": "Break Outro",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": true,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Hidden from listeners. Plays through Ad Break only."
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "outro1",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "break",
+      "name": "Ad Break",
+      "config": {
+        "type": "once_per_x_songs",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "preserve_queue_on_restart": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 5,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [
+          "merge"
+        ],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": "Every 5 songs: intro, two commercials, outro, as one block."
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "intro",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "commercials",
+          "weight": 2,
+          "consecutive_plays": 2,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "outro",
+          "weight": 3,
+          "consecutive_plays": 0,
+          "play_full_cycle": false,
+          "preserve_queue_on_recursive_reset": false,
+          "allowed_requests": "any"
+        }
+      ]
+    }
+  ]
+}

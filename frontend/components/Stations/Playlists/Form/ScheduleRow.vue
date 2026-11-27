@@ -27,7 +27,7 @@
                     class="col-md-4"
                     :field="r$.start_time"
                     :label="$gettext('Start Time')"
-                    :description="$gettext('To play once per day, set the start and end times to the same value.')"
+                    :description="$gettext('If the start and end times are the same, the playlist can play for 15 minutes from that time. For a single track, enable &quot;Only play one track at scheduled time&quot; on the Advanced tab.')"
                 >
                     <template #default="{id, model, fieldClass}">
                         <playlist-time

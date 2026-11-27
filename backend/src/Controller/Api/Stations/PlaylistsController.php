@@ -454,11 +454,13 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 );
             }
 
-            $return['links']['reshuffle'] = $router->fromHere(
-                routeName: 'api:stations:playlist:reshuffle',
-                routeParams: ['id' => $record->id],
-                absolute: !$isInternal
-            );
+            if (PlaylistOrders::Random !== $record->order) {
+                $return['links']['reshuffle'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:reshuffle',
+                    routeParams: ['id' => $record->id],
+                    absolute: !$isInternal
+                );
+            }
         }
 
         if (PlaylistSources::Playlists === $record->source) {

@@ -3879,7 +3879,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      summary: 'Re-shuffle a playlist whose playback order is "shuffled".'
+      summary: 'Re-shuffle a shuffled playlist or restart a sequential playlist from the top.'
       operationId: putReshufflePlaylist
       parameters:
         -

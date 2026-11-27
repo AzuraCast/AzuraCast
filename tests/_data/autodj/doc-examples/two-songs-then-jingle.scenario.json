@@ -1,0 +1,99 @@
+{
+  "description": "Doc example 'Two songs, then a jingle': a sequential group whose Music member has Consecutive Plays 2 plays two music tracks, then one jingle, and repeats. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "two-songs-then-jingle",
+      "now": "2026-11-02T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "music"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "music"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "jingles1",
+            "jingles2",
+            "jingles3"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "jingles"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "music"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "music1",
+            "music2",
+            "music3",
+            "music4",
+            "music5",
+            "music6"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "music"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "jingles1",
+            "jingles2",
+            "jingles3"
+          ],
+          "playlist_chain_refs": [
+            "rotation",
+            "jingles"
+          ]
+        }
+      ]
+    }
+  ]
+}

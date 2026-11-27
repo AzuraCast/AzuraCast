@@ -1,0 +1,161 @@
+{
+  "description": "Doc example 'Nightly show': a Night Show group scheduled 22:00-02:00 with Reset Queue at Schedule Start and Also Reset Nested Playlists starts every night with the Show Opener and the first Chill Set songs again, while the Story Time member is exempt from the nested reset and continues with the next episode. Daytime Music plays outside the window. Backs the matching example on the Playlist Group Examples docs page.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "show-restarts-nightly-story-continues",
+      "now": "2026-11-02T21:55:00+00:00",
+      "expect_sequence": [
+        {
+          "now": "2026-11-02T21:55:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "daytime1",
+            "daytime2",
+            "daytime3",
+            "daytime4",
+            "daytime5",
+            "daytime6"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-02T22:00:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "opener",
+          "media_ref": "opener1",
+          "playlist_chain_refs": [
+            "show",
+            "opener"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:01:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill1",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:05:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill2",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:09:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill3",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:13:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "story",
+          "media_ref": "story1",
+          "playlist_chain_refs": [
+            "show",
+            "story"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:23:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "opener",
+          "media_ref": "opener1",
+          "playlist_chain_refs": [
+            "show",
+            "opener"
+          ]
+        },
+        {
+          "now": "2026-11-02T22:24:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill4",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-03T12:00:00+00:00",
+          "mode": "membership",
+          "media_any_of": [
+            "daytime1",
+            "daytime2",
+            "daytime3",
+            "daytime4",
+            "daytime5",
+            "daytime6"
+          ],
+          "playlist_chain_refs": []
+        },
+        {
+          "now": "2026-11-03T22:00:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "opener",
+          "media_ref": "opener1",
+          "playlist_chain_refs": [
+            "show",
+            "opener"
+          ]
+        },
+        {
+          "now": "2026-11-03T22:01:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill1",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-03T22:05:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill2",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-03T22:09:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "chill",
+          "media_ref": "chill3",
+          "playlist_chain_refs": [
+            "show",
+            "chill"
+          ]
+        },
+        {
+          "now": "2026-11-03T22:13:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "story",
+          "media_ref": "story2",
+          "playlist_chain_refs": [
+            "show",
+            "story"
+          ]
+        }
+      ]
+    }
+  ]
+}

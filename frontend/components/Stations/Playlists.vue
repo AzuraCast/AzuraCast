@@ -280,7 +280,7 @@
                                         class="btn btn-sm btn-secondary"
                                         @click="doModify(item.links.reshuffle)"
                                     >
-                                        {{ $gettext('Reshuffle') }}
+                                        {{ (item.order === 'sequential') ? $gettext('Restart') : $gettext('Reshuffle') }}
                                     </button>
                                     <button
                                         v-if="item.links.import"

@@ -180,6 +180,47 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
     }
 
     /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function setPlaylistsForFolderKeepsLinksOfFolderDifferingInCase(FunctionalTester $I): void
+    {
+        $I->wantTo('Set the playlists of a folder without removing those of a folder differing only in case.');
+
+        $this->getMediaFilesystem()->createDirectory('Music/pop');
+        $this->uploadTestSong('Music/Pop/test.mp3');
+        $linkedPlaylistId = $this->linkFolderToNewPlaylist('Music/Pop');
+        $newPlaylistId = $this->createPlaylist('Folder Playlist');
+
+        $this->batch($I, 'playlist', ['Music/pop'], [
+            'playlists' => [$newPlaylistId],
+        ]);
+
+        $I->assertSame(['Music/Pop', 'Music/pop'], $this->getFolderLinkPaths());
+        $I->assertSame(1, $this->countPlaylistSongs($linkedPlaylistId));
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function setPlaylistsForFolderLinksPlaylistOfFolderDifferingInCase(FunctionalTester $I): void
+    {
+        $I->wantTo('Link a playlist to a folder even if a folder differing only in case already has it.');
+
+        $this->getMediaFilesystem()->createDirectory('Music/Pop');
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $playlistId = $this->linkFolderToNewPlaylist('Music/Pop');
+
+        $this->batch($I, 'playlist', ['Music/pop'], [
+            'playlists' => [$playlistId],
+        ]);
+
+        $I->assertSame(['Music/Pop', 'Music/pop'], $this->getFolderLinkPaths());
+        $I->assertSame(['Music/pop/test.mp3'], $this->getPlaylistMediaPaths($playlistId));
+    }
+
+    /**
      * The station media directory outlives the test station, so remove what earlier runs left behind.
      */
     protected function clearTestFolders(): void

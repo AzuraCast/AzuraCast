@@ -117,7 +117,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
                 <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station 
-                AND spf.path = :path
+                AND spf.path = COLLATE(:path, utf8mb4_bin)
                 AND IDENTITY(spf.playlist) IN (:playlistIds)
             DQL
             )->setParameter('station', $station)
@@ -203,7 +203,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             <<<'DQL'
                 SELECT IDENTITY(spf.playlist) AS playlist_id
                 FROM App\Entity\StationPlaylistFolder spf
-                WHERE spf.station = :station AND spf.path = :path
+                WHERE spf.station = :station AND spf.path = COLLATE(:path, utf8mb4_bin)
             DQL
         )->setParameter('station', $station)
             ->setParameter('path', self::filterPath($path))

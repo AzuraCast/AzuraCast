@@ -199,7 +199,7 @@ final class CheckMediaTask extends AbstractTask
         $storageLocation = $this->em->refetch($storageLocation);
 
         // Loop through currently unprocessable media.
-        $this->processUnprocessableMediaRows($storageLocation, $musicFiles, $stats);
+        $this->processUnprocessableMediaRows($storageLocation, $musicFiles, $coverFiles, $stats);
 
         $storageLocation = $this->em->refetch($storageLocation);
 
@@ -236,10 +236,25 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
+        $unprocessableMtimes = $this->unprocessableMediaRepo->getMtimesByPath($storageLocation);
+
         foreach ($coverFiles as $folderHash => $coverFile) {
+            $path = $coverFile[StorageAttributes::ATTRIBUTE_PATH];
+
+            // Skip cover art that failed to process before and hasn't changed since.
+            if (
+                isset($unprocessableMtimes[$path])
+                && !UnprocessableMedia::needsReprocessing(
+                    $coverFile[StorageAttributes::ATTRIBUTE_LAST_MODIFIED],
+                    $unprocessableMtimes[$path]
+                )
+            ) {
+                continue;
+            }
+
             $message = new ProcessCoverArtMessage();
             $message->storage_location_id = $storageLocation->id;
-            $message->path = $coverFile[StorageAttributes::ATTRIBUTE_PATH];
+            $message->path = $path;
             $message->folder_hash = $folderHash;
 
             $this->messageBus->dispatch($message);
@@ -320,29 +335,25 @@ final class CheckMediaTask extends AbstractTask
     private function processUnprocessableMediaRows(
         StorageLocation $storageLocation,
         array &$musicFiles,
+        array $coverFiles,
         array &$stats
     ): void {
-        $unprocessableMediaQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT upm.id, upm.path, upm.mtime
-                FROM App\Entity\UnprocessableMedia upm
-                WHERE upm.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $storageLocation);
+        $coverPaths = array_flip(array_column($coverFiles, StorageAttributes::ATTRIBUTE_PATH));
 
-        $unprocessableRecords = $unprocessableMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY);
+        $unprocessableMtimes = $this->unprocessableMediaRepo->getMtimesByPath($storageLocation);
 
-        foreach ($unprocessableRecords as $unprocessableRow) {
-            $pathHash = md5($unprocessableRow['path']);
+        foreach ($unprocessableMtimes as $path => $unprocessableMtime) {
+            $path = (string)$path;
+            $pathHash = md5($path);
 
             if (isset($musicFiles[$pathHash])) {
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (UnprocessableMedia::needsReprocessing($mtime, Types::int($unprocessableRow['mtime']))) {
+                if (UnprocessableMedia::needsReprocessing($mtime, $unprocessableMtime)) {
                     $message = new AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->id;
-                    $message->path = $unprocessableRow['path'];
+                    $message->path = $path;
 
                     $this->messageBus->dispatch($message);
 
@@ -352,8 +363,8 @@ final class CheckMediaTask extends AbstractTask
                 }
 
                 unset($musicFiles[$pathHash]);
-            } else {
-                $this->unprocessableMediaRepo->clearForPath($storageLocation, $unprocessableRow['path']);
+            } elseif (!isset($coverPaths[$path])) {
+                $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
             }
         }
 

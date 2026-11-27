@@ -9,6 +9,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 
 /**
  * @extends AbstractStationBasedRepository<StationPlaylistFolder>
@@ -221,6 +222,6 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
     public static function filterPath(string $path): string
     {
-        return trim($path, '/');
+        return new WhitespacePathNormalizer()->normalizePath($path);
     }
 }

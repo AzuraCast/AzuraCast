@@ -163,6 +163,73 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
     }
 
     /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function applyToStoresNormalizedFolderPath(FunctionalTester $I): void
+    {
+        $I->wantTo('Store a normalized folder path when applying a playlist to a folder given with extra slashes.');
+
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $playlistId = $this->createPlaylist('Apply Base');
+
+        $this->applyTo($I, $playlistId, ['/Music//./pop/'], false);
+        $I->seeResponseContainsJson(['success' => true]);
+
+        $I->assertSame(['Music/pop'], $this->getFolderLinkPaths());
+        $I->assertSame(['Music/pop/test.mp3'], $this->getPlaylistMediaPaths($playlistId));
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function applyToNamesCopiedPlaylistAfterNormalizedPath(FunctionalTester $I): void
+    {
+        $I->wantTo('Name a playlist copied onto a folder given with backslashes after the normalized folder path.');
+
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $playlistId = $this->createPlaylist('Apply Base');
+
+        $this->applyTo($I, $playlistId, ['Music\\pop'], true);
+        $I->seeResponseContainsJson(['success' => true]);
+
+        $copy = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+            'station' => $this->getTestStation(),
+            'name' => 'Apply Base - Music/pop',
+        ]);
+        $I->assertNotNull($copy);
+
+        $I->assertSame(['Music/pop'], $this->getFolderLinkPaths());
+        $I->assertSame(['Music/pop/test.mp3'], $this->getPlaylistMediaPaths($copy->id));
+        $I->assertSame([], $this->getPlaylistMediaPaths($playlistId));
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function applyToRejectsFolderOutsideMediaStorage(FunctionalTester $I): void
+    {
+        $I->wantTo('Reject applying a playlist to a folder outside the media storage without linking or copying it.');
+
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $playlistId = $this->createPlaylist('Apply Base');
+
+        $this->applyTo($I, $playlistId, ['Music/pop', '../escape'], true);
+        $I->dontSeeResponseContainsJson(['success' => true]);
+
+        $I->assertSame([], $this->getFolderLinkPaths());
+        $I->assertSame(
+            ['Apply Base'],
+            array_values(array_filter(
+                $this->getPlaylistNames(),
+                static fn(string $name) => str_starts_with($name, 'Apply Base')
+            ))
+        );
+    }
+
+    /**
      * The station media directory outlives the test station, so remove what earlier runs left behind.
      */
     protected function clearTestFolders(): void
@@ -218,20 +285,58 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
         $this->em->clear();
     }
 
-    private function linkFolderToNewPlaylist(string $path): int
+    /**
+     * @param string[] $directories
+     */
+    private function applyTo(FunctionalTester $I, int $playlistId, array $directories, bool $copyPlaylist): void
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPut(
+            '/api/station/' . $this->getTestStation()->id . '/playlist/' . $playlistId . '/apply-to',
+            [
+                'directories' => $directories,
+                'copyPlaylist' => $copyPlaylist,
+            ]
+        );
+
+        $this->em->clear();
+    }
+
+    private function createPlaylist(string $name): int
     {
         $playlist = new StationPlaylist($this->getTestStation());
-        $playlist->name = 'Playlist for ' . $path;
+        $playlist->name = $name;
         $this->em->persist($playlist);
         $this->em->flush();
+
+        return $playlist->id;
+    }
+
+    private function linkFolderToNewPlaylist(string $path): int
+    {
+        $playlistId = $this->createPlaylist('Playlist for ' . $path);
 
         $this->di->get(StationPlaylistFolderRepository::class)->addPlaylistsToFolder(
             $this->getTestStation(),
             $path,
-            [$playlist->id => 0]
+            [$playlistId => 0]
         );
 
-        return $playlist->id;
+        return $playlistId;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPlaylistNames(): array
+    {
+        $names = array_map(
+            static fn(StationPlaylist $playlist) => $playlist->name,
+            $this->em->getRepository(StationPlaylist::class)->findBy(['station' => $this->getTestStation()])
+        );
+        sort($names);
+
+        return $names;
     }
 
     /**

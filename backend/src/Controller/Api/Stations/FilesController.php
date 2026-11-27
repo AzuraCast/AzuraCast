@@ -18,6 +18,7 @@ use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -26,6 +27,7 @@ use App\Message\WritePlaylistFileMessage;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -164,6 +166,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
         private readonly MediaListCache $mediaListCache,
+        private readonly WhitespacePathNormalizer $pathNormalizer,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -351,6 +354,10 @@ final class FilesController extends AbstractStationApiCrudController
         unset($data['custom_fields'], $data['playlists']);
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
+
+        if (isset($data['path'])) {
+            $data['path'] = $this->pathNormalizer->normalizePath(Types::string($data['path']));
+        }
 
         $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);

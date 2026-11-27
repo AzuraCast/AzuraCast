@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Utilities\File;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,7 +43,9 @@ final readonly class UploadFile
 
     public function getSanitizedPath(): string
     {
-        return File::sanitizePathPrefix($this->getPath());
+        return new WhitespacePathNormalizer()->normalizePath(
+            File::sanitizePathPrefix($this->getPath())
+        );
     }
 
     public function getPath(): string

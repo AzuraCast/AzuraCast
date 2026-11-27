@@ -17,6 +17,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
@@ -56,7 +57,8 @@ final class FlowUploadAction implements SingleActionInterface
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationPlaylistFolderRepository $spfRepo,
-        private readonly MediaListCache $mediaListCache
+        private readonly MediaListCache $mediaListCache,
+        private readonly WhitespacePathNormalizer $pathNormalizer
     ) {
     }
 
@@ -71,12 +73,14 @@ final class FlowUploadAction implements SingleActionInterface
         $mediaStorage = $station->media_storage_location;
         $mediaStorage->errorIfFull();
 
+        $currentDir = $this->pathNormalizer->normalizePath(
+            Types::string($request->getParam('currentDirectory'))
+        );
+
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {
             return $flowResponse;
         }
-
-        $currentDir = Types::string($request->getParam('currentDirectory'));
 
         $destPath = $flowResponse->getClientFullPath();
         if (!empty($currentDir)) {

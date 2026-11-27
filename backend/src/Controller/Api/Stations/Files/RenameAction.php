@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Files;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -38,7 +39,8 @@ final readonly class RenameAction implements SingleActionInterface
 {
     public function __construct(
         private BatchUtilities $batchUtilities,
-        private StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems,
+        private WhitespacePathNormalizer $pathNormalizer
     ) {
     }
 
@@ -47,13 +49,13 @@ final readonly class RenameAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $from = Types::string($request->getParam('file'));
+        $from = $this->pathNormalizer->normalizePath(Types::string($request->getParam('file')));
         if (empty($from)) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('File not specified.')));
         }
 
-        $to = Types::string($request->getParam('newPath'));
+        $to = $this->pathNormalizer->normalizePath(Types::string($request->getParam('newPath')));
         if (empty($to)) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('New path not specified.')));

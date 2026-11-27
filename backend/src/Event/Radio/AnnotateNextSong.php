@@ -119,10 +119,12 @@ final class AnnotateNextSong extends Event
                 $this->songPath,
             ];
 
-            return implode(':', $annotateParts);
+            $annotationStr = implode(':', $annotateParts);
+        } else {
+            $annotationStr = $this->songPath;
         }
 
-        return $this->songPath;
+        return str_replace(["\n", "\r"], ["", ""], $annotationStr);
     }
 
     public static function fromStationMedia(

@@ -7,6 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Minor change to prevent newlines in annotations sent to Liquidsoap.
+
 ## Bug Fixes
 
 ---

@@ -316,6 +316,48 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
     }
 
     /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function listFilesShowsMediaAndFolderPlaylistsOfDirectoryGivenWithExtraSlashes(FunctionalTester $I): void
+    {
+        $I->wantTo('List the media and folder playlists of a directory given with extra slashes.');
+
+        $this->uploadTestSong('Music/test.mp3');
+        $this->getMediaFilesystem()->createDirectory('Music/pop');
+        $parentPlaylistId = $this->linkFolderToNewPlaylist('Music');
+        $folderPlaylistId = $this->linkFolderToNewPlaylist('Music/pop');
+
+        foreach (['Music/', '/Music', '//Music/./'] as $currentDirectory) {
+            $rows = $this->listFiles($I, $currentDirectory);
+
+            $I->assertSame(['Music/pop', 'Music/test.mp3'], array_column($rows, 'path'));
+            $I->assertSame(['directory', 'media'], array_column($rows, 'type'));
+
+            $playlistIds = array_column($rows[0]['dir']['playlists'], 'id');
+            sort($playlistIds);
+            $I->assertSame([$parentPlaylistId, $folderPlaylistId], $playlistIds);
+        }
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function searchInDirectoryGivenWithExtraSlashesFindsItsMedia(FunctionalTester $I): void
+    {
+        $I->wantTo('Search the media inside a directory given with extra slashes.');
+
+        $this->uploadTestSong('Music/test.mp3');
+
+        foreach (['Music/', '/Music', '//Music/./'] as $currentDirectory) {
+            $rows = $this->listFiles($I, $currentDirectory, '*');
+
+            $I->assertSame(['Music/test.mp3'], array_column($rows, 'path'));
+        }
+    }
+
+    /**
      * The station media directory outlives the test station, so remove what earlier runs left behind.
      */
     protected function clearTestFolders(): void
@@ -347,6 +389,28 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
         $I->seeResponseContainsJson(['success' => true]);
 
         $this->em->clear();
+    }
+
+    /**
+     * @return list<array{
+     *  path: string,
+     *  type: string,
+     *  dir: array{playlists: list<array{id: int}>}
+     * }>
+     */
+    private function listFiles(FunctionalTester $I, string $currentDirectory, ?string $searchPhrase = null): array
+    {
+        $I->sendGet(
+            '/api/station/' . $this->getTestStation()->id . '/files/list',
+            [
+                'currentDirectory' => $currentDirectory,
+                'searchPhrase' => $searchPhrase,
+                'flushCache' => 1,
+            ]
+        );
+        $I->seeResponseCodeIsSuccessful();
+
+        return json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
     }
 
     private function upload(FunctionalTester $I, string $currentDirectory): void

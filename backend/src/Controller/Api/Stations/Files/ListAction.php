@@ -19,6 +19,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -85,7 +86,8 @@ final class ListAction implements SingleActionInterface
     public function __construct(
         private readonly MediaListCache $mediaListCache,
         private readonly StationFilesystems $stationFilesystems,
-        private readonly StationMediaRepository $mediaRepo
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly WhitespacePathNormalizer $pathNormalizer
     ) {
     }
 
@@ -99,7 +101,9 @@ final class ListAction implements SingleActionInterface
         $station = $request->getStation();
         $storageLocation = $station->media_storage_location;
 
-        $currentDir = Types::string($request->getParam('currentDirectory'));
+        $currentDir = $this->pathNormalizer->normalizePath(
+            Types::string($request->getParam('currentDirectory'))
+        );
 
         $searchPhraseFull = Types::stringOrNull($request->getParam('searchPhrase'), true);
         $isSearch = null !== $searchPhraseFull;

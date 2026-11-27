@@ -63,6 +63,7 @@ final class StationStreamer implements
     ]
     public string $streamer_username {
         set => $this->truncateString($value, 50);
+        get => str_replace(["/", "\\"], ["", ""], $this->streamer_username);
     }
 
     #[

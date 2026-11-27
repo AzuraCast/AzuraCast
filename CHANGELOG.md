@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Minor change to prevent newlines in annotations sent to Liquidsoap.
 
+- DJ/Streamer usernames cannot have slashes in them.
+
 ## Bug Fixes
 
 ---

@@ -16,7 +16,16 @@ use FunctionalTester;
 
 final class Api_Stations_FilesFolderLinksCest extends CestAbstract
 {
-    private const array TEST_FOLDERS = ['Archive', 'Imaging', 'Music', 'Musical', 'Show-A', 'Show_A', 'show_a'];
+    private const array TEST_FOLDERS = [
+        'Archive',
+        'Imaging',
+        'Music',
+        'Musical',
+        'Show%',
+        'Show-A',
+        'Show_A',
+        'show_a',
+    ];
 
     /**
      * @before login
@@ -60,16 +69,19 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
      */
     public function deleteFolderKeepsLinksOfFolderMatchingItsWildcards(FunctionalTester $I): void
     {
-        $I->wantTo('Keep the playlist links of a folder that an underscore in a deleted folder name would match.');
+        $I->wantTo('Keep the playlist links of a folder that wildcards in a deleted folder name would match.');
 
         $this->getMediaFilesystem()->createDirectory('Show_A');
-        $this->uploadTestSong('Show-A/test.mp3');
-        $playlistId = $this->linkFolderToNewPlaylist('Show-A');
+        $this->getMediaFilesystem()->createDirectory('Show%');
+        $this->uploadTestSong('Show-A/Sub/test.mp3');
+        $playlistId = $this->linkFolderToNewPlaylist('Show-A/Sub');
 
-        $this->batch($I, 'delete', ['Show_A']);
+        foreach (['Show_A', 'Show%'] as $deletedFolder) {
+            $this->batch($I, 'delete', [$deletedFolder]);
 
-        $I->assertSame(['Show-A'], $this->getFolderLinkPaths());
-        $I->assertSame(1, $this->countPlaylistSongs($playlistId));
+            $I->assertSame(['Show-A/Sub'], $this->getFolderLinkPaths());
+            $I->assertSame(1, $this->countPlaylistSongs($playlistId));
+        }
     }
 
     /**
@@ -155,6 +167,39 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
         );
         $I->assertSame(
             ['Archive/pop/test.mp3', 'Music/Pop/other.mp3', 'Music/popular/other.mp3'],
+            $this->getMediaPaths()
+        );
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function moveFolderLeavesFoldersMatchingItsWildcards(FunctionalTester $I): void
+    {
+        $I->wantTo('Move only the records of the moved folder, not of a folder that its wildcards would match.');
+
+        $this->getMediaFilesystem()->createDirectory('Archive');
+        $this->uploadTestSong('Show_A/test.mp3');
+        $this->uploadTestSong('Show%/test.mp3');
+        $this->uploadTestSong('Show-A/Sub/test.mp3');
+        $this->linkFolderToNewPlaylist('Show_A');
+        $this->linkFolderToNewPlaylist('Show%');
+        $this->linkFolderToNewPlaylist('Show-A/Sub');
+
+        foreach (['Show_A', 'Show%'] as $movedFolder) {
+            $this->batch($I, 'move', [$movedFolder], [
+                'currentDirectory' => '',
+                'directory' => 'Archive',
+            ]);
+        }
+
+        $I->assertSame(
+            ['Archive/Show%', 'Archive/Show_A', 'Show-A/Sub'],
+            $this->getFolderLinkPaths()
+        );
+        $I->assertSame(
+            ['Archive/Show%/test.mp3', 'Archive/Show_A/test.mp3', 'Show-A/Sub/test.mp3'],
             $this->getMediaPaths()
         );
     }

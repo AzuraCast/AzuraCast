@@ -89,25 +89,38 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
      */
     public function batchRejectsPathsPointingToBaseDirectory(FunctionalTester $I): void
     {
-        $I->wantTo('Reject batch actions on paths that point to the base directory without deleting anything.');
+        $I->wantTo('Reject batch actions on paths that point to the base directory without changing anything.');
 
+        $this->getMediaFilesystem()->createDirectory('Archive');
         $this->uploadTestSong('Music/test.mp3');
         $this->linkFolderToNewPlaylist('Music');
+        $playlistId = $this->createPlaylist('Base Directory Playlist');
 
-        foreach (['', '/', '.', './/'] as $basePath) {
-            foreach (['dirs', 'files'] as $param) {
-                $body = ['do' => 'delete', 'files' => [], 'dirs' => []];
-                $body[$param] = [$basePath];
+        $actions = [
+            'delete' => [],
+            'move' => ['currentDirectory' => '', 'directory' => 'Archive'],
+            'playlist' => ['playlists' => [$playlistId]],
+        ];
 
-                $I->haveHttpHeader('Content-Type', 'application/json');
-                $I->sendPut('/api/station/' . $this->getTestStation()->id . '/files/batch', $body);
-                $I->dontSeeResponseContainsJson(['success' => true]);
+        foreach ($actions as $action => $params) {
+            foreach (['', '/', '.', './/'] as $basePath) {
+                foreach (['dirs', 'files'] as $param) {
+                    $body = ['do' => $action, 'files' => [], 'dirs' => [], ...$params];
+                    $body[$param] = [$basePath];
 
-                $this->em->clear();
+                    $I->haveHttpHeader('Content-Type', 'application/json');
+                    $I->sendPut('/api/station/' . $this->getTestStation()->id . '/files/batch', $body);
+                    $I->seeResponseContainsJson([
+                        'success' => false,
+                        'message' => 'Batch actions cannot be applied to the base directory.',
+                    ]);
 
-                $I->assertTrue($this->getMediaFilesystem()->fileExists('Music/test.mp3'));
-                $I->assertSame(['Music/test.mp3'], $this->getMediaPaths());
-                $I->assertSame(['Music'], $this->getFolderLinkPaths());
+                    $this->em->clear();
+
+                    $I->assertTrue($this->getMediaFilesystem()->fileExists('Music/test.mp3'));
+                    $I->assertSame(['Music/test.mp3'], $this->getMediaPaths());
+                    $I->assertSame(['Music'], $this->getFolderLinkPaths());
+                }
             }
         }
     }

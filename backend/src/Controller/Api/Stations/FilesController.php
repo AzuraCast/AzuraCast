@@ -313,6 +313,9 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
+        // Resolve the destination before writing anything to reject invalid paths early.
+        $destPath = $apiRecord->getSanitizedPath();
+
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
         new Filesystem()->dumpFile($tempPath, $apiRecord->getFileContents());
@@ -320,7 +323,7 @@ final class FilesController extends AbstractStationApiCrudController
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(
             $mediaStorage,
-            $apiRecord->getSanitizedPath(),
+            $destPath,
             $tempPath
         );
 

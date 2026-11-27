@@ -172,6 +172,34 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
      * @before login
      * @before clearTestFolders
      */
+    public function base64UploadOutsideMediaStorageLeavesNoTempFile(FunctionalTester $I): void
+    {
+        $I->wantTo('Reject a base64 upload outside the media storage without leaving its temp file behind.');
+
+        $fileName = 'escape-leftover.mp3';
+        $tempPath = $this->getTestStation()->getRadioTempDir() . '/' . File::sanitizeFileName($fileName);
+        @unlink($tempPath);
+
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPost(
+            '/api/station/' . $this->getTestStation()->id . '/files',
+            [
+                'path' => '../' . $fileName,
+                'file' => base64_encode((string)file_get_contents(self::TEST_SONG_PATH)),
+            ]
+        );
+        $I->dontSeeResponseContainsJson(['success' => true]);
+
+        $this->em->clear();
+
+        $I->assertSame([], $this->getMediaPaths());
+        $I->assertFileDoesNotExist($tempPath);
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
     public function editMediaStoresNormalizedPath(FunctionalTester $I): void
     {
         $I->wantTo('Store a normalized path when editing the path of a media file with extra slashes.');

@@ -33,15 +33,17 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             $location = $location->media_storage_location;
         }
 
+        // First LIKE uses the index, second matches case
         $mediaInFolderRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.id
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path
+                AND sm.path LIKE :dirContents
+                AND sm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $location)
-            ->setParameter('path', $path . '/%')
+            ->setParameter('dirContents', $this->escapeLikePattern($path) . '/%')
             ->getArrayResult();
 
         return array_column($mediaInFolderRaw, 'id', 'id');

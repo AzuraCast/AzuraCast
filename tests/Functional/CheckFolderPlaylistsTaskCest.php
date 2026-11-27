@@ -52,6 +52,28 @@ final class CheckFolderPlaylistsTaskCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function addOnlyMediaInsideFolder(FunctionalTester $I): void
+    {
+        $I->wantTo('Add only the media inside a folder to its playlist, not that of similarly named folders.');
+
+        $fsMedia = $this->getMediaFilesystem();
+        $fsMedia->createDirectory('Music/pop');
+        $fsMedia->createDirectory('Show_A');
+        $popPlaylistId = $this->linkFolderToPlaylist('Music/pop');
+        $showPlaylistId = $this->linkFolderToPlaylist('Show_A');
+
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $this->uploadTestSong('Music/Pop/other.mp3');
+        $this->uploadTestSong('Show-A/test.mp3');
+        $this->syncPlaylistFolders();
+
+        $I->assertSame(1, $this->countPlaylistSongs($popPlaylistId));
+        $I->assertSame(0, $this->countPlaylistSongs($showPlaylistId));
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function removeDeletedEmptyFolder(FunctionalTester $I): void
     {
         $I->wantTo('Remove the playlist link of a deleted empty folder while the media storage is visible.');

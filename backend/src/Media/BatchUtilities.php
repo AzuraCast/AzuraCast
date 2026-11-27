@@ -167,7 +167,7 @@ final class BatchUtilities
                 AND sm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
+            ->setParameter('dirContents', $this->mediaRepo->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
@@ -211,7 +211,7 @@ final class BatchUtilities
                 AND upm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
+            ->setParameter('dirContents', $this->mediaRepo->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
@@ -241,16 +241,9 @@ final class BatchUtilities
             DQL
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('dir', $dir)
-            ->setParameter('dirContents', $this->escapeLikePattern($dir) . '/%');
+            ->setParameter('dirContents', $this->mediaRepo->escapeLikePattern($dir) . '/%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
-    }
-
-    private function escapeLikePattern(string $path): string
-    {
-        return $this->em->getConnection()
-            ->getDatabasePlatform()
-            ->escapeStringForLike($path, '\\');
     }
 
     /**

@@ -159,6 +159,27 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
     }
 
     /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function setPlaylistsForFolderAddsOnlyMediaInsideIt(FunctionalTester $I): void
+    {
+        $I->wantTo('Add only the media inside a folder to its playlists, not that of similarly named folders.');
+
+        $this->getMediaFilesystem()->createDirectory('Show_A');
+        $this->uploadTestSong('Music/pop/test.mp3');
+        $this->uploadTestSong('Music/Pop/other.mp3');
+        $this->uploadTestSong('Show-A/test.mp3');
+        $playlistId = $this->createPlaylist('Folder Playlist');
+
+        $this->batch($I, 'playlist', ['Music/pop', 'Show_A'], [
+            'playlists' => [$playlistId],
+        ]);
+
+        $I->assertSame(['Music/pop/test.mp3'], $this->getPlaylistMediaPaths($playlistId));
+    }
+
+    /**
      * The station media directory outlives the test station, so remove what earlier runs left behind.
      */
     protected function clearTestFolders(): void
@@ -172,7 +193,7 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
 
     /**
      * @param string[] $dirs
-     * @param array<string, string> $params
+     * @param array<string, mixed> $params
      */
     private function batch(FunctionalTester $I, string $action, array $dirs, array $params = []): void
     {
@@ -196,18 +217,23 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
 
     private function linkFolderToNewPlaylist(string $path): int
     {
-        $station = $this->getTestStation();
-
-        $playlist = new StationPlaylist($station);
-        $playlist->name = 'Playlist for ' . $path;
-        $this->em->persist($playlist);
-        $this->em->flush();
+        $playlistId = $this->createPlaylist('Playlist for ' . $path);
 
         $this->di->get(StationPlaylistFolderRepository::class)->addPlaylistsToFolder(
-            $station,
+            $this->getTestStation(),
             $path,
-            [$playlist->id => 0]
+            [$playlistId => 0]
         );
+
+        return $playlistId;
+    }
+
+    private function createPlaylist(string $name): int
+    {
+        $playlist = new StationPlaylist($this->getTestStation());
+        $playlist->name = $name;
+        $this->em->persist($playlist);
+        $this->em->flush();
 
         return $playlist->id;
     }
@@ -236,6 +262,20 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
             $this->em->getRepository(StationMedia::class)->findBy(
                 ['storage_location' => $this->getTestStation()->media_storage_location]
             )
+        );
+        sort($paths);
+
+        return $paths;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPlaylistMediaPaths(int $playlistId): array
+    {
+        $paths = array_map(
+            static fn(StationPlaylistMedia $spm) => $spm->media->path,
+            $this->em->getRepository(StationPlaylistMedia::class)->findBy(['playlist' => $playlistId])
         );
         sort($paths);
 

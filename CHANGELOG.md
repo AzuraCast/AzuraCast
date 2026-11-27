@@ -15,6 +15,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed deleting, renaming or moving a media folder also changing folders with similar names and their playlist links.
 
+- Fixed assigning a media folder to a playlist also adding the files of folders with similar names.
+
 ---
 
 # AzuraCast 0.24.1 (Nov 19, 2026)

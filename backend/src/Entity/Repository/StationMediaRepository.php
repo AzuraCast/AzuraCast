@@ -401,11 +401,27 @@ final class StationMediaRepository extends Repository
         }
 
         if ($path !== null) {
-            $clearQuery->andWhere('sm.path LIKE :path')
-                ->setParameter('path', "{$path}%");
+            $this->filterByFileOrDirectory($clearQuery, $path);
         }
 
         return Types::int($clearQuery->getQuery()->execute());
+    }
+
+    /**
+     * Limits a media query to the file at the given path or to the files inside the directory at that path.
+     */
+    public function filterByFileOrDirectory(QueryBuilder $qb, string $path): QueryBuilder
+    {
+        $alias = $qb->getRootAliases()[0];
+
+        // Plain comparisons use the index, binary ones match case
+        return $qb->andWhere(
+            <<<DQL
+                ({$alias}.path = :fileOrDir AND {$alias}.path = COLLATE(:fileOrDir, utf8mb4_bin))
+                OR ({$alias}.path LIKE :dirContents AND {$alias}.path LIKE COLLATE(:dirContents, utf8mb4_bin))
+            DQL
+        )->setParameter('fileOrDir', $path)
+            ->setParameter('dirContents', $this->escapeLikePattern($path) . '/%');
     }
 
     /**
@@ -419,9 +435,11 @@ final class StationMediaRepository extends Repository
             return 0;
         }
 
+        // First IN uses the index, second matches case
         $clearQuery = $this->createClearComputedAutoCueQuery()
             ->andWhere('sm.storage_location = :storageLocation')
             ->andWhere('sm.path IN (:paths)')
+            ->andWhere('COLLATE(sm.path, utf8mb4_bin) IN (:paths)')
             ->setParameter('storageLocation', $storageLocation)
             ->setParameter('paths', $paths);
 

@@ -16,7 +16,7 @@ use FunctionalTester;
 
 final class Api_Stations_FilesFolderLinksCest extends CestAbstract
 {
-    private const array TEST_FOLDERS = ['Archive', 'Imaging', 'Music', 'Musical', 'Show-A', 'Show_A'];
+    private const array TEST_FOLDERS = ['Archive', 'Imaging', 'Music', 'Musical', 'Show-A', 'Show_A', 'show_a'];
 
     /**
      * @before login
@@ -259,6 +259,42 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
     }
 
     /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function searchInFolderListsOnlyMediaInsideIt(FunctionalTester $I): void
+    {
+        $I->wantTo('Search only the media inside the current folder, not that of similarly named folders.');
+
+        $this->uploadTestSong('Show_A/test.mp3');
+        $this->uploadTestSong('Show-A/test.mp3');
+        $this->uploadTestSong('show_a/other.mp3');
+
+        $rows = $this->listFiles($I, 'Show_A', '*');
+
+        $I->assertSame(['Show_A/test.mp3'], array_column($rows, 'path'));
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
+    public function listFolderShowsOnlyPlaylistsOfItsParents(FunctionalTester $I): void
+    {
+        $I->wantTo('List the playlists of the current folder on its subfolders, not of folders differing in case.');
+
+        $this->getMediaFilesystem()->createDirectory('Music/pop/Sub');
+        $this->getMediaFilesystem()->createDirectory('Music/Pop');
+        $parentPlaylistId = $this->linkFolderToNewPlaylist('Music/pop');
+        $this->linkFolderToNewPlaylist('Music/Pop');
+
+        $rows = $this->listFiles($I, 'Music/pop');
+
+        $I->assertSame(['Music/pop/Sub'], array_column($rows, 'path'));
+        $I->assertSame([$parentPlaylistId], array_column($rows[0]['dir']['playlists'], 'id'));
+    }
+
+    /**
      * The station media directory outlives the test station, so remove what earlier runs left behind.
      */
     protected function clearTestFolders(): void
@@ -292,6 +328,27 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
         $I->seeResponseContainsJson(['success' => true]);
 
         $this->em->clear();
+    }
+
+    /**
+     * @return list<array{
+     *  path: string,
+     *  dir: array{playlists: list<array{id: int}>}
+     * }>
+     */
+    private function listFiles(FunctionalTester $I, string $currentDirectory, ?string $searchPhrase = null): array
+    {
+        $I->sendGet(
+            '/api/station/' . $this->getTestStation()->id . '/files/list',
+            [
+                'currentDirectory' => $currentDirectory,
+                'searchPhrase' => $searchPhrase,
+                'flushCache' => 1,
+            ]
+        );
+        $I->seeResponseCodeIsSuccessful();
+
+        return json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
     }
 
     private function linkFolderToNewPlaylist(string $path): int

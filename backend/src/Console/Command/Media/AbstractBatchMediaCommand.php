@@ -6,8 +6,10 @@ namespace App\Console\Command\Media;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Utilities\Types;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,6 +21,8 @@ abstract class AbstractBatchMediaCommand extends CommandAbstract
 
     public function __construct(
         private readonly StationRepository $stationRepo,
+        protected readonly StationMediaRepository $mediaRepo,
+        private readonly WhitespacePathNormalizer $pathNormalizer,
     ) {
         parent::__construct();
     }
@@ -54,6 +58,13 @@ abstract class AbstractBatchMediaCommand extends CommandAbstract
 
     protected function getPath(InputInterface $input): ?string
     {
-        return Types::stringOrNull($input->getArgument('path'), true);
+        $path = Types::stringOrNull($input->getArgument('path'), true);
+        if ($path === null) {
+            return null;
+        }
+
+        $path = $this->pathNormalizer->normalizePath($path);
+
+        return ($path !== '') ? $path : null;
     }
 }

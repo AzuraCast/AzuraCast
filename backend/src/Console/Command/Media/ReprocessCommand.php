@@ -39,8 +39,7 @@ final class ReprocessCommand extends AbstractBatchMediaCommand
         }
 
         if (null !== $path) {
-            $reprocessMediaQueue = $reprocessMediaQueue->andWhere('sm.path LIKE :path')
-                ->setParameter('path', $path . '%');
+            $reprocessMediaQueue = $this->mediaRepo->filterByFileOrDirectory($reprocessMediaQueue, $path);
         }
 
         $recordsAffected = $reprocessMediaQueue->getQuery()->getSingleScalarResult();

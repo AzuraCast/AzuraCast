@@ -14,6 +14,7 @@ use App\Entity\Api\FileListDir;
 use App\Entity\Api\StationMedia as ApiStationMedia;
 use App\Entity\Api\StationMediaPlaylist;
 use App\Entity\Enums\FileTypes;
+use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -83,7 +84,8 @@ final class ListAction implements SingleActionInterface
 
     public function __construct(
         private readonly MediaListCache $mediaListCache,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly StationFilesystems $stationFilesystems,
+        private readonly StationMediaRepository $mediaRepo
     ) {
     }
 
@@ -129,17 +131,17 @@ final class ListAction implements SingleActionInterface
             /** @var array<int, FileList> $result */
             $result = $cacheItem->get();
         } else {
-            $pathLike = (empty($currentDir))
-                ? '%'
-                : $currentDir . '/%';
+            $pathLike = $this->getPathLike($currentDir);
 
             $fs = $this->stationFilesystems->getMediaFilesystem($station);
 
+            // First LIKE uses the index, second matches case
             $mediaQueryBuilder = $this->em->createQueryBuilder()
                 ->select('sm')
                 ->from(StationMedia::class, 'sm')
                 ->where('sm.storage_location = :storageLocation')
                 ->andWhere('sm.path LIKE :path')
+                ->andWhere('sm.path LIKE COLLATE(:path, utf8mb4_bin)')
                 ->setParameter('storageLocation', $station->media_storage_location)
                 ->setParameter('path', $pathLike);
 
@@ -149,6 +151,7 @@ final class ListAction implements SingleActionInterface
                     FROM App\Entity\UnprocessableMedia upm
                     WHERE upm.storage_location = :storageLocation
                     AND upm.path LIKE :path
+                    AND upm.path LIKE COLLATE(:path, utf8mb4_bin)
                 DQL
             )->setParameter('storageLocation', $storageLocation)
                 ->setParameter('path', $pathLike);
@@ -332,6 +335,13 @@ final class ListAction implements SingleActionInterface
         return $paginator->write($response);
     }
 
+    private function getPathLike(string $dir): string
+    {
+        return ($dir === '')
+            ? '%'
+            : $this->mediaRepo->escapeLikePattern($dir) . '/%';
+    }
+
     /**
      * @param Station $station
      * @param string $path
@@ -341,9 +351,7 @@ final class ListAction implements SingleActionInterface
         Station $station,
         string $path
     ): array {
-        $pathLike = (empty($path))
-            ? '%'
-            : $path . '/%';
+        $pathLike = $this->getPathLike($path);
 
         $foldersInDirQuery = $this->em->createQuery(
             <<<'DQL'
@@ -351,7 +359,7 @@ final class ListAction implements SingleActionInterface
                 FROM App\Entity\StationPlaylistFolder spf
                 JOIN spf.playlist sp
                 WHERE spf.station = :station
-                AND spf.path LIKE :path
+                AND spf.path LIKE COLLATE(:path, utf8mb4_bin)
                 AND spf.path NOT LIKE :pathWithSubfolders
             DQL
         )->setParameter('station', $station)
@@ -397,7 +405,7 @@ final class ListAction implements SingleActionInterface
                 FROM App\Entity\StationPlaylistFolder spf
                 JOIN spf.playlist sp
                 WHERE spf.station = :station
-                AND spf.path IN (:paths)
+                AND COLLATE(spf.path, utf8mb4_bin) IN (:paths)
             DQL
         )->setParameter('station', $station)
             ->setParameter('paths', $validPaths);

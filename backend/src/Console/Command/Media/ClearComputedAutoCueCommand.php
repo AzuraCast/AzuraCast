@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Media;
 
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\StationRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,13 +15,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ClearComputedAutoCueCommand extends AbstractBatchMediaCommand
 {
-    public function __construct(
-        StationRepository $stationRepo,
-        private readonly StationMediaRepository $mediaRepo,
-    ) {
-        parent::__construct($stationRepo);
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

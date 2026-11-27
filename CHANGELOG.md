@@ -17,6 +17,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed assigning a media folder to a playlist also adding the files of folders with similar names.
 
+- Fixed setting the playlists of a media folder also removing playlists from folders whose names differ only in
+  capitalization, and not adding playlists those folders already had.
+
 ---
 
 # AzuraCast 0.24.1 (Nov 19, 2026)

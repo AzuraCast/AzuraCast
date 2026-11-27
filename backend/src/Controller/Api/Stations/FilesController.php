@@ -315,6 +315,9 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Resolve the destination before writing anything to reject invalid paths early.
         $destPath = $apiRecord->getSanitizedPath();
+        if ($destPath === '') {
+            throw new InvalidArgumentException('The upload path must include a file name.');
+        }
 
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();

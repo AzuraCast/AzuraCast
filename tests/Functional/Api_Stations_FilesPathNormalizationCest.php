@@ -200,6 +200,35 @@ final class Api_Stations_FilesPathNormalizationCest extends CestAbstract
      * @before login
      * @before clearTestFolders
      */
+    public function base64UploadRejectsPathsPointingToBaseDirectory(FunctionalTester $I): void
+    {
+        $I->wantTo('Reject base64 uploads to paths that point to the base directory.');
+
+        $tempDir = $this->getTestStation()->getRadioTempDir();
+        $tempFilesBefore = scandir($tempDir);
+
+        foreach (['/', '.', 'a/..', './/'] as $basePath) {
+            $I->haveHttpHeader('Content-Type', 'application/json');
+            $I->sendPost(
+                '/api/station/' . $this->getTestStation()->id . '/files',
+                [
+                    'path' => $basePath,
+                    'file' => base64_encode((string)file_get_contents(self::TEST_SONG_PATH)),
+                ]
+            );
+            $I->dontSeeResponseContainsJson(['success' => true]);
+
+            $this->em->clear();
+
+            $I->assertSame([], $this->getMediaPaths());
+            $I->assertSame($tempFilesBefore, scandir($tempDir));
+        }
+    }
+
+    /**
+     * @before login
+     * @before clearTestFolders
+     */
     public function editMediaStoresNormalizedPath(FunctionalTester $I): void
     {
         $I->wantTo('Store a normalized path when editing the path of a media file with extra slashes.');

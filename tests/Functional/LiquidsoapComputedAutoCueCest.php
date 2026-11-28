@@ -368,6 +368,63 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function clearCommandKeepsPathsMatchingWildcardsCaseOrPrefix(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values of a directory from the console, not of similarly named paths.');
+
+        $clearedMedia = $this->uploadTestSong('Show_A/song.mp3');
+        $keptMedia = [
+            $this->uploadTestSong('Show-A/song.mp3'),
+            $this->uploadTestSong('show_a/other.mp3'),
+            $this->uploadTestSong('Show_AB/song.mp3'),
+        ];
+
+        foreach ([$clearedMedia, ...$keptMedia] as $media) {
+            $this->saveComputedValues($I, $this->cacheKeyFor($media));
+        }
+
+        $this->runClearCommand([
+            'station-name' => $this->getTestStation()->short_name,
+            'path' => 'Show_A',
+        ]);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        foreach ($keptMedia as $media) {
+            $I->assertNotNull($this->reloadMedia($media)->computed_auto_cue);
+        }
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function clearCommandClearsOnlyTheGivenFile(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values of a file from the console, matching its path case-sensitively.');
+
+        $clearedMedia = $this->uploadTestSong('Show_A/song.mp3');
+        $keptMedia = $this->uploadTestSong('Show_A/other.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($keptMedia));
+
+        $this->runClearCommand([
+            'station-name' => $this->getTestStation()->short_name,
+            'path' => 'show_a/song.mp3',
+        ]);
+
+        $I->assertNotNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+
+        $this->runClearCommand([
+            'station-name' => $this->getTestStation()->short_name,
+            'path' => 'Show_A/song.mp3',
+        ]);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($keptMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function mediaBatchClearsSelectedFiles(FunctionalTester $I): void
     {
         $I->wantTo('Clear stored AutoCue values for the selected files in the media manager.');
@@ -386,6 +443,25 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
     /**
      * @before setupComplete
      */
+    public function mediaBatchKeepsFilesDifferingInCase(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values of a selected file, not of a file differing only in case.');
+
+        $media = $this->uploadTestSong('Show_A/song.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($media));
+
+        $this->sendClearBatch($I, ['show_a/song.mp3'], []);
+
+        $I->assertNotNull($this->reloadMedia($media)->computed_auto_cue);
+
+        $this->sendClearBatch($I, ['Show_A/song.mp3'], []);
+
+        $I->assertNull($this->reloadMedia($media)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
     public function mediaBatchClearsSelectedDirectories(FunctionalTester $I): void
     {
         $I->wantTo('Clear stored AutoCue values for the selected directories in the media manager.');
@@ -399,6 +475,27 @@ final class LiquidsoapComputedAutoCueCest extends CestAbstract
 
         $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
         $I->assertNotNull($this->reloadMedia($keptMedia)->computed_auto_cue);
+    }
+
+    /**
+     * @before setupComplete
+     */
+    public function mediaBatchKeepsDirectoriesMatchingWildcardsOrDifferingInCase(FunctionalTester $I): void
+    {
+        $I->wantTo('Clear stored AutoCue values of a directory, not of directories matching its wildcards or case.');
+
+        $clearedMedia = $this->uploadTestSong('Show_A/song.mp3');
+        $wildcardMedia = $this->uploadTestSong('Show-A/song.mp3');
+        $caseMedia = $this->uploadTestSong('show_a/other.mp3');
+        $this->saveComputedValues($I, $this->cacheKeyFor($clearedMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($wildcardMedia));
+        $this->saveComputedValues($I, $this->cacheKeyFor($caseMedia));
+
+        $this->sendClearBatch($I, [], ['Show_A']);
+
+        $I->assertNull($this->reloadMedia($clearedMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($wildcardMedia)->computed_auto_cue);
+        $I->assertNotNull($this->reloadMedia($caseMedia)->computed_auto_cue);
     }
 
     /**

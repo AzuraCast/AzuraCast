@@ -18,6 +18,7 @@ use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -26,6 +27,7 @@ use App\Message\WritePlaylistFileMessage;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -164,6 +166,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
         private readonly MediaListCache $mediaListCache,
+        private readonly WhitespacePathNormalizer $pathNormalizer,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -310,6 +313,12 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
+        // Resolve the destination before writing anything to reject invalid paths early.
+        $destPath = $apiRecord->getSanitizedPath();
+        if ($destPath === '') {
+            throw new InvalidArgumentException('The upload path must include a file name.');
+        }
+
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
         new Filesystem()->dumpFile($tempPath, $apiRecord->getFileContents());
@@ -317,7 +326,7 @@ final class FilesController extends AbstractStationApiCrudController
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(
             $mediaStorage,
-            $apiRecord->getSanitizedPath(),
+            $destPath,
             $tempPath
         );
 
@@ -351,6 +360,10 @@ final class FilesController extends AbstractStationApiCrudController
         unset($data['custom_fields'], $data['playlists']);
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
+
+        if (isset($data['path'])) {
+            $data['path'] = $this->pathNormalizer->normalizePath(Types::string($data['path']));
+        }
 
         $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);

@@ -13,6 +13,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed media actions on a file or folder also affecting files and folders with similar names, e.g. `Show_A` also
+  matching `Show-A`, `show_a` or `Show_AB`:
+    - Deleting, renaming or moving a folder no longer changes similarly named folders or their playlist links.
+    - Assigning a folder to a playlist no longer adds the files of similarly named folders.
+    - Setting the playlists of a folder no longer removes the playlists of folders differing only in capitalization,
+      and links a playlist even if such a folder already has it.
+    - Uploading a file into a folder no longer adds it to the playlists of folders differing only in capitalization.
+    - Searching inside a folder no longer finds files in similarly named folders.
+    - Subfolders in the media manager no longer show the playlists of parent folders differing only in capitalization.
+    - Clearing the computed AutoCue values of files or folders no longer clears those of similarly named ones.
+    - The console commands to reprocess media, clear extra metadata or clear computed AutoCue values now only affect the
+      given file or folder.
+
+- Fixed a batch delete through the API removing a station's whole media folder when given an empty path or "/".
+
 - Fixed playing or downloading media files and backups failing with "404 Not Found" when their path contains special
   characters like "%".
 

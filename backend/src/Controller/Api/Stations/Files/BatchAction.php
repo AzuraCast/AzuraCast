@@ -24,6 +24,7 @@ use App\Enums\StationPermissions;
 use App\Event\Radio\AnnotateNextSong;
 use App\Exception\Http\PermissionDeniedException;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -83,6 +84,7 @@ final class BatchAction implements SingleActionInterface
         private readonly StationFilesystems $stationFilesystems,
         private readonly MediaListCache $mediaListCache,
         private readonly StationMediaRepository $mediaRepo,
+        private readonly WhitespacePathNormalizer $pathNormalizer,
     ) {
     }
 
@@ -255,8 +257,8 @@ final class BatchAction implements SingleActionInterface
     ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs);
 
-        $from = Types::string($request->getParam('currentDirectory'));
-        $to = Types::string($request->getParam('directory'));
+        $from = $this->pathNormalizer->normalizePath(Types::string($request->getParam('currentDirectory')));
+        $to = $this->pathNormalizer->normalizePath(Types::string($request->getParam('directory')));
 
         $affectedPlaylists = [];
 
@@ -495,7 +497,7 @@ final class BatchAction implements SingleActionInterface
         $this->mediaRepo->clearComputedAutoCueForPaths($storageLocation, $result->files);
 
         foreach ($result->directories as $directory) {
-            $this->mediaRepo->clearComputedAutoCue($storageLocation, "{$directory}/");
+            $this->mediaRepo->clearComputedAutoCueInDirectory($storageLocation, $directory);
         }
 
         return $result;
@@ -506,10 +508,10 @@ final class BatchAction implements SingleActionInterface
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
     ): MediaBatchResult {
-        $files = array_values(
+        $files = $this->normalizePaths(
             Types::array($request->getParam('files', []))
         );
-        $directories = array_values(
+        $directories = $this->normalizePaths(
             Types::array($request->getParam('dirs', []))
         );
 
@@ -532,5 +534,25 @@ final class BatchAction implements SingleActionInterface
         $result->directories = $directories;
 
         return $result;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function normalizePaths(array $paths): array
+    {
+        $normalizedPaths = [];
+
+        foreach ($paths as $path) {
+            $normalizedPath = $this->pathNormalizer->normalizePath(Types::string($path));
+
+            if ($normalizedPath === '') {
+                throw new InvalidArgumentException('Batch actions cannot be applied to the base directory.');
+            }
+
+            $normalizedPaths[] = $normalizedPath;
+        }
+
+        return $normalizedPaths;
     }
 }

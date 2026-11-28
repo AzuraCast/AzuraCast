@@ -9,6 +9,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 
 /**
  * @extends AbstractStationBasedRepository<StationPlaylistFolder>
@@ -33,15 +34,17 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             $location = $location->media_storage_location;
         }
 
+        // First LIKE uses the index, second matches case
         $mediaInFolderRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.id
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path
+                AND sm.path LIKE :dirContents
+                AND sm.path LIKE COLLATE(:dirContents, utf8mb4_bin)
             DQL
         )->setParameter('storageLocation', $location)
-            ->setParameter('path', $path . '/%')
+            ->setParameter('dirContents', $this->escapeLikePattern($path) . '/%')
             ->getArrayResult();
 
         return array_column($mediaInFolderRaw, 'id', 'id');
@@ -115,7 +118,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
                 <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station 
-                AND spf.path = :path
+                AND spf.path = COLLATE(:path, utf8mb4_bin)
                 AND IDENTITY(spf.playlist) IN (:playlistIds)
             DQL
             )->setParameter('station', $station)
@@ -141,11 +144,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     ): array {
         $path = self::filterPath($path);
 
-        /** @var StationPlaylistFolder[] $folders */
-        $folders = $this->repository->findBy([
-            'path' => $path,
-            'station' => $station,
-        ]);
+        $folders = $this->findFoldersByPath($station, $path);
 
         if (!$includeParents) {
             return $folders;
@@ -156,10 +155,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
             $folders = array_merge(
                 $folders,
-                $this->repository->findBy([
-                    'path' => self::filterPath($pathToSearch),
-                    'station' => $station,
-                ])
+                $this->findFoldersByPath($station, self::filterPath($pathToSearch))
             );
         }
 
@@ -191,6 +187,22 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     }
 
     /**
+     * @return StationPlaylistFolder[]
+     */
+    private function findFoldersByPath(Station $station, string $path): array
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf
+                FROM App\Entity\StationPlaylistFolder spf
+                WHERE spf.station = :station AND spf.path = COLLATE(:path, utf8mb4_bin)
+            DQL
+        )->setParameter('station', $station)
+            ->setParameter('path', $path)
+            ->getResult();
+    }
+
+    /**
      * @return int[]
      */
     protected function getPlaylistIdsForFolder(
@@ -201,7 +213,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             <<<'DQL'
                 SELECT IDENTITY(spf.playlist) AS playlist_id
                 FROM App\Entity\StationPlaylistFolder spf
-                WHERE spf.station = :station AND spf.path = :path
+                WHERE spf.station = :station AND spf.path = COLLATE(:path, utf8mb4_bin)
             DQL
         )->setParameter('station', $station)
             ->setParameter('path', self::filterPath($path))
@@ -210,6 +222,6 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
     public static function filterPath(string $path): string
     {
-        return trim($path, '/');
+        return new WhitespacePathNormalizer()->normalizePath($path);
     }
 }

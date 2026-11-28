@@ -151,6 +151,7 @@ return [
 
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
+        $config->addCustomStringFunction('COLLATE', DoctrineExtensions\Query\Mysql\Collate::class);
 
         Doctrine\DBAL\Types\Type::overrideType(
             'datetime_immutable',

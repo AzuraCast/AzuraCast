@@ -11,6 +11,7 @@ use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -60,7 +61,11 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
         $data = (array)$request->getParsedBody();
 
         $clone = $data['copyPlaylist'] ?? false;
-        $directories = (array)($data['directories'] ?? []);
+
+        $directories = array_map(
+            static fn(mixed $directory) => StationPlaylistFolderRepository::filterPath(Types::string($directory)),
+            (array)($data['directories'] ?? [])
+        );
 
         foreach ($directories as $directory) {
             if ($clone) {

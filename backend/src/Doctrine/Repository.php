@@ -65,6 +65,13 @@ class Repository
         return $record;
     }
 
+    public function escapeLikePattern(string $value): string
+    {
+        return $this->em->getConnection()
+            ->getDatabasePlatform()
+            ->escapeStringForLike($value, '\\');
+    }
+
     /**
      * Re-hydrates managed entities in the Doctrine identity map after bulk DQL
      *

@@ -3,6 +3,7 @@
 $autoloader = require __DIR__.'/../vendor/autoload.php';
 $autoloader->addClassMap([
     'Functional\CestAbstract' => __DIR__ . '/Functional/CestAbstract.php',
+    'Functional\StationFilesCestAbstract' => __DIR__ . '/Functional/StationFilesCestAbstract.php',
 ]);
 
 // Strip the "final" keyword from repository classes at test runtime so the

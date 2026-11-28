@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace Functional;
 
-use App\Entity\Repository\StationPlaylistFolderRepository;
-use App\Entity\StationMedia;
-use App\Entity\StationPlaylist;
-use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
-use App\Flysystem\ExtendedFilesystemInterface;
-use App\Flysystem\StationFilesystems;
-use App\Utilities\File;
 use FunctionalTester;
 
-final class Api_Stations_FilesFolderLinksCest extends CestAbstract
+final class Api_Stations_FilesFolderLinksCest extends StationFilesCestAbstract
 {
-    private const array TEST_FOLDERS = [
-        'Archive',
-        'Imaging',
-        'Music',
-        'Musical',
-        'Show%',
-        'Show-A',
-        'Show_A',
-        'show_a',
-    ];
+    protected function getTestFolders(): array
+    {
+        return [
+            'Archive',
+            'Imaging',
+            'Music',
+            'Musical',
+            'Show%',
+            'Show-A',
+            'Show_A',
+            'show_a',
+        ];
+    }
 
     /**
      * @before login
@@ -278,25 +274,8 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
         $differingParentPlaylistId = $this->linkFolderToNewPlaylist('Music/Pop');
         $differingFolderPlaylistId = $this->linkFolderToNewPlaylist('Music/pop/sub');
 
-        $songPath = File::generateTempPath('test.mp3');
-        copy(self::TEST_SONG_PATH, $songPath);
-
-        $I->sendPost(
-            '/api/station/' . $this->getTestStation()->id . '/files/upload',
-            ['currentDirectory' => 'Music/pop/Sub'],
-            [
-                'file' => [
-                    'name' => 'test.mp3',
-                    'type' => 'audio/mpeg',
-                    'error' => UPLOAD_ERR_OK,
-                    'size' => filesize($songPath),
-                    'tmp_name' => $songPath,
-                ],
-            ]
-        );
+        $this->upload($I, 'Music/pop/Sub');
         $I->seeResponseCodeIsSuccessful();
-
-        $this->em->clear();
 
         $I->assertSame(['Music/pop/Sub/test.mp3'], $this->getPlaylistMediaPaths($parentPlaylistId));
         $I->assertSame([], $this->getPlaylistMediaPaths($differingParentPlaylistId));
@@ -340,139 +319,10 @@ final class Api_Stations_FilesFolderLinksCest extends CestAbstract
     }
 
     /**
-     * The station media directory outlives the test station, so remove what earlier runs left behind.
-     */
-    protected function clearTestFolders(): void
-    {
-        $fsMedia = $this->getMediaFilesystem();
-
-        foreach (self::TEST_FOLDERS as $folder) {
-            $fsMedia->deleteDirectory($folder);
-        }
-    }
-
-    /**
-     * @param string[] $dirs
-     * @param array<string, mixed> $params
-     */
-    private function batch(FunctionalTester $I, string $action, array $dirs, array $params = []): void
-    {
-        $station = $this->getTestStation();
-
-        $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPut(
-            '/api/station/' . $station->id . '/files/batch',
-            [
-                'do' => $action,
-                'files' => [],
-                'dirs' => $dirs,
-                ...$params,
-            ]
-        );
-        $I->seeResponseCodeIsSuccessful();
-        $I->seeResponseContainsJson(['success' => true]);
-
-        $this->em->clear();
-    }
-
-    /**
-     * @return list<array{
-     *  path: string,
-     *  dir: array{playlists: list<array{id: int}>}
-     * }>
-     */
-    private function listFiles(FunctionalTester $I, string $currentDirectory, ?string $searchPhrase = null): array
-    {
-        $I->sendGet(
-            '/api/station/' . $this->getTestStation()->id . '/files/list',
-            [
-                'currentDirectory' => $currentDirectory,
-                'searchPhrase' => $searchPhrase,
-                'flushCache' => 1,
-            ]
-        );
-        $I->seeResponseCodeIsSuccessful();
-
-        return json_decode($I->grabResponse(), true, flags: JSON_THROW_ON_ERROR);
-    }
-
-    private function linkFolderToNewPlaylist(string $path): int
-    {
-        $playlistId = $this->createPlaylist('Playlist for ' . $path);
-
-        $this->di->get(StationPlaylistFolderRepository::class)->addPlaylistsToFolder(
-            $this->getTestStation(),
-            $path,
-            [$playlistId => 0]
-        );
-
-        return $playlistId;
-    }
-
-    private function createPlaylist(string $name): int
-    {
-        $playlist = new StationPlaylist($this->getTestStation());
-        $playlist->name = $name;
-        $this->em->persist($playlist);
-        $this->em->flush();
-
-        return $playlist->id;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getFolderLinkPaths(): array
-    {
-        $paths = array_map(
-            static fn(StationPlaylistFolder $folder) => $folder->path,
-            $this->em->getRepository(StationPlaylistFolder::class)->findBy(['station' => $this->getTestStation()])
-        );
-        sort($paths);
-
-        return $paths;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getMediaPaths(): array
-    {
-        $paths = array_map(
-            static fn(StationMedia $media) => $media->path,
-            $this->em->getRepository(StationMedia::class)->findBy(
-                ['storage_location' => $this->getTestStation()->media_storage_location]
-            )
-        );
-        sort($paths);
-
-        return $paths;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getPlaylistMediaPaths(int $playlistId): array
-    {
-        $paths = array_map(
-            static fn(StationPlaylistMedia $spm) => $spm->media->path,
-            $this->em->getRepository(StationPlaylistMedia::class)->findBy(['playlist' => $playlistId])
-        );
-        sort($paths);
-
-        return $paths;
-    }
-
-    /**
      * @phpstan-impure
      */
     private function countPlaylistSongs(int $playlistId): int
     {
         return $this->em->getRepository(StationPlaylistMedia::class)->count(['playlist' => $playlistId]);
-    }
-
-    private function getMediaFilesystem(): ExtendedFilesystemInterface
-    {
-        return $this->di->get(StationFilesystems::class)->getMediaFilesystem($this->getTestStation());
     }
 }

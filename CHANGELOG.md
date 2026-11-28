@@ -13,6 +13,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed playing or downloading media files and backups failing with "404 Not Found" when their path contains special
+  characters like "%".
+
 ---
 
 # AzuraCast 0.24.1 (Nov 19, 2026)

@@ -36,7 +36,11 @@ final class CustomUrls
 
         foreach ($specialPaths as $diskPath => $nginxPath) {
             if (str_starts_with($path, $diskPath)) {
-                return str_replace($diskPath, $nginxPath, $path);
+                $relativePath = substr($path, strlen($diskPath));
+                $segments = explode('/', $relativePath);
+                $encodedSegments = array_map(rawurlencode(...), $segments);
+
+                return $nginxPath . implode('/', $encodedSegments);
             }
         }
 
